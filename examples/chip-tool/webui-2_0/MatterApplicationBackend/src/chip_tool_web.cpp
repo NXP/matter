@@ -623,6 +623,19 @@ int main()
         res.end();
     });
 
+    CROW_ROUTE(crowApplication, "/assets/download/<string>")
+    ([&](const crow::request& req, crow::response& res, std::string path) {
+        crow::mustache::context ctx;
+        res.code = 200;
+        setContentTypeForFileName(res, path);
+        std::ifstream ifs(std::string(CROW_STATIC_DIRECTORY) + "assets/download/" + path);
+        std::string fileContent;
+        fileContent.assign(std::istreambuf_iterator<char>(ifs),
+                            std::istreambuf_iterator<char>());
+        res.write(fileContent);
+        res.end();
+    });
+
     CROW_ROUTE(crowApplication, "/media/<string>")
     ([&](const crow::request& req, crow::response& res, std::string path) {
         crow::mustache::context ctx;
@@ -687,44 +700,48 @@ int main()
             ptree root;
             auto x_body_decoded = crow::json::load(req.body);
             auto nodeId = std::string(x_body_decoded["nodeId"].s());
-            auto pinCode = std::string(x_body_decoded["pinCode"].s());
             auto type = std::string(x_body_decoded["type"].s());
             auto nodeAlias = std::string(x_body_decoded["nodeAlias"].s());
-            ChipLogError(NotSpecified, "Received POST request for pairing with Node ID: %s, PIN Code: %s, Type: %s, Node Alias: %s",
-                std::string(nodeId).c_str(), std::string(pinCode).c_str(), std::string(type).c_str(), std::string(nodeAlias).c_str());
+            ChipLogError(NotSpecified, "Received POST request for pairing with Node ID: %s, Type: %s, Node Alias: %s",
+                std::string(nodeId).c_str(), std::string(type).c_str(), std::string(nodeAlias).c_str());
             if(webCommissionerStorage.SyncDoesKeyExist(std::string(nodeAlias).c_str())){
                 root.put("result", RESPONSE_FAILURE);
                 root.put("cause", "repeat nodeAlias");
             } else {
                 std::string command;
                 if (type == "onnetwork") {
+                    auto pinCode = std::string(x_body_decoded["pinCode"].s());
                     command = "pairing onnetwork-commissioning-mode " + nodeId + " " + pinCode;
                 } else if (type == "onnetwork-long") {
+                    auto pinCode = std::string(x_body_decoded["pinCode"].s());
                     auto discriminator = std::string(x_body_decoded["discriminator"].s());
                     command = "pairing onnetwork-long " + nodeId + " " + pinCode + " " + discriminator;
                 }
                 else if (type == "ble-wifi") {
                     auto ssId = std::string(x_body_decoded["ssId"].s());
                     auto password = std::string(x_body_decoded["password"].s());
+                    auto pinCode = std::string(x_body_decoded["pinCode"].s());
                     auto discriminator = std::string(x_body_decoded["discriminator"].s());
                     command = "pairing ble-wifi " + nodeId + " " + ssId + " " + password + " " + pinCode + " " + discriminator;
                 } else if (type == "ble-thread") {
                     auto dataset = std::string(x_body_decoded["dataset"].s());
+                    auto pinCode = std::string(x_body_decoded["pinCode"].s());
                     auto discriminator = std::string(x_body_decoded["discriminator"].s());
                     command = "pairing ble-thread " + nodeId + " hex:" + dataset + " " + pinCode + " " + discriminator;
+                } else if (type == "qrcode") {
+                    auto payload = std::string(x_body_decoded["payload"].s());
+                    command = "pairing code " + nodeId + " " + payload;
                 }
+                ChipLogError(NotSpecified, "Received POST request for pairing with command: %s", command.c_str());
                 wsClient.sendMessage(command);
                 ChipLogError(NotSpecified, "Send pairing command to chip-tool ws server.");
                 int sleepTime = 0;
-                while (reportQueue.empty() && sleepTime < 60)
+                while (reportQueue.empty() && sleepTime < 125)
                 {
                     this_thread::sleep_for(chrono::seconds(1));
                     sleepTime++;
                 }
-                if (sleepTime == 60) {
-                    root.put("result", RESPONSE_FAILURE);
-                    ChipLogError(NotSpecified, "Execute pairing command overtime!");
-                } else {
+                if (!reportQueue.empty()) {
                     Json::Value resultsReport = wsClient.dequeueReport();
                     int resultsReportSize = resultsReport.size();
                     if (resultsReportSize == 0) {
@@ -736,6 +753,9 @@ int main()
                         root.put("result", RESPONSE_FAILURE);
                         ChipLogError(NotSpecified, "Recieved response meaasge after sending pairing command, but pairing failed!");
                     }
+                } else {
+                    root.put("result", RESPONSE_FAILURE);
+                    ChipLogError(NotSpecified, "Execute pairing command overtime!");
                 }
             }
             stringstream ss;
@@ -941,6 +961,12 @@ int main()
                 Json::Value resultsValue = wsClient.dequeueReport();
                 int jsonObjectsize = resultsValue.size();
                 if (jsonObjectsize == 0) {
+                    if(option == "1") {
+                        std::string payload = GetCtwPayloadValue();
+                        std::string qrCode = GetCtwQRCode();
+                        root.put("payload", payload);
+                        root.put("qrCode", qrCode);
+                    }
                     root.put("result", RESPONSE_SUCCESS);
                 } else {
                     root.put("result", RESPONSE_FAILURE);
