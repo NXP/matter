@@ -16,27 +16,7 @@
 
 menuconfig CHIP
 	bool "Matter protocol stack"
-	default n
-	select CPP
-	imply REQUIRES_FULL_LIBCPP
-	imply REQUIRES_FULL_LIBC
-	imply NEWLIB_LIBC_NANO
-	imply CBPRINTF_LIBC_SUBSTS
-	imply POSIX_API if !ARCH_POSIX && !CHIP_NRF_PLATFORM && !CHIP_NXP_PLATFORM
-	imply EVENTFD if !ARCH_POSIX
-	imply REBOOT
-	imply ENTROPY_GENERATOR
-	imply NET_UDP
-	imply NET_IPV6
-	imply NET_CONFIG_NEED_IPV6
-	imply NET_SOCKETS
-	imply NET_SOCKETS_POSIX_NAMES if !ARCH_POSIX && (CHIP_NRF_PLATFORM || CHIP_NXP_PLATFORM)
-	imply NETWORKING
-	imply HWINFO
-	imply FLASH
-	imply FLASH_MAP
-	imply NVS
-	imply SETTINGS
+	select CHIP_SDK_DEPENDENCIES
 	help
 	  Enables Matter libraries required for the Matter protocol stack to work.
 
@@ -44,12 +24,17 @@ if CHIP
 
 config CHIP_APP_LOG_LEVEL
 	int "Logging level in application"
-	default LOG_DEFAULT_LEVEL
-	depends on LOG
+	default 4 # detail logging
 	help
 	  Sets the logging level in the Matter application. Use this configuration
 	  option only within the application. To set the logging level for the
 	  Matter stack, use the MATTER_LOG_LEVEL configuration option.
+
+config MATTER_LOG_LEVEL
+	int "Logging level in Matter stack"
+	default 4
+	help
+	  Sets the logging level in Matter stack.
 
 # Device and firmware identifers
 
@@ -89,7 +74,7 @@ config CHIP_DEVICE_PRODUCT_NAME
 
 config CHIP_DEVICE_HARDWARE_VERSION
 	int "Hardware version"
-	default 0
+	default 1
 	help
 	  Provides the 16-bit hardware version number, assigned by the device
 	  manufacturer. The number is exposed as an attribute of the Basic
@@ -97,17 +82,16 @@ config CHIP_DEVICE_HARDWARE_VERSION
 
 config CHIP_DEVICE_HARDWARE_VERSION_STRING
 	string "Hardware version string"
-	default "prerelease"
+	default "1.0"
 	help
 	  Provides a human-readable representation of the hardware version number.
 	  This must be an ASCII string of a length between 1 and 64 characters. The
 	  hardware version string is exposed as an attribute of the Basic
 	  Information cluster.
 
-if "$(APPVERSION)"=""
 config CHIP_DEVICE_SOFTWARE_VERSION
 	int "Software version"
-	default 0
+	default 1
 	range 0 4294967295
 	help
 	  Provides the 32-bit software version number. The number is exposed as an
@@ -119,14 +103,13 @@ config CHIP_DEVICE_SOFTWARE_VERSION
 
 config CHIP_DEVICE_SOFTWARE_VERSION_STRING
 	string "Software version string"
-	default "prerelease"
+	default "1.0"
 	help
 	  Provides a human-readable representation of the software version number.
 	  This must be an ASCII string of a length between 1 and 64 characters. The
 	  software version string is exposed as an attribute of the Basic
 	  Information cluster, and included in the header of the generated Matter
 	  over-the-air (OTA) update image.
-endif
 
 config CHIP_DEVICE_MANUFACTURING_DATE
 	string "Manufacturing date (ISO 8601 format)"
@@ -234,7 +217,7 @@ config CHIP_DEVICE_PRODUCT_COLOR
 
 config CHIP_ENABLE_PAIRING_AUTOSTART
 	bool "Open commissioning window on boot"
-	default n
+	default y
 	help
 	  Opens the commissioning window automatically at application boot time if
 	  the node is not yet commissioned.
@@ -301,8 +284,6 @@ config CHIP_STATISTICS
 
 config CHIP_LIB_SHELL
 	bool "Matter shell commands"
-	default n
-	imply SHELL
 	help
 	  Enables linking the application with the library that contains Matter
 	  shell commands.
@@ -315,33 +296,6 @@ config CHIP_PROJECT_CONFIG
 	  Matter's generic configuration files will include the project
 	  configuration file that can be used to override any of Matter's default or
 	  platform-specific settings.
-
-# Thread network features
-
-config CHIP_ENABLE_DNSSD_SRP
-	bool "OpenThread Service Registration Protocol"
-	default y
-	#depends on NET_L2_OPENTHREAD
-	#imply OPENTHREAD_ECDSA
-	#imply OPENTHREAD_SRP_CLIENT
-	help
-	  Enables using the OpenThread SRP client for the Matter service
-	  advertising.
-
-config CHIP_ENABLE_DNS_CLIENT
-	bool "OpenThread DNS client"
-	default y
-	#depends on NET_L2_OPENTHREAD
-	#imply OPENTHREAD_DNS_CLIENT
-	help
-	  Enables using the OpenThread DNS client for the Matter service discovery.
-
-config CHIP_ENABLE_ICD_SUPPORT
-	bool "Matter Intermittently Connected Devices support"
-	default n
-	#imply OPENTHREAD_MTD_SED if NET_L2_OPENTHREAD
-	help
-	  Enables the Intermittently Connected Device (ICD) support in Matter.
 
 if CHIP_ENABLE_ICD_SUPPORT
 
@@ -418,6 +372,8 @@ config CHIP_ICD_CLIENTS_PER_FABRIC
 
 endif # CHIP_ENABLE_ICD_SUPPORT
 
+if NET_L2_OPENTHREAD
+
 config CHIP_THREAD_SSED
 	bool "Enable Thread Synchronized Sleepy End Device support"
 	depends on OPENTHREAD_CSL_RECEIVER && CHIP_ENABLE_ICD_SUPPORT
@@ -432,6 +388,8 @@ config CHIP_OPENTHREAD_CONFIG
 	  either absolute or relative to the application directory. When this option
 	  is specified, it replaces the OpenThread configuration file supplied by
 	  Zephyr.
+
+endif # NET_L2_OPENTHREAD
 
 # Platform additions and configuration
 
@@ -467,62 +425,16 @@ config CHIP_FACTORY_RESET_ERASE_NVS
 	  configuration is supposed to be cleared on a factory reset, including
 	  device-specific entries.
 
-config CHIP_MALLOC_SYS_HEAP
-	bool "Memory allocator based on Zephyr sys_heap"
-	imply SYS_HEAP_RUNTIME_STATS
-	help
-	  Enables memory allocation functions that imitate the default malloc,
-	  calloc, realloc and free, based on sys_heap from Zephyr RTOS.
-
-if CHIP_MALLOC_SYS_HEAP
-
-config CHIP_MALLOC_SYS_HEAP_OVERRIDE
-	bool "Override default allocator with memory allocator based on Zephyr sys_heap"
-	default y
-	help
-	  Replaces the default memory allocation functions (such as malloc, calloc,
-	  realloc, free, and their reentrant versions) with their counterparts based
-	  on sys_heap from Zephyr RTOS.
-
-config CHIP_MALLOC_SYS_HEAP_SIZE
-	int "Heap size used by memory allocator based on Zephyr sys_heap"
-	default 12288 # 12kB
-	help
-	  Provides a value that controls how much of the device RAM is reserved for
-	  the heap used by the memory allocation functions based on sys_heap from
-	  Zephyr RTOS.
-
-config CHIP_MALLOC_SYS_HEAP_WATERMARKS_SUPPORT
-	bool "Enable support for heap watermarks based on Zephyr sys_heap"
-	help
-	  Enables support for getting current heap high watermark and resetting 
-	  watermarks. 
-
-endif
-
-module = MATTER
-module-str = Matter
-source "${ZEPHYR_BASE}/subsys/logging/Kconfig.template.log_config"
-
 # Build system options
-
-config APP_LINK_WITH_CHIP
-	bool "Link application with Matter libraries"
-	default y
-	help
-	  Adds Matter directories to the 'app' target include paths and links the
-	  'app' target with Matter libraries.
 
 config CHIP_PW_RPC
 	bool "Pigweed RPC library"
-	default n
 	help
 	  Links the application with the libraries containing Pigweed RPC
 	  functionalities.
 
 config CHIP_BUILD_TESTS
 	bool "Build Matter unit tests"
-	default n
 	help
 	  Enables building Matter unit tests.
 
@@ -545,7 +457,7 @@ config CHIP_OTA_IMAGE_EXTRA_ARGS
 	  Provides optional arguments to the ota_image_tool.py script, used for
 	  building Matter OTA image.
 
-endif
+endif # CHIP_OTA_IMAGE_BUILD
 
 config CHIP_BLE_EXT_ADVERTISING
 	bool "Bluetooth LE extended advertising"
@@ -565,4 +477,11 @@ config CHIP_BLE_ADVERTISING_DURATION
 	  If CHIP_BLE_EXT_ADVERTISING is set to false, the maximum duration time is 15 minutes, 
 	  else the maximum duration time can be extended to 2880 minutes (48h).
 
-endif
+config USE_CHIP_DATA_MODEL_INTERFACE
+    bool "Use a DataModel::Provider interface for data access"
+    help
+      This enables a level of indiraction in the CHIP interaction model engine in 
+      accessing underlying data and executing operations such as 
+      wildcard-expansion, read, write and invoke.
+
+endif # CHIP
