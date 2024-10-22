@@ -150,12 +150,12 @@ user@ubuntu:~/Desktop/git/connectedhomeip/third_party/nxp/github_sdk$ west foral
 
 ```
 user@ubuntu:~/Desktop/git/connectedhomeip$ cd examples/light-switch-combo-app/nxp/mcxw71
-user@ubuntu:~/Desktop/git/connectedhomeip/examples/light-switch-combo-app/nxp/mcxw71$ gn gen out/debug --args="chip_with_ot_cli=0 is_debug=false chip_openthread_ftd=true chip_crypto=\"platform\""
+user@ubuntu:~/Desktop/git/connectedhomeip/examples/light-switch-combo-app/nxp/mcxw71$ gn gen out/debug --args="nxp_enable_ot_cli=false is_debug=false chip_openthread_ftd=true chip_crypto=\"platform\""
 user@ubuntu:~/Desktop/git/connectedhomeip/examples/light-switch-combo-app/nxp/mcxw71$ ninja -C out/debug
 ```
 
-In case that Openthread CLI is needed, chip_with_ot_cli build argument must be
-set to 1.
+In case that Openthread CLI is needed, `nxp_enable_ot_cli` build argument must be
+set to `true`.
 
 After a successful build, the `elf` and `srec` files are found in `out/debug/` - `see the files prefixed with chip-mcxw71-light-switch-combo-example`.
 
@@ -163,7 +163,7 @@ After a successful build, the `elf` and `srec` files are found in `out/debug/` -
 
 ### SMU2 Memory
 
-Some Matter instances and global variables can be placed in the NBU's SMU2 memory. When compiling with OpenThread FTD support (`chip_openthread_ftd=true`) and with `use_smu2_static=true`, the following components are placed in SMU2 memory:
+Some Matter instances and global variables can be placed in the NBU's SMU2 memory. When compiling with OpenThread FTD support (`chip_openthread_ftd=true`) and with `nxp_use_smu2_static=true`, the following components are placed in SMU2 memory:
 * `gImageProcessor` from OTAImageProcessorImpl.cpp.
 * `gApplicationProcessor` from OTAHooks.cpp.
 * `Server::sServer` from Server.cpp.
@@ -171,11 +171,11 @@ Some Matter instances and global variables can be placed in the NBU's SMU2 memor
 
 These instances and global variables are placed in SMU2 memory through name matching in the application linker script. They should not be changed or, if changed, the names must be updated in `app.ld`. See [app.ld](../../../platform/nxp/mcxw71_k32w1/app/ldscripts/app.ld) for names and SMU2 memory range size.
 
-The OpenThread buffers can be allocated from a 13KB SMU2 range after a successful commmissioning process until a factory reset is initiated. This way, the OpenThread buffers will be dynamically allocated instead of statically, freeing some SRAM. To enable this feature compile with OpenThread FTD support (`chip_openthread_ftd=true`) and with `use_smu2_dynamic=true`.
+The OpenThread buffers can be allocated from a 13KB SMU2 range after a successful commmissioning process until a factory reset is initiated. This way, the OpenThread buffers will be dynamically allocated instead of statically, freeing some SRAM. To enable this feature compile with OpenThread FTD support (`chip_openthread_ftd=true`) and with `nxp_use_smu2_dynamic=true`.
 
 ## Manufacturing data
 
-Use `chip_with_factory_data=1` in the gn build command to enable factory data.
+Use `nxp_use_factory_data=true` in the gn build command to enable factory data.
 
 For a full guide on manufacturing flow, please see
 [Guide for writing manufacturing data on NXP devices](../../../../docs/guides/nxp/nxp_manufacturing_flow.md).
