@@ -84,7 +84,7 @@ mcxw72_sdk("sdk") {
     "CHIP_DEVICE_CONFIG_USE_TEST_SETUP_DISCRIMINATOR=${setup_discriminator}",
   ]
 
-  if (chip_enable_matter_cli) {
+  if (nxp_enable_matter_cli) {
     defines += [
       "BOARD_APP_UART_CLK_FREQ=6000000U",
       #"BOARD_APP_UART_INSTANCE=1"
@@ -168,7 +168,7 @@ mcxw72_executable("contact_sensor_app") {
     ]
   }
 
-  if (chip_with_factory_data == 1) {
+  if (nxp_use_factory_data) {
     deps += [ "${chip_root}/src/platform/nxp:nxp_factory_data" ]
   }
 
@@ -224,7 +224,7 @@ mcxw72_executable("contact_sensor_app") {
     ]
   }
 
-  if (chip_enable_matter_cli) {
+  if (nxp_enable_matter_cli) {
     defines += [ "ENABLE_CHIP_SHELL" ]
 
     deps += [
