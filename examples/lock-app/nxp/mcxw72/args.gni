@@ -41,5 +41,5 @@ treat_warnings_as_errors = false
 
 chip_crypto = "platform"
 chip_openthread_ftd = false
-chip_with_ot_cli = 0
+nxp_enable_ot_cli = false
 nxp_enable_matter_cli = true
