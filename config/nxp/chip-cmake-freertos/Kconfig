@@ -27,14 +27,35 @@ config APP_FREERTOS_OS
 	help
 		When enabled this will differentiate between FreeRTOS and Zephyr in common NXP app code.
 
-config CHIP_NXP_PLATFORM_NAME
-	string "NXP platform"
-	default "rt/rw61x" if CHIP_SDK_DEPENDENCIES_RW61X
-	default "rt/rt1170" if CHIP_SDK_DEPENDENCIES_RT1170
-	default "rt/rt1060" if CHIP_SDK_DEPENDENCIES_RT1060
+choice CHIP_NXP_PLATFORM_SELECTION
+	prompt "CHIP NXP platform selection"
+	config CHIP_NXP_PLATFORM_RW61X
+		bool "RW61x platform"
+		depends on MCUX_HW_DEVICE_RW612 || MCUX_HW_DEVICE_RW610
+		help
+			NXP RW61x platform.
+		    
+	config CHIP_NXP_PLATFORM_RT1170
+		bool "RT1170 platform"
+		depends on MCUX_HW_DEVICE_MIMXRT1171 || MCUX_HW_DEVICE_MIMXRT1172 || MCUX_HW_DEVICE_MIMXRT1173 || MCUX_HW_DEVICE_MIMXRT1175 || MCUX_HW_DEVICE_MIMXRT1176
+		help
+			NXP RT1170 platform.
+		
+	config CHIP_NXP_PLATFORM_RT1060
+		bool "RT1060 platform"
+		depends on MCUX_HW_DEVICE_MIMXRT1061 || MCUX_HW_DEVICE_MIMXRT1062
+		help
+			NXP RT1060 platform.
+endchoice # CHIP_NXP_PLATFORM_SELECTION
+
+config CHIP_NXP_PLATFORM_FOLDER_NAME
+	string "NXP platform folder name"
+	default "rt/rw61x" if CHIP_NXP_PLATFORM_RW61X
+	default "rt/rt1170" if CHIP_NXP_PLATFORM_RT1170
+	default "rt/rt1060" if CHIP_NXP_PLATFORM_RT1060
 	default "not specified"
 	help
-		Defines the platform name to be used (equivalent to "nxp_platform" gn arg).
+		Defines the platform folder name to be used.
 
 choice CHIP_NVM_COMPONENT
 	prompt "NVM Component selection"
@@ -90,8 +111,8 @@ endif # NET_L2_OPENTHREAD
 config CHIP_IPV4
 	bool "IPv4 support for Matter"
 	help
-	  If disabled, it allows to build NXP SDK application
-	  with IPv4 support independently of the Matter stack still
-	  running over IPv6.
+		If disabled, it allows to build NXP SDK application
+	  	with IPv4 support independently of the Matter stack still
+	  	running over IPv6.
 
 endif # CHIP
