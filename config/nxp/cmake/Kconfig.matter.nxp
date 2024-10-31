@@ -24,6 +24,7 @@ config CHIP_NXP_PLATFORM
 	  what can be used to conditionally deviate from Zephyr generic configuration
 	  for NXP platform related purposes.
 
+# See config/zephyr/Kconfig for full definition
 config CHIP_DEVICE_VENDOR_NAME
 	default "NXP Semiconductors"
 
@@ -36,6 +37,9 @@ config CHIP_DEBUG_SYMBOLS
 	default y
 	help
 	  Enables building the application with debug symbols.
+
+config CHIP_MALLOC_SYS_HEAP
+	default y if !ARCH_POSIX
 
 config CHIP_FACTORY_DATA
 	bool "Factory data provider"
@@ -56,6 +60,7 @@ config CHIP_FACTORY_DATA_CUSTOM_BACKEND
 
 config CHIP_FACTORY_DATA_BUILD
 	bool "Generate factory data contents"
+	default n
 	imply CHIP_FACTORY_DATA
 	help
 	  Enables generation of the factory data contents during the building. This
@@ -109,22 +114,6 @@ config CHIP_DEVICE_PART_NUMBER
 	help
 	  Provides the part number. The part number is exposed as an attribute
 	  of the Basic Information cluster.
-
-config CHIP_PLAT_LOAD_REAL_FACTORY_DATA
-	bool "Load real factory data"
-	default y
-	help
-	  Allows to load the factory data provisioned in flash.
-
-config CHIP_SECURE_DAC_PRIVATE_KEY_STORAGE
-	bool "Secure DAC private key storage"
-	help
-		Enable DAC private key secure storage.
-
-config CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA
-	bool "Secure whole factory data"
-	help
-		This mode allows to protect the matter factory dataset with a AES key protected in the secure element.
 
 endif
 
@@ -205,6 +194,7 @@ config CHIP_DEVICE_GENERATE_ROTATING_DEVICE_UID
 
 endif #CHIP_FACTORY_DATA_BUILD
 
+# See config/zephyr/Kconfig for full definition
 config CHIP_FACTORY_RESET_ERASE_NVS
 	bool
 	default y
@@ -218,6 +208,25 @@ config CHIP_LOG_SIZE_OPTIMIZATION
 	  information that is too detailed to be used in most cases. You can find
 	  full configuration enabled by this option in the
 	  platform/nxp/CHIPPlatformConfig.h file.
+
+config CHIP_IPV4
+	bool "IPv4 support for Matter"
+	default n
+	depends on NET_IPV4
+	help
+	  If disabled, it allows to build NXP SDK application
+	  with IPv4 support independently of the Matter stack still
+	  running over IPv6.
+
+config CHIP_OTA_REQUESTOR
+	bool
+	select BOOTLOADER_MCUBOOT
+
+config BOOTLOADER_MCUBOOT
+	bool
+	select IMG_MANAGER
+	select STREAM_FLASH
+	select STREAM_FLASH_ERASE
 
 config CHIP_OTA_REQUESTOR_BUFFER_SIZE
 	int "OTA Requestor image buffer size"
