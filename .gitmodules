@@ -325,7 +325,6 @@
 	path = third_party/infineon/psoc6/psoc6_sdk/libs/lwip-network-interface-integration
 	url = https://github.com/Infineon/lwip-network-interface-integration.git
 	platforms = infineon
-[submodule "/third_party/ncp_host/repo"]
-    path = third_party/ncp_host/repo
-    url = ssh://git@bitbucket.sw.nxp.com/wmcuapps/ncp_mpu_host.git
-	branch  = master
+[submodule "third_party/ncp_host/repo"]
+	path = third_party/ncp_host/repo
+	url = ssh://git@bitbucket.sw.nxp.com/wmcuapps/ncp_mpu_host.git
