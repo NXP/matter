@@ -1,0 +1,94 @@
+# Copyright (c) 2022 Project CHIP Authors
+# Copyright 2023 NXP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+import("//build_overrides/build.gni")
+import("//build_overrides/chip.gni")
+import("//build_overrides/ncp_host_sdk.gni")
+
+ncp_host_sdk_root = "${chip_root}/third_party/ncp_host/repo/ncp_host"
+
+template("ncp_host_sdk") {
+
+  ncp_host_target_name = target_name
+
+  config("${ncp_host_target_name}_base_config") {
+    include_dirs = []
+    include_dirs += [
+      "${ncp_host_sdk_root}/src/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/",
+      "${ncp_host_sdk_root}/src/common/ncp_cmd_node/",
+      "${ncp_host_sdk_root}/src/common/ncp_debug/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_tlv/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/sdio/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/uart/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/usb/",
+      "${ncp_host_sdk_root}/src/wifi/",
+      "${ncp_host_sdk_root}/src/common/crc/",
+      "${ncp_host_sdk_root}/src/common/lpm/",
+    ]
+  }
+  
+  source_set(ncp_host_target_name) {
+    forward_variables_from(invoker,
+                           [
+                             "sources",
+                             "public",
+                             "public_configs",
+                             "public_deps",
+                           ])
+    if (!defined(public)) {
+      public = []
+    }
+
+    public += [
+      "${ncp_host_sdk_root}/src/ncp_host_app.h",
+      "${ncp_host_sdk_root}/src/ncp_host_command.h",
+      "${ncp_host_sdk_root}/src/ncp_system_command.h",
+      "${ncp_host_sdk_root}/src/wifi/ncp_host_app_wifi.h",
+      "${ncp_host_sdk_root}/src/wifi/ncp_host_command_wifi.h",
+      "${ncp_host_sdk_root}/src/wifi/ncp_wifi_api.h",
+      "${ncp_host_sdk_root}/src/wifi/ncp_host_wifi_config.h",
+      "${ncp_host_sdk_root}/src/common/ncp_cmd_node/ncp_cmd_node.h",
+    ]
+    if (!defined(sources)) {
+      sources = []
+    }
+    sources += [
+      "${ncp_host_sdk_root}/src/common/crc/crc.c",
+      "${ncp_host_sdk_root}/src/common/lpm/lpm.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/sdio/ncp_intf_sdio.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/sdio/sdio.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/spi/ncp_intf_spi.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/spi/spi_master.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/uart/ncp_intf_uart.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/uart/uart.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/usb/ncp_intf_usb.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/usb/usb.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.c",
+      "${ncp_host_sdk_root}/src/common/ncp_cmd_node/ncp_cmd_node.c",
+      "${ncp_host_sdk_root}/src/wifi/ncp_host_command_wifi.c",
+      "${ncp_host_sdk_root}/src/ncp_host_command.c",
+      "${ncp_host_sdk_root}/src/system/ncp_host_app_system.c",
+      "${ncp_host_sdk_root}/src/system/ncp_host_command_system.c",
+    ]
+    
+    if (!defined(public_configs)) {
+      public_configs = []
+    }
+
+    public_configs += [ ":${ncp_host_target_name}_base_config" ]
+  }
+}
