@@ -31,7 +31,7 @@ chip_system_config_provide_statistics = false
 chip_system_config_use_open_thread_inet_endpoints = true
 
 chip_with_lwip = false
-nxp_enable_ot_cli = false
+chip_with_ot_cli = 0
 
 cpp_standard = "gnu++17"
 is_debug = false

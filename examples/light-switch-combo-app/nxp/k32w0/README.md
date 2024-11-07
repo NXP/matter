@@ -214,8 +214,8 @@ user@ubuntu:~/Desktop/git/connectedhomeip/examples/lighting-app/nxp/k32w0$ ninja
     Exactly the same steps as above but set argument `build_for_k32w041am=1` in
     the gn command.
 
-In case that Openthread CLI is needed, `nxp_enable_ot_cli` build argument must be
-set to true.
+In case that Openthread CLI is needed, chip_with_ot_cli build argument must be
+set to 1.
 
 In case the board doesn't have 32KHz crystal fitted, one can use the 32KHz free
 running oscillator as a clock source. In this case one must set the use_fro_32k
@@ -306,10 +306,10 @@ CHIPProjectConfig.h.
 Regarding factory data provider, there are two options:
 
 -   use the default factory data provider: `FactoryDataProviderImpl` by setting
-    `nxp_use_factory_data=true` in the gn build command.
+    `chip_with_factory_data=1` in the gn build command.
 -   use a custom factory data provider: please see
     [Guide for implementing a custom factory data provider](../../../../third_party/nxp/nxp_matter_support/examples/platform/k32w0/common/README.md).
-    This can be enabled when `nxp_use_factory_data=true` by setting
+    This can be enabled when `chip_with_factory_data=1` by setting
     `use_custom_factory_provider=1` in the gn build command.
 
 ## Flashing and debugging
