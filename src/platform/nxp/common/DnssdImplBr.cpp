@@ -144,17 +144,23 @@ static uint32_t mServiceListFreeIndex;
 
 CHIP_ERROR NxpChipDnssdInit(DnssdAsyncReturnCallback initCallback, DnssdAsyncReturnCallback errorCallback, void * context)
 {
-    struct netif * extNetif = (ConnectivityManagerImpl().GetExternalInterface()).GetPlatformInterface();
+    CHIP_ERROR error            = CHIP_NO_ERROR;
+    otInstance * thrInstancePtr = ThreadStackMgrImpl().OTInstance();
+    struct netif * extNetif     = (ConnectivityManagerImpl().GetExternalInterface()).GetPlatformInterface();
+
+    // Don't try to do anything until the mDNS server is started
+    VerifyOrExit(otMdnsIsEnabled(thrInstancePtr), error = CHIP_ERROR_INCORRECT_STATE);
 
     mNetifIndex = netif_get_index(extNetif);
-    initCallback(context, CHIP_NO_ERROR);
 
-    return CHIP_NO_ERROR;
+exit:
+    initCallback(context, error);
+    return error;
 }
 
 void NxpChipDnssdShutdown()
 {
-    // Empty implementation. Intentionally left blank
+    otMdnsSetEnabled(ThreadStackMgrImpl().OTInstance(), false, 0);
 }
 #if USE_MDNS_NEXT_SERVICE_API
 CHIP_ERROR NxpChipDnssdRemoveServices()
