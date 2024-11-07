@@ -33,7 +33,7 @@
 #       --string-arg th_server_app_path:${ALL_CLUSTERS_APP} dut_fsa_stdin_pipe:dut-fsa-stdin
 #       --trace-to json:${TRACE_TEST_JSON}.json
 #       --trace-to perfetto:${TRACE_TEST_PERFETTO}.perfetto
-#     factoryreset: true
+#     factory-reset: true
 #     quiet: true
 # === END CI TEST ARGUMENTS ===
 
@@ -50,10 +50,10 @@ from dataclasses import dataclass
 
 import chip.clusters as Clusters
 from chip import ChipDeviceCtrl
+from chip.testing.apps import AppServerSubprocess
+from chip.testing.matter_testing import MatterBaseTest, TestStep, async_test_body, default_matter_test_main, type_matches
 from ecdsa.curves import NIST256p
-from matter_testing_support import MatterBaseTest, TestStep, async_test_body, default_matter_test_main, type_matches
 from mobly import asserts
-from TC_MCORE_FS_1_1 import AppServer
 from TC_SC_3_6 import AttributeChangeAccumulator
 
 # Length of `w0s` and `w1s` elements
@@ -98,9 +98,11 @@ class TC_MCORE_FS_1_5(MatterBaseTest):
         self.storage = tempfile.TemporaryDirectory(prefix=self.__class__.__name__)
         logging.info("Temporary storage directory: %s", self.storage.name)
 
-        # Get the named pipe path for the DUT_FSA app input from the user params.
-        dut_fsa_stdin_pipe = self.user_params.get("dut_fsa_stdin_pipe", None)
-        if dut_fsa_stdin_pipe is not None:
+        if self.is_pics_sdk_ci_only:
+            # Get the named pipe path for the DUT_FSA app input from the user params.
+            dut_fsa_stdin_pipe = self.user_params.get("dut_fsa_stdin_pipe")
+            if not dut_fsa_stdin_pipe:
+                asserts.fail("CI setup requires --string-arg dut_fsa_stdin_pipe:<path_to_pipe>")
             self.dut_fsa_stdin = open(dut_fsa_stdin_pipe, "w")
 
         self.th_server_port = th_server_port
@@ -111,14 +113,16 @@ class TC_MCORE_FS_1_5(MatterBaseTest):
             discriminator=3840,
             passcode=20202021)
 
-        # Start the TH_SERVER_NO_UID app.
-        self.th_server = AppServer(
+        # Start the TH_SERVER app.
+        self.th_server = AppServerSubprocess(
             th_server_app,
             storage_dir=self.storage.name,
             port=self.th_server_port,
             discriminator=self.th_server_setup_params.discriminator,
             passcode=self.th_server_setup_params.passcode)
-        self.th_server.start()
+        self.th_server.start(
+            expected_output="Server initialization complete",
+            timeout=30)
 
     def teardown_class(self):
         if self._partslist_subscription is not None:
@@ -139,7 +143,7 @@ class TC_MCORE_FS_1_5(MatterBaseTest):
             f"- discriminator: {setup_params.discriminator}\n"
             f"- setupPinCode: {setup_params.passcode}\n"
             f"- setupQRCode: {setup_params.setup_qr_code}\n"
-            f"- setupManualcode: {setup_params.manual_code}\n"
+            f"- setupManualCode: {setup_params.manual_code}\n"
             f"If using FabricSync Admin test app, you may type:\n"
             f">>> pairing onnetwork 111 {setup_params.passcode}")
 
@@ -208,7 +212,7 @@ class TC_MCORE_FS_1_5(MatterBaseTest):
         time_remaining = report_waiting_timeout_delay_sec
 
         parts_list_endpoint_count_from_step_1 = len(step_1_dut_parts_list)
-        step_3_dut_parts_list = None
+        step_3_dut_parts_list = []
         while time_remaining > 0:
             try:
                 item = parts_list_queue.get(block=True, timeout=time_remaining)
@@ -300,16 +304,20 @@ class TC_MCORE_FS_1_5(MatterBaseTest):
                 endpoint, attribute, value = item['endpoint'], item['attribute'], item['value']
 
                 # Record arrival of an expected subscription change when seen
-                if endpoint == newly_added_endpoint and attribute == Clusters.AdministratorCommissioning.Attributes.WindowStatus:
+                if endpoint == newly_added_endpoint and attribute == cadmin_attr.WindowStatus:
+                    if value != th_server_direct_cadmin[cadmin_attr.WindowStatus]:
+                        logging.info("Window status is %r, waiting for %r", value,
+                                     th_server_direct_cadmin[cadmin_attr.WindowStatus])
+                        continue
                     cadmin_sub_new_data = True
                     break
-
             except queue.Empty:
                 # No error, we update timeouts and keep going
                 pass
-
-            elapsed = time.time() - start_time
-            time_remaining = report_waiting_timeout_delay_sec - elapsed
+            finally:
+                # each iteration will alter timing
+                elapsed = time.time() - start_time
+                time_remaining = report_waiting_timeout_delay_sec - elapsed
 
         asserts.assert_true(cadmin_sub_new_data,
                             "Timed out waiting for DUT to reflect AdministratorCommissioning attributes for bridged device")

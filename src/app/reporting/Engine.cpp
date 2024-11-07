@@ -24,11 +24,9 @@
 #include <app/data-model-provider/Provider.h>
 #include <app/icd/server/ICDServerConfig.h>
 #include <app/reporting/Engine.h>
-#include <app/reporting/Read-Checked.h>
 #include <app/reporting/Read.h>
 #include <app/reporting/reporting.h>
 #include <app/util/MatterCallbacks.h>
-#include <app/util/ember-compatibility-functions.h>
 #include <lib/core/DataModelTypes.h>
 #include <protocols/interaction_model/StatusCode.h>
 
@@ -47,17 +45,12 @@ using Protocols::InteractionModel::Status;
 
 Status EventPathValid(DataModel::Provider * model, const ConcreteEventPath & eventPath)
 {
-#if CHIP_CONFIG_USE_DATA_MODEL_INTERFACE
-
     if (!model->GetClusterInfo(eventPath).has_value())
     {
         return model->EndpointExists(eventPath.mEndpointId) ? Status::UnsupportedCluster : Status::UnsupportedEndpoint;
     }
 
     return Status::Success;
-#else
-    return CheckEventSupportStatus(eventPath);
-#endif
 }
 
 } // namespace
@@ -852,7 +845,7 @@ bool Engine::MergeDirtyPathsUnderSameEndpoint()
 
 CHIP_ERROR Engine::InsertPathIntoDirtySet(const AttributePathParams & aAttributePath)
 {
-    ReturnErrorCodeIf(MergeOverlappedAttributePath(aAttributePath), CHIP_NO_ERROR);
+    VerifyOrReturnError(!MergeOverlappedAttributePath(aAttributePath), CHIP_NO_ERROR);
 
     if (mGlobalDirtySet.Exhausted() && !MergeDirtyPathsUnderSameCluster() && !MergeDirtyPathsUnderSameEndpoint())
     {
@@ -862,7 +855,7 @@ CHIP_ERROR Engine::InsertPathIntoDirtySet(const AttributePathParams & aAttribute
         object->mGeneration = GetDirtySetGeneration();
     }
 
-    ReturnErrorCodeIf(MergeOverlappedAttributePath(aAttributePath), CHIP_NO_ERROR);
+    VerifyOrReturnError(!MergeOverlappedAttributePath(aAttributePath), CHIP_NO_ERROR);
     ChipLogDetail(DataManagement, "Cannot merge the new path into any existing path, create one.");
 
     auto object = mGlobalDirtySet.CreateObject();
@@ -1046,8 +1039,7 @@ void Engine::MarkDirty(const AttributePathParams & path)
 } // namespace app
 } // namespace chip
 
-// TODO: MatterReportingAttributeChangeCallback should just live in libCHIP,
-// instead of being in ember-compatibility-functions.  It does not depend on any
+// TODO: MatterReportingAttributeChangeCallback should just live in libCHIP, It does not depend on any
 // app-specific generated bits.
 void __attribute__((weak))
 MatterReportingAttributeChangeCallback(chip::EndpointId endpoint, chip::ClusterId clusterId, chip::AttributeId attributeId)

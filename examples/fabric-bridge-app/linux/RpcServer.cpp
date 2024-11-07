@@ -37,6 +37,8 @@ using namespace chip;
 using namespace chip::app;
 using namespace chip::app::Clusters;
 
+namespace bridge {
+
 namespace {
 
 #if defined(PW_RPC_FABRIC_BRIDGE_SERVICE) && PW_RPC_FABRIC_BRIDGE_SERVICE
@@ -48,6 +50,7 @@ public:
     pw::Status ActiveChanged(const chip_rpc_KeepActiveChanged & request, pw_protobuf_Empty & response) override;
     pw::Status AdminCommissioningAttributeChanged(const chip_rpc_AdministratorCommissioningChanged & request,
                                                   pw_protobuf_Empty & response) override;
+    pw::Status DeviceReachableChanged(const chip_rpc_ReachabilityChanged & request, pw_protobuf_Empty & response) override;
 };
 
 pw::Status FabricBridge::AddSynchronizedDevice(const chip_rpc_SynchronizedDevice & request, pw_protobuf_Empty & response)
@@ -210,6 +213,26 @@ pw::Status FabricBridge::AdminCommissioningAttributeChanged(const chip_rpc_Admin
     return pw::OkStatus();
 }
 
+pw::Status FabricBridge::DeviceReachableChanged(const chip_rpc_ReachabilityChanged & request, pw_protobuf_Empty & response)
+{
+    VerifyOrReturnValue(request.has_id, pw::Status::InvalidArgument());
+    ScopedNodeId scopedNodeId(request.id.node_id, request.id.fabric_index);
+    ChipLogProgress(NotSpecified, "Received device reachable changed: Id=[%d:" ChipLogFormatX64 "]", scopedNodeId.GetFabricIndex(),
+                    ChipLogValueX64(scopedNodeId.GetNodeId()));
+
+    auto * device = BridgeDeviceMgr().GetDeviceByScopedNodeId(scopedNodeId);
+    if (device == nullptr)
+    {
+        ChipLogError(NotSpecified, "Could not find bridged device associated with Id=[%d:0x" ChipLogFormatX64 "]",
+                     scopedNodeId.GetFabricIndex(), ChipLogValueX64(scopedNodeId.GetNodeId()));
+        return pw::Status::NotFound();
+    }
+
+    device->ReachableChanged(request.reachability);
+
+    return pw::OkStatus();
+}
+
 FabricBridge fabric_bridge_service;
 #endif // defined(PW_RPC_FABRIC_BRIDGE_SERVICE) && PW_RPC_FABRIC_BRIDGE_SERVICE
 
@@ -235,3 +258,5 @@ void InitRpcServer(uint16_t rpcServerPort)
     std::thread rpc_service(RunRpcService);
     rpc_service.detach();
 }
+
+} // namespace bridge
