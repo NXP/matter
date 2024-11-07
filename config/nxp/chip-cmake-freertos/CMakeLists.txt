@@ -42,7 +42,7 @@ endif()
 # ==============================================================================
 # Generate configuration for CHIP GN build system
 # ==============================================================================
-matter_add_gn_arg_string("nxp_platform" ${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME})
+matter_add_gn_arg_string("nxp_platform" ${CONFIG_CHIP_NXP_PLATFORM_NAME})
 matter_add_gn_arg_bool("nxp_use_factory_data" ${CONFIG_CHIP_FACTORY_DATA})
 matter_add_gn_arg_bool("nxp_enable_secure_dac_private_key_storage" ${CONFIG_CHIP_SECURE_DAC_PRIVATE_KEY_STORAGE})
 matter_add_gn_arg_bool("nxp_enable_secure_whole_factory_data" ${CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA})

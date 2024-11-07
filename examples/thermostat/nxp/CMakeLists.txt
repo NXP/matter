@@ -109,7 +109,7 @@ endif()
 
 if (CONFIG_CHIP_SECURE_DAC_PRIVATE_KEY_STORAGE OR CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA)
     target_compile_definitions(app PUBLIC
-        EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h\"
+        EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_NAME}/FactoryDataProviderImpl.h\"
     )
     target_sources(app PRIVATE
         ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataExample.cpp
