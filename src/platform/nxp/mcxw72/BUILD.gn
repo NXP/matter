@@ -63,7 +63,7 @@ source_set("nxp_ota") {
   ]
 
   if (nxp_use_factory_data &&
-      nxp_enable_ota_factory_data_processor) {
+      chip_enable_ota_factory_data_processor == 1) {
     sources += [
       "../common/ota/OTAFactoryDataProcessor.cpp",
       "../common/ota/OTAFactoryDataProcessor.h",
