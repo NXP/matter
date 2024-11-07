@@ -1006,7 +1006,6 @@ OpenThreadDemo
 openweave
 OperationalCredentials
 operationalDataset
-operationalstate
 opkg
 OPTIGA
 optionMask

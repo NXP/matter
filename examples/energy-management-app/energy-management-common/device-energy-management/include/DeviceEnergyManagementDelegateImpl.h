@@ -39,7 +39,6 @@ public:
 
     void SetDEMManufacturerDelegate(DEMManufacturerDelegate & deviceEnergyManagementManufacturerDelegate);
 
-    chip::app::Clusters::DeviceEnergyManagement::DEMManufacturerDelegate * GetDEMManufacturerDelegate();
     /**
      *
      * Implement the DeviceEnergyManagement::Delegate interface

@@ -62,11 +62,6 @@ void DeviceEnergyManagementDelegate::SetDEMManufacturerDelegate(
     mpDEMManufacturerDelegate = &deviceEnergyManagementManufacturerDelegate;
 }
 
-chip::app::Clusters::DeviceEnergyManagement::DEMManufacturerDelegate * DeviceEnergyManagementDelegate::GetDEMManufacturerDelegate()
-{
-    return mpDEMManufacturerDelegate;
-}
-
 /**
  * @brief Delegate handler for PowerAdjustRequest
  *
