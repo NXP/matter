@@ -42,15 +42,13 @@ endif()
 # ==============================================================================
 # Generate configuration for CHIP GN build system
 # ==============================================================================
-matter_add_gn_arg_string("nxp_platform" ${CONFIG_CHIP_NXP_PLATFORM_NAME})
-matter_add_gn_arg_bool("chip_enable_secure_dac_private_key_storage" ${CONFIG_CHIP_SECURE_DAC_PRIVATE_KEY_STORAGE})
-matter_add_gn_arg_bool("chip_enable_secure_whole_factory_data" ${CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA})
+matter_add_gn_arg_string("nxp_nvm_component" ${CONFIG_CHIP_NVM_COMPONENT})
+matter_add_gn_arg_string("nxp_platform" ${CONFIG_CHIP_NXP_PLATFORM})
+matter_add_gn_arg("chip_with_factory_data" ${CONFIG_CHIP_FACTORY_DATA})
+matter_add_gn_arg("chip_enable_secure_dac_private_key_storage" ${CONFIG_CHIP_SECURE_DAC_PRIVATE_KEY_STORAGE})
+matter_add_gn_arg("chip_enable_secure_whole_factory_data" ${CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA})
 matter_add_gn_arg_bool("chip_enable_matter_cli" CONFIG_CHIP_LIB_SHELL)
 matter_add_gn_arg_bool("chip_enable_pairing_autostart" CONFIG_CHIP_ENABLE_PAIRING_AUTOSTART)
-
-if(CONFIG_CHIP_FACTORY_DATA)
-    matter_add_gn_arg("chip_with_factory_data" 1)
-endif()
 
 if (CONFIG_USE_CHIP_DATA_MODEL_INTERFACE)
     set(DATA_MODEL_INTERFACE "enabled")
@@ -58,21 +56,9 @@ else()
     set(DATA_MODEL_INTERFACE "disabled")
 endif()
 
-if(CONFIG_CHIP_NVM_COMPONENT_NVS)
-    matter_add_gn_arg_string("nxp_nvm_component" "nvs")
-elseif(CONFIG_CHIP_NVM_COMPONENT_LITTLEFS)
-    matter_add_gn_arg_string("nxp_nvm_component" "littlefs")
-elseif(CONFIG_CHIP_NVM_COMPONENT_KEYSTORAGE)
-    matter_add_gn_arg_string("nxp_nvm_component" "key_storage")
-elseif(CONFIG_CHIP_NVM_COMPONENT_NVMFWK)
-    matter_add_gn_arg_string("nxp_nvm_component" "nvm_fwk")
-endif()
-
-if(CONFIG_CHIP_BUILD_APP_WITH_GN)
-    if(CONFIG_BOOTLOADER_MCUBOOT)
-        matter_add_gn_arg_bool("no_mcuboot" false)
-    endif()
-endif()
+if(CONFIG_BOOTLOADER_MCUBOOT)
+    matter_add_gn_arg_bool("no_mcuboot" false)
+endif(CONFIG_BOOTLOADER_MCUBOOT)
 
 # Enable map file generation by default
 matter_add_gn_arg_bool("chip_generate_link_map_file" true)
@@ -114,7 +100,7 @@ nxp_pre_build_process()
 #**************************************************************************************
 # Post-build instructions
 #**************************************************************************************
-if(CONFIG_CHIP_OTA_IMAGE_BUILD)
+if(CONFIG_CHIP_OTA_REQUESTOR)
 
 if (CONFIG_BOOTLOADER_MCUBOOT)
     # Build mcuboot application
@@ -128,7 +114,7 @@ endif()
     # Generate .ota file
     nxp_generate_ota_file()
 
-endif()
+endif(CONFIG_CHIP_OTA_REQUESTOR)
 
 if (CONFIG_CHIP_FACTORY_DATA_BUILD)
     
@@ -137,4 +123,4 @@ if (CONFIG_CHIP_FACTORY_DATA_BUILD)
     # Generate factory data binaries
     nxp_generate_factory_data()
 
-endif()
+endif(CONFIG_CHIP_FACTORY_DATA_BUILD)
