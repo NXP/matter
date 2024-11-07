@@ -236,18 +236,18 @@ class NxpBuilder(GnBuilder):
         args = []
 
         if self.low_power:
-            args.append('nxp_use_low_power=true')
+            args.append('chip_with_low_power=1')
             if self.board == NxpBoard.K32W0:
                 args.append('chip_pw_tokenizer_logging=false chip_with_OM15082=0')
 
         if self.smu2:
-            args.append('nxp_use_smu2_static=true nxp_use_smu2_dynamic=true')
+            args.append('use_smu2_static=true use_smu2_dynamic=true')
 
         if self.enable_factory_data:
-            args.append('nxp_use_factory_data=true')
+            args.append('chip_with_factory_data=1')
 
         if self.convert_dac_pk:
-            args.append('nxp_convert_dac_private_key=true')
+            args.append('chip_convert_dac_private_key=1')
 
         if self.use_fro32k:
             args.append('use_fro_32k=1')
@@ -298,7 +298,7 @@ class NxpBuilder(GnBuilder):
             args.append('chip_enable_ble=false')
 
         if self.enable_shell:
-            args.append('nxp_enable_matter_cli=true')
+            args.append('chip_enable_matter_cli=true')
 
         if self.enable_thread:
             # thread is enabled by default on kw32

@@ -134,6 +134,8 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
 }
 #endif
 
+extern void OTAIdleActivities(void);
+
 void vApplicationIdleHook(void)
 {
     // Data queued by PDM will be written to external flash
@@ -148,8 +150,5 @@ void vApplicationIdleHook(void)
 #endif
     OSA_InterruptEnable();
 
-#if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
-    extern void OTAIdleActivities(void);
     OTAIdleActivities();
-#endif
 }
