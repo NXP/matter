@@ -38,7 +38,7 @@
 
 #include <lwip/tcpip.h>
 
-#include "els_pkc_mbedtls.h"
+#include MBEDTLS_PORT_INCLUDE
 
 #if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
 #include "OtaSupport.h"
