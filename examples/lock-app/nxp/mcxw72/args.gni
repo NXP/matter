@@ -36,10 +36,10 @@ chip_persist_subscriptions = true
 chip_subscription_timeout_resumption = true
 
 is_debug = true
-nxp_is_sdk_package = true
+is_sdk_package = true
 treat_warnings_as_errors = false
 
 chip_crypto = "platform"
 chip_openthread_ftd = false
 chip_with_ot_cli = 0
-nxp_enable_matter_cli = true
+chip_enable_matter_cli = true

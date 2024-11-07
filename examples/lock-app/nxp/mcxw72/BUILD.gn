@@ -84,7 +84,7 @@ mcxw72_sdk("sdk") {
     "CHIP_DEVICE_CONFIG_USE_TEST_SETUP_DISCRIMINATOR=${setup_discriminator}",
   ]
 
-  if (nxp_enable_matter_cli) {
+  if (chip_enable_matter_cli) {
     defines += [
       "BOARD_APP_UART_CLK_FREQ=6000000U",
       #"BOARD_APP_UART_INSTANCE=1"
@@ -156,7 +156,7 @@ mcxw72_executable("lock_app") {
     "${common_example_dir}/factory_data/source/AppFactoryDataDefaultImpl.cpp",
   ]
 
-  if (nxp_enable_matter_cli) {
+  if (chip_enable_matter_cli) {
     defines += [ "ENABLE_CHIP_SHELL" ]
     deps += [
       "${chip_root}/examples/shell/shell_common:shell_common",
@@ -204,7 +204,7 @@ mcxw72_executable("lock_app") {
     sources += [ "${common_example_dir}/operational_keystore/source/OperationalKeystoreS200.cpp" ]
   }
 
-  if (nxp_use_factory_data) {
+  if (chip_with_factory_data == 1) {
     deps += [ "${chip_root}/src/platform/nxp:nxp_factory_data" ]
   }
 
