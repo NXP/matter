@@ -53,7 +53,7 @@ void EventHandler(const chip::DeviceLayer::ChipDeviceEvent * event, intptr_t arg
     }
 }
 
-#if CHIP_DEVICE_LAYER_TARGET_LINUX && CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
+#if (CHIP_DEVICE_LAYER_TARGET_LINUX || CHIP_DEVICE_LAYER_TARGET_LINUX_NCP)&& CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
 // uint32_t sBluetoothAdapterId = 0;
 #endif
 

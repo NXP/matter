@@ -244,7 +244,7 @@ chip_test_suite_using_nltest("tests") {
   # ICDManager has a dependency on the Accessors.h file which causes a link error
   # when building the TestCommissionManager
   if (chip_config_network_layer_ble &&
-      (chip_device_platform == "linux" || chip_device_platform == "darwin")) {
+      (chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "darwin")) {
     test_sources += [ "TestCommissionManager.cpp" ]
     public_deps += [
       "${chip_root}/src/app/server",

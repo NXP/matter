@@ -59,7 +59,7 @@ chip_test_suite_using_nltest("tests") {
       test_sources += [ "TestExchangeHolder.cpp" ]
     }
 
-    if (chip_device_platform == "linux") {
+    if (chip_device_platform == "linux" || chip_device_platform == "linux_ncp") {
       test_sources += [ "TestMessagingLayer.cpp" ]
     }
   }

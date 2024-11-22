@@ -64,7 +64,7 @@ PyChipError pychip_CommonStackInit(const PyCommonStackInitParams * aParams)
 {
     PyReturnErrorOnFailure(ToPyChipError(Platform::MemoryInit()));
 
-#if CHIP_DEVICE_LAYER_TARGET_LINUX && CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
+#if (CHIP_DEVICE_LAYER_TARGET_LINUX || CHIP_DEVICE_LAYER_TARGET_LINUX_NCP) && CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
     // By default, Linux device is configured as a BLE peripheral while the controller needs a BLE central.
     PyReturnErrorOnFailure(
         ToPyChipError(DeviceLayer::Internal::BLEMgrImpl().ConfigureBle(aParams->mBluetoothAdapterId, /* BLE central */ true)));
