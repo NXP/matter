@@ -24,7 +24,7 @@ import("device.gni")
 if (chip_enable_openthread) {
   import("//build_overrides/openthread.gni")
 
-  if (chip_device_platform == "linux" || chip_device_platform == "darwin") {
+  if (chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "darwin") {
     import("//build_overrides/ot_br_posix.gni")
   }
 }
@@ -88,7 +88,7 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
   }
 
   if (chip_stack_lock_tracking == "auto") {
-    if (chip_device_platform == "linux" || chip_device_platform == "tizen" ||
+    if (chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "tizen" ||
         chip_device_platform == "android" || current_os == "freertos" ||
         chip_device_platform == "webos" || chip_device_platform == "darwin") {
       # TODO: should be fatal for development. Change once bugs are fixed
@@ -120,7 +120,7 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
     # with the otbr posix dbus api.
     chip_device_uses_otbr_posix_dbus =
         chip_enable_openthread &&
-        (chip_device_platform == "linux" || chip_device_platform == "tizen" ||
+        (chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "tizen" ||
          chip_device_platform == "webos")
 
     defines = [
@@ -139,7 +139,7 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
       "CHIP_DEVICE_CONFIG_ENABLE_DYNAMIC_MRP_CONFIG=${chip_device_config_enable_dynamic_mrp_config}",
     ]
 
-    if (chip_device_platform == "linux" || chip_device_platform == "darwin" ||
+    if (chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "darwin" ||
         chip_device_platform == "tizen" || chip_device_platform == "android" ||
         chip_device_platform == "webos" || chip_device_platform == "bl602" ||
         chip_device_platform == "bl702" || chip_device_platform == "bl702l") {
@@ -203,6 +203,12 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
       defines += [
         "CHIP_DEVICE_LAYER_TARGET=Linux",
         "CHIP_DEVICE_CONFIG_ENABLE_WIFI=${chip_enable_wifi}",
+      ]
+    } else if (chip_device_platform == "linux_ncp") {
+      device_layer_target_define = "LINUX_NCP"
+      defines += [
+        "CHIP_DEVICE_LAYER_TARGET=nxp/linux_ncp",
+        "CHIP_DEVICE_CONFIG_ENABLE_WIFI=true",
       ]
     } else if (chip_device_platform == "tizen") {
       device_layer_target_define = "TIZEN"
@@ -328,6 +334,7 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
       "ESP32",
       "PSOC6",
       "LINUX",
+      "LINUX_NCP",
       "TIZEN",
       "NRFCONNECT",
       "QPG",
@@ -499,7 +506,7 @@ if (chip_device_platform != "none") {
     ]
 
     # Linux has its own NetworkCommissioningThreadDriver
-    if (chip_enable_openthread && chip_device_platform != "linux" &&
+    if (chip_enable_openthread && chip_device_platform != "linux" && chip_device_platform != "linux_ncp"&&
         chip_device_platform != "tizen" && chip_device_platform != "webos") {
       sources += [
         "OpenThread/GenericNetworkCommissioningThreadDriver.cpp",
@@ -535,6 +542,8 @@ if (chip_device_platform != "none") {
       _platform_target = "ESP32"
     } else if (chip_device_platform == "linux") {
       _platform_target = "Linux"
+    } else if (chip_device_platform == "linux_ncp") {
+      _platform_target = "nxp/linux_ncp:linux_ncp"
     } else if (chip_device_platform == "nrfconnect") {
       _platform_target = "nrfconnect"
     } else if (chip_device_platform == "qpg") {
