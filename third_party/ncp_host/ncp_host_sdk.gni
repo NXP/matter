@@ -40,29 +40,22 @@ template("ncp_host_sdk") {
       "${ncp_host_sdk_root}/src/common/lpm/",
     ]
   }
-  
+
+  config("${ncp_host_target_name}_base_flags"){
+    cflags = [
+      "-DCONFIG_NCP_USB  = 1",
+      "-DCONFIG_NCP_WIFI = 1",
+    ]
+  }
+
   source_set(ncp_host_target_name) {
     forward_variables_from(invoker,
                            [
-                             "sources",
-                             "public",
+                             "sources",                             
                              "public_configs",
                              "public_deps",
                            ])
-    if (!defined(public)) {
-      public = []
-    }
 
-    public += [
-      "${ncp_host_sdk_root}/src/ncp_host_app.h",
-      "${ncp_host_sdk_root}/src/ncp_host_command.h",
-      "${ncp_host_sdk_root}/src/ncp_system_command.h",
-      "${ncp_host_sdk_root}/src/wifi/ncp_host_app_wifi.h",
-      "${ncp_host_sdk_root}/src/wifi/ncp_host_command_wifi.h",
-      "${ncp_host_sdk_root}/src/wifi/ncp_wifi_api.h",
-      "${ncp_host_sdk_root}/src/wifi/ncp_host_wifi_config.h",
-      "${ncp_host_sdk_root}/src/common/ncp_cmd_node/ncp_cmd_node.h",
-    ]
     if (!defined(sources)) {
       sources = []
     }
@@ -80,15 +73,31 @@ template("ncp_host_sdk") {
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_tlv/ncp_tlv_adapter.c",
       "${ncp_host_sdk_root}/src/common/ncp_cmd_node/ncp_cmd_node.c",
       "${ncp_host_sdk_root}/src/wifi/ncp_host_command_wifi.c",
+      "${ncp_host_sdk_root}/src/wifi/ncp_wifi_api.c",
       "${ncp_host_sdk_root}/src/ncp_host_command.c",
       "${ncp_host_sdk_root}/src/system/ncp_host_app_system.c",
       "${ncp_host_sdk_root}/src/system/ncp_host_command_system.c",
+
+      "${ncp_host_sdk_root}/src/ncp_host_app.c",
+      "${ncp_host_sdk_root}/src/wifi/ncp_host_app_wifi.c",
     ]
     
     if (!defined(public_configs)) {
       public_configs = []
     }
 
+    deps = [
+      ":libusb",
+    ]
+    ldflags = [
+      "-L/usr/local/lib",
+    ]
+
+    libs = [
+      "usb-1.0",
+    ]
+
     public_configs += [ ":${ncp_host_target_name}_base_config" ]
+    public_configs += [ ":${ncp_host_target_name}_base_flags" ]
   }
 }

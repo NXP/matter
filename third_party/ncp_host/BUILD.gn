@@ -15,4 +15,10 @@
 import("//build_overrides/chip.gni")
 import("//third_party/connectedhomeip/third_party/ncp_host/ncp_host_sdk.gni")
 
+static_library("libusb"){
+  include_dirs = [
+    "/usr/local/include/libusb-1.0",
+  ]
+}
+
 ncp_host_sdk("ncp_host_imx") {}
