@@ -37,6 +37,12 @@ config CHIP_DEBUG_SYMBOLS
 	help
 	  Enables building the application with debug symbols.
 
+config CHIP_STRIP_SYMBOLS
+	bool "Strip symbols"
+	default y
+	help
+	  Remove all symbol table and relocation information from the binary.
+
 config CHIP_FACTORY_DATA
 	bool "Factory data provider"
 	help
