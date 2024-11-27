@@ -71,3 +71,7 @@ endif ()
 if (NOT CONFIG_CHIP_DEBUG_SYMBOLS)
     matter_add_gn_arg_string("symbol_level" "0")
 endif()
+
+if(CONFIG_CHIP_STRIP_SYMBOLS)
+    matter_add_gn_arg_bool("strip_symbols" true)
+endif()

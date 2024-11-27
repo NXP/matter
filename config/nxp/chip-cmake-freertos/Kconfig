@@ -166,6 +166,7 @@ endif # NET_L2_OPENTHREAD
 
 config CHIP_IPV4
 	bool "IPv4 support for Matter"
+	default y
 	help
 		If disabled, it allows to build NXP SDK application
 		with IPv4 support independently of the Matter stack still
