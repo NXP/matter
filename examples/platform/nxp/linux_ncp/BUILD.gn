@@ -30,6 +30,7 @@ declare_args() {
   chip_with_trusty_os = false
   chip_with_imx_ele = false
   chip_with_linux_ncp_host = true
+
 }
 
 config("app-main-config") {
