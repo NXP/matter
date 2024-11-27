@@ -36,6 +36,11 @@ config MATTER_LOG_LEVEL
 	help
 	  Sets the logging level in Matter stack.
 
+config DEBUG
+	bool "Build Matter stack with debugging enabled"
+	help
+		Build Matter stack with debugging enabled.
+
 # Device and firmware identifers
 
 config CHIP_DEVICE_VENDOR_ID
