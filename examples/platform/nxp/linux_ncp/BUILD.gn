@@ -29,8 +29,6 @@ declare_args() {
   chip_enable_energy_reporting_trigger = false
   chip_with_trusty_os = false
   chip_with_imx_ele = false
-  chip_with_linux_ncp_host = true
-
 }
 
 config("app-main-config") {
@@ -143,7 +141,6 @@ source_set("app-main") {
     defines += [ "CHIP_ATTESTATION_ELE=0" ]
   }
 
-  #xinyu
   if(chip_with_linux_ncp_host == 1){
     defines += [ "CHIP_NCP_HOST=1" ]
   }

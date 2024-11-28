@@ -13,5 +13,5 @@
 # limitations under the License.
 
 declare_args() {
-    chip_with_ncp_host = 0
+    chip_with_linux_ncp_host = 0
 }
