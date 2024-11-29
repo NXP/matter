@@ -1090,19 +1090,18 @@ int main()
         try
         {
             ptree root;
-            read_json(req.body, root);
-            ptree bindingConf = root.get_child("bindingConf");
-            auto fabricIndex = bindingConf.get<string>("fabricIndex");
-            auto node = bindingConf.get<string>("node");
-            auto endpoint = bindingConf.get<string>("endPointId");
-            auto cluster = bindingConf.get<string>("cluster");
-            std::string bindingConfString = "{\"fabricIndex\": " +  fabricIndex + ", \"node\": " + node
-                                            + ", \"endpoint\": " + endpoint + ", \"cluster\": " + cluster + "}";
-            auto switchNodeId = root.get<string>("switchNodeId");
-            auto switchEndpointId = root.get<string>("switchEndpointId");
+            auto x_body_decoded = crow::json::load(req.body);
+            auto fabricIndex = std::string(x_body_decoded["bindingConf"]["fabricIndex"].s());
+            auto node = std::string(x_body_decoded["bindingConf"]["node"].s());
+            auto endpoint = std::string(x_body_decoded["bindingConf"]["endpoint"].s());
+            auto cluster = std::string(x_body_decoded["bindingConf"]["cluster"].s());
+            std::string bindingConf = "{\"fabricIndex\": " +  fabricIndex + ", \"node\": " + node
+                                    + ", \"endpoint\": " + endpoint + ", \"cluster\": " + cluster + "}";
+            auto nodeId = std::string(x_body_decoded["nodeId"].s());
+            auto endpointId = std::string(x_body_decoded["endpointId"].s());
             ChipLogError(NotSpecified, "Received POST request to Write Binding");
             std::string command;
-            command ="binding write binding '[" + bindingConfString + "]'" + switchNodeId + " " + switchEndpointId;
+            command ="binding write binding '[" + bindingConf + "]'" + nodeId + " " + endpointId;
             wsClient.sendMessage(command);
             ChipLogError(NotSpecified, "send write_binding command to chip-tool ws server");
             int sleepTime = 0;
@@ -1142,20 +1141,19 @@ int main()
         try
         {
             ptree root;
-            read_json(req.body, root);
-            auto nodeId = root.get<string>("nodeId");
-            auto endPointId = root.get<int>("endPointId");
-            auto type = root.get<string>("type");
-            auto launchConf = root.get_child("launchConf");
-            auto catalogVendorID = launchConf.get<string>("catalogVendorID");
-            auto applicationID = launchConf.get<string>("applicationID");
-            std::string launchConfString = "'{\"catalogVendorID\": " +  catalogVendorID + ", \"applicationID\": \"" + applicationID + "\"}'";
+            auto x_body_decoded = crow::json::load(req.body);
+            auto nodeId = std::string(x_body_decoded["nodeId"].s());
+            auto endPointId = std::string(x_body_decoded["endPointId"].s());
+            auto type = std::string(x_body_decoded["type"].s());
+            auto catalogVendorID = std::string(x_body_decoded["launchConf"]["catalogVendorID"].s());
+            auto applicationID = std::string(x_body_decoded["launchConf"]["applicationID"].s());
+            std::string launchConf= "'{\"catalogVendorID\": " +  catalogVendorID + ", \"applicationID\": \"" + applicationID + "\"}'";
             std::string command;
             if (type == "launch") {
-                command = "applicationlauncher launch-app " + nodeId + " " + std::to_string(endPointId) + " --Application " + launchConfString;
+                command = "applicationlauncher launch-app " + nodeId + " " + endPointId + " --Application " + launchConf;
                 ChipLogError(NotSpecified, "Received POST request to Launch App");
             } else if (type == "stop") {
-                command = "applicationlauncher stop-app " + nodeId + " " + std::to_string(endPointId) + " --Application " + launchConfString;
+                command = "applicationlauncher stop-app " + nodeId + " " + endPointId + " --Application " + launchConf;
                 ChipLogError(NotSpecified, "Received POST request to Stop App");
             }
             wsClient.sendMessage(command);
@@ -1264,6 +1262,7 @@ int main()
         {
             ptree root;
             auto x_body_decoded = crow::json::load(req.body);
+            auto nodeAlias  = std::string(x_body_decoded["nodeAlias"].s());
             auto nodeId = std::string(x_body_decoded["nodeId"].s());
             auto endPointId = std::string(x_body_decoded["endPointId"].s());
             auto type = std::string(x_body_decoded["type"].s());
@@ -1315,10 +1314,18 @@ int main()
                             default:
                                 value = "Unknown";
                         }
-                    } else {
+                    } else if (type == "sampledposition")
+                    {
+                        Json::Value positionValue = resultsValue["value"];
+                        if(positionValue.isMember("1"))
+                            value = positionValue["1"].asString();
+                        else
+                            value ="Unknown";
+                    } else
+                    {
                         value = resultsValue["value"].asString();
                     }
-                    report_ss << "Report from " << " " << nodeId << ": " << resultsValue["endPointId"] << ". "
+                    report_ss << "Report from " << nodeAlias << " " << nodeId << ": " << resultsValue["endpointId"] << ". "
                             << "Cluster: " << resultsValue["clusterId"] << "\r\n\r\n" << type << ": " << value;
                     report_text = report_ss.str();
                     root.put("report", report_text);
@@ -1813,7 +1820,7 @@ int main()
         ChipLogError(NotSpecified, "WebSocket connection disconnected because other exception");
     }
 
-    // server_thread.join();
+    server_thread.join();
     t.join(); // Wait for the child thread to end
     wsc.join();
 
