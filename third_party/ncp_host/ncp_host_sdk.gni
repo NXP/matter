@@ -45,6 +45,7 @@ template("ncp_host_sdk") {
     cflags = [
       "-DCONFIG_NCP_USB  = 1",
       "-DCONFIG_NCP_WIFI = 1",
+      "-DCONFIG_MATTER_NCP"
     ]
   }
 

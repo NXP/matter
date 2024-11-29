@@ -101,7 +101,7 @@ CHIP_ERROR ConnectivityManagerImpl::_Init()
     mpScanCallback    = nullptr;
 
     /* Initialize ncp host */
-    ncp_host_main(0, NULL);
+    ncp_host_main();
 
     if (ConnectivityUtils::GetEthInterfaceName(mEthIfName, IFNAMSIZ) == CHIP_NO_ERROR)
     {

@@ -140,11 +140,7 @@ source_set("app-main") {
     defines += [ "CHIP_OP_KEYSTORE_ELE=0" ]
     defines += [ "CHIP_ATTESTATION_ELE=0" ]
   }
-
-  if(chip_with_linux_ncp_host == 1){
-    defines += [ "CHIP_NCP_HOST=1" ]
-  }
-
+  
   if (chip_enable_pw_rpc) {
     defines += [ "PW_RPC_ENABLED" ]
   }
