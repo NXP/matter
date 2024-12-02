@@ -37,12 +37,6 @@ config CHIP_DEVICE_PRODUCT_ID
 
 endif # CHIP_FACTORY_DATA
 
-config MATTER_LOG_LEVEL
-	default 3
-
-config CHIP_APP_LOG_LEVEL
-	default 3
-
 config CHIP_LOG_SIZE_OPTIMIZATION
 	default y
 
