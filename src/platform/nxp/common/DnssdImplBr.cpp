@@ -28,8 +28,6 @@
 #include <openthread/mdns.h>
 #include <openthread/srp_server.h>
 
-#include <DnssdImplBr.h>
-
 using namespace ::chip::DeviceLayer;
 using namespace chip::DeviceLayer::Internal;
 
@@ -365,11 +363,6 @@ CHIP_ERROR NxpChipDnssdBrowse(const char * type, DnssdServiceProtocol protocol, 
     if (type == nullptr || callback == nullptr)
         return CHIP_ERROR_INVALID_ARGUMENT;
 
-    if (mBrowseContext != nullptr)
-    {
-        NxpChipDnssdStopBrowse(reinterpret_cast<intptr_t>(mBrowseContext));
-    }
-
     mBrowseContext = Platform::New<mDnsQueryCtx>(context, callback);
     VerifyOrReturnError(mBrowseContext != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -419,8 +412,7 @@ CHIP_ERROR NxpChipDnssdStopBrowse(intptr_t browseIdentifier)
     // that has been freed in DispatchBrowseEmpty.
     if ((true == bBrowseInProgress) && (browseContext))
     {
-        error                = otMdnsStopBrowser(thrInstancePtr, &browseContext->mBrowseInfo);
-        browseContext->error = MapOpenThreadError(error);
+        browseContext->error = MapOpenThreadError(otMdnsStopBrowser(thrInstancePtr, &browseContext->mBrowseInfo));
 
         // browse context will be freed in DispatchBrowseEmpty
         DispatchBrowseEmpty(reinterpret_cast<intptr_t>(browseContext));
@@ -437,13 +429,6 @@ CHIP_ERROR NxpChipDnssdResolve(DnssdService * browseResult, Inet::InterfaceId in
         return CHIP_ERROR_INVALID_ARGUMENT;
 
     otInstance * thrInstancePtr = ThreadStackMgrImpl().OTInstance();
-
-    if (mResolveContext != nullptr)
-    {
-        // In case there is an ongoing query and NxpChipDnssdResolveNoLongerNeeded has not been called yet
-        // free the allocated context and do a proper cleanup of the previous transaction
-        NxpChipDnssdResolveNoLongerNeeded(mResolveContext->mMdnsService.mName);
-    }
 
     mResolveContext = Platform::New<mDnsQueryCtx>(context, callback);
     VerifyOrReturnError(mResolveContext != nullptr, CHIP_ERROR_NO_MEMORY);
@@ -465,16 +450,12 @@ CHIP_ERROR NxpChipDnssdResolve(DnssdService * browseResult, Inet::InterfaceId in
         mResolveContext->mSrvInfo.mServiceInstance = mResolveContext->mMdnsService.mName;
         mResolveContext->mSrvInfo.mServiceType     = mResolveContext->mServiceType;
 
-        error = MapOpenThreadError(otMdnsStartSrvResolver(thrInstancePtr, &mResolveContext->mSrvInfo));
+        return MapOpenThreadError(otMdnsStartSrvResolver(thrInstancePtr, &mResolveContext->mSrvInfo));
     }
-
-    if (error != CHIP_NO_ERROR)
+    else
     {
-        Platform::Delete<mDnsQueryCtx>(mResolveContext);
-        mResolveContext = nullptr;
+        return error;
     }
-
-    return error;
 }
 void NxpChipDnssdResolveNoLongerNeeded(const char * instanceName)
 {
