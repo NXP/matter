@@ -42,14 +42,12 @@ config("support_config") {
 
 source_set("freertos_memory_utils") {
   sources = [
-    "FreeRtosHooks.cpp",
+    "FreeRtosHooks.c",
+    "FreeRtosHooks.h",
     "Memconfig.cpp",
   ]
 
-  deps = [
-    "${chip_root}/src/lib/support",
-    "${chip_root}/src/platform:platform_config_header",
-  ]
+  deps = [ "${chip_root}/src/lib/support" ]
 
   cflags = [ "-Wconversion" ]
 
@@ -59,8 +57,5 @@ source_set("freertos_memory_utils") {
     defines = [ "CHIP_PLAT_NVM_SUPPORT=3" ]
   }
 
-  public_configs = [
-    ":support_config",
-    "${chip_root}/src:includes",
-  ]
+  public_configs = [ ":support_config" ]
 }
