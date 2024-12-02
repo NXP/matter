@@ -155,6 +155,10 @@ set_property(GLOBAL APPEND PROPERTY ZEPHYR_INTERFACE_LIBS chip)
 
 include(${TELINK_COMMON}/common.cmake)
 
+if (CONFIG_CHIP_APP_LOG_LEVEL GREATER_EQUAL 4)
+    include(${TELINK_COMMON}/build_info.cmake)
+endif()
+
 # ==============================================================================
 # Define 'process_binaries' target for collecting final binary to flash
 # ==============================================================================
@@ -170,7 +174,7 @@ add_dependencies(process_binaries ${ZEPHYR_FINAL_EXECUTABLE})
 # Define 'build_mcuboot' target for building the MCUBoot bootloader
 # ==============================================================================
 
-if (CONFIG_BOOTLOADER_MCUBOOT AND CONFIG_SOC_SERIES_RISCV_TELINK_B9X)
+if (CONFIG_BOOTLOADER_MCUBOOT AND (CONFIG_SOC_SERIES_RISCV_TELINK_B9X OR CONFIG_SOC_SERIES_RISCV_TELINK_TLX))
     add_custom_target(build_mcuboot ALL
         COMMAND
         west build -b ${BASE_BOARD} -d build_mcuboot ${ZEPHYR_BASE}/../bootloader/mcuboot/boot/zephyr
