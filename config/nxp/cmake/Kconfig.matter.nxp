@@ -39,7 +39,6 @@ config CHIP_DEBUG_SYMBOLS
 
 config CHIP_STRIP_SYMBOLS
 	bool "Strip symbols"
-	default y
 	help
 	  Remove all symbol table and relocation information from the binary.
 

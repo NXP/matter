@@ -264,13 +264,6 @@ config CHIP_OPERATIONAL_TIME_SAVE_INTERVAL
 	  performing frequent saves to know the precise operational time (in case of
 	  device reboot) and maximizing the flash memory lifetime.
 
-config CHIP_CRYPTO_PSA
-	bool "Use PSA crypto API for cryptographic operations"
-	help
-	  Enables the implementation of the Matter cryptographic operations that is
-	  based on the PSA crypto API (instead of the default implementation, which
-	  is based on the legacy mbedTLS APIs).
-
 config CHIP_PERSISTENT_SUBSCRIPTIONS
 	bool "Persistent subscriptions"
 	help
@@ -490,8 +483,8 @@ config USE_CHIP_DATA_MODEL_INTERFACE
       wildcard-expansion, read, write and invoke.
 
 config MRP_LOCAL_ACTIVE_RETRY_INTERVAL
-	int "MRP local active retry interval"
-	default (2000_ms32)
+	string "MRP local active retry interval"
+	default "(2000_ms32)"
 	help
 	  Specify the retransmission interval of the Message Reliable Protocol (MRP) messages.
 
