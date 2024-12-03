@@ -27,6 +27,9 @@ endif()
 # Include common NXP helpers for build & pre/post-build process
 include(${CHIP_ROOT}/third_party/nxp/nxp_matter_support/cmake/build_helpers.cmake)
 
+# Include SDK hooks required to build Matter libs
+include(${CHIP_ROOT}/third_party/nxp/nxp_matter_support/cmake/sdk_hook.cmake)
+
 include(${CHIP_ROOT}/config/nxp/cmake/common.cmake)
 include(${CHIP_ROOT}/src/app/chip_data_model.cmake)
 
@@ -97,10 +100,6 @@ endif()
 if(CONFIG_CHIP_DEVICE_USE_ZEPHYR_BLE)
     target_compile_definitions(chip INTERFACE
         EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/common/ble_zephyr/BLEManagerImpl.h\"
-    )
-    # Include Matter BT/BLE hooks
-    target_include_directories(chip INTERFACE
-        ${CHIP_ROOT}/third_party/nxp/nxp_matter_support/gn_build/rt_sdk/sdk_hook
     )
 endif()
 
