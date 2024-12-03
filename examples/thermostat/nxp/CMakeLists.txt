@@ -108,10 +108,6 @@ else()
     )
 endif()
 
-target_sources(app PRIVATE
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataDefaultImpl.cpp
-)
-
 target_compile_definitions(app 
         PUBLIC
         EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h\"
