@@ -58,6 +58,7 @@ config CHIP_DEVICE_VENDOR_NAME
 	help
 	  Provides a human-readable name of the device manufacturer. The name is
 	  exposed as an attribute of the Basic Information cluster.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_PRODUCT_ID
 	int "Product ID"
@@ -71,11 +72,12 @@ config CHIP_DEVICE_PRODUCT_ID
 
 config CHIP_DEVICE_PRODUCT_NAME
 	string "Product name"
-	default "\"not-specified\""
+	default "not-specified"
 	help
 	  Provides a human-readable product name, such as the model number, assigned
 	  by the device manufacturer. The name is exposed as an attribute of the
 	  Basic Information cluster.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_HARDWARE_VERSION
 	int "Hardware version"
@@ -87,12 +89,13 @@ config CHIP_DEVICE_HARDWARE_VERSION
 
 config CHIP_DEVICE_HARDWARE_VERSION_STRING
 	string "Hardware version string"
-	default "\"1.0\""
+	default "1.0"
 	help
 	  Provides a human-readable representation of the hardware version number.
 	  This must be an ASCII string of a length between 1 and 64 characters. The
 	  hardware version string is exposed as an attribute of the Basic
 	  Information cluster.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_SOFTWARE_VERSION
 	int "Software version"
@@ -108,36 +111,40 @@ config CHIP_DEVICE_SOFTWARE_VERSION
 
 config CHIP_DEVICE_SOFTWARE_VERSION_STRING
 	string "Software version string"
-	default "\"1.0\""
+	default "1.0"
 	help
 	  Provides a human-readable representation of the software version number.
 	  This must be an ASCII string of a length between 1 and 64 characters. The
 	  software version string is exposed as an attribute of the Basic
 	  Information cluster, and included in the header of the generated Matter
 	  over-the-air (OTA) update image.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_MANUFACTURING_DATE
 	string "Manufacturing date (ISO 8601 format)"
-	default "\"2024-01-01\""
+	default "2024-01-01"
 	help
 	  Provides the device manufacturing date in the ISO 8601 format: YYYY-MM-DD.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_SERIAL_NUMBER
 	string "Device serial number"
-	default "\"11223344556677889900\""
+	default "11223344556677889900"
 	help
 	  Provides a human-readable representation of the device serial number that
 	  uniquely identifies the device. This must be an ASCII string of no more
 	  than 32 characters.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_ROTATING_DEVICE_UID
 	string "Rotating device ID unique ID (HEX format)"
-	default "\"91a9c12a7c80700a31ddcfa7fce63e44\""
+	default "91a9c12a7c80700a31ddcfa7fce63e44"
 	help
 	  Provides a unique identifier of the device. This ID is used to derive the
 	  rotating device identifier, which allows commissioners to discover the
 	  device in a privacy-preserving way. The identifier must be a string of at
 	  least 16 bytes encoded in HEX.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_TYPE
 	int "Primary device type"
@@ -175,39 +182,43 @@ config CHIP_DEVICE_SPAKE2_IT
 
 config CHIP_DEVICE_SPAKE2_SALT
 	string "SPAKE2+ salt (base64 format)"
-	default "\"UXKLzwHdN3DZZLBaL2iVGhQi/OoQwIwJRQV4rpEalbA=\""
+	default "UXKLzwHdN3DZZLBaL2iVGhQi/OoQwIwJRQV4rpEalbA="
 	help
 	  Provides the SPAKE2+ salt, which is one of the input parameters for the
 	  PBKDF operation, used to generate the SPAKE2+ verifier. The salt must be
 	  of a length between 16 and 32 bytes and it should be randomly generated
 	  for each SPAKE2+ passcode.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_SPAKE2_TEST_VERIFIER
 	string "SPAKE2+ verifier for testing purposes (base64 format)"
-	default "\"uWFwqugDNGiEck/po7KHwwMwwqZgN10XuyBajPGuyzUEV/iree4lOrao5GuwnlQ65CJzbeUB49s31EH+NEkg0JVI5MGCQGMMT/SRPFNRODm3wH/MBiehuFc6FJ/NH6Rmzw==\""
+	default "uWFwqugDNGiEck/po7KHwwMwwqZgN10XuyBajPGuyzUEV/iree4lOrao5GuwnlQ65CJzbeUB49s31EH+NEkg0JVI5MGCQGMMT/SRPFNRODm3wH/MBiehuFc6FJ/NH6Rmzw=="
 	help
 	  Provides the SPAKE2+ verifier that was generated using the configured
 	  SPAKE2+ passcode, iteration count and salt. This configuration option can
 	  be used for development or testing purposes. The default value was
 	  generated using the following command:
 	  ./scripts/tools/spake2p/spake2p.py gen-verifier -i 1000 -s U1BBS0UyUCBLZXkgU2FsdA== -p 20202021
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_ENABLE_KEY
 	string "Enable Key for triggering test actions (HEX format)"
-	default "\"00112233445566778899AABBCCDDEEFF\""
+	default "00112233445566778899AABBCCDDEEFF"
 	help
 	  Provides the Enable Key, which is a 16-byte value encoded in HEX that
 	  must be provided in the TestEventTrigger command to trigger a requested
 	  test action. This value is used during certification tests, and should not
 	  be present on devices in production environment.
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_PRODUCT_FINISH
 	string "Description of the product's external case finish method"
-	default "\"other\""
+	default "other"
 	help
 	  provides a description of the product's external case finish method.
 	  Possible values:
 	  other; matte; satin; polished; rugged; fabric
+	  (Macro value is in quotes.)
 
 config CHIP_DEVICE_PRODUCT_COLOR
 	string "Description of the product's primary color"
@@ -217,6 +228,7 @@ config CHIP_DEVICE_PRODUCT_COLOR
 	  black; navy; green; teal; maroon; purple; olive; gray; blue; lime; 
 	  aqua; red; fuchsia; yellow; white; nickel; chrome; brass; cooper; 
 	  silver; gold.
+	  (Macro value is in quotes.)
 
 # Matter optional features and parameters
 
@@ -445,7 +457,7 @@ if CHIP_OTA_IMAGE_BUILD
 
 config CHIP_OTA_IMAGE_FILE_NAME
 	string "OTA image file name"
-	default "\"matter.ota\""
+	default "matter.ota"
 	help
 	  Provides the file name of the generated Matter OTA image.
 
