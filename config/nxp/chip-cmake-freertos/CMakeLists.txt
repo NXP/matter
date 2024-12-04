@@ -125,7 +125,7 @@ if(CONFIG_CHIP_OTA_IMAGE_BUILD)
 endif()
 
 if(CONFIG_CHIP_FACTORY_DATA_BUILD)
-    set(OUTPUT_FILE_PATH ${gn_build}/factory_data)
+    set(OUTPUT_FILE_PATH ${APP_OUTPUT_DIR}/factory_data)
 
     # Generate factory data binaries
     nxp_generate_factory_data()
