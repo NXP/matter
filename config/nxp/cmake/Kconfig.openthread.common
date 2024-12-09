@@ -1,0 +1,55 @@
+#
+#   Copyright (c) 2024 Project CHIP Authors
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+
+if NET_L2_OPENTHREAD
+
+config OT_EXTERNAL_MBEDTLS
+	string "Mbedtls gn target used by OT gn build system"
+	default "nxp_mbedtls"
+	help
+	  Use "${nxp_sdk_build_root}:nxp_mbedtls" by default.
+	  The full path is handled in common.cmake. If blank,
+	  OT will use internal mbedtls.
+
+config OT_PROJECT_CORE_CONFIG_FILE
+	string "OT configuration file used by OT gn build system"
+	default "examples/platform/nxp/mcxw71_k32w1/app/project_include/openthread/OpenThreadConfig.h" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71
+	default "third_party/nxp/nxp_matter_support/examples/platform/mcxw72/app/project_include/openthread/OpenThreadConfig.h" if CHIP_NXP_PLATFORM_MCXW72
+	help
+	  OT configuration file used by OT gn build system.
+
+config OT_CORE_CONFIG_PLATFORM_CHECK_FILE
+	string "OT core configuration check file used by OT gn build system"
+	default "openthread-core-k32w1-config-check.h" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+	help
+	  OT core configuration check file used by OT gn build system
+
+config OT_CORE_CONFIG_DEPS
+	string "OT core configuration gn deps file used by OT gn build system"
+	default "third_party/openthread/platforms/nxp/mcxw71_k32w1:openthread_core_config_k32w1" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71
+    default "third_party/openthread/platforms/nxp/mcxw72:openthread_core_config_mcxw72" if CHIP_NXP_PLATFORM_MCXW72
+	help
+	  OT core configuration gn deps file used by OT gn build system
+
+config OT_NXP_PLATFORM_FOLDER
+	string "ot-nxp platform specific folder"
+	default "src/k32w1" if CHIP_NXP_PLATFORM_K32W1
+	default "src/mcxw/mcxw71" if CHIP_NXP_PLATFORM_MCXW71
+	default "src/mcxw/mcxw72" if CHIP_NXP_PLATFORM_MCXW72
+	help
+	  ot-nxp platform specific folder (relative to ot-nxp root)
+
+endif # NET_L2_OPENTHREAD
