@@ -17,6 +17,8 @@ import("//build_overrides/build.gni")
 import("//build_overrides/chip.gni")
 import("//build_overrides/nxp_sdk.gni")
 import("//build_overrides/openthread.gni")
+
+import("${chip_root}/src/crypto/crypto.gni")
 import("${chip_root}/src/platform/device.gni")
 
 # If external SDK is used, do not import ${nxp_sdk_name}.gni
@@ -89,6 +91,14 @@ config("nxp_platform_config") {
     "../common/factory_data/legacy",
     "../common/ota",
   ]
+
+  # Needed for sources that use mbedtls
+  if (nxp_external_sdk) {
+    include_dirs += [
+      "${nxp_sdk_root}/middleware/mbedtls/include",
+      "${nxp_sdk_root}/middleware/mbedtls/port/sssapi"
+    ]
+  }
 
   defines = [ "EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/${nxp_platform}/BLEManagerImpl.h\"" ]
 }
