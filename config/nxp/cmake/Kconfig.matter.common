@@ -399,6 +399,16 @@ config CHIP_OPENTHREAD_CONFIG
 	  is specified, it replaces the OpenThread configuration file supplied by
 	  Zephyr.
 
+config CHIP_OPENTHREAD_FTD
+	bool "App is an OpenThread FTD"
+	help
+	  App is an OpenThread FTD
+
+config CHIP_USE_OT_ENDPOINT
+	bool "Use OpenThread TCP/UDP stack directly"
+	help
+	  Use OpenThread TCP/UDP stack directly
+
 endif # NET_L2_OPENTHREAD
 
 # Platform additions and configuration
@@ -499,5 +509,11 @@ config MRP_LOCAL_ACTIVE_RETRY_INTERVAL
 	default "(2000_ms32)"
 	help
 	  Specify the retransmission interval of the Message Reliable Protocol (MRP) messages.
+
+config HAVE_LWIP
+	bool "Have the lwIP library available"
+	default y
+	help
+	  Have the lwIP library available
 
 endif # CHIP

@@ -45,11 +45,15 @@ endif()
 # Generate configuration for CHIP GN build system
 # ==============================================================================
 matter_add_gn_arg_string("nxp_platform" ${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME})
+matter_add_gn_arg_string("nxp_device_layer" ${CONFIG_CHIP_NXP_DEVICE_LAYER})
 matter_add_gn_arg_bool("nxp_use_factory_data" ${CONFIG_CHIP_FACTORY_DATA})
 matter_add_gn_arg_bool("nxp_enable_secure_whole_factory_data" ${CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA})
 matter_add_gn_arg_bool("nxp_enable_secure_EL2GO_factory_data" ${CONFIG_CHIP_ENABLE_EL2GO_FACTORY_DATA})
 matter_add_gn_arg_bool("nxp_enable_matter_cli" CONFIG_CHIP_LIB_SHELL)
 matter_add_gn_arg_bool("nxp_enable_pairing_autostart" CONFIG_CHIP_ENABLE_PAIRING_AUTOSTART)
+matter_add_gn_arg_bool("nxp_use_low_power" CONFIG_NXP_USE_LOW_POWER)
+matter_add_gn_arg_bool("nxp_use_plain_dac_key" CONFIG_NXP_USE_PLAIN_DAC_KEY)
+matter_add_gn_arg_bool("nxp_use_smu2_dynamic" CONFIG_NXP_USE_SMU2)
 
 if(CONFIG_CHIP_NVM_COMPONENT_NVS)
     matter_add_gn_arg_string("nxp_nvm_component" "nvs")

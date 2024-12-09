@@ -16,6 +16,7 @@
 
 rsource "../cmake/Kconfig.matter.common"
 rsource "../cmake/Kconfig.matter.nxp"
+rsource "../cmake/Kconfig.openthread.common"
 rsource "../../../third_party/nxp/nxp_matter_support/cmake/Kconfig"
 
 if CHIP
@@ -45,6 +46,25 @@ choice CHIP_NXP_PLATFORM_SELECTION
 		depends on MCUX_HW_DEVICE_MIMXRT1061 || MCUX_HW_DEVICE_MIMXRT1062
 		help
 			NXP RT1060 platform.
+
+	config CHIP_NXP_PLATFORM_K32W1
+		bool "k32w1 platform"
+		depends on MCUX_HW_DEVICE_K32W1480
+		help
+			NXP k32w1 platform.
+
+	config CHIP_NXP_PLATFORM_MCXW71
+		bool "mcxw71 platform"
+		depends on MCUX_HW_DEVICE_MCXW716C
+		help
+			NXP mcxw71 platform.
+
+	config CHIP_NXP_PLATFORM_MCXW72
+		bool "mcxw72 platform"
+		depends on MCUX_HW_DEVICE_MCXW727C
+		help
+			NXP mcxw72 platform.
+
 endchoice # CHIP_NXP_PLATFORM_SELECTION
 
 config CHIP_NXP_PLATFORM_FOLDER_NAME
@@ -52,9 +72,16 @@ config CHIP_NXP_PLATFORM_FOLDER_NAME
 	default "rt/rw61x" if CHIP_NXP_PLATFORM_RW61X
 	default "rt/rt1170" if CHIP_NXP_PLATFORM_RT1170
 	default "rt/rt1060" if CHIP_NXP_PLATFORM_RT1060
+	default "mcxw71_k32w1" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71
+	default "mcxw72" if CHIP_NXP_PLATFORM_MCXW72
 	default "not specified"
 	help
 		Defines the platform folder name to be used.
+
+config CHIP_NXP_DEVICE_LAYER
+	string "NXP device layer"
+	default "nxp/mcxw71_k32w1" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71
+	default "nxp/common"
 
 choice CHIP_NVM_COMPONENT
 	prompt "NVM Component selection"
@@ -115,6 +142,12 @@ config BT
 	default y
 	help
 		Enable BLE support.
+
+config NET_L2_OPENTHREAD
+	bool "Enable Thread support"
+	default n
+	help
+	  Enable OT support.
 
 config CHIP_DEVICE_USE_ZEPHYR_BLE
 	bool "Use Zephyr BLE implementation"

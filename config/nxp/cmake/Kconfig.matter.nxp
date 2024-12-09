@@ -272,4 +272,29 @@ choice CHIP_OTA_REQUEST_UPGRADE_TYPE
 
 endchoice
 
+config NXP_USE_SMU2
+	bool "Use SMU2"
+	default n
+	help
+	  Use SMU2
+
+config NXP_USE_LOW_POWER
+	bool "Enable low power support"
+	default n
+	help
+	  Enables low power support
+
+config NXP_USE_PLAIN_DAC_KEY
+	bool "Store DAC private key in plaintext"
+	default n
+	help
+	  Store DAC private key in plaintext.
+
+config CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_TIMEOUT
+	int "Timeout (ms) for switching from fast to slow advertising"
+	default 30000
+	help
+	  The amount of time in miliseconds after which BLE should change its advertisements
+	  from fast interval to slow interval.
+
 endif # CHIP
