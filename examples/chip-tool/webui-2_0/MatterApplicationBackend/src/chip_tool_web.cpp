@@ -168,16 +168,16 @@ void wsClientConecting()
     }
 }
 
-ptree getStorageKeyNodeID()
+Json::Value getStorageKeyNodeID()
 {
-    ptree storageNodes;
+    Json::Value storageNodes;
     const char * storageWebDirectory = webCommissionerStorage.GetDirectory();
     std::string storageWebFile = std::string(storageWebDirectory) + "/chip_tool_config.web.ini";
     std::ifstream ifs(storageWebFile, std::ios::in);
     if (!ifs.is_open())
     {
         ChipLogError(NotSpecified, "Failed to open storage file chip_tool_config.web.ini.");
-        return ptree();
+        return Json::Value();
     }
     std::string line;
     std::getline(ifs, line);
@@ -188,7 +188,10 @@ ptree getStorageKeyNodeID()
         {
             std::string storageNodeAlias = line.substr(0, equalsPos);
             chip::NodeId storageNodeId =  webCommissionerStorage.GetLocalKeyNodeId(storageNodeAlias.c_str());
-            storageNodes.put(storageNodeAlias.c_str(), static_cast<int>(storageNodeId));
+            Json::Value storageNode;
+            storageNode["storageNodeAlias"] = storageNodeAlias.c_str();
+            storageNode["storageNodeId"]    = static_cast<int>(storageNodeId);
+            storageNodes.append(storageNode);
         }
     }
     ifs.close();
@@ -961,27 +964,62 @@ int main()
     CROW_ROUTE(crowApplication, "/api/get_status").methods("GET"_method)([]() {
         try
         {
-            ptree root;
-            ptree storageNodes;
+            Json::Value root;
             ChipLogError(NotSpecified, "Received GET request for get status");
-            auto start_time = std::chrono::steady_clock::now();
             try{
-                storageNodes = getStorageKeyNodeID();
-                root.put("result", RESPONSE_SUCCESS);
-                root.add_child("status", storageNodes);
+                Json::Value storageNodes = getStorageKeyNodeID();
+                Json::Value nodeList;
+                for (const auto& storageNode : storageNodes)
+                {
+                    std::string storageNodeAlias = storageNode["storageNodeAlias"].asString();
+                    std::string storageNodeId    = storageNode["storageNodeId"].asString();
+                    std::string command          = "descriptor read device-type-list " + storageNodeId + " 0xFFFF";
+                    Json::Value nodeInfo;
+                    nodeInfo["nodeAlias"] = storageNodeAlias;
+                    nodeInfo["nodeId"]    = storageNodeId;
+
+                    wsClient.sendMessage(command);
+                    ChipLogError(NotSpecified, "Send read device-type-list command to chip-tool WS server");
+                    int sleepTime = 0;
+                    while (reportQueue.empty() && sleepTime < 20)
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        sleepTime++;
+                    }
+                    if (sleepTime == 20) {
+                        continue;
+                        ChipLogError(NotSpecified, "Execute read device-type-list command overtime!");
+                    } else {
+                        Json::Value resultsReport = wsClient.dequeueReport();
+                        Json::Value endpointInfo;
+                        for (const auto& report : resultsReport) {
+                            if (!report.isMember("endpointId") || !report.isMember("value")) {
+                                continue;
+                            }
+                            std::string endpointId = report["endpointId"].asString();
+                            const auto& values = report["value"];
+                            Json::Value endpointClusters;
+                            for (const auto& value : values) {
+                                if (!value.isMember("0")) {
+                                    continue;
+                                }
+                                std::string clusterType = DeviceTypeIdToText(value["0"].asInt());
+                                endpointClusters.append(clusterType);
+                            }
+                            endpointInfo[endpointId]    = endpointClusters;
+                        }
+                        nodeInfo["endpointInfo"] = endpointInfo;
+                    }
+                    nodeList.append(nodeInfo);
+                }
+                root["nodeList"] = nodeList;
+                root["result"] = RESPONSE_SUCCESS;
             } catch (const exception & e)
             {
                 ChipLogError(NotSpecified, "GET request for get status failed");
-                root.put("result", RESPONSE_FAILURE);
+                root["result"] = RESPONSE_FAILURE;
             }
-            auto end_time = std::chrono::steady_clock::now();
-            auto elapsed_seconds = std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time).count();
-            if (elapsed_seconds > 60) {
-                root.put("result", RESPONSE_FAILURE);
-            }
-            stringstream ss;
-            write_json(ss, root);
-            string strContent = ss.str();
+            std::string strContent = root.toStyledString();
             crow::response response(strContent);
             response.add_header("Access-Control-Allow-Origin", "*");
             return response;
