@@ -589,3 +589,10 @@ config USE_CHIP_DATA_MODEL_INTERFACE
       wildcard-expansion, read, write and invoke.
 
 endif
+
+if BT
+config CHIP_CUSTOM_BLE_ADV_DATA
+	bool "Use custom BLE advertising data"
+	help
+	  Customization of BLE advertising data at the application layer
+endif
