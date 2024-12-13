@@ -517,3 +517,10 @@ config HAVE_LWIP
 	  Have the lwIP library available
 
 endif # CHIP
+
+if BT
+config CHIP_CUSTOM_BLE_ADV_DATA
+	bool "Use custom BLE advertising data"
+	help
+	  Customization of BLE advertising data at the application layer
+endif

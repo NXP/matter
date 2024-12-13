@@ -63,6 +63,7 @@ target_include_directories(app
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/include
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/include
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/include
+    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/include
 )
 
 target_sources(app
@@ -112,6 +113,16 @@ target_compile_definitions(app
         PUBLIC
         EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h\"
 )
+
+if(CONFIG_CHIP_CUSTOM_BLE_ADV_DATA)
+    target_sources(app PRIVATE
+                    ${THERMOSTAT_NXP_COMMON_DIR}/main/BleZephyrManagerApp.cpp
+    )
+else()
+    target_sources(app PRIVATE
+                    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/source/BLEApplicationManagerEmpty.cpp
+    )
+endif()
 
 if(CONFIG_CHIP_WIFI)
     chip_configure_data_model(app
