@@ -38,5 +38,5 @@ chip_with_lwip = false
 
 nxp_nvm_component = "nvs"
 
-nxp_use_smu2_static = true
-nxp_use_smu2_dynamic = true
+#nxp_use_smu2_static = true
+#nxp_use_smu2_dynamic = true
