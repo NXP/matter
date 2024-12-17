@@ -85,8 +85,7 @@
 #ifndef CHIP_DEVICE_BLE_ADVERTISING_PRIORITY
 /// Priority of the Matter BLE advertising when there are multiple application
 /// components that compete for the BLE advertising.
-/// Increase priority to 1 to allow user to insert custom advertising data with higher priority (0)
-#define CHIP_DEVICE_BLE_ADVERTISING_PRIORITY 1
+#define CHIP_DEVICE_BLE_ADVERTISING_PRIORITY 0
 #endif // CHIP_DEVICE_BLE_ADVERTISING_PRIORITY
 
 // ========== Platform-specific Configuration =========
