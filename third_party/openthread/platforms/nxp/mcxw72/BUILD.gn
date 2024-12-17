@@ -25,7 +25,7 @@ openthread_nxp_root = "${chip_root}/third_party/openthread/ot-nxp"
 config("openthread_mcxw72_config") {
   include_dirs = [
     "${openthread_nxp_root}/src/common",
-    "${openthread_nxp_root}/src/mcxw/mcxw72"
+    "${openthread_nxp_root}/src/mcxw72"
   ]
 
   defines = [
@@ -49,8 +49,8 @@ config("openthread_mcxw72_config") {
 
 source_set("openthread_core_config_mcxw72") {
   sources = [
-    "${openthread_nxp_root}/src/mcxw/mcxw72/openthread-core-mcxw72-config-check.h",
-    "${openthread_nxp_root}/src/mcxw/mcxw72/openthread-core-mcxw72-config.h",
+    "${openthread_nxp_root}/src/mcxw72/openthread-core-mcxw72-config-check.h",
+    "${openthread_nxp_root}/src/mcxw72/openthread-core-mcxw72-config.h",
   ]
 
   public_configs = [ ":openthread_mcxw72_config" ]
