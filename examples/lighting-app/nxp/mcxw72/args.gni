@@ -25,13 +25,13 @@ chip_enable_ota_requestor = true
 chip_stack_lock_tracking = "fatal"
 chip_enable_ble = true
 
-is_debug = true
+is_debug = false
 treat_warnings_as_errors = false
 
 chip_crypto = "platform"
 chip_openthread_ftd = true
 nxp_enable_ot_cli = false
-#nxp_enable_matter_cli = true
+nxp_enable_matter_cli = true
 
 chip_system_config_provide_statistics = false
 chip_system_config_use_open_thread_inet_endpoints = true
