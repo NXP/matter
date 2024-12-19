@@ -36,8 +36,7 @@ icd_enforce_sit_slow_poll_limit = true
 chip_persist_subscriptions = true
 chip_subscription_timeout_resumption = true
 
-is_debug = true
-nxp_is_sdk_package = true
+is_debug = false
 treat_warnings_as_errors = false
 
 chip_crypto = "platform"
