@@ -67,6 +67,18 @@ choice CHIP_NXP_PLATFORM_SELECTION
 
 endchoice # CHIP_NXP_PLATFORM_SELECTION
 
+config CHIP_NXP_APP_FOLDER_NAME
+	string "NXP app folder name"
+	default "rt/rw61x" if CHIP_NXP_PLATFORM_RW61X
+	default "rt/rt1170" if CHIP_NXP_PLATFORM_RT1170
+	default "rt/rt1060" if CHIP_NXP_PLATFORM_RT1060
+	default "k32w1" if CHIP_NXP_PLATFORM_K32W1
+	default "mcxw71" if CHIP_NXP_PLATFORM_MCXW71
+	default "mcxw72" if CHIP_NXP_PLATFORM_MCXW72
+	default "not specified"
+	help
+		Defines the app folder name to be used.
+
 config CHIP_NXP_PLATFORM_FOLDER_NAME
 	string "NXP platform folder name"
 	default "rt/rw61x" if CHIP_NXP_PLATFORM_RW61X
@@ -207,5 +219,63 @@ config CHIP_IPV4
 		If disabled, it allows to build NXP SDK application
 		with IPv4 support independently of the Matter stack still
 		running over IPv6.
+
+# App specific
+
+config NETWORK_LAYER_BLE
+	bool "Should be replaced by CONFIG_BT. Keep it for backwards compatibility"
+	default y if BT
+	help
+		Will be deprecated once application files replace CONFIG_NETWORK_LAYER_BLE with CONFIG_BT
+
+config OPERATIONAL_KEYSTORE
+	bool "Use custom implementation of operational keystore"
+	default y if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+	help
+		"Use custom implementation of operational keystore"
+
+config ENABLE_FEEDBACK
+	bool "Enable the app feedback component"
+	help
+		"Enable the app feedback component"
+
+config LOW_POWER
+	bool "Should be replaced by CONFIG_NXP_USE_LOW_POWER. Keep it for backwards compatibility"
+	default y if NXP_USE_LOW_POWER
+	help
+		Will be deprecated once application files replace CONFIG_LOW_POWER with CONFIG_NXP_USE_LOW_POWER
+
+choice THREAD_DEVICE_TYPE_SELECTION
+	prompt "Thread device type selection based on ConnectivityManager::ThreadDeviceType enum"
+	default FULL_END_DEVICE
+	config ROUTER
+		bool "Router"
+	config FULL_END_DEVICE
+		bool "Full end device"
+	config MINIMAL_END_DEVICE
+		bool "Minimal end device"
+	config SLEEPY_END_DEVICE
+		bool "Sleepy end device"
+	config SYNCHRONIZED_SLEEPY_END_DEVICE
+		bool "Synchronized sleepy end device"
+endchoice
+
+config THREAD_DEVICE_TYPE
+	string "Thread device type registered with the connectivity manager"
+	default kThreadDeviceType_Router if ROUTER
+	default kThreadDeviceType_FullEndDevice if FULL_END_DEVICE
+	default kThreadDeviceType_MinimalEndDevice if MINIMAL_END_DEVICE
+	default kThreadDeviceType_SleepyEndDevice if SLEEPY_END_DEVICE
+	default kThreadDeviceType_SynchronizedSleepyEndDevice if SYNCHRONIZED_SLEEPY_END_DEVICE
+	help
+		Thread device type registered with the connectivity manager
+
+config CHIP_OTA_IMAGE_PROCESSOR_HEADER
+	string "Header for OTA image processor implementation"
+	default "platform/nxp/common/ota/OTAImageProcessorImpl.h" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+	default "platform/nxp/common/OTAImageProcessorImpl.h"
+	help
+		Header for OTA image processor implementation.
+		(Macro value is in quotes.)
 
 endif # CHIP

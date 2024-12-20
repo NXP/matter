@@ -51,14 +51,6 @@ matter_add_gn_arg_bool  ("chip_enable_icd_server"                            CON
 matter_add_gn_arg_bool  ("chip_enable_ota_requestor"                         CONFIG_CHIP_OTA_REQUESTOR)
 matter_add_gn_arg_bool  ("chip_system_config_use_open_thread_inet_endpoints" CONFIG_CHIP_USE_OT_ENDPOINT)
 
-# OT specific gn arguments
-if(CONFIG_NET_L2_OPENTHREAD)
-    matter_add_gn_arg_string("openthread_external_mbedtls" "${CHIP_ROOT}/third_party/nxp/nxp_matter_support/gn_build:${CONFIG_OT_EXTERNAL_MBEDTLS}")
-    matter_add_gn_arg_string("openthread_project_core_config_file" "${CHIP_ROOT}/${CONFIG_OT_PROJECT_CORE_CONFIG_FILE}")
-    matter_add_gn_arg_string("openthread_core_config_platform_check_file" ${CONFIG_OT_CORE_CONFIG_PLATFORM_CHECK_FILE})
-    matter_add_gn_arg_list("openthread_core_config_deps" "\"${CHIP_ROOT}/${CONFIG_OT_CORE_CONFIG_DEPS}\"")
-endif()
-
 if(CONFIG_DEBUG)
     matter_add_gn_arg_bool("optimize_debug" true)
     matter_add_gn_arg_string("optimize_debug_level" "0")

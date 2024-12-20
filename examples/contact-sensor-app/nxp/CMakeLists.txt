@@ -33,8 +33,8 @@ find_package(McuxSDK 3.0.0)
 # Get compiler flags and includes and pass them to CHIP target
 list(APPEND CONFIG_CHIP_EXTERNAL_TARGETS McuxSDK)
 
-get_filename_component(LIGHTING_APP_NXP_COMMON_DIR ${CHIP_ROOT}/examples/lighting-app/nxp/common REALPATH)
-get_filename_component(LIGHTING_APP_NXP_PLATFORM_DIR ${CHIP_ROOT}/examples/lighting-app/nxp/${CONFIG_CHIP_NXP_APP_FOLDER_NAME} REALPATH)
+get_filename_component(APP_NXP_COMMON_DIR ${CHIP_ROOT}/examples/contact-sensor-app/nxp/common REALPATH)
+get_filename_component(APP_NXP_PLATFORM_DIR ${CHIP_ROOT}/examples/contact-sensor-app/nxp/${CONFIG_CHIP_NXP_APP_FOLDER_NAME} REALPATH)
 get_filename_component(EXAMPLE_PLATFORM_NXP_COMMON_DIR ${CHIP_ROOT}/examples/platform/nxp/common REALPATH)
 get_filename_component(EXAMPLE_PLATFORM_NXP_PLATFORM_DIR ${CHIP_ROOT}/examples/platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME} REALPATH)
 
@@ -55,17 +55,22 @@ endif()
 # Include the nxp_sdk_reconfigure.cmake to customize the SDK for Matter application
 include(${CHIP_ROOT}/third_party/nxp/nxp_matter_support/examples/platform/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/nxp_sdk_reconfig.cmake)
 
-project(chip-nxp-lighting-app-example)
+project(chip-nxp-contact-sensor-app-example)
 
 target_compile_definitions(app PRIVATE
-    APP_QUEUE_TICKS_TO_WAIT=pdMS_TO_TICKS\(10\)
     EXTERNAL_FACTORY_DATA_PROVIDER_HEADER=\"platform/nxp/common/factory_data/legacy/FactoryDataProvider.h\"
     EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/BLEManagerImpl.h\"
 )
 
-if (CONFIG_CHIP_OTA_REQUESTOR AND (CONFIG_CHIP_NXP_PLATFORM_K32W1 OR CONFIG_CHIP_NXP_PLATFORM_MCXW71))
+if(NOT CONFIG_NXP_USE_LOW_POWER)
     target_compile_definitions(app PRIVATE
-        # The status LED and the external flash CS pin are wired together. The OTA image writing may fail if used together.
+        APP_QUEUE_TICKS_TO_WAIT=pdMS_TO_TICKS\(10\)
+    )
+endif()
+
+# The status LED and the external flash CS pin are wired together on mcxw71. The OTA image writing may fail if used together.
+if(CONFIG_CHIP_OTA_REQUESTOR AND (CONFIG_CHIP_NXP_PLATFORM_K32W1 OR CONFIG_CHIP_NXP_PLATFORM_MCXW71))
+    target_compile_definitions(app PRIVATE
         LED_MANAGER_ENABLE_STATUS_LED=0
     )
 endif()
@@ -76,9 +81,9 @@ include(${CHIP_ROOT}/src/app/chip_data_model.cmake)
 
 target_include_directories(app
     PRIVATE
-    ${LIGHTING_APP_NXP_COMMON_DIR}
-    ${LIGHTING_APP_NXP_COMMON_DIR}/include
-    ${LIGHTING_APP_NXP_PLATFORM_DIR}/include/config
+    ${APP_NXP_COMMON_DIR}
+    ${APP_NXP_COMMON_DIR}/include
+    ${APP_NXP_PLATFORM_DIR}/include/config
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/include
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/include
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/clusters/include
@@ -95,9 +100,10 @@ target_include_directories(app
 
 target_sources(app
     PRIVATE
-    ${LIGHTING_APP_NXP_COMMON_DIR}/AppTask.cpp
-    ${LIGHTING_APP_NXP_COMMON_DIR}/DeviceCallbacks.cpp
-    ${LIGHTING_APP_NXP_COMMON_DIR}/main.cpp
+    ${APP_NXP_COMMON_DIR}/AppTask.cpp
+    ${APP_NXP_COMMON_DIR}/DeviceCallbacks.cpp
+    ${APP_NXP_COMMON_DIR}/main.cpp
+    ${APP_NXP_COMMON_DIR}/ZclCallbacks.cpp
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/source/BLEApplicationManagerEmpty.cpp
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/source/AppTaskBase.cpp
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/source/AppTaskFreeRTOS.cpp
@@ -110,9 +116,35 @@ target_sources(app
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonRegistrationAppAndBle.cpp
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonWithTimer.cpp
     ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/operational_keystore/source/OperationalKeystoreS200.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ui_feedback/source/LedManager.cpp
-    ${LED_ON_OFF_PATH}
 )
+
+if(CONFIG_NXP_USE_LOW_POWER)
+    target_sources(app
+        PRIVATE
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/low_power/source/LowPower.cpp
+    )
+endif()
+
+if(CONFIG_ENABLE_FEEDBACK)
+    target_sources(app
+        PRIVATE
+        ${LED_ON_OFF_PATH}
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ui_feedback/source/LedManager.cpp
+    )
+endif()
+
+if(CONFIG_CHIP_OTA_REQUESTOR)
+    target_include_directories(app
+        PRIVATE
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/include
+    )
+
+    target_sources(app
+        PRIVATE
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/source/OTARequestorInitiatorMultiImage.cpp
+        ${OTA_UTILS_PATH}
+    )
+endif()
 
 # TODO: remove this workaround and use a file from default implementation
 if(CONFIG_CHIP_NXP_PLATFORM_MCXW72)
@@ -128,21 +160,14 @@ else()
     )
 endif()
 
-
-if(CONFIG_CHIP_OTA_REQUESTOR)
-    target_include_directories(app
-        PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/include
+if(CONFIG_CHIP_ICD_LIT_SUPPORT)
+    chip_configure_data_model(app
+        INCLUDE_SERVER
+        ZAP_FILE ${APP_NXP_COMMON_DIR}/../zap-lit/contact-sensor-app.zap
     )
-
-    target_sources(app
-        PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/source/OTARequestorInitiatorMultiImage.cpp
-        ${OTA_UTILS_PATH}
+else()
+    chip_configure_data_model(app
+        INCLUDE_SERVER
+        ZAP_FILE ${APP_NXP_COMMON_DIR}/../zap-sit/contact-sensor-app.zap
     )
 endif()
-
-chip_configure_data_model(app
-    INCLUDE_SERVER
-    ZAP_FILE ${LIGHTING_APP_NXP_COMMON_DIR}/../zap/lighting-on-off.zap
-)
