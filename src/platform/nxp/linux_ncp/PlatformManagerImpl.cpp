@@ -68,7 +68,7 @@ void * GLibMainLoopThread(void * userData)
 #endif
 
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFI
-#if 0
+
 bool WiFiIPChangeListener(GIOChannel * ch, GIOCondition /* condition */, void * /* userData */)
 {
 
@@ -189,7 +189,6 @@ CHIP_ERROR RunWiFiIPChangeListener()
 
     return CHIP_NO_ERROR;
 }
-#endif
 #endif // #if CHIP_DEVICE_CONFIG_ENABLE_WIFI
 
 } // namespace

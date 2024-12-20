@@ -59,15 +59,15 @@ public:
     CHIP_ERROR GetNetworkInterfaces(NetworkInterface ** netifpp) override;
     void ReleaseNetworkInterfaces(NetworkInterface * netifp) override;
 
-    CHIP_ERROR GetEthPHYRate(app::Clusters::EthernetNetworkDiagnostics::PHYRateEnum & pHYRate) override;
-    CHIP_ERROR GetEthFullDuplex(bool & fullDuplex) override;
-    CHIP_ERROR GetEthTimeSinceReset(uint64_t & timeSinceReset) override;
-    CHIP_ERROR GetEthPacketRxCount(uint64_t & packetRxCount) override;
-    CHIP_ERROR GetEthPacketTxCount(uint64_t & packetTxCount) override;
-    CHIP_ERROR GetEthTxErrCount(uint64_t & txErrCount) override;
-    CHIP_ERROR GetEthCollisionCount(uint64_t & collisionCount) override;
-    CHIP_ERROR GetEthOverrunCount(uint64_t & overrunCount) override;
-    CHIP_ERROR ResetEthNetworkDiagnosticsCounts() override;
+    //CHIP_ERROR GetEthPHYRate(app::Clusters::EthernetNetworkDiagnostics::PHYRateEnum & pHYRate) override;
+    //CHIP_ERROR GetEthFullDuplex(bool & fullDuplex) override;
+    //CHIP_ERROR GetEthTimeSinceReset(uint64_t & timeSinceReset) override;
+    //CHIP_ERROR GetEthPacketRxCount(uint64_t & packetRxCount) override;
+    //CHIP_ERROR GetEthPacketTxCount(uint64_t & packetTxCount) override;
+    //CHIP_ERROR GetEthTxErrCount(uint64_t & txErrCount) override;
+    //CHIP_ERROR GetEthCollisionCount(uint64_t & collisionCount) override;
+    //CHIP_ERROR GetEthOverrunCount(uint64_t & overrunCount) override;
+    //CHIP_ERROR ResetEthNetworkDiagnosticsCounts() override;
 
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFI
     CHIP_ERROR GetWiFiChannelNumber(uint16_t & channelNumber) override;

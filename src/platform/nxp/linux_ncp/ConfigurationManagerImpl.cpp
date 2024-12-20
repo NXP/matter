@@ -37,6 +37,9 @@
 
 #include <algorithm>
 
+extern "C" {
+#include "ncp_wifi_api.h"
+}
 namespace chip {
 namespace DeviceLayer {
 
@@ -126,49 +129,17 @@ exit:
 
 CHIP_ERROR ConfigurationManagerImpl::GetPrimaryWiFiMACAddress(uint8_t * buf)
 {
-    struct ifaddrs * addresses = nullptr;
-    struct sockaddr_ll * mac   = nullptr;
-    CHIP_ERROR error           = CHIP_NO_ERROR;
-
-    // TODO: ideally the buffer size should have been passed as a span, however
-    //       for now use the size that is validated in GenericConfigurationManagerImpl.ipp
-    constexpr size_t kExpectedBufMinSize = ConfigurationManager::kPrimaryMACAddressLength;
-    memset(buf, 0, kExpectedBufMinSize);
-
-    // Prioritize address for interface matching the WiFi interface name
-    // specified in the config headers. Otherwise, use the address for the
-    // first non-loopback interface.
-    VerifyOrExit(getifaddrs(&addresses) == 0, error = CHIP_ERROR_INTERNAL);
-    for (auto addr = addresses; addr != nullptr; addr = addr->ifa_next)
+#if CHIP_DEVICE_CONFIG_ENABLE_WPA
+    if (wlan_ncp_get_mac_address(buf) != WM_SUCCESS)
     {
-        if ((addr->ifa_addr) && (addr->ifa_addr->sa_family == AF_PACKET))
-        {
-            if (strncmp(addr->ifa_name, CHIP_DEVICE_CONFIG_WIFI_STATION_IF_NAME, IFNAMSIZ) == 0)
-            {
-                mac = (struct sockaddr_ll *) addr->ifa_addr;
-                break;
-            }
-
-            if (strncmp(addr->ifa_name, "lo", IFNAMSIZ) != 0 && !mac)
-            {
-                mac = (struct sockaddr_ll *) addr->ifa_addr;
-            }
-        }
+        return CHIP_ERROR_INTERNAL;
     }
 
-    if (mac)
-    {
-        memcpy(buf, mac->sll_addr, std::min<size_t>(mac->sll_halen, kExpectedBufMinSize));
-    }
-    else
-    {
-        error = CHIP_ERROR_NO_ENDPOINT;
-    }
-
-    freeifaddrs(addresses);
-
-exit:
-    return error;
+    return CHIP_NO_ERROR;
+#else
+    (void) memset(&buf[0], 0, 6); // this is to avoid compilation error in GenericConfigurationManagerImpl.cpp
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+#endif
 }
 
 bool ConfigurationManagerImpl::CanFactoryReset()

@@ -113,11 +113,6 @@ CHIP_ERROR ConnectivityManagerImpl::_Init()
         mEthIfName[0] = '\0';
     }
 
-    if (GetDiagnosticDataProvider().ResetEthNetworkDiagnosticsCounts() != CHIP_NO_ERROR)
-    {
-        ChipLogError(DeviceLayer, "Failed to reset Ethernet statistic counts");
-    }
-
     // Initialize the generic base classes that require it.
 #if CHIP_DEVICE_CONFIG_ENABLE_THREAD
     GenericConnectivityManagerImpl_Thread<ConnectivityManagerImpl>::_Init();

@@ -47,6 +47,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+extern "C" {
+#include "ncp_wifi_api.h"
+}
+
 using namespace ::chip;
 using namespace ::chip::app;
 using namespace ::chip::TLV;
@@ -73,139 +77,6 @@ enum class WiFiStatsCountType
     kWiFiMulticastPacketTxCount,
     kWiFiOverrunCount
 };
-
-CHIP_ERROR GetEthernetStatsCount(EthernetStatsCountType type, uint64_t & count)
-{
-    CHIP_ERROR err          = CHIP_ERROR_READ_FAILED;
-    struct ifaddrs * ifaddr = nullptr;
-
-    if (getifaddrs(&ifaddr) == -1)
-    {
-        ChipLogError(DeviceLayer, "Failed to get network interfaces");
-    }
-    else
-    {
-        struct ifaddrs * ifa = nullptr;
-
-        // Walk through linked list, maintaining head pointer so we can free list later.
-        for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next)
-        {
-            if (ConnectivityUtils::GetInterfaceConnectionType(ifa->ifa_name) == InterfaceTypeEnum::kEthernet)
-            {
-                ChipLogProgress(DeviceLayer, "Found the primary Ethernet interface:%s", StringOrNullMarker(ifa->ifa_name));
-                break;
-            }
-        }
-
-        if (ifa != nullptr)
-        {
-            if (ifa->ifa_addr->sa_family == AF_PACKET && ifa->ifa_data != nullptr)
-            {
-                struct rtnl_link_stats * stats = (struct rtnl_link_stats *) ifa->ifa_data;
-                switch (type)
-                {
-                case EthernetStatsCountType::kEthPacketRxCount:
-                    count = stats->rx_packets;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case EthernetStatsCountType::kEthPacketTxCount:
-                    count = stats->tx_packets;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case EthernetStatsCountType::kEthTxErrCount:
-                    count = stats->tx_errors;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case EthernetStatsCountType::kEthCollisionCount:
-                    count = stats->collisions;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case EthernetStatsCountType::kEthOverrunCount:
-                    count = stats->rx_over_errors;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                default:
-                    ChipLogError(DeviceLayer, "Unknown Ethernet statistic metric type");
-                    break;
-                }
-            }
-        }
-
-        freeifaddrs(ifaddr);
-    }
-
-    return err;
-}
-
-#if CHIP_DEVICE_CONFIG_ENABLE_WIFI
-CHIP_ERROR GetWiFiStatsCount(WiFiStatsCountType type, uint64_t & count)
-{
-    CHIP_ERROR err          = CHIP_ERROR_READ_FAILED;
-    struct ifaddrs * ifaddr = nullptr;
-
-    if (getifaddrs(&ifaddr) == -1)
-    {
-        ChipLogError(DeviceLayer, "Failed to get network interfaces");
-    }
-    else
-    {
-        struct ifaddrs * ifa = nullptr;
-
-        // Walk through linked list, maintaining head pointer so we can free list later.
-        for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next)
-        {
-            if (ConnectivityUtils::GetInterfaceConnectionType(ifa->ifa_name) == InterfaceTypeEnum::kWiFi)
-            {
-                ChipLogProgress(DeviceLayer, "Found the primary WiFi interface:%s", StringOrNullMarker(ifa->ifa_name));
-                break;
-            }
-        }
-
-        if (ifa != nullptr)
-        {
-            if (ifa->ifa_addr->sa_family == AF_PACKET && ifa->ifa_data != nullptr)
-            {
-                // The usecase of this function is embedded devices,on which we can interact with the WiFi
-                // driver to get the accurate number of muticast and unicast packets accurately.
-                // On Linux simulation, we can only get the total packets received, the total bytes transmitted,
-                // the multicast packets received and receiver ring buff overflow.
-
-                struct rtnl_link_stats * stats = (struct rtnl_link_stats *) ifa->ifa_data;
-                switch (type)
-                {
-                case WiFiStatsCountType::kWiFiUnicastPacketRxCount:
-                    count = stats->rx_packets;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case WiFiStatsCountType::kWiFiUnicastPacketTxCount:
-                    count = stats->tx_packets;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case WiFiStatsCountType::kWiFiMulticastPacketRxCount:
-                    count = stats->multicast;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case WiFiStatsCountType::kWiFiMulticastPacketTxCount:
-                    count = 0;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                case WiFiStatsCountType::kWiFiOverrunCount:
-                    count = stats->rx_over_errors;
-                    err   = CHIP_NO_ERROR;
-                    break;
-                default:
-                    ChipLogError(DeviceLayer, "Unknown WiFi statistic metric type");
-                    break;
-                }
-            }
-        }
-
-        freeifaddrs(ifaddr);
-    }
-
-    return err;
-}
-#endif // #if CHIP_DEVICE_CONFIG_ENABLE_WIFI
 
 } // namespace
 
@@ -433,72 +304,34 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetActiveNetworkFaults(GeneralFaults<kMax
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetNetworkInterfaces(NetworkInterface ** netifpp)
 {
-    CHIP_ERROR err          = CHIP_ERROR_READ_FAILED;
-    struct ifaddrs * ifaddr = nullptr;
+    NetworkInterface * ifp = new NetworkInterface();
+    uint8_t size           = 0;
 
-    if (getifaddrs(&ifaddr) == -1)
+    strncpy(ifp->Name, "mlan0", Inet::InterfaceId::kMaxIfNameLength);
+    ifp->Name[Inet::InterfaceId::kMaxIfNameLength - 1] = '\0';
+    ifp->name                                          = CharSpan::fromCharString(ifp->Name);
+    ifp->isOperational                                 = true;
+    ifp->type                                          = app::Clusters::GeneralDiagnostics::InterfaceTypeEnum::kWiFi;
+    ifp->offPremiseServicesReachableIPv4.SetNull();
+    ifp->offPremiseServicesReachableIPv6.SetNull();
+    if (ConnectivityUtils::GetInterfaceIPv4Addrs("", size, ifp) == CHIP_NO_ERROR)
     {
-        ChipLogError(DeviceLayer, "Failed to get network interfaces");
-    }
-    else
-    {
-        NetworkInterface * head = nullptr;
-
-        // Walk through linked list, maintaining head pointer so we can free list later.
-        for (struct ifaddrs * ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next)
+        if (size > 0)
         {
-            if (ifa->ifa_addr && ifa->ifa_addr->sa_family == AF_PACKET)
-            {
-                uint8_t size           = 0;
-                NetworkInterface * ifp = new NetworkInterface();
-
-                Platform::CopyString(ifp->Name, ifa->ifa_name);
-
-                ifp->name          = CharSpan::fromCharString(ifp->Name);
-                ifp->isOperational = ifa->ifa_flags & IFF_RUNNING;
-                ifp->type          = ConnectivityUtils::GetInterfaceConnectionType(ifa->ifa_name);
-                ifp->offPremiseServicesReachableIPv4.SetNull();
-                ifp->offPremiseServicesReachableIPv6.SetNull();
-
-                if (ConnectivityUtils::GetInterfaceIPv4Addrs(ifa->ifa_name, size, ifp) == CHIP_NO_ERROR)
-                {
-                    if (size > 0)
-                    {
-                        ifp->IPv4Addresses = DataModel::List<const chip::ByteSpan>(ifp->Ipv4AddressSpans, size);
-                    }
-                }
-
-                if (ConnectivityUtils::GetInterfaceIPv6Addrs(ifa->ifa_name, size, ifp) == CHIP_NO_ERROR)
-                {
-                    if (size > 0)
-                    {
-                        ifp->IPv6Addresses = DataModel::List<const chip::ByteSpan>(ifp->Ipv6AddressSpans, size);
-                    }
-                }
-
-                if (ConnectivityUtils::GetInterfaceHardwareAddrs(ifa->ifa_name, ifp->MacAddress, kMaxHardwareAddrSize) !=
-                    CHIP_NO_ERROR)
-                {
-                    ChipLogError(DeviceLayer, "Failed to get network hardware address");
-                }
-                else
-                {
-                    // Set 48-bit IEEE MAC Address
-                    ifp->hardwareAddress = ByteSpan(ifp->MacAddress, 6);
-                }
-
-                ifp->Next = head;
-                head      = ifp;
-            }
+            ifp->IPv4Addresses = DataModel::List<const chip::ByteSpan>(ifp->Ipv4AddressSpans, size);
         }
-
-        *netifpp = head;
-        err      = CHIP_NO_ERROR;
-
-        freeifaddrs(ifaddr);
     }
+    if (ConnectivityUtils::GetInterfaceIPv6Addrs("", size, ifp) == CHIP_NO_ERROR)
+    {
+        if (size > 0)
+        {
+            ifp->IPv6Addresses = DataModel::List<const chip::ByteSpan>(ifp->Ipv6AddressSpans, size);
+        }
+    }
+    ifp->Next = nullptr;
+    *netifpp  = ifp;
 
-    return err;
+    return CHIP_NO_ERROR;
 }
 
 void DiagnosticDataProviderImpl::ReleaseNetworkInterfaces(NetworkInterface * netifp)
@@ -509,135 +342,6 @@ void DiagnosticDataProviderImpl::ReleaseNetworkInterfaces(NetworkInterface * net
         netifp                 = netifp->Next;
         delete del;
     }
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthPHYRate(app::Clusters::EthernetNetworkDiagnostics::PHYRateEnum & pHYRate)
-{
-    if (ConnectivityMgrImpl().GetEthernetIfName() == nullptr)
-    {
-        return CHIP_ERROR_READ_FAILED;
-    }
-
-    return ConnectivityUtils::GetEthPHYRate(ConnectivityMgrImpl().GetEthernetIfName(), pHYRate);
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthFullDuplex(bool & fullDuplex)
-{
-    if (ConnectivityMgrImpl().GetEthernetIfName() == nullptr)
-    {
-        return CHIP_ERROR_READ_FAILED;
-    }
-
-    return ConnectivityUtils::GetEthFullDuplex(ConnectivityMgrImpl().GetEthernetIfName(), fullDuplex);
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthTimeSinceReset(uint64_t & timeSinceReset)
-{
-    return GetDiagnosticDataProvider().GetUpTime(timeSinceReset);
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthPacketRxCount(uint64_t & packetRxCount)
-{
-    uint64_t count;
-
-    ReturnErrorOnFailure(GetEthernetStatsCount(EthernetStatsCountType::kEthPacketRxCount, count));
-    VerifyOrReturnError(count >= mEthPacketRxCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
-
-    packetRxCount = count - mEthPacketRxCount;
-
-    return CHIP_NO_ERROR;
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthPacketTxCount(uint64_t & packetTxCount)
-{
-    uint64_t count;
-
-    ReturnErrorOnFailure(GetEthernetStatsCount(EthernetStatsCountType::kEthPacketTxCount, count));
-    VerifyOrReturnError(count >= mEthPacketTxCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
-
-    packetTxCount = count - mEthPacketTxCount;
-
-    return CHIP_NO_ERROR;
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthTxErrCount(uint64_t & txErrCount)
-{
-    uint64_t count;
-
-    ReturnErrorOnFailure(GetEthernetStatsCount(EthernetStatsCountType::kEthTxErrCount, count));
-    VerifyOrReturnError(count >= mEthTxErrCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
-
-    txErrCount = count - mEthTxErrCount;
-
-    return CHIP_NO_ERROR;
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthCollisionCount(uint64_t & collisionCount)
-{
-    uint64_t count;
-
-    ReturnErrorOnFailure(GetEthernetStatsCount(EthernetStatsCountType::kEthCollisionCount, count));
-    VerifyOrReturnError(count >= mEthCollisionCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
-
-    collisionCount = count - mEthCollisionCount;
-
-    return CHIP_NO_ERROR;
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetEthOverrunCount(uint64_t & overrunCount)
-{
-    uint64_t count;
-
-    ReturnErrorOnFailure(GetEthernetStatsCount(EthernetStatsCountType::kEthOverrunCount, count));
-    VerifyOrReturnError(count >= mEthOverrunCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
-
-    overrunCount = count - mEthOverrunCount;
-
-    return CHIP_NO_ERROR;
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::ResetEthNetworkDiagnosticsCounts()
-{
-    CHIP_ERROR err          = CHIP_ERROR_READ_FAILED;
-    struct ifaddrs * ifaddr = nullptr;
-
-    if (getifaddrs(&ifaddr) == -1)
-    {
-        ChipLogError(DeviceLayer, "Failed to get network interfaces");
-    }
-    else
-    {
-        struct ifaddrs * ifa = nullptr;
-
-        // Walk through linked list, maintaining head pointer so we can free list later.
-        for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next)
-        {
-            if (ConnectivityUtils::GetInterfaceConnectionType(ifa->ifa_name) == InterfaceTypeEnum::kEthernet)
-            {
-                ChipLogProgress(DeviceLayer, "Found the primary Ethernet interface:%s", StringOrNullMarker(ifa->ifa_name));
-                break;
-            }
-        }
-
-        if (ifa != nullptr)
-        {
-            if (ifa->ifa_addr->sa_family == AF_PACKET && ifa->ifa_data != nullptr)
-            {
-                struct rtnl_link_stats * stats = (struct rtnl_link_stats *) ifa->ifa_data;
-
-                mEthPacketRxCount  = stats->rx_packets;
-                mEthPacketTxCount  = stats->tx_packets;
-                mEthTxErrCount     = stats->tx_errors;
-                mEthCollisionCount = stats->collisions;
-                mEthOverrunCount   = stats->rx_over_errors;
-                err                = CHIP_NO_ERROR;
-            }
-        }
-
-        freeifaddrs(ifaddr);
-    }
-
-    return err;
 }
 
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFI
@@ -689,121 +393,91 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiCurrentMaxRate(uint64_t & currentM
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketMulticastRxCount(uint32_t & packetMulticastRxCount)
 {
-    uint64_t count;
+    int ret;
+    NCP_CMD_PKT_STATS stats;
 
-    ReturnErrorOnFailure(GetWiFiStatsCount(WiFiStatsCountType::kWiFiMulticastPacketRxCount, count));
-    VerifyOrReturnError(count >= mPacketMulticastRxCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
+    ret = wlan_ncp_get_pkt_stats(&stats);
+    if (ret != WM_SUCCESS)
+    {
+        ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
+    }
+    packetMulticastRxCount = stats.mcast_rx_frame;
 
-    count -= mPacketMulticastRxCount;
-    VerifyOrReturnError(count <= UINT32_MAX, CHIP_ERROR_INVALID_INTEGER_VALUE);
-
-    packetMulticastRxCount = static_cast<uint32_t>(count);
-
+    ChipLogProgress(DeviceLayer, "GetWiFiPacketMulticastRxCount: %lu ", packetMulticastRxCount);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketMulticastTxCount(uint32_t & packetMulticastTxCount)
 {
-    uint64_t count;
+    int ret;
+    NCP_CMD_PKT_STATS stats;
 
-    ReturnErrorOnFailure(GetWiFiStatsCount(WiFiStatsCountType::kWiFiMulticastPacketTxCount, count));
-    VerifyOrReturnError(count >= mPacketMulticastTxCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
+    ret = wlan_ncp_get_pkt_stats(&stats);
+    if (ret != WM_SUCCESS)
+    {
+        ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
+    }
 
-    count -= mPacketMulticastTxCount;
-    VerifyOrReturnError(count <= UINT32_MAX, CHIP_ERROR_INVALID_INTEGER_VALUE);
+    packetMulticastTxCount = stats.mcast_tx_frame;
 
-    packetMulticastTxCount = static_cast<uint32_t>(count);
-
+    ChipLogProgress(DeviceLayer, "GetWiFiPacketMulticastTxCount: %lu ", packetMulticastTxCount);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastRxCount(uint32_t & packetUnicastRxCount)
 {
-    uint64_t count;
+    int ret;
+    NCP_CMD_PKT_STATS stats;
 
-    ReturnErrorOnFailure(GetWiFiStatsCount(WiFiStatsCountType::kWiFiUnicastPacketRxCount, count));
-    VerifyOrReturnError(count >= mPacketUnicastRxCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
+    ret = wlan_ncp_get_pkt_stats(&stats);
+    if (ret != WM_SUCCESS)
+    {
+        ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
+    }
 
-    count -= mPacketUnicastRxCount;
-    VerifyOrReturnError(count <= UINT32_MAX, CHIP_ERROR_INVALID_INTEGER_VALUE);
-
-    packetUnicastRxCount = static_cast<uint32_t>(count);
-
+    packetUnicastRxCount = stats.rx_unicast_cnt;
+    ChipLogProgress(DeviceLayer, "GetWiFiPacketUnicastRxCount: %lu (ToDo)", packetUnicastRxCount);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastTxCount(uint32_t & packetUnicastTxCount)
 {
-    uint64_t count;
+    int ret;
+    NCP_CMD_PKT_STATS stats;
 
-    ReturnErrorOnFailure(GetWiFiStatsCount(WiFiStatsCountType::kWiFiUnicastPacketTxCount, count));
-    VerifyOrReturnError(count >= mPacketUnicastTxCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
+    ret = wlan_ncp_get_pkt_stats(&stats);
+    if (ret != WM_SUCCESS)
+    {
+        ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
+    }
 
-    count -= mPacketUnicastTxCount;
-    VerifyOrReturnError(count <= UINT32_MAX, CHIP_ERROR_INVALID_INTEGER_VALUE);
+    /* fix me: wifi drv will update the struct later */
+    packetUnicastTxCount = stats.tx_frame - stats.mcast_tx_frame;
 
-    packetUnicastTxCount = static_cast<uint32_t>(count);
-
+    ChipLogProgress(DeviceLayer, "GetWiFiPacketUnicastTxCount: %lu", packetUnicastTxCount);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiOverrunCount(uint64_t & overrunCount)
 {
-    uint64_t count;
+    int ret;
+    NCP_CMD_PKT_STATS stats;
 
-    ReturnErrorOnFailure(GetWiFiStatsCount(WiFiStatsCountType::kWiFiOverrunCount, count));
-    VerifyOrReturnError(count >= mOverrunCount, CHIP_ERROR_INVALID_INTEGER_VALUE);
+    ret = wlan_ncp_get_pkt_stats(&stats);
+    if (ret != WM_SUCCESS)
+    {
+        ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
+    }
 
-    overrunCount = count - mOverrunCount;
+    overrunCount = (stats.tx_overrun_cnt + stats.rx_overrun_cnt) - mOverrunCount;
 
+    ChipLogProgress(DeviceLayer, "GetWiFiOverrunCount: %lu", overrunCount);
     return CHIP_NO_ERROR;
 }
 
 CHIP_ERROR DiagnosticDataProviderImpl::ResetWiFiNetworkDiagnosticsCounts()
 {
-    CHIP_ERROR err          = CHIP_ERROR_READ_FAILED;
-    struct ifaddrs * ifaddr = nullptr;
-
-    ReturnErrorOnFailure(GetWiFiBeaconLostCount(mBeaconLostCount));
-
-    if (getifaddrs(&ifaddr) == -1)
-    {
-        ChipLogError(DeviceLayer, "Failed to get network interfaces");
-    }
-    else
-    {
-        struct ifaddrs * ifa = nullptr;
-
-        // Walk through linked list, maintaining head pointer so we can free list later.
-        for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next)
-        {
-            if (ConnectivityUtils::GetInterfaceConnectionType(ifa->ifa_name) == InterfaceTypeEnum::kWiFi)
-            {
-                ChipLogProgress(DeviceLayer, "Found the primary WiFi interface:%s", StringOrNullMarker(ifa->ifa_name));
-                break;
-            }
-        }
-
-        if (ifa != nullptr)
-        {
-            if (ifa->ifa_addr->sa_family == AF_PACKET && ifa->ifa_data != nullptr)
-            {
-                struct rtnl_link_stats * stats = (struct rtnl_link_stats *) ifa->ifa_data;
-
-                mPacketMulticastRxCount = stats->multicast;
-                mPacketMulticastTxCount = 0;
-                mPacketUnicastRxCount   = stats->rx_packets;
-                mPacketUnicastTxCount   = stats->tx_packets;
-                mOverrunCount           = stats->rx_over_errors;
-
-                err = CHIP_NO_ERROR;
-            }
-        }
-
-        freeifaddrs(ifaddr);
-    }
-
-    return err;
+    return CHIP_NO_ERROR;
 }
 #endif // CHIP_DEVICE_CONFIG_ENABLE_WIFI
 
