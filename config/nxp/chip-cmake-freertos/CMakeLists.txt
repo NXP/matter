@@ -58,6 +58,16 @@ matter_add_gn_arg_bool("nxp_use_smu2_dynamic" CONFIG_NXP_USE_SMU2)
 # Remove default spec config from the build
 matter_add_gn_arg_list("default_configs_specs" " ")
 
+# OT specific gn arguments
+if(CONFIG_NET_L2_OPENTHREAD)
+    matter_add_gn_arg_string("openthread_root" "${CHIP_ROOT}/${CONFIG_OT_ROOT}")
+    matter_add_gn_arg_string("openthread_external_mbedtls" "${CHIP_ROOT}/third_party/nxp/nxp_matter_support/gn_build:${CONFIG_OT_EXTERNAL_MBEDTLS}")
+    matter_add_gn_arg_string("openthread_project_core_config_file" "${CHIP_ROOT}/${CONFIG_OT_PROJECT_CORE_CONFIG_FILE}")
+    matter_add_gn_arg_string("openthread_core_config_platform_check_file" ${CONFIG_OT_CORE_CONFIG_PLATFORM_CHECK_FILE})
+    matter_add_gn_arg_string("openthread_external_platform" "${CHIP_ROOT}/third_party/openthread/platforms/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}:${CONFIG_OT_EXTERNAL_PLATFORM}")
+    matter_add_gn_arg_list("openthread_core_config_deps" "\"${CHIP_ROOT}/${CONFIG_OT_CORE_CONFIG_DEPS}\"")
+endif()
+
 if(CONFIG_CHIP_NVM_COMPONENT_NVS)
     matter_add_gn_arg_string("nxp_nvm_component" "nvs")
 elseif(CONFIG_CHIP_NVM_COMPONENT_LITTLEFS)
@@ -109,6 +119,15 @@ if(CONFIG_CHIP_DEVICE_USE_ZEPHYR_BLE)
         EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/common/ble_zephyr/BLEManagerImpl.h\"
     )
 endif()
+
+# Add OT include directories to be visible from the application
+if(CONFIG_NET_L2_OPENTHREAD)
+    target_include_directories(chip
+        INTERFACE
+        ${CHIP_ROOT}/${CONFIG_OT_ROOT}/include
+        ${CHIP_ROOT}/${CONFIG_OT_ROOT}/examples/platforms
+    )
+endif() # CONFIG_NET_L2_OPENTHREAD
 
 #**************************************************************************************
 # Pre-build instructions

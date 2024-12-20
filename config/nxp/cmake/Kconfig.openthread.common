@@ -16,6 +16,12 @@
 
 if NET_L2_OPENTHREAD
 
+config OT_ROOT
+	string "OT root path"
+	default "third_party/openthread/ot-nxp/openthread"
+	help
+	  OT root path relative to Matter root
+
 config OT_EXTERNAL_MBEDTLS
 	string "Mbedtls gn target used by OT gn build system"
 	default "nxp_mbedtls"
@@ -23,6 +29,13 @@ config OT_EXTERNAL_MBEDTLS
 	  Use "${nxp_sdk_build_root}:nxp_mbedtls" by default.
 	  The full path is handled in common.cmake. If blank,
 	  OT will use internal mbedtls.
+
+config OT_EXTERNAL_PLATFORM
+	string "OT external platform target used by OT gn build system"
+	default "libopenthread-k32w1" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71
+	default "libopenthread-mcxw72" if CHIP_NXP_PLATFORM_MCXW72
+	help
+	  OT external platform target used by OT gn build system
 
 config OT_PROJECT_CORE_CONFIG_FILE
 	string "OT configuration file used by OT gn build system"
@@ -33,7 +46,9 @@ config OT_PROJECT_CORE_CONFIG_FILE
 
 config OT_CORE_CONFIG_PLATFORM_CHECK_FILE
 	string "OT core configuration check file used by OT gn build system"
-	default "openthread-core-k32w1-config-check.h" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+	default "openthread-core-k32w1-config-check.h" if CHIP_NXP_PLATFORM_K32W1
+	default "openthread-core-mcxw71-config-check.h" if CHIP_NXP_PLATFORM_MCXW71
+	default "openthread-core-mcxw72-config-check.h" if CHIP_NXP_PLATFORM_MCXW72
 	help
 	  OT core configuration check file used by OT gn build system
 
@@ -47,8 +62,8 @@ config OT_CORE_CONFIG_DEPS
 config OT_NXP_PLATFORM_FOLDER
 	string "ot-nxp platform specific folder"
 	default "src/k32w1" if CHIP_NXP_PLATFORM_K32W1
-	default "src/mcxw/mcxw71" if CHIP_NXP_PLATFORM_MCXW71
-	default "src/mcxw/mcxw72" if CHIP_NXP_PLATFORM_MCXW72
+	default "src/mcxw71" if CHIP_NXP_PLATFORM_MCXW71
+	default "src/mcxw72" if CHIP_NXP_PLATFORM_MCXW72
 	help
 	  ot-nxp platform specific folder (relative to ot-nxp root)
 
