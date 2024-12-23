@@ -1031,6 +1031,91 @@ int main()
         }
     });
 
+    CROW_ROUTE(crowApplication, "/api/get_network").methods("GET"_method)([]() {
+        try
+        {
+            Json::Value root;
+            ChipLogError(NotSpecified, "Received GET request for get status");
+            try{
+                string output = exec_cmd("cat /sys/devices/soc0/machine");
+                size_t pos = output.find(' ');
+                string machine;
+                if (pos != string::npos) {
+                    machine = output.substr(pos + 1);
+                }
+                machine.erase(machine.find_last_not_of("\n") + 1);
+                root["machine"] = machine;
+                Json::Value storageNodes = getStorageKeyNodeID();
+                Json::Value nodeList;
+                for (const auto& storageNode : storageNodes)
+                {
+                    std::string storageNodeAlias = storageNode["storageNodeAlias"].asString();
+                    std::string storageNodeId    = storageNode["storageNodeId"].asString();
+                    std::string command          = "networkcommissioning read feature-map " + storageNodeId + " 0";
+                    Json::Value nodeInfo;
+                    nodeInfo["nodeAlias"] = storageNodeAlias;
+                    nodeInfo["nodeId"]    = storageNodeId;
+                    wsClient.sendMessage(command);
+                    ChipLogError(NotSpecified, "Send read device-type-list command to chip-tool WS server");
+                    int sleepTime = 0;
+                    while (reportQueue.empty() && sleepTime < 20)
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        sleepTime++;
+                    }
+                    if (sleepTime == 20) {
+                        continue;
+                        ChipLogError(NotSpecified, "Execute read device-type-list command overtime!");
+                    } else
+                    {
+                        Json::Value resultsReport = wsClient.dequeueReport();
+                        Json::Value resultsValue = resultsReport[0];
+                        std::string value;
+                        if (resultsValue.isMember("error"))
+                        {
+                            value = "Unsupport";
+                            ChipLogError(NotSpecified, "Unsupport networkcommissioning feature-map attribute!");
+                        } else
+                        {
+                            switch (resultsValue["value"].asInt())
+                            {
+                                case 1:
+                                    value = "WiFi";
+                                    break;
+                                case 2:
+                                    value = "Thread";
+                                    break;
+                                case 4:
+                                    value = "Ethernet";
+                                    break;
+                                default:
+                                    value = "Unknown";
+                            }
+                        }
+                        nodeInfo["networkType"] = value;
+                        ChipLogError(NotSpecified, "Execute networkcommissioning command successfully");
+                    }
+                    nodeList.append(nodeInfo);
+                }
+                root["nodeList"] = nodeList;
+                root["result"] = RESPONSE_SUCCESS;
+            } catch (const exception & e)
+            {
+                ChipLogError(NotSpecified, "GET request for get status failed");
+                root["result"] = RESPONSE_FAILURE;
+            }
+            std::string strContent = root.toStyledString();
+            crow::response response(strContent);
+            response.add_header("Access-Control-Allow-Origin", "*");
+            return response;
+        } catch (const exception & e)
+        {
+            crow::response response(400, e.what());
+            response.add_header("Access-Control-Allow-Origin", "*");
+            return response;
+        }
+    });
+
     CROW_ROUTE(crowApplication, "/api/delete_storageNode").methods("POST"_method)([](const crow::request& req) {
         try
         {
