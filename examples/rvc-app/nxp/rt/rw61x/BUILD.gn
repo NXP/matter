@@ -131,8 +131,6 @@ rt_executable("rvc") {
   ]
 
   sources = [
-    "${chip_root}/examples/all-clusters-app/all-clusters-common/src/rvc-modes.cpp",
-    "${chip_root}/examples/all-clusters-app/all-clusters-common/src/rvc-operational-state-delegate-impl.cpp",
     "${chip_root}/examples/providers/DeviceInfoProviderImpl.cpp",
     "../../common/main/AppTask.cpp",
     "../../common/main/DeviceCallbacks.cpp",
@@ -141,6 +139,8 @@ rt_executable("rvc") {
     "../../common/main/include/AppTask.h",
     "../../common/main/include/DeviceCallbacks.h",
     "../../common/main/main.cpp",
+    "../../common/main/rvc-modes.cpp",
+    "../../common/main/rvc-operational-state-delegate-impl.cpp",
   ]
 
   if (chip_with_diag_logs_demo) {

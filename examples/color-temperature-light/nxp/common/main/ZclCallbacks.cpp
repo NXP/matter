@@ -57,6 +57,7 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
         LightingMgr().InitiateAction(0, *value ? LightingManager::TURNON_ACTION : LightingManager::TURNOFF_ACTION);
 		  
     }
+/*
     else if (path.mClusterId == LevelControl::Id)
     {
         ChipLogProgress(Zcl, "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
@@ -76,4 +77,5 @@ void MatterPostAttributeChangeCallback(const chip::app::ConcreteAttributePath & 
     {
         ChipLogProgress(Zcl, "Unknown attribute ID: " ChipLogFormatMEI, ChipLogValueMEI(path.mAttributeId));
     }
+*/
 }

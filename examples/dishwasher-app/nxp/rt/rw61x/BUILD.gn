@@ -139,8 +139,8 @@ rt_executable("dishwasher") {
     "../../common/main/include/AppTask.h",
     "../../common/main/include/DeviceCallbacks.h",
     "../../common/main/main.cpp",
+    "../../common/main/dishwasher-mode.cpp",
     "${chip_root}/examples/all-clusters-app/all-clusters-common/src/dishwasher-alarm-stub.cpp",
-    "${chip_root}/examples/all-clusters-app/all-clusters-common/src/dishwasher-mode.cpp",
     "${chip_root}/examples/all-clusters-app/all-clusters-common/src/operational-state-delegate-impl.cpp",
   ]
 
