@@ -45,18 +45,13 @@ public:
 	void AppMatter_RegisterCustomCliCommands(void) override;
     // This returns an instance of this class.
     static AppTask & GetDefaultInstance();
-	static void OccupancyPresentTimerHandler(chip::System::Layer * systemLayer, void * appState);
 	void UpdateClusterState(void);
-	void OccupancyHandler(bool present);
 
 private:
     static AppTask sAppTask;
 	
 	static void ActionInitiated(LightingManager::Action_t aAction, int32_t aActor);
 	static void ActionCompleted(LightingManager::Action_t aAction);
-	static void OccupancyEventHandler(const AppEvent & aEvent);
-	static void UpdateOccupancyPresentStateInternal(intptr_t arg);
-	static void UpdateOccupancyClearStateInternal(intptr_t arg);
 	
 	enum Function_t
     {

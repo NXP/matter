@@ -1,6 +1,6 @@
 {
   "fileFormat": 2,
-  "featureLevel": 100,
+  "featureLevel": 104,
   "creator": "zap",
   "keyValuePairs": [
     {
@@ -29,6 +29,7 @@
       "pathRelativity": "relativeToZap",
       "path": "../../../../src/app/zap-templates/app-templates.json",
       "type": "gen-templates-json",
+      "category": "matter",
       "version": "chip-v1"
     }
   ],
@@ -3729,14 +3730,16 @@
         "code": 116,
         "profileId": 259,
         "label": "MA-robotic-vacuum-cleaner",
-        "name": "MA-robotic-vacuum-cleaner"
+        "name": "MA-robotic-vacuum-cleaner",
+        "deviceTypeOrder": 0
       },
       "deviceTypes": [
         {
           "code": 116,
           "profileId": 259,
           "label": "MA-robotic-vacuum-cleaner",
-          "name": "MA-robotic-vacuum-cleaner"
+          "name": "MA-robotic-vacuum-cleaner",
+          "deviceTypeOrder": 0
         }
       ],
       "deviceVersions": [
@@ -3889,7 +3892,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "4",
+              "defaultValue": "5",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4459,7 +4462,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "2",
+              "defaultValue": "3",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4615,7 +4618,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "2",
+              "defaultValue": "3",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,

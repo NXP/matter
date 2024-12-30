@@ -139,7 +139,6 @@ rt_executable("lighting") {
     "../../common/main/main.cpp",
     "../../common/main/LightingManager.cpp",
     "../../common/main/include/LightingManager.h",
-    "${chip_root}/examples/all-clusters-app/all-clusters-common/src/occupancy-sensing-stub.cpp",
   ]
 
   if (chip_with_diag_logs_demo) {
