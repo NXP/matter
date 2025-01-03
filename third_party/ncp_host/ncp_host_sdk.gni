@@ -38,6 +38,8 @@ template("ncp_host_sdk") {
       "${ncp_host_sdk_root}/src/wifi/",
       "${ncp_host_sdk_root}/src/common/crc/",
       "${ncp_host_sdk_root}/src/common/lpm/",
+      "${ncp_host_sdk_root}/src/ble/",
+      "${ncp_host_sdk_root}/src/ble/matter/src",
     ]
   }
 
@@ -45,6 +47,7 @@ template("ncp_host_sdk") {
     cflags = [
       "-DCONFIG_NCP_USB  = 1",
       "-DCONFIG_NCP_WIFI = 1",
+      "-DCONFIG_NCP_BLE  = 1",
       "-DCONFIG_MATTER_NCP"
     ]
   }
@@ -81,6 +84,9 @@ template("ncp_host_sdk") {
 
       "${ncp_host_sdk_root}/src/ncp_host_app.c",
       "${ncp_host_sdk_root}/src/wifi/ncp_host_app_wifi.c",
+      "${ncp_host_sdk_root}/src/ble/ncp_host_app_ble.c",
+      "${ncp_host_sdk_root}/src/ble/ncp_host_command_ble.c",
+      "${ncp_host_sdk_root}/src/ble/matter/src/ncp_matter_ble.c",
     ]
     
     if (!defined(public_configs)) {

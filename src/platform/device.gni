@@ -56,7 +56,7 @@ if (chip_device_platform == "auto") {
 declare_args() {
   # Enable openthread support.
   chip_enable_openthread =
-      chip_device_platform == "linux" || chip_device_platform == "qpg" ||
+      chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "qpg" ||
       chip_device_platform == "cc13x2_26x2" ||
       chip_device_platform == "cc13x4_26x4" ||
       chip_device_platform == "tizen" || chip_device_platform == "stm32" ||
@@ -240,8 +240,14 @@ assert(!chip_disable_platform_kvs || chip_device_platform == "darwin",
        "Can only disable KVS on some platforms")
 
 if (_chip_device_layer != "none" && chip_device_platform != "external") {
-  chip_ble_platform_config_include =
-      "<platform/" + _chip_device_layer + "/BlePlatformConfig.h>"
+  if (chip_with_linux_ncp_host == 1)
+  {
+     chip_ble_platform_config_include = "<platform/" + _chip_device_layer + "/ble_ncp/BlePlatformConfig.h>"
+  }
+  else
+  {
+    chip_ble_platform_config_include = "<platform/" + _chip_device_layer + "/BlePlatformConfig.h>"
+  }
   chip_device_platform_config_include =
       "<platform/" + _chip_device_layer + "/CHIPDevicePlatformConfig.h>"
   chip_platform_config_include =

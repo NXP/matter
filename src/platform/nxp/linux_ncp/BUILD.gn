@@ -91,24 +91,11 @@ static_library("linux_ncp") {
 
   if (chip_enable_ble) {
     sources += [
-      "BLEManagerImpl.cpp",
-      "BLEManagerImpl.h",
-      "BlePlatformConfig.h",
-      "bluez/AdapterIterator.cpp",
-      "bluez/AdapterIterator.h",
-      "bluez/BluezAdvertisement.cpp",
-      "bluez/BluezAdvertisement.h",
-      "bluez/BluezConnection.cpp",
-      "bluez/BluezConnection.h",
-      "bluez/BluezEndpoint.cpp",
-      "bluez/BluezEndpoint.h",
-      "bluez/BluezObjectIterator.h",
-      "bluez/BluezObjectList.h",
-      "bluez/BluezObjectManager.cpp",
-      "bluez/BluezObjectManager.h",
-      "bluez/ChipDeviceScanner.cpp",
-      "bluez/ChipDeviceScanner.h",
-      "bluez/Types.h",
+      "ble_ncp/BlePlatformConfig.h",
+      "ble_ncp/BLEAdvertisingArbiter.cpp",
+      "ble_ncp/BLEManagerImpl.cpp",
+      "ble_ncp/BLEManagerImpl.h",
+      "ble_ncp/BLEList.cpp",
     ]
   }
 
@@ -116,6 +103,7 @@ static_library("linux_ncp") {
     "${chip_root}/src/app/common:cluster-objects",
     "${chip_root}/src/platform:platform_base",
     "${chip_root}/third_party/inipp",
+    "${chip_root}/third_party/ncp_host:ncp_host_imx",
   ]
 
   public_configs = []
@@ -144,7 +132,7 @@ static_library("linux_ncp") {
       "../../Linux/ThreadStackManagerImpl.h",
     ]
 
-    #public_deps += [ "dbus/openthread" ]
+    public_deps += [ "dbus/openthread" ]
   }
 
   if (chip_use_pw_logging) {
@@ -157,7 +145,4 @@ static_library("linux_ncp") {
     #public_deps += [ "dbus/wpa" ]
   }
 
-  if (chip_enable_ble) {
-    public_deps += [ "dbus/bluez" ]
-  }
 }
