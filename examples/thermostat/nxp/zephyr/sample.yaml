@@ -4,17 +4,20 @@ tests:
   sample.matter.thermostat_no_factorydata:
     platform_allow:
       - rd_rw612_bga
+      - frdm_rw612
     build_only: true
     tags: matter
   sample.matter.thermostat_factorydata:
     platform_allow:
       - rd_rw612_bga
+      - frdm_rw612
     build_only: true
     tags: matter
     extra_args: FILE_SUFFIX="fdata"
   sample.matter.thermostat_no_factorydata_ota_v0:
     platform_allow:
       - rd_rw612_bga
+      - frdm_rw612
     build_only: true
     tags: matter
     extra_args:
@@ -22,6 +25,7 @@ tests:
   sample.matter.thermostat_no_factorydata_ota_v1:
     platform_allow:
       - rd_rw612_bga
+      - frdm_rw612
     build_only: true
     tags: matter
     extra_args:
@@ -31,6 +35,7 @@ tests:
   sample.matter.thermostat_factorydata_ota_v0:
     platform_allow:
       - rd_rw612_bga
+      - frdm_rw612
     build_only: true
     tags: matter
     extra_args:
@@ -39,6 +44,7 @@ tests:
   sample.matter.thermostat_factorydata_ota_v1:
     platform_allow:
       - rd_rw612_bga
+      - frdm_rw612
     build_only: true
     tags: matter
     extra_args:
