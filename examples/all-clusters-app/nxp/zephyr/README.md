@@ -212,6 +212,17 @@ See
 
 <a name="ota-software-update"></a>
 
+### Build in release mode
+
+To build the example in release mode, you can add
+`-DEXTRA_CONF_FILE=prj_release.conf` in the west build command line.
+
+Example:
+
+```bash
+west build -b <board> -p  <path to example folder> -- -DEXTRA_CONF_FILE=prj_release.conf
+```
+
 ## OTA Software Update
 
 See
