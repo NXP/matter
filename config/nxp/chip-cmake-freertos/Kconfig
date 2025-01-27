@@ -88,20 +88,17 @@ choice CHIP_CRYPTO
 	config CHIP_CRYPTO_MBEDTLS
 		bool "CHIP MbeTLS crypto"
 		help
-			Enables the implementation of the Matter cryptographic operations that is
-			based on the mbedTLS crypto API.
+			Use mbedtls for the crypto.
 	
 	config CHIP_CRYPTO_PLATFORM
 		bool "CHIP platform crypto"
 		help
-			Enables the implementation of the Matter cryptographic operations that is
-			based on the platform crypto API.
+			Use platform crypto.
 
 	config CHIP_CRYPTO_PSA
 		bool "CHIP PSA crypto"
 		help
-			Enables the implementation of the Matter cryptographic operations that is
-			based on the PSA crypto API.
+			Use PSA API for crypto.
 endchoice
 
 config CHIP_USE_GENERATED_CONFIG
