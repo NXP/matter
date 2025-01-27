@@ -34,9 +34,6 @@
 namespace chip {
 namespace Logging {
 namespace Platform {
-#if (configSUPPORT_STATIC_ALLOCATION == 1)
-StaticSemaphore_t xLoggingSemaphoreBuffer;
-#endif
 
 /**
  * CHIP log output function.
@@ -44,13 +41,6 @@ StaticSemaphore_t xLoggingSemaphoreBuffer;
  */
 void LogV(const char * module, uint8_t category, const char * msg, va_list v)
 {
-#if (configSUPPORT_STATIC_ALLOCATION == 1)
-    static SemaphoreHandle_t xLoggingSemaphore = xSemaphoreCreateMutexStatic(&xLoggingSemaphoreBuffer);
-#else
-    static SemaphoreHandle_t xLoggingSemaphore = xSemaphoreCreateMutex();
-#endif
-    assert(xLoggingSemaphore != NULL);
-
     char formattedMsg[CHIP_CONFIG_LOG_MESSAGE_MAX_SIZE] = { 0 };
     size_t prefixLen;
 
@@ -87,9 +77,7 @@ void LogV(const char * module, uint8_t category, const char * msg, va_list v)
     /* Add CR+LF */
     snprintf(formattedMsg + prefixLen, sizeof(formattedMsg) - prefixLen, "%s", "\r\n");
 
-    xSemaphoreTake(xLoggingSemaphore, portMAX_DELAY);
     PRINTF("%s", formattedMsg);
-    xSemaphoreGive(xLoggingSemaphore);
 }
 
 /**
