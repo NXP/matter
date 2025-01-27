@@ -49,8 +49,6 @@
 
 extern "C" status_t CRYPTO_InitHardware(void);
 extern "C" void BOARD_InitAppConsole();
-extern "C" int mbedtls_platform_set_calloc_free(void *(*calloc_func)(size_t, size_t),
-                                                void (*free_func)(void *));
 
 extern "C" void vApplicationMallocFailedHook(void)
 {
