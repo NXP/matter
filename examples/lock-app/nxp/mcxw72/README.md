@@ -32,10 +32,10 @@ Please see [MCXW72 product page](https://www.nxp.com/products/processors-and-mic
 This reference app is using `matter-cli` to send commands
 to the board through a UART interface.
 
-| interface | role                               |
-| --------- | ---------------------------------- |
-| UART0     | Used for logs                      |
-| UART1     | Used for `matter-cli` and flashing |
+| interface | role                       |
+| --------- | -------------------------- |
+| UART0     | Used for logs and flashing |
+| UART1     | Used for `matter-cli`      |
 
 The user actions are summarised below:
 
@@ -46,13 +46,13 @@ The user actions are summarised below:
 | `matterfactoryreset`      | Initiate a factory reset |
 | `matterreset`             | Reset the device         |
 
-### Additional UART interface
+### Configure `matter-cli`
 
 You need a `USB-UART` bridge to make use of the second UART interface.
 The pin configuration is the following:
--  `JP11 pin 1` (UART0 TX)
--  `JP12 pin 1` (UART0 RX)
--  `J11  pin 4` (GND)
+-  `J3 pin 32` (UART1 TX)
+-  `J3 pin 34` (UART1 RX)
+-  `J18 pin 4` (GND)
 
 The state feedback is also provided through LED effects:
 
