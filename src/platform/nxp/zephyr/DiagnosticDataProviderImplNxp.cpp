@@ -89,20 +89,11 @@ CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiRssi(int8_t & rssi)
     return err;
 }
 
-CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiCurrentMaxRate(uint64_t & currentMaxRate)
-{
-    WiFiManager::WiFiInfo info;
-    CHIP_ERROR err = WiFiManager::Instance().GetWiFiInfo(info);
-    // mCurrentPhyRate Value in MB
-    currentMaxRate = info.mCurrentPhyRate * 1000000;
-    return err;
-}
-
 CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiBeaconLostCount(uint32_t & beaconLostCount)
 {
     WiFiManager::NetworkStatistics stats;
     CHIP_ERROR err  = WiFiManager::Instance().GetNetworkStatistics(stats);
-    beaconLostCount = stats.mBeaconsLostCount - mOldStats.beaconLostCount;
+    beaconLostCount = stats.mBeaconsLostCount;
     return err;
 }
 
@@ -110,7 +101,7 @@ CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiBeaconRxCount(uint32_t & beacon
 {
     WiFiManager::NetworkStatistics stats;
     CHIP_ERROR err = WiFiManager::Instance().GetNetworkStatistics(stats);
-    beaconRxCount  = stats.mBeaconsSuccessCount - mOldStats.beaconRxCount;
+    beaconRxCount  = stats.mBeaconsSuccessCount;
     return err;
 }
 
@@ -118,7 +109,7 @@ CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiPacketMulticastRxCount(uint32_t
 {
     WiFiManager::NetworkStatistics stats;
     CHIP_ERROR err         = WiFiManager::Instance().GetNetworkStatistics(stats);
-    packetMulticastRxCount = stats.mPacketMulticastRxCount - mOldStats.packetMulticastRxCount;
+    packetMulticastRxCount = stats.mPacketMulticastRxCount;
     return err;
 }
 
@@ -126,7 +117,7 @@ CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiPacketMulticastTxCount(uint32_t
 {
     WiFiManager::NetworkStatistics stats;
     CHIP_ERROR err         = WiFiManager::Instance().GetNetworkStatistics(stats);
-    packetMulticastTxCount = stats.mPacketMulticastTxCount - mOldStats.packetMulticastTxCount;
+    packetMulticastTxCount = stats.mPacketMulticastTxCount;
     return err;
 }
 
@@ -134,7 +125,7 @@ CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiPacketUnicastRxCount(uint32_t &
 {
     WiFiManager::NetworkStatistics stats;
     CHIP_ERROR err       = WiFiManager::Instance().GetNetworkStatistics(stats);
-    packetUnicastRxCount = stats.mPacketUnicastRxCount - mOldStats.packetUnicastRxCount;
+    packetUnicastRxCount = stats.mPacketUnicastRxCount;
     return err;
 }
 
@@ -142,37 +133,23 @@ CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiPacketUnicastTxCount(uint32_t &
 {
     WiFiManager::NetworkStatistics stats;
     CHIP_ERROR err       = WiFiManager::Instance().GetNetworkStatistics(stats);
-    packetUnicastTxCount = stats.mPacketUnicastTxCount - mOldStats.packetUnicastTxCount;
+    packetUnicastTxCount = stats.mPacketUnicastTxCount;
     return err;
+}
+
+CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiCurrentMaxRate(uint64_t & currentMaxRate)
+{
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 
 CHIP_ERROR DiagnosticDataProviderImplNxp::GetWiFiOverrunCount(uint64_t & overrunCount)
 {
-    WiFiManager::NetworkStatistics stats;
-    CHIP_ERROR err = WiFiManager::Instance().GetNetworkStatistics(stats);
-    overrunCount   = static_cast<uint64_t>(stats.mOverRunCount) - mOldStats.overrunCount;
-    return err;
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 
 CHIP_ERROR DiagnosticDataProviderImplNxp::ResetWiFiNetworkDiagnosticsCounts()
 {
-    /* NET_REQUEST_STATS_RESET_WIFI can be used with net_mgmt API to achieve this.
-     * NXP WiFi Driver doesn't support this command yet.
-     * Workaround to reset the statistics manually in the Matter layer.
-     */
-    WiFiManager::NetworkStatistics stats;
-    CHIP_ERROR err = WiFiManager::Instance().GetNetworkStatistics(stats);
-    if (err == CHIP_NO_ERROR)
-    {
-        mOldStats.beaconLostCount        = stats.mBeaconsLostCount;
-        mOldStats.beaconRxCount          = stats.mBeaconsSuccessCount;
-        mOldStats.packetMulticastRxCount = stats.mPacketMulticastRxCount;
-        mOldStats.packetMulticastTxCount = stats.mPacketMulticastTxCount;
-        mOldStats.packetUnicastRxCount   = stats.mPacketUnicastRxCount;
-        mOldStats.packetUnicastTxCount   = stats.mPacketUnicastTxCount;
-        mOldStats.overrunCount           = static_cast<uint64_t>(stats.mOverRunCount);
-    }
-    return err;
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
 }
 #endif
 
