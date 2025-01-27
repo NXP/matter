@@ -1,6 +1,6 @@
 {
   "fileFormat": 2,
-  "featureLevel": 104,
+  "featureLevel": 103,
   "creator": "zap",
   "keyValuePairs": [
     {
@@ -3730,16 +3730,14 @@
         "code": 45,
         "profileId": 259,
         "label": "MA-air-purifier",
-        "name": "MA-air-purifier",
-        "deviceTypeOrder": 0
+        "name": "MA-air-purifier"
       },
       "deviceTypes": [
         {
           "code": 45,
           "profileId": 259,
           "label": "MA-air-purifier",
-          "name": "MA-air-purifier",
-          "deviceTypeOrder": 0
+          "name": "MA-air-purifier"
         }
       ],
       "deviceVersions": [
@@ -3900,7 +3898,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "5",
+              "defaultValue": "4",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4819,16 +4817,14 @@
         "code": 44,
         "profileId": 259,
         "label": "MA-air-quality-sensor",
-        "name": "MA-air-quality-sensor",
-        "deviceTypeOrder": 0
+        "name": "MA-air-quality-sensor"
       },
       "deviceTypes": [
         {
           "code": 44,
           "profileId": 259,
           "label": "MA-air-quality-sensor",
-          "name": "MA-air-quality-sensor",
-          "deviceTypeOrder": 0
+          "name": "MA-air-quality-sensor"
         }
       ],
       "deviceVersions": [
@@ -4981,7 +4977,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "5",
+              "defaultValue": "4",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -8110,16 +8106,14 @@
         "code": 770,
         "profileId": 259,
         "label": "MA-tempsensor",
-        "name": "MA-tempsensor",
-        "deviceTypeOrder": 0
+        "name": "MA-tempsensor"
       },
       "deviceTypes": [
         {
           "code": 770,
           "profileId": 259,
           "label": "MA-tempsensor",
-          "name": "MA-tempsensor",
-          "deviceTypeOrder": 0
+          "name": "MA-tempsensor"
         }
       ],
       "deviceVersions": [
@@ -8280,7 +8274,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "5",
+              "defaultValue": "4",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -8637,16 +8631,14 @@
         "code": 775,
         "profileId": 259,
         "label": "MA-humiditysensor",
-        "name": "MA-humiditysensor",
-        "deviceTypeOrder": 0
+        "name": "MA-humiditysensor"
       },
       "deviceTypes": [
         {
           "code": 775,
           "profileId": 259,
           "label": "MA-humiditysensor",
-          "name": "MA-humiditysensor",
-          "deviceTypeOrder": 0
+          "name": "MA-humiditysensor"
         }
       ],
       "deviceVersions": [
@@ -8807,7 +8799,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "5",
+              "defaultValue": "4",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -9164,16 +9156,14 @@
         "code": 769,
         "profileId": 259,
         "label": "MA-thermostat",
-        "name": "MA-thermostat",
-        "deviceTypeOrder": 0
+        "name": "MA-thermostat"
       },
       "deviceTypes": [
         {
           "code": 769,
           "profileId": 259,
           "label": "MA-thermostat",
-          "name": "MA-thermostat",
-          "deviceTypeOrder": 0
+          "name": "MA-thermostat"
         }
       ],
       "deviceVersions": [
@@ -9334,7 +9324,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "5",
+              "defaultValue": "4",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -9732,7 +9722,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "8",
+              "defaultValue": "6",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,

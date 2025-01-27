@@ -55,25 +55,27 @@ static CHIP_ERROR cliRVCOpState(int argc, char * argv[])
         inputErr = true;
         goto exit;
     }
-	if (!strcmp(argv[0], "paused"))
+
+	if (!strcmp(argv[0], "pause"))
     {
         ChipLogDetail(Shell, "RVC opstate: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kPaused));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kPaused));
     }
+	
     else if (!strcmp(argv[0], "resume"))
     {
         ChipLogDetail(Shell, "RVC opstate: Set to %s state", argv[0]);
-        RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kRunning));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kRunning));
     }
-    else if (!strcmp(argv[0], "stopped"))
+    else if (!strcmp(argv[0], "stop"))
     {
         ChipLogDetail(Shell, "RVC opstate: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kStopped));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kStopped));
     }
-	else if (!strcmp(argv[0], "running"))
+	else if (!strcmp(argv[0], "run"))
     {
         ChipLogDetail(Shell, "RVC opstate: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kRunning));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kRunning));
     }
 	else if (!strcmp(argv[0], "seekingchanger"))
     {
@@ -85,10 +87,15 @@ static CHIP_ERROR cliRVCOpState(int argc, char * argv[])
         ChipLogDetail(Shell, "RVC opstate: Set to %s state", argv[0]);
 		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kCharging));
     }
-	else if (!strcmp(argv[0], "docked"))
+	else if (!strcmp(argv[0], "dock"))
     {
         ChipLogDetail(Shell, "RVC opstate: Set to %s state", argv[0]);
 		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kDocked));
+    }
+	else if (!strcmp(argv[0], "error"))
+    {
+        ChipLogDetail(Shell, "RVC opstate: Set to %s state", argv[0]);
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
     }
     else
     {
@@ -194,73 +201,73 @@ static CHIP_ERROR cliRVCErrorState(int argc, char * argv[])
 	if (!strcmp(argv[0], "noerror"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kNoError);
+		errcode.errorStateID = to_underlying(OperationalState::ErrorStateEnum::kNoError);
     }
 	
     else if (!strcmp(argv[0], "unabletostartorresume"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
-		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kUnableToStartOrResume);
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
+		errcode.errorStateID = to_underlying(OperationalState::ErrorStateEnum::kUnableToStartOrResume);
     }
     else if (!strcmp(argv[0], "unabletocompleteoperation"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
-		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kUnableToCompleteOperation);
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
+		errcode.errorStateID = to_underlying(OperationalState::ErrorStateEnum::kUnableToCompleteOperation);
     }
 	else if (!strcmp(argv[0], "commandinvalidinstate"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
-		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kCommandInvalidInState);
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
+		errcode.errorStateID = to_underlying(OperationalState::ErrorStateEnum::kCommandInvalidInState);
     }
 	else if (!strcmp(argv[0], "failedtofindchargingdock"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kFailedToFindChargingDock);
     }
 	else if (!strcmp(argv[0], "stuck"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kStuck);
     }
 	else if (!strcmp(argv[0], "dustbinmissing"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kDustBinMissing);
     }
 	else if (!strcmp(argv[0], "dustbinfull"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kDustBinFull);
     }
 	else if (!strcmp(argv[0], "watertankempty"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kWaterTankEmpty);
     }
 	else if (!strcmp(argv[0], "watertankmissing"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kWaterTankMissing);
     }
 	else if (!strcmp(argv[0], "watertanklidopen"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kWaterTankLidOpen);
     }
 	else if (!strcmp(argv[0], "mopcleaningpadmissing"))
     {
         ChipLogDetail(Shell, "RVC error state: Set to %s state", argv[0]);
-		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(Clusters::RvcOperationalState::OperationalStateEnum::kError));
+		RvcOperationalState::GetRvcOperationalStateInstance()->SetOperationalState(to_underlying(OperationalState::OperationalStateEnum::kError));
 		errcode.errorStateID = to_underlying(RvcOperationalState::ErrorStateEnum::kMopCleaningPadMissing);
     }
     else
@@ -297,7 +304,7 @@ void RVCApp::AppTask::AppMatter_RegisterCustomCliCommands()
     static const shell_command_t kCommands[] = {
         { .cmd_func = cliRVCOpState,
           .cmd_name = "rvcopstate",
-          .cmd_help = "Set RVC operational state. Usage:[paused|resume|stopped|running|seekingchanger|charging|docked] " },
+          .cmd_help = "Set RVC operational state. Usage:[pause|resume|stop|run|seekingchanger|charging|dock|error] " },
 		{ .cmd_func = cliRVCRunMode,
           .cmd_name = "rvcrunmode",
           .cmd_help = "Set RVC run mode. Usage:[idle|cleaning|mapping] " },

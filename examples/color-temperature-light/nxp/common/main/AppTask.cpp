@@ -21,6 +21,8 @@
 #include "AppTask.h"
 #include "CHIPDeviceManager.h"
 #include "ICDUtil.h"
+#include "app/clusters/occupancy-sensor-server/occupancy-hal.h"
+#include <app/clusters/occupancy-sensor-server/occupancy-sensor-server.h>
 #include <app/InteractionModelEngine.h>
 #include <app/util/attribute-storage.h>
 #include <platform/CHIPDeviceLayer.h>
@@ -43,31 +45,36 @@ using namespace ::chip::Credentials;
 using namespace ::chip::DeviceLayer;
 using namespace ::chip::DeviceManager;
 using namespace ::chip::app::Clusters;
+using namespace chip::app::Clusters::OccupancySensing;
+using namespace chip::app::Clusters::OccupancySensing::Structs;
 
-static CHIP_ERROR cliOnOffCommandHandler(int argc, char * argv[])
+static CHIP_ERROR occupancyCommandHandler(int argc, char * argv[])
 {
     if ((argc != 1) && (argc != 2))
     {
         ChipLogError(Shell, "Invalid Argument");
         return CHIP_ERROR_INVALID_ARGUMENT;
     }
-    if (!strcmp(argv[0], "on"))
+    if (!strcmp(argv[0], "present"))
     {
-        ChipLogDetail(Shell, "Set ON");
-        LightingMgr().InitiateAction(0, LightingManager::TURNON_ACTION);
+        ChipLogDetail(Shell, "OpOccupancy Sensor : Set to %s state", argv[0]);
+		LightingApp::AppTask::GetDefaultInstance().OccupancyHandler(true);
+        uint16_t * holdTime = GetHoldTimeForEndpoint(1);
+		chip::DeviceLayer::SystemLayer().StartTimer(chip::System::Clock::Seconds16(*holdTime), LightingApp::AppTask::OccupancyPresentTimerHandler, nullptr);
     }
-	else if (!strcmp(argv[0], "off"))
+    else if (!strcmp(argv[0], "clear"))
     {
-        ChipLogDetail(Shell, "Set OFF");
-        LightingMgr().InitiateAction(0, LightingManager::TURNOFF_ACTION);
+        ChipLogDetail(Shell, "OpOccupancy Sensor : Set to %s state", argv[0]);
+        LightingApp::AppTask::GetDefaultInstance().OccupancyHandler(false);
     }
     else
     {
-        ChipLogError(Shell, "Invalid command");
+        ChipLogError(Shell, "Invalid State to set");
         return CHIP_ERROR_INVALID_ARGUMENT;
     }
     return CHIP_NO_ERROR;
 }
+
 
 void LightingApp::AppTask::PreInitMatterStack()
 {
@@ -91,9 +98,9 @@ void LightingApp::AppTask::AppMatter_RegisterCustomCliCommands()
 #ifdef ENABLE_CHIP_SHELL
     /* Register application commands */
     static const shell_command_t kCommands[] = {
-        { .cmd_func = cliOnOffCommandHandler,
-          .cmd_name = "onoff",
-          .cmd_help = "Set the OnOff State, usage: onoff on|off" },
+        { .cmd_func = occupancyCommandHandler,
+          .cmd_name = "occupancy",
+          .cmd_help = "Set the occupancy sensor State, present|clear" },
     };
     Engine::Root().RegisterCommands(kCommands, sizeof(kCommands) / sizeof(kCommands[0]));
 #endif
@@ -136,7 +143,6 @@ void LightingApp::AppTask::ActionCompleted(LightingManager::Action_t aAction)
         ChipLogProgress(DeviceLayer, "Turn off action has been completed");
     }
 
-    LightingApp::AppTask::GetDefaultInstance().UpdateClusterState();
     LightingApp::AppTask::GetDefaultInstance().mFunction = kFunction_NoneSelected;
 }
 
@@ -150,5 +156,60 @@ void LightingApp::AppTask::UpdateClusterState(void)
     {
         ChipLogError(DeviceLayer, "ERR: updating on/off state failed.");
     }
-    ChipLogProgress(DeviceLayer, "Update OnOff Cluster State completed");
+}
+
+void LightingApp::AppTask::OccupancyEventHandler(const AppEvent & aEvent)
+{
+    if (aEvent.Type != AppEvent::kEventType_Occupancy)
+    {
+        ChipLogError(DeviceLayer, "A Non Occupancy type received");
+        return;
+    }
+
+    uint8_t attributeValue = aEvent.OccupancytEvent.Present ? 1 : 0;
+
+    ChipLogProgress(DeviceLayer, "################# Occupancy sensor: %u #################", attributeValue);
+
+	if(attributeValue){
+		PlatformMgr().ScheduleWork(UpdateOccupancyPresentStateInternal, 0);
+	}
+	else{
+		PlatformMgr().ScheduleWork(UpdateOccupancyClearStateInternal, 0);
+	}
+}
+
+void LightingApp::AppTask::UpdateOccupancyPresentStateInternal(intptr_t arg)
+{
+    uint8_t newValue = 1;
+    // write new occupancy value
+    Protocols::InteractionModel::Status status = OccupancySensing::Attributes::Occupancy::Set(1, newValue);
+    if (status != Protocols::InteractionModel::Status::Success)
+    {
+        ChipLogError(NotSpecified, "ERR: updating occupancy status value failed");
+    }
+}
+
+void LightingApp::AppTask::UpdateOccupancyClearStateInternal(intptr_t arg)
+{
+    uint8_t newValue = 0;
+    // write new occupancy value
+    Protocols::InteractionModel::Status status = OccupancySensing::Attributes::Occupancy::Set(1, newValue);
+    if (status != Protocols::InteractionModel::Status::Success)
+    {
+        ChipLogError(NotSpecified, "ERR: updating occupancy status value failed");
+    }
+}
+
+void LightingApp::AppTask::OccupancyHandler(bool present)
+{
+    AppEvent occupancy_event                = {};
+    occupancy_event.Type                    = AppEvent::kEventType_Occupancy;
+    occupancy_event.OccupancytEvent.Present = present;
+    occupancy_event.Handler                 = OccupancyEventHandler;
+    LightingApp::AppTask::GetDefaultInstance().PostEvent(occupancy_event);
+}
+
+void LightingApp::AppTask::OccupancyPresentTimerHandler(System::Layer * systemLayer, void * appState)
+{
+	LightingApp::AppTask::GetDefaultInstance().OccupancyHandler(false);
 }
