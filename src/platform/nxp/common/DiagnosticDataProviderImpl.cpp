@@ -363,7 +363,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiRssi(int8_t & rssi)
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiBeaconLostCount(uint32_t & beaconLostCount)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
@@ -377,7 +377,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiBeaconLostCount(uint32_t & beaconL
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiBeaconRxCount(uint32_t & beaconRxCount)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
@@ -391,7 +391,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiBeaconRxCount(uint32_t & beaconRxC
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketMulticastRxCount(uint32_t & packetMulticastRxCount)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
@@ -405,7 +405,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketMulticastRxCount(uint32_t & 
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketMulticastTxCount(uint32_t & packetMulticastTxCount)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
@@ -419,7 +419,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketMulticastTxCount(uint32_t & 
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastTxCount(uint32_t & packetUnicastTxCount)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
@@ -433,7 +433,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastTxCount(uint32_t & pa
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastRxCount(uint32_t & packetUnicastRxCount)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
@@ -447,7 +447,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastRxCount(uint32_t & pa
 
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiOverrunCount(uint64_t & overrunCount)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
@@ -461,7 +461,7 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiOverrunCount(uint64_t & overrunCou
 
 CHIP_ERROR DiagnosticDataProviderImpl::ResetWiFiNetworkDiagnosticsCounts(void)
 {
-#ifdef CONFIG_WIFI_GET_LOG
+#if CONFIG_WIFI_GET_LOG
     wlan_pkt_stats_t stats;
     int ret = wlan_get_log(&stats);
     if (ret == WM_SUCCESS)
