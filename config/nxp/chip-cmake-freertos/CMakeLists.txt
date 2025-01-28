@@ -55,6 +55,9 @@ matter_add_gn_arg_bool("nxp_use_low_power" CONFIG_NXP_USE_LOW_POWER)
 matter_add_gn_arg_bool("nxp_use_plain_dac_key" CONFIG_NXP_USE_PLAIN_DAC_KEY)
 matter_add_gn_arg_bool("nxp_use_smu2_dynamic" CONFIG_NXP_USE_SMU2)
 
+# Remove default spec config from the build
+matter_add_gn_arg_list("default_configs_specs" " ")
+
 if(CONFIG_CHIP_NVM_COMPONENT_NVS)
     matter_add_gn_arg_string("nxp_nvm_component" "nvs")
 elseif(CONFIG_CHIP_NVM_COMPONENT_LITTLEFS)
