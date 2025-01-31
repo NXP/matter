@@ -111,7 +111,7 @@ config CHIP_DEVICE_SOFTWARE_VERSION
 
 config CHIP_DEVICE_SOFTWARE_VERSION_STRING
 	string "Software version string"
-	default "1.0"
+	default "1.4"
 	help
 	  Provides a human-readable representation of the software version number.
 	  This must be an ASCII string of a length between 1 and 64 characters. The
@@ -306,6 +306,12 @@ config CHIP_PROJECT_CONFIG
 	  Matter's generic configuration files will include the project
 	  configuration file that can be used to override any of Matter's default or
 	  platform-specific settings.
+
+config CHIP_STACK_LOCK_TRACKING
+	string "Matter stack lock tracking"
+	default none
+	help
+	  Enable Matter stack lock tracking
 
 if CHIP_ENABLE_ICD_SUPPORT
 
@@ -521,6 +527,7 @@ endif # CHIP
 if BT
 config CHIP_CUSTOM_BLE_ADV_DATA
 	bool "Use custom BLE advertising data"
+	default y
 	help
 	  Customization of BLE advertising data at the application layer
 endif

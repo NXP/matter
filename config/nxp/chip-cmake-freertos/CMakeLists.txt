@@ -24,6 +24,10 @@ if(NOT GN_ROOT_TARGET)
     get_filename_component(GN_ROOT_TARGET ${CHIP_ROOT}/config/nxp/chip-gn-freertos REALPATH)
 endif()
 
+if(NOT OT_NXP_ROOT)
+    get_filename_component(OT_NXP_ROOT ${CHIP_ROOT}/third_party/openthread/ot-nxp REALPATH)
+endif()
+
 # Include common NXP helpers for build & pre/post-build process
 include(${CHIP_ROOT}/third_party/nxp/nxp_matter_support/cmake/build_helpers.cmake)
 
@@ -58,6 +62,10 @@ matter_add_gn_arg_bool("nxp_use_smu2_dynamic" CONFIG_NXP_USE_SMU2)
 # Remove default spec config from the build
 matter_add_gn_arg_list("default_configs_specs" " ")
 
+# Allows to set chip_stack_lock_tracking level
+# Required for freeRTOS build in case default value needs to be set to "none" for optimization
+matter_add_gn_arg_string("chip_stack_lock_tracking" "${CONFIG_CHIP_STACK_LOCK_TRACKING}")
+
 # OT specific gn arguments
 if(CONFIG_NET_L2_OPENTHREAD)
     matter_add_gn_arg_string("openthread_root" "${CHIP_ROOT}/${CONFIG_OT_ROOT}")
@@ -66,6 +74,9 @@ if(CONFIG_NET_L2_OPENTHREAD)
     matter_add_gn_arg_string("openthread_core_config_platform_check_file" ${CONFIG_OT_CORE_CONFIG_PLATFORM_CHECK_FILE})
     matter_add_gn_arg_string("openthread_external_platform" "${CHIP_ROOT}/third_party/openthread/platforms/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}:${CONFIG_OT_EXTERNAL_PLATFORM}")
     matter_add_gn_arg_list("openthread_core_config_deps" "\"${CHIP_ROOT}/${CONFIG_OT_CORE_CONFIG_DEPS}\"")
+    matter_add_gn_arg_bool("chip_enable_secondary_nwk_if" CONFIG_CHIP_SECONDARY_NETWORK_IF)
+    matter_add_gn_arg("chip_device_config_thread_network_endpoint_id" ${CONFIG_CHIP_THREAD_NETWORK_ENDPOINT_ID})
+    matter_add_gn_arg_string("nxp_ot_spinel_interface_link" ${CONFIG_OT_NXP_SPINEL_INTERFACE_LINK})
 endif()
 
 if(CONFIG_CHIP_NVM_COMPONENT_NVS)
@@ -122,14 +133,26 @@ endif()
 
 # Add OT include directories to be visible from the application
 if(CONFIG_NET_L2_OPENTHREAD)
-    target_include_directories(chip
-        INTERFACE
+    target_include_directories(chip INTERFACE
         ${CHIP_ROOT}/${CONFIG_OT_ROOT}/include
         ${CHIP_ROOT}/${CONFIG_OT_ROOT}/examples/platforms
     )
-endif() # CONFIG_NET_L2_OPENTHREAD
+endif()
 
-#**************************************************************************************
+if(CONFIG_NET_L2_OPENTHREAD AND CONFIG_CHIP_WIFI)
+    target_include_directories(chip INTERFACE
+        ${OT_NXP_ROOT}/src/common/br
+    )
+
+    if(CONFIG_CHIP_LIB_SHELL)
+        # Expose addons_cli.h for the application
+        target_include_directories(chip INTERFACE
+            ${OT_NXP_ROOT}/examples/utils/cli_addons
+        )
+    endif()
+endif()
+
+# **************************************************************************************
 # Pre-build instructions
 # **************************************************************************************
 nxp_pre_build_process()
