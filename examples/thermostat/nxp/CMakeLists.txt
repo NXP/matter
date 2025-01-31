@@ -1,17 +1,17 @@
 #
-#   Copyright (c) 2024 Project CHIP Authors
+# Copyright (c) 2024 Project CHIP Authors
 #
-#   Licensed under the Apache License, Version 2.0 (the "License");
-#   you may not use this file except in compliance with the License.
-#   You may obtain a copy of the License at
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-#       http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
-#   Unless required by applicable law or agreed to in writing, software
-#   distributed under the License is distributed on an "AS IS" BASIS,
-#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#   See the License for the specific language governing permissions and
-#   limitations under the License.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 #
 
 # ****************************************************************
@@ -81,20 +81,21 @@ target_sources(app
     ${ALL_CLUSTERS_COMMON_DIR}/src/binding-handler.cpp
 )
 
-if (CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA OR CONFIG_CHIP_ENABLE_EL2GO_FACTORY_DATA)
+if(CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA OR CONFIG_CHIP_ENABLE_EL2GO_FACTORY_DATA)
     target_sources(app PRIVATE
         ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataExample.cpp
     )
-    if (CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA)
+
+    if(CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA)
         target_compile_definitions(app PRIVATE
             ENABLE_SECURE_WHOLE_FACTORY_DATA
         )
-        target_compile_definitions(app 
+        target_compile_definitions(app
             PUBLIC
             EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderEncImpl.h\"
         )
     else()
-        target_compile_definitions(app 
+        target_compile_definitions(app
             PUBLIC
             EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderEl2GoImpl.h\"
         )
@@ -103,35 +104,57 @@ else()
     target_sources(app PRIVATE
         ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataDefaultImpl.cpp
     )
-    target_compile_definitions(app 
+    target_compile_definitions(app
         PUBLIC
         EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h\"
     )
 endif()
 
-target_compile_definitions(app 
-        PUBLIC
-        EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h\"
-)
+if(CONFIG_DIAG_LOGS_DEMO)
+    target_sources(app PRIVATE
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/diagnostic_logs/source/DiagnosticLogsDemo.cpp
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/diagnostic_logs/source/DiagnosticLogsProviderDelegateImpl.cpp
+    )
+
+    target_include_directories(app PRIVATE
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/diagnostic_logs/include
+    )
+endif()
 
 if(CONFIG_CHIP_CUSTOM_BLE_ADV_DATA)
     target_sources(app PRIVATE
-                    ${THERMOSTAT_NXP_COMMON_DIR}/main/BleZephyrManagerApp.cpp
+        ${THERMOSTAT_NXP_COMMON_DIR}/main/BleZephyrManagerApp.cpp
     )
 else()
     target_sources(app PRIVATE
-                    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/source/BLEApplicationManagerEmpty.cpp
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/source/BLEApplicationManagerEmpty.cpp
     )
 endif()
 
-if(CONFIG_CHIP_WIFI)
+if(CONFIG_CHIP_WIFI AND CONFIG_NET_L2_OPENTHREAD)
+    chip_configure_data_model(app
+        INCLUDE_SERVER
+        ZAP_FILE ${THERMOSTAT_NXP_ZAP_DIR}/thermostat_matter_br.zap
+    )
+elseif(CONFIG_CHIP_WIFI AND NOT CONFIG_NET_L2_OPENTHREAD)
     chip_configure_data_model(app
         INCLUDE_SERVER
         ZAP_FILE ${THERMOSTAT_NXP_ZAP_DIR}/thermostat_matter_wifi.zap
     )
+elseif(CONFIG_NET_L2_OPENTHREAD AND NOT CONFIG_CHIP_WIFI)
+    chip_configure_data_model(app
+        INCLUDE_SERVER
+        ZAP_FILE ${THERMOSTAT_NXP_ZAP_DIR}/thermostat_matter_thread.zap
+    )
 endif()
 
-if (CONFIG_CHIP_LIB_SHELL)
+if(CONFIG_CHIP_WIFI AND CONFIG_NET_L2_OPENTHREAD)
+    target_compile_definitions(app PRIVATE
+        CHIP_DEVICE_CONFIG_ENABLE_TBR=1
+    )
+endif()
+
+if(CONFIG_CHIP_LIB_SHELL)
     target_compile_definitions(app PRIVATE
         ENABLE_CHIP_SHELL
     )
@@ -150,7 +173,7 @@ if (CONFIG_CHIP_LIB_SHELL)
     )
 endif()
 
-if (CONFIG_CHIP_OTA_REQUESTOR)
+if(CONFIG_CHIP_OTA_REQUESTOR)
     target_include_directories(app PRIVATE
         ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/include
     )
