@@ -23,7 +23,16 @@ if CHIP
 config CHIP_OPERATIONAL_TIME_SAVE_INTERVAL
 	default 1
 
+config CHIP_DEVICE_CONFIG_ENABLE_SED
+	default y if CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW72
+
 if CHIP_FACTORY_DATA
+
+config CHIP_DEVICE_DISCRIMINATOR
+	default 2560 #0xA00
+
+config CHIP_DEVICE_SPAKE2_PASSCODE
+	default 14014
 
 config CHIP_DEVICE_VENDOR_ID
 	default 4151 # 0x1037
@@ -34,6 +43,46 @@ config CHIP_DEVICE_MANUFACTURING_DATE
 config CHIP_DEVICE_PRODUCT_ID
 	default 41510 if CHIP_NXP_PLATFORM_RW61X
 	default 41511 if CHIP_NXP_PLATFORM_RT1170
+	default 41505 if CHIP_NXP_PLATFORM_K32W1
+	default 41985 if CHIP_NXP_PLATFORM_MCXW71 
+	default 42241 if CHIP_NXP_PLATFORM_MCXW72
+
+config CHIP_DEVICE_ROTATING_DEVICE_UID
+	default "00112233445566778899aabbccddeeff"
+
+config CHIP_DEVICE_SERIAL_NUMBER
+	default "12345678"
+
+config CHIP_DEVICE_PRODUCT_COLOR
+	default "Green"
+
+config CHIP_DEVICE_PRODUCT_FINISH
+	default "Matte"
+
+config CHIP_DEVICE_PRODUCT_URL
+	default "https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth-plus-802-15-4/wireless-mcu-with-integrated-tri-radiobr1x1-wi-fi-6-plus-bluetooth-low-energy-5-3-802-15-4:RW612" if CHIP_NXP_PLATFORM_RW61X
+	default "https://www.nxp.com/products/processors-and-microcontrollers/arm-microcontrollers/i-mx-rt-crossover-mcus/i-mx-rt1170-1-ghz-crossover-mcu-with-arm-cortex-cores:i.MX-RT1170" if CHIP_NXP_PLATFORM_RT1170
+	default "https://www.nxp.com/products/i.MX-RT1060" if CHIP_NXP_PLATFORM_RT1060
+	default "https://www.nxp.com/products/K32W148" if CHIP_NXP_PLATFORM_K32W1
+	default "https://www.nxp.com/products/MCX-W71X" if CHIP_NXP_PLATFORM_MCXW71
+	default "https://www.nxp.com/products/MCX-W72X" if CHIP_NXP_PLATFORM_MCXW72
+
+
+config CHIP_DEVICE_PRODUCT_LABEL
+	default "RW612" if CHIP_NXP_PLATFORM_RW61X
+	default "RT1170" if CHIP_NXP_PLATFORM_RT1170
+	default "RT1060" if CHIP_NXP_PLATFORM_RT1060
+	default "K32W148" if CHIP_NXP_PLATFORM_K32W1
+	default "MCXW71X" if CHIP_NXP_PLATFORM_MCXW71
+	default "MCXW72X" if CHIP_NXP_PLATFORM_MCXW72
+
+config CHIP_DEVICE_PART_NUMBER
+	default "RW612" if CHIP_NXP_PLATFORM_RW61X
+	default "RT1170" if CHIP_NXP_PLATFORM_RT1170
+	default "RT1060" if CHIP_NXP_PLATFORM_RT1060
+	default "K32W148" if CHIP_NXP_PLATFORM_K32W1
+	default "MCXW71X" if CHIP_NXP_PLATFORM_MCXW71
+	default "MCXW72X" if CHIP_NXP_PLATFORM_MCXW72
 
 endif # CHIP_FACTORY_DATA
 
@@ -43,6 +92,19 @@ config CHIP_LOG_SIZE_OPTIMIZATION
 # Enable extended discovery
 config CHIP_EXTENDED_DISCOVERY
 	default y
+
+config HAVE_LWIP
+	default n if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+
+config CHIP_ENABLE_PAIRING_AUTOSTART
+	default n if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+
+if CHIP_OTA_REQUESTOR
+
+config CHIP_OTA_IMAGE_BUILD
+	default y if CHIP_NXP_PLATFORM_RW61X || CHIP_NXP_PLATFORM_RT1060 || CHIP_NXP_PLATFORM_RT1170
+
+endif # CHIP_OTA_REQUESTOR
 
 # Include defaults for SDK Kconfig
 rsource "../../../third_party/nxp/nxp_matter_support/cmake/Kconfig.defconfig"

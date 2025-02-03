@@ -81,6 +81,7 @@ config OT_NXP_PLATFORM_FOLDER
 
 config OT_NXP_SPINEL_INTERFACE_LINK
 	string "spinel interface link"
+	default "hdlc" if CHIP_NXP_PLATFORM_RW61X
 	default "spi"
 	help
 		Define the spinel interface used for host transceiver communication

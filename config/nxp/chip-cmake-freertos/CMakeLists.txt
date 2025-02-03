@@ -57,7 +57,8 @@ matter_add_gn_arg_bool("nxp_enable_matter_cli" CONFIG_CHIP_LIB_SHELL)
 matter_add_gn_arg_bool("nxp_enable_pairing_autostart" CONFIG_CHIP_ENABLE_PAIRING_AUTOSTART)
 matter_add_gn_arg_bool("nxp_use_low_power" CONFIG_NXP_USE_LOW_POWER)
 matter_add_gn_arg_bool("nxp_use_plain_dac_key" CONFIG_NXP_USE_PLAIN_DAC_KEY)
-matter_add_gn_arg_bool("nxp_use_smu2_dynamic" CONFIG_NXP_USE_SMU2)
+matter_add_gn_arg_bool("nxp_use_smu2_dynamic" CONFIG_NXP_USE_SMU2_DYNAMIC)
+matter_add_gn_arg_bool("nxp_use_smu2_static" CONFIG_NXP_USE_SMU2_STATIC)
 
 # Remove default spec config from the build
 matter_add_gn_arg_list("default_configs_specs" " ")
@@ -74,9 +75,12 @@ if(CONFIG_NET_L2_OPENTHREAD)
     matter_add_gn_arg_string("openthread_core_config_platform_check_file" ${CONFIG_OT_CORE_CONFIG_PLATFORM_CHECK_FILE})
     matter_add_gn_arg_string("openthread_external_platform" "${CHIP_ROOT}/third_party/openthread/platforms/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}:${CONFIG_OT_EXTERNAL_PLATFORM}")
     matter_add_gn_arg_list("openthread_core_config_deps" "\"${CHIP_ROOT}/${CONFIG_OT_CORE_CONFIG_DEPS}\"")
-    matter_add_gn_arg_bool("chip_enable_secondary_nwk_if" CONFIG_CHIP_SECONDARY_NETWORK_IF)
     matter_add_gn_arg("chip_device_config_thread_network_endpoint_id" ${CONFIG_CHIP_THREAD_NETWORK_ENDPOINT_ID})
     matter_add_gn_arg_string("nxp_ot_spinel_interface_link" ${CONFIG_OT_NXP_SPINEL_INTERFACE_LINK})
+endif()
+
+if(CONFIG_CHIP_SECONDARY_NETWORK_IF)
+    matter_add_gn_arg_bool("chip_enable_secondary_nwk_if" CONFIG_CHIP_SECONDARY_NETWORK_IF)
 endif()
 
 if(CONFIG_CHIP_NVM_COMPONENT_NVS)
@@ -125,10 +129,16 @@ if(NOT CONFIG_CHIP_BUILD_APP_WITH_GN)
     )
 endif()
 
-if(CONFIG_CHIP_DEVICE_USE_ZEPHYR_BLE)
-    target_compile_definitions(chip INTERFACE
-        EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/common/ble_zephyr/BLEManagerImpl.h\"
-    )
+if(CONFIG_BT)
+    if(CONFIG_CHIP_DEVICE_USE_ZEPHYR_BLE)
+        target_compile_definitions(chip INTERFACE
+            EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/common/ble_zephyr/BLEManagerImpl.h\"
+        )
+    else()
+        target_compile_definitions(chip INTERFACE
+            EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/BLEManagerImpl.h\"
+        )
+    endif()
 endif()
 
 # Add OT include directories to be visible from the application

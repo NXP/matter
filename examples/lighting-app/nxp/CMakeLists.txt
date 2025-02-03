@@ -18,131 +18,72 @@ cmake_minimum_required(VERSION 3.30)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-get_filename_component(CHIP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../../../ REALPATH)
-get_filename_component(GEN_DIR ${CHIP_ROOT}/zzz_generated/ REALPATH)
-get_filename_component(OPENTHREAD_ROOT ${CHIP_ROOT}/third_party/openthread/repo REALPATH)
+# Retrieve CHIP_ROOT if provided
+if (DEFINED CHIP_ROOT)
+    get_filename_component(CHIP_ROOT ${CHIP_ROOT} ABSOLUTE)
+else()
+    get_filename_component(CHIP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../../../ REALPATH)
+endif()
 
+# Export CHIP_ROOT as an environment variable to be recognized by Kconfig
+set(ENV{CHIP_ROOT} ${CHIP_ROOT})
+
+get_filename_component(GEN_DIR ${CHIP_ROOT}/zzz_generated/ REALPATH)
+get_filename_component(NXP_EXAMPLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/common REALPATH)
+get_filename_component(NXP_EXAMPLE_ZAP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/zap REALPATH)
+get_filename_component(EXAMPLE_PLATFORM_NXP_COMMON_DIR ${CHIP_ROOT}/examples/platform/nxp/common REALPATH)
+get_filename_component(NXP_MATTER_SUPPORT_DIR ${CHIP_ROOT}/third_party/nxp/nxp_matter_support REALPATH)
+
+# Add the CHIP stack & NXP port libs as an external module
 list(APPEND EXTRA_MCUX_MODULES ${CHIP_ROOT}/config/nxp/chip-cmake-freertos)
 
+# If CONF_FILE_NAME is provided, append its full path to CONF_FILE
+if (DEFINED CONF_FILE_NAME)
+    set(CONF_FILE ${CONF_FILE} ${CHIP_ROOT}/examples/platform/nxp/config/${CONF_FILE_NAME})
+endif()
+
+# Add application prj.conf & Kconfig
 set(CONF_FILE ${CONF_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/prj.conf)
 
 set(KCONFIG_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/Kconfig)
 
+# Load the MCUX SDK package
 find_package(McuxSDK 3.0.0)
 
 # Get compiler flags and includes and pass them to CHIP target
 list(APPEND CONFIG_CHIP_EXTERNAL_TARGETS McuxSDK)
 
-get_filename_component(LIGHTING_APP_NXP_COMMON_DIR ${CHIP_ROOT}/examples/lighting-app/nxp/common REALPATH)
-get_filename_component(LIGHTING_APP_NXP_PLATFORM_DIR ${CHIP_ROOT}/examples/lighting-app/nxp/${CONFIG_CHIP_NXP_APP_FOLDER_NAME} REALPATH)
-get_filename_component(EXAMPLE_PLATFORM_NXP_COMMON_DIR ${CHIP_ROOT}/examples/platform/nxp/common REALPATH)
-get_filename_component(EXAMPLE_PLATFORM_NXP_PLATFORM_DIR ${CHIP_ROOT}/examples/platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME} REALPATH)
-
-if(EXISTS ${EXAMPLE_PLATFORM_NXP_PLATFORM_DIR}/util/LedOnOff.cpp)
-    set(LED_ON_OFF_PATH ${EXAMPLE_PLATFORM_NXP_PLATFORM_DIR}/util/LedOnOff.cpp)
-else()
-    # Use the example provided by mcxw71_k32w1 platform until a better common solution is proposed.
-    set(LED_ON_OFF_PATH ${EXAMPLE_PLATFORM_NXP_PLATFORM_DIR}/../mcxw71_k32w1/util/LedOnOff.cpp)
+if (NOT DEFINED NXP_SDK_RECONFIG_CMAKE_DIR)
+    get_filename_component(NXP_SDK_RECONFIG_CMAKE_DIR ${NXP_MATTER_SUPPORT_DIR}/examples/platform/${CONFIG_CHIP_NXP_PLATFORM_FAMILY} REALPATH)
 endif()
 
-if(EXISTS ${EXAMPLE_PLATFORM_NXP_PLATFORM_DIR}/ota/OtaUtils.cpp)
-    set(OTA_UTILS_PATH ${EXAMPLE_PLATFORM_NXP_PLATFORM_DIR}/ota/OtaUtils.cpp)
-else()
-    # Use the example provided by mcxw71_k32w1 platform until a common solution is proposed.
-    set(OTA_UTILS_PATH ${EXAMPLE_PLATFORM_NXP_PLATFORM_DIR}/../mcxw71_k32w1/ota/OtaUtils.cpp)
-endif()
-
-# Include the nxp_sdk_reconfigure.cmake to customize the SDK for Matter application
-include(${CHIP_ROOT}/third_party/nxp/nxp_matter_support/examples/platform/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/nxp_sdk_reconfig.cmake)
+# Include the nxp_sdk_reconfig.cmake to customize the SDK for Matter application
+include(${NXP_SDK_RECONFIG_CMAKE_DIR}/nxp_sdk_reconfig.cmake)
 
 project(chip-nxp-lighting-app-example)
-
-target_compile_definitions(app PRIVATE
-    APP_QUEUE_TICKS_TO_WAIT=pdMS_TO_TICKS\(10\)
-    EXTERNAL_FACTORY_DATA_PROVIDER_HEADER=\"platform/nxp/common/factory_data/legacy/FactoryDataProvider.h\"
-    EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/BLEManagerImpl.h\"
-)
-
-if (CONFIG_CHIP_OTA_REQUESTOR AND (CONFIG_CHIP_NXP_PLATFORM_K32W1 OR CONFIG_CHIP_NXP_PLATFORM_MCXW71))
-    target_compile_definitions(app PRIVATE
-        # The status LED and the external flash CS pin are wired together. The OTA image writing may fail if used together.
-        LED_MANAGER_ENABLE_STATUS_LED=0
-    )
-endif()
 
 #**********************************************************
 # Add Application files to the build
 include(${CHIP_ROOT}/src/app/chip_data_model.cmake)
 
+# Add NXP common application files
+include(${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_common.cmake)
+
 target_include_directories(app
     PRIVATE
-    ${LIGHTING_APP_NXP_COMMON_DIR}
-    ${LIGHTING_APP_NXP_COMMON_DIR}/include
-    ${LIGHTING_APP_NXP_PLATFORM_DIR}/include/config
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/clusters/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_callbacks/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_manager/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/led_widget/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/operational_keystore/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/rpc/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ui_feedback/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/include
+    ${NXP_EXAMPLE_DIR}
+    ${NXP_EXAMPLE_DIR}/include
     ${GEN_DIR}/app-common
 )
 
 target_sources(app
     PRIVATE
-    ${LIGHTING_APP_NXP_COMMON_DIR}/AppTask.cpp
-    ${LIGHTING_APP_NXP_COMMON_DIR}/DeviceCallbacks.cpp
-    ${LIGHTING_APP_NXP_COMMON_DIR}/main.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/source/BLEApplicationManagerEmpty.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/source/AppTaskBase.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/source/AppTaskFreeRTOS.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/clusters/source/ZclCallbacks.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_callbacks/source/CommonDeviceCallbacks.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_manager/source/CHIPDeviceManager.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonApp.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonBle.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonManager.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonRegistrationAppAndBle.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonWithTimer.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/operational_keystore/source/OperationalKeystoreS200.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ui_feedback/source/LedManager.cpp
-    ${LED_ON_OFF_PATH}
+    ${NXP_EXAMPLE_DIR}/AppTask.cpp
+    ${NXP_EXAMPLE_DIR}/DeviceCallbacks.cpp
+    ${NXP_EXAMPLE_DIR}/main.cpp
 )
-
-# TODO: remove this workaround and use a file from default implementation
-if(CONFIG_CHIP_NXP_PLATFORM_MCXW72)
-    target_sources(app
-        PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataDefaultImpl.cpp
-    )
-else()
-    # Maybe this special case should be removed and use the default implementation from common code.
-    target_sources(app
-        PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_PLATFORM_DIR}/factory_data/source/AppFactoryDataExample.cpp
-    )
-endif()
-
-
-if(CONFIG_CHIP_OTA_REQUESTOR)
-    target_include_directories(app
-        PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/include
-    )
-
-    target_sources(app
-        PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/source/OTARequestorInitiatorMultiImage.cpp
-        ${OTA_UTILS_PATH}
-    )
-endif()
 
 chip_configure_data_model(app
     INCLUDE_SERVER
-    ZAP_FILE ${LIGHTING_APP_NXP_COMMON_DIR}/../zap/lighting-on-off.zap
+    ZAP_FILE ${NXP_EXAMPLE_ZAP_DIR}/lighting-on-off.zap
 )
