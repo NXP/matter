@@ -22,15 +22,30 @@ cmake_minimum_required(VERSION 3.30)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-get_filename_component(CHIP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../../../ REALPATH)
+# Retrieve CHIP_ROOT if provided
+if (DEFINED CHIP_ROOT)
+    get_filename_component(CHIP_ROOT ${CHIP_ROOT} ABSOLUTE)
+else()
+    get_filename_component(CHIP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../../../ REALPATH)
+endif()
+
+# Export CHIP_ROOT as an environment variable to be recognized by Kconfig
+set(ENV{CHIP_ROOT} ${CHIP_ROOT})
+
 get_filename_component(GEN_DIR ${CHIP_ROOT}/zzz_generated/ REALPATH)
+get_filename_component(NXP_EXAMPLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/common REALPATH)
+get_filename_component(NXP_EXAMPLE_ZAP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/zap REALPATH)
 get_filename_component(ALL_CLUSTERS_COMMON_DIR ${CHIP_ROOT}/examples/all-clusters-app/all-clusters-common REALPATH)
-get_filename_component(THERMOSTAT_NXP_COMMON_DIR ${CHIP_ROOT}/examples/thermostat/nxp/common REALPATH)
-get_filename_component(THERMOSTAT_NXP_ZAP_DIR ${CHIP_ROOT}/examples/thermostat/nxp/zap REALPATH)
 get_filename_component(EXAMPLE_PLATFORM_NXP_COMMON_DIR ${CHIP_ROOT}/examples/platform/nxp/common REALPATH)
+get_filename_component(NXP_MATTER_SUPPORT_DIR ${CHIP_ROOT}/third_party/nxp/nxp_matter_support REALPATH)
 
 # Add the CHIP stack & NXP port libs as an external module
 list(APPEND EXTRA_MCUX_MODULES ${CHIP_ROOT}/config/nxp/chip-cmake-freertos)
+
+# If CONF_FILE_NAME is provided, append its full path to CONF_FILE
+if (DEFINED CONF_FILE_NAME)
+    set(CONF_FILE ${CONF_FILE} ${CHIP_ROOT}/examples/platform/nxp/config/${CONF_FILE_NAME})
+endif()
 
 # Add application prj.conf & Kconfig
 set(CONF_FILE ${CONF_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/prj.conf)
@@ -43,8 +58,12 @@ find_package(McuxSDK 3.0.0)
 # Get compiler flags and includes and pass them to CHIP target
 list(APPEND CONFIG_CHIP_EXTERNAL_TARGETS McuxSDK)
 
-# Include the nxp_sdk_reconfigure.cmake to customize the SDK for Matter application
-include(${CHIP_ROOT}/third_party/nxp/nxp_matter_support/examples/platform/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/nxp_sdk_reconfig.cmake)
+if (NOT DEFINED NXP_SDK_RECONFIG_CMAKE_DIR)
+    get_filename_component(NXP_SDK_RECONFIG_CMAKE_DIR ${NXP_MATTER_SUPPORT_DIR}/examples/platform/${CONFIG_CHIP_NXP_PLATFORM_FAMILY} REALPATH)
+endif()
+
+# Include the nxp_sdk_reconfig.cmake to customize the SDK for Matter application
+include(${NXP_SDK_RECONFIG_CMAKE_DIR}/nxp_sdk_reconfig.cmake)
 
 # Define application project name
 project(chip-nxp-thermostat-app-example)
@@ -52,134 +71,44 @@ project(chip-nxp-thermostat-app-example)
 # Add application definitions, include paths and source files
 include(${CHIP_ROOT}/src/app/chip_data_model.cmake)
 
+# Add NXP common application files
+include(${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_common.cmake)
+
 target_include_directories(app
     PRIVATE
     ${ALL_CLUSTERS_COMMON_DIR}/include
-    ${THERMOSTAT_NXP_COMMON_DIR}/main/include
+    ${NXP_EXAMPLE_DIR}/main/include
     ${GEN_DIR}/app-common
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_manager/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/icd/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_callbacks/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/include
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/include
 )
 
 target_sources(app
     PRIVATE
-    ${THERMOSTAT_NXP_COMMON_DIR}/main/main.cpp
-    ${THERMOSTAT_NXP_COMMON_DIR}/main/AppTask.cpp
-    ${THERMOSTAT_NXP_COMMON_DIR}/main/DeviceCallbacks.cpp
-    ${THERMOSTAT_NXP_COMMON_DIR}/main/ZclCallbacks.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_callbacks/source/CommonDeviceCallbacks.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/device_manager/source/CHIPDeviceManager.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/source/AppTaskBase.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_task/source/AppTaskFreeRTOS.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_button/source/ButtonRegistrationEmpty.cpp
-    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/icd/source/ICDUtil.cpp
+    ${NXP_EXAMPLE_DIR}/main/main.cpp
+    ${NXP_EXAMPLE_DIR}/main/AppTask.cpp
+    ${NXP_EXAMPLE_DIR}/main/DeviceCallbacks.cpp
+    ${NXP_EXAMPLE_DIR}/main/ZclCallbacks.cpp
     ${ALL_CLUSTERS_COMMON_DIR}/src/binding-handler.cpp
 )
-
-if(CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA OR CONFIG_CHIP_ENABLE_EL2GO_FACTORY_DATA)
-    target_sources(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataExample.cpp
-    )
-
-    if(CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA)
-        target_compile_definitions(app PRIVATE
-            ENABLE_SECURE_WHOLE_FACTORY_DATA
-        )
-        target_compile_definitions(app
-            PUBLIC
-            EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderEncImpl.h\"
-        )
-    else()
-        target_compile_definitions(app
-            PUBLIC
-            EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderEl2GoImpl.h\"
-        )
-    endif()
-else()
-    target_sources(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataDefaultImpl.cpp
-    )
-    target_compile_definitions(app
-        PUBLIC
-        EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h\"
-    )
-endif()
-
-if(CONFIG_DIAG_LOGS_DEMO)
-    target_sources(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/diagnostic_logs/source/DiagnosticLogsDemo.cpp
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/diagnostic_logs/source/DiagnosticLogsProviderDelegateImpl.cpp
-    )
-
-    target_include_directories(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/diagnostic_logs/include
-    )
-endif()
-
-if(CONFIG_CHIP_CUSTOM_BLE_ADV_DATA)
-    target_sources(app PRIVATE
-        ${THERMOSTAT_NXP_COMMON_DIR}/main/BleZephyrManagerApp.cpp
-    )
-else()
-    target_sources(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/source/BLEApplicationManagerEmpty.cpp
-    )
-endif()
 
 if(CONFIG_CHIP_WIFI AND CONFIG_NET_L2_OPENTHREAD)
     chip_configure_data_model(app
         INCLUDE_SERVER
-        ZAP_FILE ${THERMOSTAT_NXP_ZAP_DIR}/thermostat_matter_br.zap
+        ZAP_FILE ${NXP_EXAMPLE_ZAP_DIR}/thermostat_matter_br.zap
     )
 elseif(CONFIG_CHIP_WIFI AND NOT CONFIG_NET_L2_OPENTHREAD)
     chip_configure_data_model(app
         INCLUDE_SERVER
-        ZAP_FILE ${THERMOSTAT_NXP_ZAP_DIR}/thermostat_matter_wifi.zap
+        ZAP_FILE ${NXP_EXAMPLE_ZAP_DIR}/thermostat_matter_wifi.zap
     )
 elseif(CONFIG_NET_L2_OPENTHREAD AND NOT CONFIG_CHIP_WIFI)
     chip_configure_data_model(app
         INCLUDE_SERVER
-        ZAP_FILE ${THERMOSTAT_NXP_ZAP_DIR}/thermostat_matter_thread.zap
+        ZAP_FILE ${NXP_EXAMPLE_ZAP_DIR}/thermostat_matter_thread.zap
     )
 endif()
 
 if(CONFIG_CHIP_WIFI AND CONFIG_NET_L2_OPENTHREAD)
     target_compile_definitions(app PRIVATE
         CHIP_DEVICE_CONFIG_ENABLE_TBR=1
-    )
-endif()
-
-if(CONFIG_CHIP_LIB_SHELL)
-    target_compile_definitions(app PRIVATE
-        ENABLE_CHIP_SHELL
-    )
-
-    target_sources(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_cli/source/AppCLIBase.cpp
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_cli/source/AppCLIFreeRTOS.cpp
-        ${CHIP_ROOT}/examples/shell/shell_common/cmd_misc.cpp
-        ${CHIP_ROOT}/examples/shell/shell_common/cmd_otcli.cpp
-        ${CHIP_ROOT}/examples/shell/shell_common/cmd_server.cpp
-    )
-
-    target_include_directories(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/matter_cli/include
-        ${CHIP_ROOT}/examples/shell/shell_common/include
-    )
-endif()
-
-if(CONFIG_CHIP_OTA_REQUESTOR)
-    target_include_directories(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/include
-    )
-
-    target_sources(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/source/OTARequestorInitiator.cpp
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/ota_requestor/source/OTARequestorInitiatorCommon.cpp
     )
 endif()

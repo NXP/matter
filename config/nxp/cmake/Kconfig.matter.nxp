@@ -133,12 +133,6 @@ config CHIP_PLAT_LOAD_REAL_FACTORY_DATA
 	help
 	  Allows to load the factory data provisioned in flash.
 
-config DIAG_LOGS_DEMO
-	bool "Diagnostic log demo"
-	default y
-	help
-	  Enable the diagnostic log application demo
-
 config CHIP_ENABLE_EL2GO_FACTORY_DATA
 	bool "Secure DAC private key storage using El2Go provisioning"
 	help
@@ -278,21 +272,25 @@ choice CHIP_OTA_REQUEST_UPGRADE_TYPE
 
 endchoice
 
-config NXP_USE_SMU2
+config NXP_USE_SMU2_STATIC
 	bool "Use SMU2"
-	default n
+	depends on CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
 	help
-	  Use SMU2
+	  Enable app usage of SMU2.
+
+config NXP_USE_SMU2_DYNAMIC
+	bool "Use SMU2"
+	depends on CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+	help
+	  Enable app usage of extra SMU2 after commissioning.
 
 config NXP_USE_LOW_POWER
 	bool "Enable low power support"
-	default n
 	help
 	  Enables low power support
 
 config NXP_USE_PLAIN_DAC_KEY
 	bool "Store DAC private key in plaintext"
-	default n
 	help
 	  Store DAC private key in plaintext.
 
@@ -302,6 +300,18 @@ config CHIP_DEVICE_CONFIG_BLE_FAST_ADVERTISING_TIMEOUT
 	help
 	  The amount of time in miliseconds after which BLE should change its advertisements
 	  from fast interval to slow interval.
+
+config CHIP_DEVICE_CONFIG_BLE_ADVERTISING_TIMEOUT
+	int "BLE advertising timeout"
+	default 900000
+	help
+	  The amount of time in miliseconds after which BLE advertisement should be disabled, counting 
+	  from the moment of slow advertisement commencement.
+
+config CHIP_DEVICE_CONFIG_ENABLE_SED
+	bool "SED"
+	help
+		Enable Sleepy End Device configuration.
 
 if NET_L2_OPENTHREAD
 

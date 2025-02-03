@@ -21,12 +21,6 @@ rsource "../../../third_party/nxp/nxp_matter_support/cmake/Kconfig"
 
 if CHIP
 
-config APP_FREERTOS_OS
-	bool "FreeRTOS Application OS"
-	default y
-	help
-		When enabled this will differentiate between FreeRTOS and Zephyr in common NXP app code.
-
 choice CHIP_NXP_PLATFORM_SELECTION
 	prompt "CHIP NXP platform selection"
 	config CHIP_NXP_PLATFORM_RW61X
@@ -67,18 +61,6 @@ choice CHIP_NXP_PLATFORM_SELECTION
 
 endchoice # CHIP_NXP_PLATFORM_SELECTION
 
-config CHIP_NXP_APP_FOLDER_NAME
-	string "NXP app folder name"
-	default "rt/rw61x" if CHIP_NXP_PLATFORM_RW61X
-	default "rt/rt1170" if CHIP_NXP_PLATFORM_RT1170
-	default "rt/rt1060" if CHIP_NXP_PLATFORM_RT1060
-	default "k32w1" if CHIP_NXP_PLATFORM_K32W1
-	default "mcxw71" if CHIP_NXP_PLATFORM_MCXW71
-	default "mcxw72" if CHIP_NXP_PLATFORM_MCXW72
-	default "not specified"
-	help
-		Defines the app folder name to be used.
-
 config CHIP_NXP_PLATFORM_FOLDER_NAME
 	string "NXP platform folder name"
 	default "rt/rw61x" if CHIP_NXP_PLATFORM_RW61X
@@ -95,8 +77,15 @@ config CHIP_NXP_DEVICE_LAYER
 	default "nxp/mcxw71_k32w1" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71
 	default "nxp/common"
 
+# Invisible symbol to get the platform family name
+config CHIP_NXP_PLATFORM_FAMILY
+	string
+	default "mcxw71_k32w1" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
+	default "rt" if CHIP_NXP_PLATFORM_RW61X || CHIP_NXP_PLATFORM_RT1060 || CHIP_NXP_PLATFORM_RT1170
+
 choice CHIP_NVM_COMPONENT
 	prompt "NVM Component selection"
+	default CHIP_NVM_COMPONENT_LITTLEFS if CHIP_NXP_PLATFORM_RT1060 || CHIP_NXP_PLATFORM_RT1170
 	default CHIP_NVM_COMPONENT_NVS
 	
 	config CHIP_NVM_COMPONENT_NVS
@@ -107,7 +96,7 @@ choice CHIP_NVM_COMPONENT
 	config CHIP_NVM_COMPONENT_LITTLEFS
 		bool "LittleFS"
 		help
-			Use LittleFS component to store CHIP data. 
+			Use LittleFS component to store CHIP data.
 		
 	config CHIP_NVM_COMPONENT_KEYSTORAGE
 		bool "Key Storage"
@@ -122,7 +111,8 @@ endchoice
 
 choice CHIP_CRYPTO
 	prompt "CHIP Crypto selection"
-	default CHIP_CRYPTO_MBEDTLS
+	default CHIP_CRYPTO_MBEDTLS if CHIP_NXP_PLATFORM_RW61X || CHIP_NXP_PLATFORM_RT1170 || CHIP_NXP_PLATFORM_RT1060
+	default CHIP_CRYPTO_PLATFORM if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
 	
 	config CHIP_CRYPTO_MBEDTLS
 		bool "CHIP MbeTLS crypto"
@@ -234,11 +224,6 @@ config OPERATIONAL_KEYSTORE
 	help
 		"Use custom implementation of operational keystore"
 
-config ENABLE_FEEDBACK
-	bool "Enable the app feedback component"
-	help
-		"Enable the app feedback component"
-
 config LOW_POWER
 	bool "Should be replaced by CONFIG_NXP_USE_LOW_POWER. Keep it for backwards compatibility"
 	default y if NXP_USE_LOW_POWER
@@ -247,6 +232,7 @@ config LOW_POWER
 
 choice THREAD_DEVICE_TYPE_SELECTION
 	prompt "Thread device type selection based on ConnectivityManager::ThreadDeviceType enum"
+	default ROUTER if CHIP_NXP_PLATFORM_RW61X || CHIP_NXP_PLATFORM_RT1170 || CHIP_NXP_PLATFORM_RT1060
 	default FULL_END_DEVICE
 	config ROUTER
 		bool "Router"
@@ -262,11 +248,11 @@ endchoice
 
 config THREAD_DEVICE_TYPE
 	string "Thread device type registered with the connectivity manager"
-	default kThreadDeviceType_Router if ROUTER
-	default kThreadDeviceType_FullEndDevice if FULL_END_DEVICE
-	default kThreadDeviceType_MinimalEndDevice if MINIMAL_END_DEVICE
-	default kThreadDeviceType_SleepyEndDevice if SLEEPY_END_DEVICE
-	default kThreadDeviceType_SynchronizedSleepyEndDevice if SYNCHRONIZED_SLEEPY_END_DEVICE
+	default "kThreadDeviceType_Router" if ROUTER
+	default "kThreadDeviceType_FullEndDevice" if FULL_END_DEVICE
+	default "kThreadDeviceType_MinimalEndDevice" if MINIMAL_END_DEVICE
+	default "kThreadDeviceType_SleepyEndDevice" if SLEEPY_END_DEVICE
+	default "kThreadDeviceType_SynchronizedSleepyEndDevice" if SYNCHRONIZED_SLEEPY_END_DEVICE
 	help
 		Thread device type registered with the connectivity manager
 

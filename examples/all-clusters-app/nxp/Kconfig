@@ -15,5 +15,6 @@
 #
 mainmenu "Matter NXP All Clusters Example Application"
 
-rsource "../../../config/nxp/chip-cmake-freertos/Kconfig.defaults"
+source "$(CHIP_ROOT)/config/nxp/chip-cmake-freertos/Kconfig.defaults"
+source "$(CHIP_ROOT)/examples/platform/nxp/common/Kconfig"
 source "Kconfig.mcuxpresso"
