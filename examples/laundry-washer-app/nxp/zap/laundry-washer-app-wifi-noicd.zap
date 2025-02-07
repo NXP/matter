@@ -1,6 +1,6 @@
 {
   "fileFormat": 2,
-  "featureLevel": 103,
+  "featureLevel": 104,
   "creator": "zap",
   "keyValuePairs": [
     {
@@ -2977,14 +2977,16 @@
         "code": 115,
         "profileId": 259,
         "label": "MA-laundry-washer",
-        "name": "MA-laundry-washer"
+        "name": "MA-laundry-washer",
+        "deviceTypeOrder": 0
       },
       "deviceTypes": [
         {
           "code": 115,
           "profileId": 259,
           "label": "MA-laundry-washer",
-          "name": "MA-laundry-washer"
+          "name": "MA-laundry-washer",
+          "deviceTypeOrder": 0
         }
       ],
       "deviceVersions": [
@@ -3145,7 +3147,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "4",
+              "defaultValue": "5",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -3985,7 +3987,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "2",
+              "defaultValue": "3",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4155,7 +4157,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "1",
+              "defaultValue": "2",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4547,7 +4549,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "2",
+              "defaultValue": "3",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
