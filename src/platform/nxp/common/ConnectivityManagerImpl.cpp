@@ -553,10 +553,22 @@ void ConnectivityManagerImpl::BrHandleStateChange()
             DeviceLayer::ConfigurationMgr().GetPrimaryMACAddress(mac);
             chip::Dnssd::MakeHostName(mHostname, sizeof(mHostname), mac);
 
-            BrInitPlatform(ThreadStackMgrImpl().OTInstance(), extNetIfPtr, thrNetIfPtr, LockThreadStackCb);
+            BrInitAppLock(LockThreadStack, UnlockThreadStack);
+            BrInitPlatform(ThreadStackMgrImpl().OTInstance(), extNetIfPtr, thrNetIfPtr);
+            BrUpdateLwipThrIf();
             BrInitMdnsHost(mHostname);
         }
     }
+}
+
+void ConnectivityManagerImpl::LockThreadStack()
+{
+    ThreadStackMgrImpl().LockThreadStack();
+}
+
+void ConnectivityManagerImpl::UnlockThreadStack()
+{
+    ThreadStackMgrImpl().UnlockThreadStack();
 }
 
 Inet::InterfaceId ConnectivityManagerImpl::GetThreadInterface()
@@ -568,21 +580,6 @@ Inet::InterfaceId ConnectivityManagerImpl::GetExternalInterface()
 {
     return sInstance.mExternalNetIf;
 }
-
-void ConnectivityManagerImpl::LockThreadStackCb(bool bLockState)
-{
-    if (bLockState)
-    {
-        /* Aqquired the task mutex lock */
-        ThreadStackMgrImpl().LockThreadStack();
-    }
-    else
-    {
-        /* Release the task mutex lock */
-        ThreadStackMgrImpl().UnlockThreadStack();
-    }
-}
-
 #endif // CHIP_ENABLE_OPENTHREAD
 #endif // CHIP_DEVICE_CONFIG_ENABLE_WPA
 
