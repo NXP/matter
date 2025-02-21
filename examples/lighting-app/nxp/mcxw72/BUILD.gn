@@ -167,7 +167,7 @@ mcxw72_executable("light_app") {
   }
 
   if (nxp_use_factory_data) {
-    deps += [ "${chip_root}/src/platform/nxp:nxp_factory_data" ]
+    # Custom factory data files can be added here
   }
 
   sources += [
