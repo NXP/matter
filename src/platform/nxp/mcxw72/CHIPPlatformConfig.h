@@ -25,5 +25,32 @@
 
 #pragma once
 
+/**
+ * @def CHIP_DEVICE_CONFIG_KVS_WEAR_STATS
+ *
+ * @brief Toggle support for key value store wear stats on or off.
+ */
+#ifndef CHIP_DEVICE_CONFIG_KVS_WEAR_STATS
+#define CHIP_DEVICE_CONFIG_KVS_WEAR_STATS 0
+#endif // CHIP_DEVICE_CONFIG_KVS_WEAR_STATS
+
+/**
+ * @def CHIP_IM_MAX_NUM_COMMAND_HANDLER
+ *
+ * @brief Defines the maximum number of CommandHandler, limits the number of active commands transactions on server.
+ */
+#ifndef CHIP_IM_MAX_NUM_COMMAND_HANDLER
+#define CHIP_IM_MAX_NUM_COMMAND_HANDLER 2
+#endif // CHIP_IM_MAX_NUM_COMMAND_HANDLER
+
+/**
+ * @def CHIP_IM_MAX_NUM_WRITE_HANDLER
+ *
+ * @brief Defines the maximum number of WriteHandler, limits the number of active write transactions on server.
+ */
+#ifndef CHIP_IM_MAX_NUM_WRITE_HANDLER
+#define CHIP_IM_MAX_NUM_WRITE_HANDLER 2
+#endif // CHIP_IM_MAX_NUM_WRITE_HANDLER
+
 // Include default nxp platform configurations
 #include "platform/nxp/common/CHIPNXPPlatformDefaultConfig.h"
