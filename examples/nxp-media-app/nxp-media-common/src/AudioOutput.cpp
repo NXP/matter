@@ -12,7 +12,7 @@ int AudioOutput::Init() {
         int retry = 3;
         while (retry--) {
             ChipLogError(NotSpecified, "pipewire, wireplumber and pipewire-pulse not started. Enabling...");
-            ret = system("systemctl --user start pipewire wireplumber pipewire-pulse && sleep 2");
+            ret = system("systemctl --user start pipewire wireplumber pipewire-pulse && sleep 5");
             if (ret != 0) {
                 ChipLogError(NotSpecified, "Failed to enable pipewire ,wireplumber and pipewire-pulse.");
             }
