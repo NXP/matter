@@ -301,7 +301,7 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
         ret = CHIP_ERROR_INTERNAL;
     }
 
-    if (wlan_ncp_get_current_network(&sta_network))
+    if (wlan_ncp_get_current_network(&sta_network) == WM_SUCCESS)
     {
         GAutoPtr<GError> error;
 
