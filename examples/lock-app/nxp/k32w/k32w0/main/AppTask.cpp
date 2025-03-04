@@ -56,7 +56,7 @@ TimerHandle_t sFunctionTimer; // FreeRTOS app sw timer.
 
 static QueueHandle_t sAppEventQueue;
 
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
 static LEDWidget sStatusLED;
 static LEDWidget sLockLED;
 #endif
@@ -124,7 +124,7 @@ CHIP_ERROR AppTask::Init()
     AppTask::PrintOnboardingInfo();
 
     /* HW init leds */
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
     LED_Init();
 
     /* start with all LEDS turnedd off */
@@ -233,7 +233,7 @@ void AppTask::AppTaskMain(void * pvParameter)
     {
         TickType_t xTicksToWait = pdMS_TO_TICKS(10);
 
-#if defined(chip_with_low_power) && (chip_with_low_power == 1)
+#if defined(nxp_use_low_power) && (nxp_use_low_power == 1)
         xTicksToWait = portMAX_DELAY;
 #endif
 
@@ -271,7 +271,7 @@ void AppTask::AppTaskMain(void * pvParameter)
         //
         // Otherwise, blink the LED ON for a very short time.
 
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
         if (sAppTask.mFunction != kFunction_FactoryReset)
         {
             if (sIsThreadProvisioned)
@@ -430,7 +430,7 @@ void AppTask::ResetActionEventHandler(void * aGenericEvent)
         sAppTask.CancelTimer();
         sAppTask.mFunction = kFunction_NoneSelected;
 
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
         /* restore initial state for the LED indicating Lock state */
         if (BoltLockMgr().IsUnlocked())
         {
@@ -458,7 +458,7 @@ void AppTask::ResetActionEventHandler(void * aGenericEvent)
         sAppTask.mFunction = kFunction_FactoryReset;
 
         /* LEDs will start blinking to signal that a Factory Reset was scheduled */
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
         sStatusLED.Set(false);
         sLockLED.Set(false);
 
@@ -687,7 +687,7 @@ void AppTask::ActionInitiated(BoltLockManager::Action_t aAction, int32_t aActor)
 
     sAppTask.mFunction = kFunctionLockUnlock;
 
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
     sLockLED.Blink(50, 50);
 #endif
 }
@@ -700,14 +700,14 @@ void AppTask::ActionCompleted(BoltLockManager::Action_t aAction)
     if (aAction == BoltLockManager::LOCK_ACTION)
     {
         K32W_LOG("Lock Action has been completed")
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
         sLockLED.Set(true);
 #endif
     }
     else if (aAction == BoltLockManager::UNLOCK_ACTION)
     {
         K32W_LOG("Unlock Action has been completed")
-#if !defined(chip_with_low_power) || (chip_with_low_power == 0)
+#if !defined(nxp_use_low_power) || (nxp_use_low_power == 0)
         sLockLED.Set(false);
 #endif
     }
@@ -744,7 +744,7 @@ void AppTask::PostEvent(const AppEvent * aEvent)
 
 void AppTask::DispatchEvent(AppEvent * aEvent)
 {
-#if defined(chip_with_low_power) && (chip_with_low_power == 1)
+#if defined(nxp_use_low_power) && (nxp_use_low_power == 1)
     /* specific processing for events sent from App_PostCallbackMessage (see main.cpp) */
     if (aEvent->Type == AppEvent::kEventType_Lp)
     {
