@@ -97,12 +97,9 @@ source_set("libopenthread-mcxw72") {
     "../..:libopenthread-platform-utils",
   ]
 
-  public_deps += [
-    "${nxp_sdk_build_root}:nxp_mbedtls"
-  ]
-
   if (!nxp_external_sdk) {
     public_deps += [
+      "${nxp_sdk_build_root}:nxp_mbedtls",
       nxp_sdk_target
     ]
   }
