@@ -333,9 +333,7 @@ CHIP_ERROR NXPConfig::ClearConfigValue(Key key)
 {
     char key_name[SETTINGS_MAX_NAME_LEN + 1];
     sprintf(key_name, CHIP_DEVICE_INTEGER_SETTINGS_KEY "/%04x", key);
-    if (settings_delete(key_name) != 0)
-        return CHIP_ERROR_PERSISTED_STORAGE_FAILED;
-    return CHIP_NO_ERROR;
+    return ClearConfigValue(key_name);
 }
 
 CHIP_ERROR NXPConfig::ClearConfigValue(const char * keyString)
