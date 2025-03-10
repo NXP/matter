@@ -1,6 +1,6 @@
 {
   "fileFormat": 2,
-  "featureLevel": 104,
+  "featureLevel": 103,
   "creator": "zap",
   "keyValuePairs": [
     {
@@ -2977,16 +2977,14 @@
         "code": 124,
         "profileId": 259,
         "label": "MA-laundry-dryer",
-        "name": "MA-laundry-dryer",
-        "deviceTypeOrder": 0
+        "name": "MA-laundry-dryer"
       },
       "deviceTypes": [
         {
           "code": 124,
           "profileId": 259,
           "label": "MA-laundry-dryer",
-          "name": "MA-laundry-dryer",
-          "deviceTypeOrder": 0
+          "name": "MA-laundry-dryer"
         }
       ],
       "deviceVersions": [
@@ -3147,7 +3145,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "5",
+              "defaultValue": "4",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4125,7 +4123,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "3",
+              "defaultValue": "2",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4501,7 +4499,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "3",
+              "defaultValue": "2",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
