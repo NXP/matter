@@ -35,7 +35,6 @@
 // ========== Platform-specific Configuration Overrides =========
 
 /* Default NXP Platform configuration overrides are used */
-#define INET_CONFIG_NUM_UDP_ENDPOINTS 4
 
 // Include default nxp platform configurations
 #include "platform/nxp/common/InetNXPPlatformDefaultConfig.h"
