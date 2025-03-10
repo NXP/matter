@@ -25,9 +25,6 @@
 
 #pragma once
 
-// TODO(#32628): Remove the CHIPCore.h header when the esp32 build is correctly fixed
-#include <lib/core/CHIPCore.h>
-
 #include <access/AccessControl.h>
 #include <app/AppConfig.h>
 #include <app/AttributePathParams.h>
@@ -324,9 +321,17 @@ public:
     /**
      * @brief Function decrements the number of subscriptions to resume counter - mNumOfSubscriptionsToResume.
      *        This should be called after we have completed a re-subscribe attempt on a persisted subscription wether the attempt
-     *        was succesful or not.
+     *        was successful or not.
      */
     void DecrementNumSubscriptionsToResume();
+#if CHIP_CONFIG_SUBSCRIPTION_TIMEOUT_RESUMPTION
+    /**
+     * @brief Function resets the number of retries of subscriptions resumption - mNumSubscriptionResumptionRetries.
+     *        This should be called after we have completed a re-subscribe attempt successfully on a persisted subscription,
+     *        or when the subscription resumption gets terminated.
+     */
+    void ResetNumSubscriptionsRetries();
+#endif // CHIP_CONFIG_SUBSCRIPTION_TIMEOUT_RESUMPTION
 #endif // CHIP_CONFIG_PERSIST_SUBSCRIPTIONS
 
 #if CONFIG_BUILD_FOR_HOST_UNIT_TEST
@@ -714,7 +719,7 @@ private:
 #endif // CHIP_CONFIG_SUBSCRIPTION_TIMEOUT_RESUMPTION
 #endif // CHIP_CONFIG_PERSIST_SUBSCRIPTIONS
 
-    FabricTable * mpFabricTable;
+    FabricTable * mpFabricTable = nullptr;
 
     CASESessionManager * mpCASESessionMgr = nullptr;
 
