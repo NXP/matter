@@ -84,8 +84,7 @@ config CHIP_NXP_PLATFORM_FAMILY
 	default "rt" if CHIP_NXP_PLATFORM_RW61X || CHIP_NXP_PLATFORM_RT1060 || CHIP_NXP_PLATFORM_RT1170
 
 choice CHIP_NVM_COMPONENT
-	prompt "NVM Component selection"
-	default CHIP_NVM_COMPONENT_LITTLEFS if CHIP_NXP_PLATFORM_RT1060 || CHIP_NXP_PLATFORM_RT1170
+	prompt "NVM component selection"
 	default CHIP_NVM_COMPONENT_NVS
 	
 	config CHIP_NVM_COMPONENT_NVS
@@ -115,7 +114,7 @@ choice CHIP_CRYPTO
 	default CHIP_CRYPTO_PLATFORM if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
 	
 	config CHIP_CRYPTO_MBEDTLS
-		bool "CHIP MbeTLS crypto"
+		bool "CHIP MbedTLS crypto"
 		help
 			Enables the implementation of the Matter cryptographic operations that is
 			based on the mbedTLS crypto API.
