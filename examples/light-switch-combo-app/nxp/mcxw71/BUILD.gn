@@ -220,7 +220,8 @@ mcxw71_k32w1_executable("light-switch-combo_app") {
   deps += [
     "${chip_root}/examples/light-switch-combo-app/light-switch-combo-common/",
     "${chip_root}/examples/providers:device_info_provider",
-    "${chip_root}/src/platform/logging:default"
+    "${chip_root}/src/platform/logging:default",
+    "${chip_root}/src/setup_payload:onboarding-codes-utils",
   ]
 
   if (chip_openthread_ftd) {
