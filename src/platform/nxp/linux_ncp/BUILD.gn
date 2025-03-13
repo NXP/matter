@@ -44,11 +44,11 @@ static_library("linux_ncp") {
     "../../GLibTypeDeleter.h",
     "../../SingletonConfigurationManager.cpp",
     "CHIPDevicePlatformConfig.h",
-    "CHIPDevicePlatformEvent.h",
-    "CHIPLinuxStorage.cpp",
-    "CHIPLinuxStorage.h",
-    "CHIPLinuxStorageIni.cpp",
-    "CHIPLinuxStorageIni.h",
+    "../../Linux/CHIPDevicePlatformEvent.h",
+    "../../Linux/CHIPLinuxStorage.cpp",
+    "../../Linux/CHIPLinuxStorage.h",
+    "../../Linux/CHIPLinuxStorageIni.cpp",
+    "../../Linux/CHIPLinuxStorageIni.h",
     "CHIPPlatformConfig.h",
     "ConfigurationManagerImpl.cpp",
     "ConfigurationManagerImpl.h",
@@ -61,16 +61,16 @@ static_library("linux_ncp") {
     "DiagnosticDataProviderImpl.cpp",
     "DiagnosticDataProviderImpl.h",
     "InetPlatformConfig.h",
-    "KeyValueStoreManagerImpl.cpp",
-    "KeyValueStoreManagerImpl.h",
-    "NetworkCommissioningDriver.h",
+    "../../Linux/KeyValueStoreManagerImpl.cpp",
+    "../../Linux/KeyValueStoreManagerImpl.h",
+    "../../Linux/NetworkCommissioningDriver.h",
     "NetworkCommissioningEthernetDriver.cpp",
     "PlatformManagerImpl.cpp",
     "PlatformManagerImpl.h",
-    "PosixConfig.cpp",
-    "PosixConfig.h",
+    "../../Linux/PosixConfig.cpp",
+    "../../Linux/PosixConfig.h",
     "SystemPlatformConfig.h",
-    "SystemTimeSupport.cpp",
+    "../../Linux/SystemTimeSupport.cpp",
   ]
 
   deps = [
@@ -81,12 +81,12 @@ static_library("linux_ncp") {
   ]
 
   if (!chip_use_external_logging) {
-    sources += [ "Logging.cpp" ]
+    sources += [ "../../Linux/Logging.cpp" ]
     deps += [ "${chip_root}/src/platform/logging:headers" ]
   }
 
   if (chip_enable_openthread) {
-    sources += [ "NetworkCommissioningThreadDriver.cpp" ]
+    sources += [ "../../Linux/NetworkCommissioningThreadDriver.cpp" ]
   }
 
   if (chip_enable_ble) {
@@ -122,8 +122,8 @@ static_library("linux_ncp") {
 
   if (chip_mdns == "platform") {
     sources += [
-      "DnssdImpl.cpp",
-      "DnssdImpl.h",
+      "../../Linux/DnssdImpl.cpp",
+      "../../Linux/DnssdImpl.h",
     ]
 
     deps += [ "${chip_root}/src/lib/dnssd:platform_header" ]
@@ -133,15 +133,15 @@ static_library("linux_ncp") {
 
   if (chip_enable_ota_requestor) {
     sources += [
-      "OTAImageProcessorImpl.cpp",
-      "OTAImageProcessorImpl.h",
+      "../../Linux/OTAImageProcessorImpl.cpp",
+      "../../Linux/OTAImageProcessorImpl.h",
     ]
   }
 
   if (chip_enable_openthread) {
     sources += [
-      "ThreadStackManagerImpl.cpp",
-      "ThreadStackManagerImpl.h",
+      "../../Linux/ThreadStackManagerImpl.cpp",
+      "../../Linux/ThreadStackManagerImpl.h",
     ]
 
     #public_deps += [ "dbus/openthread" ]
@@ -152,8 +152,7 @@ static_library("linux_ncp") {
   }
 
   if (chip_enable_wifi) {
-    print("xinyu src/platform/nxp/linux_ncp/BUILD.gn chip_enable_wifi == 1")
-    sources += [ "NetworkCommissioningWiFiDriver.cpp" ]
+    sources += [ "../../Linux/NetworkCommissioningWiFiDriver.cpp" ]
 
     #public_deps += [ "dbus/wpa" ]
   }

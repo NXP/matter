@@ -139,6 +139,13 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
       "CHIP_DEVICE_CONFIG_ENABLE_DYNAMIC_MRP_CONFIG=${chip_device_config_enable_dynamic_mrp_config}",
     ]
 
+    if (chip_device_platform == "linux_ncp") {
+      defines += [
+        "EXTERNAL_KEYVALUESTOREMANAGERIMPL_HEADER=\"platform/Linux/KeyValueStoreManagerImpl.h\"",
+        "EXTERNAL_CHIPDEVICEPLATFORMEVENT_HEADER=\"platform/Linux/CHIPDevicePlatformEvent.h\"",
+      ]
+    }
+
     if (chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "darwin" ||
         chip_device_platform == "tizen" || chip_device_platform == "android" ||
         chip_device_platform == "webos" || chip_device_platform == "bl602" ||

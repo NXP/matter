@@ -64,14 +64,14 @@ source_set("app-main") {
     "AppMain.h",
     "CommissionableInit.cpp",
     "CommissionableInit.h",
-    "CommissionerMain.cpp",
-    "CommissionerMain.h",
-    "LinuxCommissionableDataProvider.cpp",
-    "LinuxCommissionableDataProvider.h",
-    "NamedPipeCommands.cpp",
-    "NamedPipeCommands.h",
-    "Options.cpp",
-    "Options.h",
+    "../../linux/CommissionerMain.cpp",
+    "../../linux/CommissionerMain.h",
+    "../../linux/LinuxCommissionableDataProvider.cpp",
+    "../../linux/LinuxCommissionableDataProvider.h",
+    "../../linux/NamedPipeCommands.cpp",
+    "../../linux/NamedPipeCommands.h",
+    "../../linux/Options.cpp",
+    "../../linux/Options.h",
     "testing/CustomCSRResponse.cpp",
     "testing/CustomCSRResponse.h",
     "testing/CustomCSRResponseOperationalKeyStore.cpp",
@@ -80,20 +80,20 @@ source_set("app-main") {
 
   if (chip_with_trusty_os == 1) {
     sources += [
-      "DeviceAttestationCredsTrusty.cpp",
-      "DeviceAttestationCredsTrusty.h",
-      "PersistentStorageOperationalKeystoreTrusty.cpp",
-      "PersistentStorageOperationalKeystoreTrusty.h",
+      "../../linux/DeviceAttestationCredsTrusty.cpp",
+      "../../linux/DeviceAttestationCredsTrusty.h",
+      "../../linux/PersistentStorageOperationalKeystoreTrusty.cpp",
+      "../../linux/PersistentStorageOperationalKeystoreTrusty.h",
     ]
   }
 
   if (chip_with_imx_ele == 1) {
     sources += [
       #TODO enable this when official tool ready
-      #      "DeviceAttestationCredsEle.cpp",
-      #      "DeviceAttestationCredsEle.h",
-      "PersistentStorageOperationalKeystoreEle.cpp",
-      "PersistentStorageOperationalKeystoreEle.h",
+      #      "../../linux/DeviceAttestationCredsEle.cpp",
+      #      "../../linux/DeviceAttestationCredsEle.h",
+      "../../linux/PersistentStorageOperationalKeystoreEle.cpp",
+      "../../linux/PersistentStorageOperationalKeystoreEle.h",
     ]
   }
 
@@ -148,10 +148,10 @@ source_set("app-main") {
   if (chip_build_libshell) {
     defines += [ "ENABLE_CHIP_SHELL" ]
     sources += [
-      "CommissioneeShellCommands.cpp",
-      "CommissioneeShellCommands.h",
-      "ControllerShellCommands.cpp",
-      "ControllerShellCommands.h",
+      "../../linux/CommissioneeShellCommands.cpp",
+      "../../linux/CommissioneeShellCommands.h",
+      "../../linux/ControllerShellCommands.cpp",
+      "../../linux/ControllerShellCommands.h",
     ]
   }
 
@@ -179,8 +179,8 @@ source_set("app-main") {
 source_set("commissioner-main") {
   defines = []
   sources = [
-    "CommissionerMain.cpp",
-    "CommissionerMain.h",
+    "../../linux/CommissionerMain.cpp",
+    "../../linux/CommissionerMain.h",
   ]
 
   if (chip_build_libshell) {

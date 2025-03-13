@@ -18,7 +18,7 @@
 
 #include "DeviceInstanceInfoProviderImpl.h"
 
-#include <platform/nxp/linux_ncp/PosixConfig.h>
+#include <platform/Linux/PosixConfig.h>
 
 namespace chip {
 namespace DeviceLayer {

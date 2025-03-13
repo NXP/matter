@@ -18,7 +18,7 @@
 #include <lib/support/SafePointerCast.h>
 #include <platform/CHIPDeviceLayer.h>
 #include <platform/nxp/linux_ncp/ConnectivityUtils.h>
-#include <platform/nxp/linux_ncp/NetworkCommissioningDriver.h>
+#include <platform/Linux/NetworkCommissioningDriver.h>
 
 #include <limits>
 #include <string>

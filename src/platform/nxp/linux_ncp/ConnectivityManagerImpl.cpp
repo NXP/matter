@@ -24,8 +24,8 @@
 #include <platform/DiagnosticDataProvider.h>
 #include <platform/nxp/linux_ncp/ConnectivityUtils.h>
 #include <platform/nxp/linux_ncp/DiagnosticDataProviderImpl.h>
-#include <platform/nxp/linux_ncp/NetworkCommissioningDriver.h>
-#include <platform/nxp/linux_ncp/WirelessDefs.h>
+#include <platform/Linux/NetworkCommissioningDriver.h>
+#include <platform/Linux/WirelessDefs.h>
 #include <platform/internal/BLEManager.h>
 
 #include <algorithm>

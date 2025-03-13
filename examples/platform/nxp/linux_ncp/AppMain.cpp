@@ -50,8 +50,8 @@
 #include <DeviceInfoProviderImpl.h>
 
 #if CHIP_DEVICE_CONFIG_ENABLE_BOTH_COMMISSIONER_AND_COMMISSIONEE
-#include "CommissionerMain.h"
-#include <ControllerShellCommands.h>
+#include "../../linux/CommissionerMain.h"
+#include <../../linux/ControllerShellCommands.h>
 #include <controller/CHIPDeviceControllerFactory.h>
 #include <controller/ExampleOperationalCredentialsIssuer.h>
 #include <lib/core/CHIPPersistentStorageDelegate.h>
@@ -59,13 +59,13 @@
 #endif // CHIP_DEVICE_CONFIG_ENABLE_BOTH_COMMISSIONER_AND_COMMISSIONEE
 
 #if defined(ENABLE_CHIP_SHELL)
-#include <CommissioneeShellCommands.h>
+#include <../../linux/CommissioneeShellCommands.h>
 #include <lib/shell/Engine.h> // nogncheck
 #include <thread>
 #endif
 
 #if defined(PW_RPC_ENABLED)
-#include <Rpc.h>
+#include <../../linux/Rpc.h>
 #endif
 
 #if CHIP_CONFIG_TRANSPORT_TRACE_ENABLED
@@ -107,26 +107,26 @@
 #endif // CHIP_DEVICE_LAYER_TARGET_DARWIN
 
 #if CHIP_DEVICE_LAYER_TARGET_LINUX_NCP
-#include <platform/nxp/linux_ncp/NetworkCommissioningDriver.h>
+#include <platform/Linux/NetworkCommissioningDriver.h>
 #endif // CHIP_DEVICE_LAYER_TARGET_LINUX_NCP
 
 #if CHIP_ATTESTATION_TRUSTY_OS
-#include "DeviceAttestationCredsTrusty.h"
+#include "../../linux/DeviceAttestationCredsTrusty.h"
 using namespace chip::Credentials::Trusty;
 #endif
 
 #if CHIP_OP_KEYSTORE_TRUSTY_OS
-#include "PersistentStorageOperationalKeystoreTrusty.h"
+#include "../../linux/PersistentStorageOperationalKeystoreTrusty.h"
 using namespace chip::Trusty;
 #endif
 
 #if CHIP_ATTESTATION_ELE
-#include "DeviceAttestationCredsEle.h"
+#include "../../linux/DeviceAttestationCredsEle.h"
 using namespace chip::Credentials::ele;
 #endif
 
 #if CHIP_OP_KEYSTORE_ELE
-#include "PersistentStorageOperationalKeystoreEle.h"
+#include "../../linux/PersistentStorageOperationalKeystoreEle.h"
 using namespace chip::ele;
 #endif
 

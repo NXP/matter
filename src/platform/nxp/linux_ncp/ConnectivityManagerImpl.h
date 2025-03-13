@@ -45,7 +45,7 @@
 #include <mutex>
 #endif
 
-#include <platform/nxp/linux_ncp/NetworkCommissioningDriver.h>
+#include <platform/Linux/NetworkCommissioningDriver.h>
 #include <platform/NetworkCommissioning.h>
 #include <vector>
 
