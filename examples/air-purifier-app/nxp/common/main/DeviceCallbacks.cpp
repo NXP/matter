@@ -63,6 +63,27 @@ Identify gIdentify1 = {
     chip::app::Clusters::Identify::IdentifyTypeEnum::kNone,
     OnTriggerEffect,
 };
+Identify gIdentify2 = {
+    chip::EndpointId{ 3 },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStart"); },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStop"); },
+    chip::app::Clusters::Identify::IdentifyTypeEnum::kNone,
+    OnTriggerEffect,
+};
+Identify gIdentify3 = {
+    chip::EndpointId{ 4 },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStart"); },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStop"); },
+    chip::app::Clusters::Identify::IdentifyTypeEnum::kNone,
+    OnTriggerEffect,
+};
+Identify gIdentify4 = {
+    chip::EndpointId{ 5 },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStart"); },
+    [](Identify *) { ChipLogProgress(Zcl, "onIdentifyStop"); },
+    chip::app::Clusters::Identify::IdentifyTypeEnum::kNone,
+    OnTriggerEffect,
+};
 
 using namespace ::chip;
 using namespace ::app;

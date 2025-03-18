@@ -89,7 +89,7 @@ void OccupancySensorApp::AppTask::AppMatter_RegisterCustomCliCommands()
     static const shell_command_t kCommands[] = {
         { .cmd_func = occupancyCommandHandler,
           .cmd_name = "occupancy",
-          .cmd_help = "Set the occupancy sensor State, present|clear|needcalibration|malfunction" },
+          .cmd_help = "Set the occupancy sensor State, present|clear" },
     };
     Engine::Root().RegisterCommands(kCommands, sizeof(kCommands) / sizeof(kCommands[0]));
 #endif
