@@ -131,6 +131,7 @@ mcxw72_executable("contact_sensor_app") {
   include_dirs += [
     "${common_example_dir}/app_task/include",
     "${common_example_dir}/app_ble/include",
+    "${common_example_dir}/icd/include",
     "${common_example_dir}/matter_button/include",
     "${common_example_dir}/clusters/include",
     "${common_example_dir}/device_callbacks/include",
@@ -149,6 +150,7 @@ mcxw72_executable("contact_sensor_app") {
     "${common_example_dir}/app_task/source/AppTaskBase.cpp",
     "${common_example_dir}/app_task/source/AppTaskFreeRTOS.cpp",
     "${common_example_dir}/app_ble/source/BLEApplicationManagerEmpty.cpp",
+    "${common_example_dir}/icd/source/ICDUtil.cpp",
     "${common_example_dir}/matter_button/source/ButtonApp.cpp",
     "${common_example_dir}/matter_button/source/ButtonBle.cpp",
     "${common_example_dir}/matter_button/source/ButtonManager.cpp",
