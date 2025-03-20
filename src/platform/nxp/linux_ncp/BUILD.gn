@@ -86,7 +86,7 @@ static_library("linux_ncp") {
   }
 
   if (chip_enable_openthread) {
-    sources += [ "../../Linux/NetworkCommissioningThreadDriver.cpp" ]
+    sources += [ "NetworkCommissioningThreadDriver.cpp" ]
   }
 
   if (chip_enable_ble) {
@@ -128,8 +128,8 @@ static_library("linux_ncp") {
 
   if (chip_enable_openthread) {
     sources += [
-      "../../Linux/ThreadStackManagerImpl.cpp",
-      "../../Linux/ThreadStackManagerImpl.h",
+      "ThreadStackManagerImpl.cpp",
+      "ThreadStackManagerImpl.h",
     ]
 
     public_deps += [ "dbus/openthread" ]
