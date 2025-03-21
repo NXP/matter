@@ -140,10 +140,7 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
     ]
 
     if (chip_device_platform == "linux_ncp") {
-      defines += [
-        "EXTERNAL_KEYVALUESTOREMANAGERIMPL_HEADER=\"platform/Linux/KeyValueStoreManagerImpl.h\"",
-        "EXTERNAL_CHIPDEVICEPLATFORMEVENT_HEADER=\"platform/Linux/CHIPDevicePlatformEvent.h\"",
-      ]
+      defines += [ "EXTERNAL_KEYVALUESTOREMANAGERIMPL_HEADER=\"platform/Linux/KeyValueStoreManagerImpl.h\"" ]
     }
 
     if (chip_device_platform == "linux" || chip_device_platform == "linux_ncp" || chip_device_platform == "darwin" ||
