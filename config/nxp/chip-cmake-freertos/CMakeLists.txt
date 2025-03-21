@@ -91,6 +91,11 @@ elseif(CONFIG_CHIP_NVM_COMPONENT_NVMFWK)
     matter_add_gn_arg_string("nxp_nvm_component" "nvm_fwk")
 endif()
 
+if(CONFIG_CHIP_OTA_ENCRYPTION)
+    matter_add_gn_arg_bool("chip_with_ota_encryption" CONFIG_CHIP_OTA_ENCRYPTION)
+    matter_add_gn_arg_string("chip_with_ota_key" ${CONFIG_CHIP_OTA_ENCRYPTION_KEY})
+endif()
+
 # Enable map file generation by default
 matter_add_gn_arg_bool("chip_generate_link_map_file" true)
 

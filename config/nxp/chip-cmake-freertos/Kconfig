@@ -257,10 +257,34 @@ config THREAD_DEVICE_TYPE
 
 config CHIP_OTA_IMAGE_PROCESSOR_HEADER
 	string "Header for OTA image processor implementation"
-	default "platform/nxp/common/ota/OTAImageProcessorImpl.h" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
-	default "platform/nxp/common/OTAImageProcessorImpl.h"
+	default "platform/nxp/common/ota/OTAImageProcessorImpl.h"
 	help
 		Header for OTA image processor implementation.
 		(Macro value is in quotes.)
+
+config CHIP_OTA_POSTED_OPERATIONS_IN_IDLE
+	bool "Use Posted Operations in Idle task for OTA Image Processing"
+	default y if CHIP_NXP_PLATFORM_RW61X || CHIP_NXP_PLATFORM_RT1060 || CHIP_NXP_PLATFORM_RT1170
+	depends on CHIP_OTA_REQUESTOR
+	help
+		When processing the OTA image, the write/erase operations will be posted and only resumed in the context of the Idle task.
+
+if CHIP_OTA_REQUESTOR
+
+config CHIP_OTA_ENCRYPTION
+	bool "OTA with encryption"
+	help
+		When enabled, the OTA image processor expects the image to be encrypted with AES, 
+		so it will attempt to decrypt each block before storing it in flash.
+
+config CHIP_OTA_ENCRYPTION_KEY
+	string "OTA encryption key"
+	depends on CHIP_OTA_ENCRYPTION
+	default "1234567890ABCDEFA1B2C3D4E5F6F1B4"
+	help
+		Defines the key used for encrypting the OTA image. 
+		This key is reused to perform an AES decryption of the OTA image.
+
+endif # CHIP_OTA_REQUESTOR
 
 endif # CHIP
