@@ -35,15 +35,6 @@
 // These are configuration options that are unique to the NXP platform.
 // These can be overridden by the application as needed.
 
-/**
- * @def CHIP_DEVICE_LAYER_OTA_REBOOT_DELAY
- *
- * The delay before rebooting after an OTA process was finished.
- */
-#ifndef CHIP_DEVICE_LAYER_OTA_REBOOT_DELAY
-#define CHIP_DEVICE_LAYER_OTA_REBOOT_DELAY 3000
-#endif // CHIP_DEVICE_LAYER_OTA_REBOOT_DELAY
-
 // ========== Platform-specific Configuration Overrides =========
 
 #define CHIP_DEVICE_CONFIG_ENABLE_PAIRING_AUTOSTART 0
