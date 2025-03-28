@@ -348,6 +348,13 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
         ChipLogProgress(DeviceLayer, "[ncp-host] do connect with network name %s.", network_name);
         wlan_ncp_connect(network_name);
         mpConnectCallback = apCallback;
+        
+        if(mpConnectCallback != nullptr)
+        {
+            ChipLogProgress(DeviceLayer, "xinyutest onreselt send event kOperationalNetworkEnabled\r\n");
+            mpConnectCallback->OnResult(Status::kSuccess, CharSpan(), 0);
+            mpConnectCallback = nullptr;
+        }
     }
     else
     {
