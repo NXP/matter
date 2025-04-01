@@ -1,41 +1,54 @@
 /*
+ * Copyright 2024 NXP
+ * All rights reserved.
  *
- *    Copyright (c) 2020 Project CHIP Authors
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * SPDX-License-Identifier: BSD-3-Clause
  */
 
+
 /**
- *    @file
- *          Platform-specific configuration overrides for the CHIP BLE
- *          Layer on Linux platforms.
+ * Platform-specific configuration overrides for the CHIP BLE Layer on NCP platforms using the NCP SDK.
  *
  */
 
 #pragma once
 
-namespace chip {
-namespace DeviceLayer {
-namespace Internal {
-class BluezConnection;
-} // namespace Internal
-} // namespace DeviceLayer
-} // namespace chip
-
 // ==================== Platform Adaptations ====================
-#define BLE_CONNECTION_OBJECT chip::DeviceLayer::Internal::BluezConnection *
-#define BLE_CONNECTION_UNINITIALIZED nullptr
+
+struct bt_conn;
+
+#ifndef BLE_CONNECTION_OBJECT
+#define BLE_CONNECTION_OBJECT uint16_t
+#endif // BLE_CONNECTION_OBJECT
+
+#ifndef BLE_CONNECTION_UNINITIALIZED
+#define BLE_CONNECTION_UNINITIALIZED (0xFFFF)
+#endif // BLE_CONNECTION_UNINITIALIZED
+
+#ifndef BLE_MAX_RECEIVE_WINDOW_SIZE
+#define BLE_MAX_RECEIVE_WINDOW_SIZE 5
+#endif // BLE_MAX_RECEIVE_WINDOW_SIZE
+
+#ifndef CONFIG_BT_MAX_CONN
+#define CONFIG_BT_MAX_CONN 1
+#endif // CONFIG_BT_MAX_CONN
+
+#ifndef CHIP_DEVICE_BLE_ADVERTISING_PRIORITY
+/// Priority of the Matter BLE advertising when there are multiple application
+/// components that compete for the BLE advertising.
+#define CHIP_DEVICE_BLE_ADVERTISING_PRIORITY 0
+#endif // CHIP_DEVICE_BLE_ADVERTISING_PRIORITY
 
 // ========== Platform-specific Configuration Overrides =========
+
+#ifndef LOG_MODULE_DECLARE
+#define LOG_MODULE_DECLARE(...)
+#endif // LOG_MODULE_DECLARE
+
+#ifndef LOG_HEXDUMP_DBG
+#define LOG_HEXDUMP_DBG(...)
+#endif // LOG_HEXDUMP_DBG
+
+
 
 /* none so far */

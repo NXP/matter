@@ -240,14 +240,8 @@ assert(!chip_disable_platform_kvs || chip_device_platform == "darwin",
        "Can only disable KVS on some platforms")
 
 if (_chip_device_layer != "none" && chip_device_platform != "external") {
-  if (chip_with_linux_ncp_host == 1)
-  {
-     chip_ble_platform_config_include = "<platform/" + _chip_device_layer + "/ble_ncp/BlePlatformConfig.h>"
-  }
-  else
-  {
-    chip_ble_platform_config_include = "<platform/" + _chip_device_layer + "/BlePlatformConfig.h>"
-  }
+  chip_ble_platform_config_include =
+      "<platform/" + _chip_device_layer + "/BlePlatformConfig.h>"
   chip_device_platform_config_include =
       "<platform/" + _chip_device_layer + "/CHIPDevicePlatformConfig.h>"
   chip_platform_config_include =

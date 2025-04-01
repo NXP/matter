@@ -213,8 +213,8 @@ if (chip_device_platform != "none" && chip_device_platform != "external") {
       defines += [
         "CHIP_DEVICE_LAYER_TARGET=nxp/linux_ncp",
         "CHIP_DEVICE_CONFIG_ENABLE_WIFI=${chip_enable_wifi}",
-        "EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/linux_ncp/ble_ncp/BLEManagerImpl.h\"",
-        "EXTERNAL_CHIPDEVICEPLATFORMEVENT_HEADER=\"platform/nxp/linux_ncp/ble_ncp/CHIPDevicePlatformEvent.h\"",
+        "EXTERNAL_BLEMANAGERIMPL_HEADER=\"platform/nxp/linux_ncp/BLEManagerImpl.h\"",
+        "EXTERNAL_CHIPDEVICEPLATFORMEVENT_HEADER=\"platform/nxp/linux_ncp/CHIPDevicePlatformEvent.h\"",
       ]
     } else if (chip_device_platform == "tizen") {
       device_layer_target_define = "TIZEN"

@@ -91,11 +91,11 @@ static_library("linux_ncp") {
 
   if (chip_enable_ble) {
     sources += [
-      "ble_ncp/BlePlatformConfig.h",
-      "ble_ncp/BLEAdvertisingArbiter.cpp",
-      "ble_ncp/BLEManagerImpl.cpp",
-      "ble_ncp/BLEManagerImpl.h",
-      "ble_ncp/BLEList.cpp",
+      "BlePlatformConfig.h",
+      "BLEAdvertisingArbiter.cpp",
+      "BLEManagerImpl.cpp",
+      "BLEManagerImpl.h",
+      "BLEList.cpp",
     ]
   }
 
