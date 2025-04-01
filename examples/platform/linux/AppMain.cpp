@@ -109,6 +109,10 @@
 #include "ExampleAccessRestrictionProvider.h"
 #endif
 
+#if CHIP_CONFIG_TERMS_AND_CONDITIONS_REQUIRED
+#include <app/server/TermsAndConditionsManager.h> // nogncheck
+#endif
+
 #if CHIP_DEVICE_LAYER_TARGET_DARWIN
 #include <platform/Darwin/NetworkCommissioningDriver.h>
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFI
@@ -556,6 +560,15 @@ void ChipLinuxAppMainLoop(AppMainLoopImplementation * impl)
     static chip::ele::PersistentStorageOperationalKeystoreEle sPersistentStorageOperationalKeystore;
     initParams.operationalKeystore = &sPersistentStorageOperationalKeystore;
 #endif
+#if CHIP_CONFIG_TERMS_AND_CONDITIONS_REQUIRED
+    if (LinuxDeviceOptions::GetInstance().tcVersion.HasValue() && LinuxDeviceOptions::GetInstance().tcRequired.HasValue())
+    {
+        uint16_t version  = LinuxDeviceOptions::GetInstance().tcVersion.Value();
+        uint16_t required = LinuxDeviceOptions::GetInstance().tcRequired.Value();
+        Optional<app::TermsAndConditions> requiredAcknowledgements(app::TermsAndConditions(required, version));
+        app::TermsAndConditionsManager::GetInstance()->Init(initParams.persistentStorageDelegate, requiredAcknowledgements);
+    }
+#endif // CHIP_CONFIG_TERMS_AND_CONDITIONS_REQUIRED
 
 #if defined(ENABLE_CHIP_SHELL)
     Engine::Root().Init();

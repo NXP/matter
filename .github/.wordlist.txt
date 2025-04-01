@@ -326,6 +326,7 @@ CurrentHue
 CurrentLevel
 CurrentSaturation
 customAcl
+customizable
 customizations
 cvfJ
 cxx
@@ -1040,6 +1041,7 @@ otatesting
 otaURL
 OTBR
 otcli
+OU
 outform
 outgoingCommands
 overridable
@@ -1151,6 +1153,7 @@ PyObject
 pypi
 PyRun
 pytest
+PYTHONPATH
 QEMU
 Qorvo
 QPG
@@ -1327,6 +1330,7 @@ SRP
 SRV
 SSBL
 SSID
+SSL
 startoffset
 StartScan
 startsWith
@@ -1491,6 +1495,7 @@ unfocus
 Unicast
 UniFlash
 UnitLocalization
+unittest
 unpair
 unprovisioned
 Unsecure
