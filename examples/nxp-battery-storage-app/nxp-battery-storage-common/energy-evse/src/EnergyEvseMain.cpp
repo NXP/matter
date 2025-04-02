@@ -37,6 +37,9 @@
 #include <platform/Linux/NetworkCommissioningDriver.h>
 
 #define ENERGY_EVSE_ENDPOINT 1
+#define EPM_ENDPOINT 1
+#define PT_ENDPOINT 1
+#define DEM_ENDPOINT 2
 
 using namespace chip;
 using namespace chip::app;
@@ -99,7 +102,7 @@ CHIP_ERROR DeviceEnergyManagementInit()
     BitMask<DeviceEnergyManagement::Feature> featureMap = GetFeatureMapFromCmdLine();
 
     /* Manufacturer may optionally not support all features, commands & attributes */
-    gDEMInstance = std::make_unique<DeviceEnergyManagementManager>(EndpointId(ENERGY_EVSE_ENDPOINT), *gDEMDelegate, featureMap);
+    gDEMInstance = std::make_unique<DeviceEnergyManagementManager>(EndpointId(DEM_ENDPOINT), *gDEMDelegate, featureMap);
 
     if (!gDEMInstance)
     {
@@ -149,7 +152,7 @@ CHIP_ERROR DeviceEnergyManagementShutdown()
  */
 CHIP_ERROR EnergyEvseInit()
 {
-    CHIP_ERROR err;
+//    CHIP_ERROR err;
 
     if (gEvseDelegate || gEvseInstance || gEvseTargetsDelegate)
     {
@@ -173,6 +176,7 @@ CHIP_ERROR EnergyEvseInit()
     }
 
     /* Manufacturer may optionally not support all features, commands & attributes */
+#if 0
     gEvseInstance = std::make_unique<EnergyEvseManager>(
         EndpointId(ENERGY_EVSE_ENDPOINT), *gEvseDelegate,
         BitMask<EnergyEvse::Feature, uint32_t>(EnergyEvse::Feature::kChargingPreferences, EnergyEvse::Feature::kRfid),
@@ -208,7 +212,7 @@ CHIP_ERROR EnergyEvseInit()
         gEvseDelegate.reset();
         return err;
     }
-
+#endif
     return CHIP_NO_ERROR;
 }
 
@@ -257,7 +261,7 @@ CHIP_ERROR PowerTopologyInit()
     }
 
     gPTInstance =
-        std::make_unique<PowerTopologyInstance>(EndpointId(ENERGY_EVSE_ENDPOINT), *gPTDelegate,
+        std::make_unique<PowerTopologyInstance>(EndpointId(PT_ENDPOINT), *gPTDelegate,
                                                 BitMask<PowerTopology::Feature, uint32_t>(PowerTopology::Feature::kNodeTopology),
                                                 BitMask<PowerTopology::OptionalAttributes, uint32_t>(0));
 
@@ -327,7 +331,7 @@ CHIP_ERROR EnergyMeterInit()
     /* Manufacturer may optionally not support all features, commands & attributes */
     /* Turning on all optional features and attributes for test certification purposes */
     gEPMInstance = std::make_unique<ElectricalPowerMeasurementInstance>(
-        EndpointId(ENERGY_EVSE_ENDPOINT), *gEPMDelegate,
+        EndpointId(EPM_ENDPOINT), *gEPMDelegate,
         BitMask<ElectricalPowerMeasurement::Feature, uint32_t>(
             ElectricalPowerMeasurement::Feature::kDirectCurrent, ElectricalPowerMeasurement::Feature::kAlternatingCurrent,
             ElectricalPowerMeasurement::Feature::kPolyphasePower, ElectricalPowerMeasurement::Feature::kHarmonics,
@@ -405,7 +409,8 @@ CHIP_ERROR EVSEManufacturerInit()
 
     /* Now create EVSEManufacturer */
     gEvseManufacturer =
-        std::make_unique<EVSEManufacturer>(gEvseInstance.get(), gEPMInstance.get(), gPTInstance.get(), gDEMInstance.get());
+//        std::make_unique<EVSEManufacturer>(gEvseInstance.get(), gEPMInstance.get(), gPTInstance.get(), gDEMInstance.get());
+        std::make_unique<EVSEManufacturer>(nullptr, gEPMInstance.get(), gPTInstance.get(), gDEMInstance.get());
     if (!gEvseManufacturer)
     {
         ChipLogError(AppServer, "Failed to allocate memory for EvseManufacturer");
@@ -460,7 +465,7 @@ void EvseApplicationInit()
 
     if (PowerTopologyInit() != CHIP_NO_ERROR)
     {
-        EVSEManufacturerShutdown();
+//        EVSEManufacturerShutdown();
         DeviceEnergyManagementShutdown();
         EnergyEvseShutdown();
         EnergyMeterShutdown();

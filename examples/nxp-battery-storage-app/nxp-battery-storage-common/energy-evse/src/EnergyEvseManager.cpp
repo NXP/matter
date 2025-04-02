@@ -117,7 +117,7 @@ CHIP_ERROR EnergyEvseManager::LoadPersistentAttributes()
 
 CHIP_ERROR EnergyEvseManager::Init()
 {
-    ReturnErrorOnFailure(Instance::Init());
+//    ReturnErrorOnFailure(Instance::Init());
 
     // Set up the EnergyEvseTargetsStore and persistent storage delegate
     EnergyEvseDelegate * dg = GetDelegate();
@@ -133,5 +133,5 @@ CHIP_ERROR EnergyEvseManager::Init()
 
 void EnergyEvseManager::Shutdown()
 {
-    Instance::Shutdown();
+//    Instance::Shutdown();
 }

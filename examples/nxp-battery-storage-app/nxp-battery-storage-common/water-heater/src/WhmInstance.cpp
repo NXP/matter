@@ -25,10 +25,11 @@ using namespace chip::app::Clusters::WaterHeaterManagement;
 CHIP_ERROR WaterHeaterManagementInstance::Init()
 {
     ChipLogDetail(AppServer, "WaterHeaterManagementInstance::Init()");
-    return Instance::Init();
+//    return Instance::Init();
+    return CHIP_NO_ERROR;
 }
 
 void WaterHeaterManagementInstance::Shutdown()
 {
-    Instance::Shutdown();
+//    Instance::Shutdown();
 }
