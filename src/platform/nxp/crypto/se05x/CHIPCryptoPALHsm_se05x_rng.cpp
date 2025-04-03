@@ -30,12 +30,14 @@ namespace Crypto {
 
 CHIP_ERROR DRBG_get_bytes(uint8_t * out_buffer, const size_t out_length)
 {
-    // TODO - Add rollback
+#if ENABLE_SE05X_RND_GEN
     sss_status_t status;
     sss_rng_context_t ctx_rng = { 0 };
 
     VerifyOrReturnError(out_buffer != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
     VerifyOrReturnError(out_length > 0, CHIP_ERROR_INVALID_ARGUMENT);
+
+    ChipLogDetail(Crypto, "se05x::Random number generation using se05x");
 
     VerifyOrReturnError(se05x_sessionOpen() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
@@ -48,6 +50,10 @@ CHIP_ERROR DRBG_get_bytes(uint8_t * out_buffer, const size_t out_length)
     sss_rng_context_free(&ctx_rng);
 
     return CHIP_NO_ERROR;
+#else
+    memset(out_buffer, 1, out_length);
+    return CHIP_NO_ERROR;
+#endif
 }
 
 } // namespace Crypto

@@ -261,6 +261,25 @@ CHIP_ERROR se05xSetCertificate(uint32_t keyId, const uint8_t * buf, size_t bufle
     return CHIP_NO_ERROR;
 }
 
+CHIP_ERROR se05xSetBinaryData(uint32_t keyId, const uint8_t * buf, size_t buflen)
+{
+    sss_object_t keyObject = { 0 };
+    sss_status_t status = kStatus_SSS_Fail;
+
+    status = sss_key_object_init(&keyObject, &gex_sss_chip_ctx.ks);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_object_allocate_handle(&keyObject, keyId, kSSS_KeyPart_Default, kSSS_CipherType_Binary, buflen,
+                                            kKeyObject_Mode_Transient);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_store_set_key(&gex_sss_chip_ctx.ks, &keyObject, buf, buflen, buflen * 8, NULL, 0);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    return CHIP_NO_ERROR;
+
+}
+
 CHIP_ERROR se05xPerformInternalSign(uint32_t keyId, uint8_t * sigBuf, size_t * sigBufLen)
 {
 #if SSS_HAVE_APPLET_SE051_H

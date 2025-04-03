@@ -90,6 +90,7 @@ static CHIP_ERROR parse_se05x_keyid_from_keypair(const P256KeypairContext mKeypa
 
 P256Keypair::~P256Keypair()
 {
+#if (ENABLE_SE05X_GENERATE_EC_KEY || ENABLE_SE05X_ECDSA_VERIFY)
     uint32_t keyid = 0;
     if (CHIP_NO_ERROR != parse_se05x_keyid_from_keypair(mKeypair, &keyid))
     {
@@ -99,12 +100,14 @@ P256Keypair::~P256Keypair()
     {
         // Delete the key in SE
     }
+#endif
 }
 
 CHIP_ERROR P256Keypair::Initialize(ECPKeyTarget key_target)
 {
 #if !ENABLE_SE05X_GENERATE_EC_KEY
-    if (CHIP_NO_ERROR == Initialize_H(this, &mPublicKey, &mKeypair))
+    CHIP_ERROR error = Initialize_H(this, &mPublicKey, &mKeypair);
+    if (CHIP_NO_ERROR == error)
     {
         mInitialized = true;
     }
