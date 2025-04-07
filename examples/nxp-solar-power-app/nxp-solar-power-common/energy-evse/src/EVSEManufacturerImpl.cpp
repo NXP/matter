@@ -51,6 +51,7 @@ CHIP_ERROR EVSEManufacturer::Init()
 {
     /* Manufacturers should modify this to do any custom initialisation */
 
+#if 0
     /* Register callbacks */
     EnergyEvseDelegate * dg = GetEvseManufacturer()->GetEvseDelegate();
     if (dg == nullptr)
@@ -61,6 +62,7 @@ CHIP_ERROR EVSEManufacturer::Init()
 
     dg->HwRegisterEvseCallbackHandler(ApplicationCallbackHandler, reinterpret_cast<intptr_t>(this));
 
+#endif
     ReturnErrorOnFailure(InitializePowerMeasurementCluster());
 
     ReturnErrorOnFailure(InitializePowerSourceCluster());
@@ -90,7 +92,7 @@ CHIP_ERROR EVSEManufacturer::Init()
     /* Once the system is initialised then check to see if the state was restored
      * (e.g. after a power outage), and if the Enable timer check needs to be started
      */
-    dg->ScheduleCheckOnEnabledTimeout();
+//    dg->ScheduleCheckOnEnabledTimeout();
 
     return CHIP_NO_ERROR;
 }
@@ -352,23 +354,24 @@ CHIP_ERROR EVSEManufacturer::InitializePowerMeasurementCluster()
 /**
  * @brief   Allows a client application to initialise the PowerSource cluster
  */
+#define PS_ENDPOINT 1
 CHIP_ERROR EVSEManufacturer::InitializePowerSourceCluster()
 {
     Protocols::InteractionModel::Status status;
 
-    status = PowerSource::Attributes::Status::Set(EndpointId(0) /*RootNode*/, PowerSourceStatusEnum::kActive);
+    status = PowerSource::Attributes::Status::Set(EndpointId(PS_ENDPOINT) /*RootNode*/, PowerSourceStatusEnum::kActive);
     VerifyOrReturnError(status == Protocols::InteractionModel::Status::Success, CHIP_ERROR_INTERNAL);
     status =
-        PowerSource::Attributes::FeatureMap::Set(EndpointId(0 /*RootNode*/), static_cast<uint32_t>(PowerSource::Feature::kWired));
+        PowerSource::Attributes::FeatureMap::Set(EndpointId(PS_ENDPOINT /*RootNode*/), static_cast<uint32_t>(PowerSource::Feature::kWired));
     VerifyOrReturnError(status == Protocols::InteractionModel::Status::Success, CHIP_ERROR_INTERNAL);
-    status = PowerSource::Attributes::WiredNominalVoltage::Set(EndpointId(0 /*RootNode*/), 230'000); // 230V in mv
+    status = PowerSource::Attributes::WiredNominalVoltage::Set(EndpointId(PS_ENDPOINT /*RootNode*/), 230'000); // 230V in mv
     VerifyOrReturnError(status == Protocols::InteractionModel::Status::Success, CHIP_ERROR_INTERNAL);
-    status = PowerSource::Attributes::WiredMaximumCurrent::Set(EndpointId(0 /*RootNode*/), 32'000); // 32A in mA
+    status = PowerSource::Attributes::WiredMaximumCurrent::Set(EndpointId(PS_ENDPOINT /*RootNode*/), 32'000); // 32A in mA
     VerifyOrReturnError(status == Protocols::InteractionModel::Status::Success, CHIP_ERROR_INTERNAL);
 
-    status = PowerSource::Attributes::WiredCurrentType::Set(EndpointId(0 /*RootNode*/), PowerSource::WiredCurrentTypeEnum::kAc);
+    status = PowerSource::Attributes::WiredCurrentType::Set(EndpointId(PS_ENDPOINT /*RootNode*/), PowerSource::WiredCurrentTypeEnum::kAc);
     VerifyOrReturnError(status == Protocols::InteractionModel::Status::Success, CHIP_ERROR_INTERNAL);
-    status = PowerSource::Attributes::Description::Set(EndpointId(0 /*RootNode*/), CharSpan::fromCharString("Primary Mains Power"));
+    status = PowerSource::Attributes::Description::Set(EndpointId(PS_ENDPOINT /*RootNode*/), CharSpan::fromCharString("Primary Mains Power"));
     VerifyOrReturnError(status == Protocols::InteractionModel::Status::Success, CHIP_ERROR_INTERNAL);
 
     chip::EndpointId endpointArray[] = { 1 /* EVSE Endpoint */ };
@@ -376,7 +379,7 @@ CHIP_ERROR EVSEManufacturer::InitializePowerSourceCluster()
 
     // Note per API - we do not need to maintain the span after the SetEndpointList has been called
     // since it takes a copy (see power-source-server.cpp)
-    PowerSourceServer::Instance().SetEndpointList(0 /* Root Node */, endpointList);
+    PowerSourceServer::Instance().SetEndpointList(PS_ENDPOINT /* Root Node */, endpointList);
 
     return CHIP_NO_ERROR;
 }
