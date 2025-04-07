@@ -29,11 +29,13 @@ namespace Clusters {
 namespace WaterHeaterManagement {
 using namespace chip::app::Clusters::WaterHeaterManagement;
 
-class WaterHeaterManagementInstance : public Instance
+//class WaterHeaterManagementInstance : public Instance
+class WaterHeaterManagementInstance
 {
 public:
-    WaterHeaterManagementInstance(EndpointId aEndpointId, WaterHeaterManagementDelegate & aDelegate, Feature aFeature) :
-        WaterHeaterManagement::Instance(aEndpointId, aDelegate, aFeature)
+//    WaterHeaterManagementInstance(EndpointId aEndpointId, WaterHeaterManagementDelegate & aDelegate, Feature aFeature) :
+//        WaterHeaterManagement::Instance(aEndpointId, aDelegate, aFeature)
+    WaterHeaterManagementInstance(EndpointId aEndpointId, WaterHeaterManagementDelegate & aDelegate, Feature aFeature)
     {
         mDelegate = &aDelegate;
     }

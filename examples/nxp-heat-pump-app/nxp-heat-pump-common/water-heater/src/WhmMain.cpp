@@ -90,7 +90,7 @@ CHIP_ERROR WhmInit()
         return err;
     }
 
-    gWhmDelegate->SetWaterHeaterManagementInstance(*gWhmInstance);
+//    gWhmDelegate->SetWaterHeaterManagementInstance(*gWhmInstance);
 
     return CHIP_NO_ERROR;
 }
