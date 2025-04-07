@@ -110,6 +110,17 @@ static_library("nxp_platform") {
       "../common/crypto/PersistentStorageOpKeystoreS200.cpp",
       "../common/crypto/PersistentStorageOpKeystoreS200.h",
     ]
+
+    # TODO: Why are these definitions and include dirs required here and not
+    # inherited from the dependencies?
+    defines += [
+      "MBEDTLS_CONFIG_FILE=<sssapi_mbedtls_config.h>",
+      "MBEDTLS_USER_CONFIG_FILE=<nxp_matter_mbedtls_config.h>"
+    ]
+
+    include_dirs = [
+      "${nxp_sdk_build_root}/mbedtls/config"
+    ]
   }
 
   if (chip_enable_ble) {
