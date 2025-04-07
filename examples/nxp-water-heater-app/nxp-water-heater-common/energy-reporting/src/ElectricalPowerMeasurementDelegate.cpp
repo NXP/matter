@@ -31,12 +31,13 @@ using namespace chip::app::Clusters::ElectricalPowerMeasurement::Structs;
 
 CHIP_ERROR ElectricalPowerMeasurementInstance::Init()
 {
-    return Instance::Init();
+//    return Instance::Init();
+    return CHIP_NO_ERROR;
 }
 
 void ElectricalPowerMeasurementInstance::Shutdown()
 {
-    Instance::Shutdown();
+//    Instance::Shutdown();
 }
 
 // --------------- Internal Attribute Set APIs

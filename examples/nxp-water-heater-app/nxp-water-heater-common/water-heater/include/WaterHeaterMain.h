@@ -23,7 +23,7 @@ namespace app {
 namespace Clusters {
 namespace WaterHeaterManagement {
 
-void FullWhmApplicationInit();
+void FullWhmApplicationInit(bool DoEnergyInit);
 void FullWhmApplicationShutdown();
 
 } // namespace WaterHeaterManagement

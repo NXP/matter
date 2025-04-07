@@ -21,6 +21,7 @@
 #include <WaterHeaterMain.h>
 #include <app-common/zap-generated/cluster-objects.h>
 #include <lib/support/BitMask.h>
+#include <app/clusters/identify-server/identify-server.h>
 
 using namespace chip;
 using namespace chip::app;
@@ -41,8 +42,9 @@ constexpr uint16_t kOptionFeatureMap  = 0xffd1;
 
 constexpr const char * kEvseApp = "evse";
 constexpr const char * kWhmApp  = "water-heater";
+constexpr const char * kAllApp  = "all";
 
-constexpr const char * kValidApps[] = { kEvseApp, kWhmApp };
+constexpr const char * kValidApps[] = { kEvseApp, kWhmApp, kAllApp };
 
 // Define the chip::ArgParser command line structures for extending the command line to support the
 // energy apps
@@ -55,8 +57,44 @@ static chip::ArgParser::OptionDef sEnergyAppOptionDefs[] = {
 static chip::ArgParser::OptionSet sCmdLineOptions = { EnergyAppOptionHandler, // handler function
                                                       sEnergyAppOptionDefs,   // array of option definitions
                                                       "PROGRAM OPTIONS",      // help group
-                                                      "-a, --application <evse|water-heater>\n"
+                                                      "-a, --application <evse|water-heater|all>\n"
                                                       "-f, --featureSet <value>\n" };
+void OnIdentifyStart(::Identify  *)
+{
+    ChipLogProgress(Zcl, "OnIdentifyStart");
+}
+
+void OnIdentifyStop(::Identify  *)
+{
+    ChipLogProgress(Zcl, "OnIdentifyStop");
+}
+
+void OnTriggerEffect(::Identify * identify)
+{
+    switch (identify->mCurrentEffectIdentifier)
+    {
+        case Clusters::Identify::EffectIdentifierEnum::kBlink:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kBlink");
+            break;
+        case Clusters::Identify::EffectIdentifierEnum::kBreathe:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kBreathe");
+            break;
+        case Clusters::Identify::EffectIdentifierEnum::kOkay:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kOkay");
+            break;
+        case Clusters::Identify::EffectIdentifierEnum::kChannelChange:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kChannelChange");
+            break;
+        default:
+            ChipLogProgress(Zcl, "No identifier effect");
+            return;
+    }
+}
+
+static ::Identify gIdentify1 = {
+    chip::EndpointId{ 1 }, OnIdentifyStart, OnIdentifyStop, Clusters::Identify::IdentifyTypeEnum::kVisibleIndicator,
+    OnTriggerEffect,
+};
 
 namespace chip {
 namespace app {
@@ -105,7 +143,12 @@ void ApplicationInit()
     }
     else if (strcmp(spApp, kWhmApp) == 0)
     {
-        FullWhmApplicationInit();
+        FullWhmApplicationInit(true);
+    }
+    else if (strcmp(spApp, kAllApp) == 0)
+    {
+        EvseApplicationInit();
+        FullWhmApplicationInit(false);
     }
     else
     {

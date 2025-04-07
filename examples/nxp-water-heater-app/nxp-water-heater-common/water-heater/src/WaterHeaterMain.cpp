@@ -40,36 +40,44 @@
 #include <EnergyEvseMain.h>
 #include <WhmMain.h>
 
+#include <app-common/zap-generated/attributes/Accessors.h>
+using namespace chip::app::Clusters::DeviceEnergyManagement;
+using namespace chip::app::Clusters::ElectricalPowerMeasurement;
+extern ElectricalPowerMeasurementDelegate * GetEPMDelegate();
+
 namespace chip {
 namespace app {
 namespace Clusters {
 namespace WaterHeaterManagement {
 
-void FullWhmApplicationInit()
+void FullWhmApplicationInit(bool DoEnergyInit)
 {
     ReturnOnFailure(WhmApplicationInit());
 
-    if (DeviceEnergyManagementInit() != CHIP_NO_ERROR)
+    if (DoEnergyInit == true)
     {
-        WhmApplicationShutdown();
-        return;
-    }
+        if (DeviceEnergyManagementInit() != CHIP_NO_ERROR)
+        {
+            WhmApplicationShutdown();
+            return;
+        }
+/*
+        if (EnergyMeterInit() != CHIP_NO_ERROR)
+        {
+            DeviceEnergyManagementShutdown();
+            WhmApplicationShutdown();
+            return;
+        }
 
-    if (EnergyMeterInit() != CHIP_NO_ERROR)
-    {
-        DeviceEnergyManagementShutdown();
-        WhmApplicationShutdown();
-        return;
+        if (PowerTopologyInit() != CHIP_NO_ERROR)
+        {
+            EnergyMeterShutdown();
+            DeviceEnergyManagementShutdown();
+            WhmApplicationShutdown();
+            return;
+        }
+*/
     }
-
-    if (PowerTopologyInit() != CHIP_NO_ERROR)
-    {
-        EnergyMeterShutdown();
-        DeviceEnergyManagementShutdown();
-        WhmApplicationShutdown();
-        return;
-    }
-
     /* For Device Energy Management we need the ESA to be Online and ready to accept commands */
 
     GetDEMDelegate()->SetESAState(ESAStateEnum::kOnline);
@@ -79,6 +87,10 @@ void FullWhmApplicationInit()
     // Set the abs min and max power
     GetDEMDelegate()->SetAbsMinPower(1200000); // 1.2KW
     GetDEMDelegate()->SetAbsMaxPower(7600000); // 7.6KW
+
+    // Init PowerMode = 2 for TC-EPM-2.1
+    ChipLogDetail(AppServer, "Init to set PowerModeEnum::kAc");
+    //GetEPMDelegate()->SetPowerMode(PowerModeEnum::kAc);
 }
 
 void FullWhmApplicationShutdown()

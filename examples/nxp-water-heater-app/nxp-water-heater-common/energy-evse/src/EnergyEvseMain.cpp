@@ -36,7 +36,9 @@
 #include <lib/support/logging/CHIPLogging.h>
 #include <platform/Linux/NetworkCommissioningDriver.h>
 
-#define ENERGY_EVSE_ENDPOINT 1
+#define EPM_ENDPOINT 1
+#define PT_ENDPOINT 1
+#define DEM_ENDPOINT 2
 
 using namespace chip;
 using namespace chip::app;
@@ -74,6 +76,13 @@ DeviceEnergyManagement::DeviceEnergyManagementDelegate * GetDEMDelegate()
     return gDEMDelegate.get();
 }
 
+ElectricalPowerMeasurementDelegate * GetEPMDelegate()
+{
+    VerifyOrDieWithMsg(gEPMDelegate.get() != nullptr, AppServer, "EPM Delegate is null");
+
+    return gEPMDelegate.get();
+}
+
 /*
  *  @brief  Creates a Delegate and Instance for DEM
  *
@@ -99,7 +108,7 @@ CHIP_ERROR DeviceEnergyManagementInit()
     BitMask<DeviceEnergyManagement::Feature> featureMap = GetFeatureMapFromCmdLine();
 
     /* Manufacturer may optionally not support all features, commands & attributes */
-    gDEMInstance = std::make_unique<DeviceEnergyManagementManager>(EndpointId(ENERGY_EVSE_ENDPOINT), *gDEMDelegate, featureMap);
+    gDEMInstance = std::make_unique<DeviceEnergyManagementManager>(EndpointId(DEM_ENDPOINT), *gDEMDelegate, featureMap);
 
     if (!gDEMInstance)
     {
@@ -173,6 +182,7 @@ CHIP_ERROR EnergyEvseInit()
     }
 
     /* Manufacturer may optionally not support all features, commands & attributes */
+/*
     gEvseInstance = std::make_unique<EnergyEvseManager>(
         EndpointId(ENERGY_EVSE_ENDPOINT), *gEvseDelegate,
         BitMask<EnergyEvse::Feature, uint32_t>(EnergyEvse::Feature::kChargingPreferences, EnergyEvse::Feature::kRfid),
@@ -180,7 +190,7 @@ CHIP_ERROR EnergyEvseInit()
                                                           EnergyEvse::OptionalAttributes::kSupportsRandomizationWindow,
                                                           EnergyEvse::OptionalAttributes::kSupportsApproximateEvEfficiency),
         BitMask<EnergyEvse::OptionalCommands, uint32_t>(EnergyEvse::OptionalCommands::kSupportsStartDiagnostics));
-
+*/
     if (!gEvseInstance)
     {
         ChipLogError(AppServer, "Failed to allocate memory for EnergyEvseManager");
@@ -255,12 +265,12 @@ CHIP_ERROR PowerTopologyInit()
         ChipLogError(AppServer, "Failed to allocate memory for PowerTopology Delegate");
         return CHIP_ERROR_NO_MEMORY;
     }
-
+/*
     gPTInstance =
-        std::make_unique<PowerTopologyInstance>(EndpointId(ENERGY_EVSE_ENDPOINT), *gPTDelegate,
+        std::make_unique<PowerTopologyInstance>(EndpointId(PT_ENDPOINT), *gPTDelegate,
                                                 BitMask<PowerTopology::Feature, uint32_t>(PowerTopology::Feature::kNodeTopology),
                                                 BitMask<PowerTopology::OptionalAttributes, uint32_t>(0));
-
+*/
     if (!gPTInstance)
     {
         ChipLogError(AppServer, "Failed to allocate memory for PowerTopology Instance");
@@ -326,8 +336,9 @@ CHIP_ERROR EnergyMeterInit()
 
     /* Manufacturer may optionally not support all features, commands & attributes */
     /* Turning on all optional features and attributes for test certification purposes */
+    /*
     gEPMInstance = std::make_unique<ElectricalPowerMeasurementInstance>(
-        EndpointId(ENERGY_EVSE_ENDPOINT), *gEPMDelegate,
+        EndpointId(EPM_ENDPOINT), *gEPMDelegate,
         BitMask<ElectricalPowerMeasurement::Feature, uint32_t>(
             ElectricalPowerMeasurement::Feature::kDirectCurrent, ElectricalPowerMeasurement::Feature::kAlternatingCurrent,
             ElectricalPowerMeasurement::Feature::kPolyphasePower, ElectricalPowerMeasurement::Feature::kHarmonics,
@@ -346,7 +357,7 @@ CHIP_ERROR EnergyMeterInit()
             ElectricalPowerMeasurement::OptionalAttributes::kOptionalAttributeFrequency,
             ElectricalPowerMeasurement::OptionalAttributes::kOptionalAttributePowerFactor,
             ElectricalPowerMeasurement::OptionalAttributes::kOptionalAttributeNeutralCurrent));
-
+*/
     if (!gEPMInstance)
     {
         ChipLogError(AppServer, "Failed to allocate memory for EPM Instance");

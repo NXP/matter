@@ -418,7 +418,8 @@ using namespace chip::app::Clusters::ElectricalEnergyMeasurement::Structs;
 CHIP_ERROR EVSEManufacturer::SendCumulativeEnergyReading(EndpointId aEndpointId, int64_t aCumulativeEnergyImported,
                                                          int64_t aCumulativeEnergyExported)
 {
-    MeasurementData * data = MeasurementDataForEndpoint(aEndpointId);
+//    MeasurementData * data = MeasurementDataForEndpoint(aEndpointId);
+    MeasurementData * data = nullptr;
     VerifyOrReturnError(data != nullptr, CHIP_ERROR_UNINITIALIZED);
 
     EnergyMeasurementStruct::Type energyImported;
@@ -471,11 +472,12 @@ CHIP_ERROR EVSEManufacturer::SendCumulativeEnergyReading(EndpointId aEndpointId,
     }
 
     // call the SDK to update attributes and generate an event
+/*
     if (!NotifyCumulativeEnergyMeasured(aEndpointId, MakeOptional(energyImported), MakeOptional(energyExported)))
     {
         ChipLogError(AppServer, "Failed to notify Cumulative Energy reading.");
         return CHIP_ERROR_INTERNAL;
-    }
+    }*/
 
     return CHIP_NO_ERROR;
 }
@@ -491,7 +493,8 @@ CHIP_ERROR EVSEManufacturer::SendCumulativeEnergyReading(EndpointId aEndpointId,
 CHIP_ERROR EVSEManufacturer::SendPeriodicEnergyReading(EndpointId aEndpointId, int64_t aPeriodicEnergyImported,
                                                        int64_t aPeriodicEnergyExported)
 {
-    MeasurementData * data = MeasurementDataForEndpoint(aEndpointId);
+//    MeasurementData * data = MeasurementDataForEndpoint(aEndpointId);
+    MeasurementData * data = nullptr;
     VerifyOrReturnError(data != nullptr, CHIP_ERROR_UNINITIALIZED);
 
     EnergyMeasurementStruct::Type energyImported;
@@ -542,14 +545,14 @@ CHIP_ERROR EVSEManufacturer::SendPeriodicEnergyReading(EndpointId aEndpointId, i
         energyImported.endSystime.SetValue(nowMS);
         energyExported.endSystime.SetValue(nowMS);
     }
-
+/*
     // call the SDK to update attributes and generate an event
     if (!NotifyPeriodicEnergyMeasured(aEndpointId, MakeOptional(energyImported), MakeOptional(energyExported)))
     {
         ChipLogError(AppServer, "Failed to notify Cumulative Energy reading.");
         return CHIP_ERROR_INTERNAL;
     }
-
+*/
     return CHIP_NO_ERROR;
 }
 

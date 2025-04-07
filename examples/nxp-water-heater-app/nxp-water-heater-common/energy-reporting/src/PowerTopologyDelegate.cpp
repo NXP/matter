@@ -34,10 +34,11 @@ CHIP_ERROR PowerTopologyDelegate::GetActiveEndpointAtIndex(size_t index, Endpoin
 
 CHIP_ERROR PowerTopologyInstance::Init()
 {
-    return Instance::Init();
+//    return Instance::Init();
+    return CHIP_NO_ERROR;
 }
 
 void PowerTopologyInstance::Shutdown()
 {
-    Instance::Shutdown();
+//    Instance::Shutdown();
 }
