@@ -21,6 +21,7 @@
 #include <WaterHeaterMain.h>
 #include <app-common/zap-generated/cluster-objects.h>
 #include <lib/support/BitMask.h>
+#include <app/clusters/identify-server/identify-server.h>
 
 using namespace chip;
 using namespace chip::app;
@@ -57,6 +58,43 @@ static chip::ArgParser::OptionSet sCmdLineOptions = { EnergyAppOptionHandler, //
                                                       "PROGRAM OPTIONS",      // help group
                                                       "-a, --application <evse|water-heater>\n"
                                                       "-f, --featureSet <value>\n" };
+
+void OnIdentifyStart(::Identify  *)
+{
+    ChipLogProgress(Zcl, "OnIdentifyStart");
+}
+
+void OnIdentifyStop(::Identify  *)
+{
+    ChipLogProgress(Zcl, "OnIdentifyStop");
+}
+
+void OnTriggerEffect(::Identify * identify)
+{
+    switch (identify->mCurrentEffectIdentifier)
+    {
+        case Clusters::Identify::EffectIdentifierEnum::kBlink:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kBlink");
+            break;
+        case Clusters::Identify::EffectIdentifierEnum::kBreathe:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kBreathe");
+            break;
+        case Clusters::Identify::EffectIdentifierEnum::kOkay:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kOkay");
+            break;
+        case Clusters::Identify::EffectIdentifierEnum::kChannelChange:
+            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kChannelChange");
+            break;
+        default:
+            ChipLogProgress(Zcl, "No identifier effect");
+            return;
+    }
+}
+
+static ::Identify gIdentify1 = {
+    chip::EndpointId{ 1 }, OnIdentifyStart, OnIdentifyStop, Clusters::Identify::IdentifyTypeEnum::kVisibleIndicator,
+    OnTriggerEffect,
+};
 
 namespace chip {
 namespace app {

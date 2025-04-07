@@ -37,6 +37,10 @@
 #include <platform/Linux/NetworkCommissioningDriver.h>
 
 #define ENERGY_EVSE_ENDPOINT 1
+#define EPM_ENDPOINT 1
+#define PT_ENDPOINT 1
+#define DEM_ENDPOINT 2
+
 
 using namespace chip;
 using namespace chip::app;
@@ -99,7 +103,7 @@ CHIP_ERROR DeviceEnergyManagementInit()
     BitMask<DeviceEnergyManagement::Feature> featureMap = GetFeatureMapFromCmdLine();
 
     /* Manufacturer may optionally not support all features, commands & attributes */
-    gDEMInstance = std::make_unique<DeviceEnergyManagementManager>(EndpointId(ENERGY_EVSE_ENDPOINT), *gDEMDelegate, featureMap);
+    gDEMInstance = std::make_unique<DeviceEnergyManagementManager>(EndpointId(DEM_ENDPOINT), *gDEMDelegate, featureMap);
 
     if (!gDEMInstance)
     {
@@ -257,7 +261,7 @@ CHIP_ERROR PowerTopologyInit()
     }
 
     gPTInstance =
-        std::make_unique<PowerTopologyInstance>(EndpointId(ENERGY_EVSE_ENDPOINT), *gPTDelegate,
+        std::make_unique<PowerTopologyInstance>(EndpointId(PT_ENDPOINT), *gPTDelegate,
                                                 BitMask<PowerTopology::Feature, uint32_t>(PowerTopology::Feature::kNodeTopology),
                                                 BitMask<PowerTopology::OptionalAttributes, uint32_t>(0));
 
@@ -327,7 +331,7 @@ CHIP_ERROR EnergyMeterInit()
     /* Manufacturer may optionally not support all features, commands & attributes */
     /* Turning on all optional features and attributes for test certification purposes */
     gEPMInstance = std::make_unique<ElectricalPowerMeasurementInstance>(
-        EndpointId(ENERGY_EVSE_ENDPOINT), *gEPMDelegate,
+        EndpointId(EPM_ENDPOINT), *gEPMDelegate,
         BitMask<ElectricalPowerMeasurement::Feature, uint32_t>(
             ElectricalPowerMeasurement::Feature::kDirectCurrent, ElectricalPowerMeasurement::Feature::kAlternatingCurrent,
             ElectricalPowerMeasurement::Feature::kPolyphasePower, ElectricalPowerMeasurement::Feature::kHarmonics,

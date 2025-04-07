@@ -124,6 +124,7 @@ void WaterHeaterManagementDelegate::SetEstimatedHeatRequired(Energy_mWh estimate
 
 void WaterHeaterManagementDelegate::SetTankPercentage(Percent tankPercentage)
 {
+/*
     if (mpWhmInstance != nullptr && mpWhmInstance->HasFeature(Feature::kTankPercent))
     {
         if (mTankPercentage != tankPercentage)
@@ -132,7 +133,7 @@ void WaterHeaterManagementDelegate::SetTankPercentage(Percent tankPercentage)
 
             MatterReportingAttributeChangeCallback(mEndpointId, WaterHeaterManagement::Id, Attributes::TankPercentage::Id);
         }
-    }
+    }*/
 }
 
 void WaterHeaterManagementDelegate::SetBoostState(BoostStateEnum boostState)
@@ -208,7 +209,7 @@ Status WaterHeaterManagementDelegate::HandleBoost(uint32_t durationS, Optional<b
     VerifyOrReturnValue(status == Status::Success, status);
 
     // Now generate a BoostStarted event
-    err = GenerateBoostStartedEvent(durationS, oneShot, emergencyBoost, temporarySetpoint, targetPercentage, targetReheat);
+//    err = GenerateBoostStartedEvent(durationS, oneShot, emergencyBoost, temporarySetpoint, targetPercentage, targetReheat);
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(AppServer, "HandleBoost: Failed to generate BoostStarted event: %" CHIP_ERROR_FORMAT, err.Format());
@@ -249,7 +250,8 @@ void WaterHeaterManagementDelegate::HandleBoostTimerExpiry()
     // which it cannot be when called from here.
     ChangeHeatingIfNecessary();
 
-    CHIP_ERROR err = GenerateBoostEndedEvent();
+//    CHIP_ERROR err = GenerateBoostEndedEvent();
+    CHIP_ERROR err = CHIP_NO_ERROR;
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(AppServer, "HandleBoostTimerExpiry: Failed to generate BoostEnded event: %" CHIP_ERROR_FORMAT, err.Format());
@@ -282,7 +284,8 @@ Status WaterHeaterManagementDelegate::HandleCancelBoost()
         status = ChangeHeatingIfNecessary();
         VerifyOrReturnValue(status == Status::Success, status);
 
-        CHIP_ERROR err = GenerateBoostEndedEvent();
+//        CHIP_ERROR err = GenerateBoostEndedEvent();
+        CHIP_ERROR err = CHIP_NO_ERROR;
         if (err != CHIP_NO_ERROR)
         {
             ChipLogError(AppServer, "HandleCancelBoost: Failed to generate BoostEnded event: %" CHIP_ERROR_FORMAT, err.Format());
@@ -339,13 +342,13 @@ void WaterHeaterManagementDelegate::SetColdWaterTemperature(int16_t coldWaterTem
 void WaterHeaterManagementDelegate::SetWaterTemperature(int16_t waterTemperature)
 {
     mWaterTemperature = waterTemperature;
-
+/*
     if (mpWhmInstance != nullptr && mpWhmInstance->HasFeature(Feature::kTankPercent))
     {
         // Recalculate the tankPercentage as the waterTemperature has changed
         SetTankPercentage(CalculateTankPercentage());
     }
-
+*/
     // See if the heat needs to be turned on or off
     ChangeHeatingIfNecessary();
 }
@@ -366,12 +369,13 @@ void WaterHeaterManagementDelegate::DrawOffHotWater(Percent percentageReplaced, 
 
     // Replaces percentageReplaced% of the water in the tank with water of a temperature replacedWaterTemperature
     // Only supported if the kTankPercent feature is supported.
+/*
     if (mpWhmInstance != nullptr && mpWhmInstance->HasFeature(Feature::kTankPercent))
     {
         SetTankPercentage(CalculateTankPercentage());
 
         ChangeHeatingIfNecessary();
-    }
+    } */
 }
 
 bool WaterHeaterManagementDelegate::HasWaterTemperatureReachedTarget() const
@@ -443,7 +447,8 @@ Status WaterHeaterManagementDelegate::ChangeHeatingIfNecessary()
 
             status = mpWhmManufacturer->BoostCommandCancelled();
 
-            CHIP_ERROR err = GenerateBoostEndedEvent();
+//            CHIP_ERROR err = GenerateBoostEndedEvent();
+            CHIP_ERROR err = CHIP_NO_ERROR;
             if (err != CHIP_NO_ERROR)
             {
                 ChipLogError(AppServer, "ChangeHeatingIfNecessary: Failed to generate BoostEnded event: %" CHIP_ERROR_FORMAT,
