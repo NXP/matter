@@ -98,9 +98,6 @@ if (CONFIG_DIAG_LOGS_DEMO)
 endif()
 
 if (CONFIG_CHIP_APP_FACTORY_DATA)
-    target_compile_definitions(app PRIVATE
-        EXTERNAL_FACTORY_DATA_PROVIDER_HEADER=\"${CONFIG_EXTERNAL_FACTORY_DATA_PROVIDER_HEADER}\"
-    )
     if (CONFIG_CHIP_APP_FACTORY_DATA_IMPL_PLATFORM)
         target_sources(app PRIVATE
             ${EXAMPLE_NXP_PLATFORM_DIR}/factory_data/source/AppFactoryDataExample.cpp
@@ -109,27 +106,11 @@ if (CONFIG_CHIP_APP_FACTORY_DATA)
             target_compile_definitions(app PRIVATE
                 ENABLE_SECURE_WHOLE_FACTORY_DATA
             )
-            target_compile_definitions(app PUBLIC
-                EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderEncImpl.h\"
-            )
-        elseif(CONFIG_CHIP_ENABLE_EL2GO_FACTORY_DATA)
-            target_compile_definitions(app PUBLIC
-                EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderEl2GoImpl.h\"
-            )
         endif()
     elseif (CONFIG_CHIP_APP_FACTORY_DATA_IMPL_COMMON)
         target_sources(app PRIVATE
             ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataDefaultImpl.cpp
         )
-        if(CONFIG_EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER_PLATFORM)
-            target_compile_definitions(app PUBLIC
-                EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h\"
-            )
-        else()
-            target_compile_definitions(app PUBLIC
-                EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER=\"platform/nxp/common/factory_data/FactoryDataProviderFwkImpl.h\"
-            )
-        endif()
     endif()
 endif()
 

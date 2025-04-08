@@ -94,32 +94,6 @@ if CHIP_APP_FACTORY_DATA
 
     endchoice # CHIP_APP_FACTORY_DATA_IMPL_SELECTION
 
-    config EXTERNAL_FACTORY_DATA_PROVIDER_HEADER
-        string "FactoryDataProvider.h"
-        default "platform/nxp/common/factory_data/legacy/FactoryDataProvider.h" if CHIP_NXP_PLATFORM_K32W1 || CHIP_NXP_PLATFORM_MCXW71 || CHIP_NXP_PLATFORM_MCXW72
-        default "platform/nxp/common/factory_data/FactoryDataProvider.h"
-        help
-            Provide the FactoryDataProvider header. (Macro value is in quotes.)
-    
-    if CHIP_APP_FACTORY_DATA_IMPL_COMMON
-        choice EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER_SELECTION
-            prompt "Select the FactoryDataProviderImpl header to use"
-            default EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER_COMMON if CHIP_NXP_PLATFORM_RT1170
-            default EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER_PLATFORM
-
-            config EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER_PLATFORM
-                bool "Platform FactoryDataProviderImpl.h"
-                help
-                    If enabled, the FactoryDataProviderImpl header used will be "platform/nxp/${CONFIG_CHIP_NXP_PLATFORM_FOLDER_NAME}/FactoryDataProviderImpl.h".
-
-            config EXTERNAL_FACTORY_DATA_PROVIDER_IMPL_HEADER_COMMON
-                bool "Common FactoryDataProviderImpl.h"
-                help
-                    If enabled, the FactoryDataProviderImpl header used will be "platform/nxp/common/factory_data/FactoryDataProviderFwkImpl.h".
-        
-        endchoice
-    endif # CHIP_APP_FACTORY_DATA_IMPL_COMMON
-
 endif # CHIP_APP_FACTORY_DATA
 
 config CHIP_APP_LED_WIDGET
