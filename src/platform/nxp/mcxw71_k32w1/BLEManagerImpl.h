@@ -61,6 +61,9 @@ public:
 private:
     static BLEManagerImpl sInstance;
 
+    static CHIP_ERROR blekw_host_init(void);
+    static void Host_Task(osaTaskParam_t argument);
+
     BleLayer * _GetBleLayer(void);
 
     // ===== Members for internal use by the following friends.
