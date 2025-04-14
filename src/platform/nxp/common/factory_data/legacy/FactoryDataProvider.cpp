@@ -22,7 +22,7 @@
 #endif
 
 #include <credentials/CHIPCert.h>
-#include <credentials/DeviceAttestationCredsProvider.h>
+#include <credentials/CertificationDeclaration.h>
 #include <crypto/CHIPCryptoPAL.h>
 #include <lib/core/CHIPError.h>
 #include <lib/core/TLV.h>

@@ -25,7 +25,7 @@
 
 #include <vector>
 
-#include CHIP_PLATFORM_CONFIG_INCLUDE
+#include "CHIPPlatformConfig.h"
 
 #include <vector>
 
