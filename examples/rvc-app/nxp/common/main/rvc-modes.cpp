@@ -68,7 +68,7 @@ void RvcRunModeDelegate::HandleChangeToMode(uint8_t NewMode, ModeBase::Commands:
 
 CHIP_ERROR RvcRunModeDelegate::GetModeLabelByIndex(uint8_t modeIndex, chip::MutableCharSpan & label)
 {
-    if (modeIndex >= MATTER_ARRAY_SIZE(kModeOptions))
+    if (modeIndex >= ArraySize(kModeOptions))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
@@ -77,7 +77,7 @@ CHIP_ERROR RvcRunModeDelegate::GetModeLabelByIndex(uint8_t modeIndex, chip::Muta
 
 CHIP_ERROR RvcRunModeDelegate::GetModeValueByIndex(uint8_t modeIndex, uint8_t & value)
 {
-    if (modeIndex >= MATTER_ARRAY_SIZE(kModeOptions))
+    if (modeIndex >= ArraySize(kModeOptions))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
@@ -87,7 +87,7 @@ CHIP_ERROR RvcRunModeDelegate::GetModeValueByIndex(uint8_t modeIndex, uint8_t & 
 
 CHIP_ERROR RvcRunModeDelegate::GetModeTagsByIndex(uint8_t modeIndex, List<ModeTagStructType> & tags)
 {
-    if (modeIndex >= MATTER_ARRAY_SIZE(kModeOptions))
+    if (modeIndex >= ArraySize(kModeOptions))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
@@ -160,7 +160,7 @@ void RvcCleanModeDelegate::HandleChangeToMode(uint8_t NewMode, ModeBase::Command
 
 CHIP_ERROR RvcCleanModeDelegate::GetModeLabelByIndex(uint8_t modeIndex, chip::MutableCharSpan & label)
 {
-    if (modeIndex >= MATTER_ARRAY_SIZE(kModeOptions))
+    if (modeIndex >= ArraySize(kModeOptions))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
@@ -169,7 +169,7 @@ CHIP_ERROR RvcCleanModeDelegate::GetModeLabelByIndex(uint8_t modeIndex, chip::Mu
 
 CHIP_ERROR RvcCleanModeDelegate::GetModeValueByIndex(uint8_t modeIndex, uint8_t & value)
 {
-    if (modeIndex >= MATTER_ARRAY_SIZE(kModeOptions))
+    if (modeIndex >= ArraySize(kModeOptions))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
@@ -179,7 +179,7 @@ CHIP_ERROR RvcCleanModeDelegate::GetModeValueByIndex(uint8_t modeIndex, uint8_t 
 
 CHIP_ERROR RvcCleanModeDelegate::GetModeTagsByIndex(uint8_t modeIndex, List<ModeTagStructType> & tags)
 {
-    if (modeIndex >= MATTER_ARRAY_SIZE(kModeOptions))
+    if (modeIndex >= ArraySize(kModeOptions))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
