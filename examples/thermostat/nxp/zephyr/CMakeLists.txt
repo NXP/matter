@@ -76,7 +76,7 @@ target_compile_definitions(app PUBLIC
 
 if(CONFIG_CHIP_CUSTOM_BLE_ADV_DATA)
     target_sources(app PRIVATE
-                    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_ble/source/BleZephyrManagerApp.cpp
+                    ${THERMOSTAT_NXP_COMMON_DIR}/main/BleZephyrManagerApp.cpp
     )
 else()
     target_sources(app PRIVATE
