@@ -194,8 +194,7 @@ mcxw72_executable("light_app") {
   deps += [
     "${chip_root}/examples/providers:device_info_provider",
     "${chip_root}/src/platform/logging:default",
-    "${chip_root}/src/setup_payload:onboarding-codes-utils",
-    "${chip_root}/examples/lighting-app/nxp/zap"
+    "${chip_root}/examples/lighting-app/nxp/zap/"
   ]
 
   if (chip_openthread_ftd) {
