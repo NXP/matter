@@ -98,14 +98,18 @@ if(CONFIG_CHIP_NXP_PLATFORM_MCXW71 OR CONFIG_CHIP_NXP_PLATFORM_MCXW72)
     )
 endif()
 
-if(CONFIG_CHIP_ICD_LIT_SUPPORT)
-    chip_configure_data_model(app
-        INCLUDE_SERVER
-        ZAP_FILE ${NXP_EXAMPLE_ZAP_LIT_DIR}/contact-sensor-app.zap
-    )
+if(CONFIG_CHIP_WIFI AND CONFIG_NET_L2_OPENTHREAD)
+    message(FATAL_ERROR "WiFi + Thread (Border Router) configuration is not supported in this application.")
 else()
-    chip_configure_data_model(app
-        INCLUDE_SERVER
-        ZAP_FILE ${NXP_EXAMPLE_ZAP_SIT_DIR}/contact-sensor-app.zap
-    )
+    if(CONFIG_CHIP_ICD_LIT_SUPPORT)
+        chip_configure_data_model(app
+            INCLUDE_SERVER
+            ZAP_FILE ${NXP_EXAMPLE_ZAP_LIT_DIR}/contact-sensor-app.zap
+        )
+    else()
+        chip_configure_data_model(app
+            INCLUDE_SERVER
+            ZAP_FILE ${NXP_EXAMPLE_ZAP_SIT_DIR}/contact-sensor-app.zap
+        )
+    endif()
 endif()

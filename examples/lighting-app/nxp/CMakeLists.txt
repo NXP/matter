@@ -96,7 +96,11 @@ if(CONFIG_CHIP_NXP_PLATFORM_MCXW71 OR CONFIG_CHIP_NXP_PLATFORM_MCXW72)
     )
 endif()
 
-chip_configure_data_model(app
-    INCLUDE_SERVER
-    ZAP_FILE ${NXP_EXAMPLE_ZAP_DIR}/lighting-on-off.zap
-)
+if(CONFIG_CHIP_WIFI AND CONFIG_NET_L2_OPENTHREAD)
+    message(FATAL_ERROR "WiFi + Thread (Border Router) configuration is not supported in this application.")
+else()
+    chip_configure_data_model(app
+        INCLUDE_SERVER
+        ZAP_FILE ${NXP_EXAMPLE_ZAP_DIR}/lighting-on-off.zap
+    )
+endif()
