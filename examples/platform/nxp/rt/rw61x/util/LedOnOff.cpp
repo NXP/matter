@@ -50,16 +50,20 @@ void LedOnOff::Init(uint8_t index, bool inverted)
     GPIO_PortInit(GPIO, BOARD_LED_RED_GPIO_PORT);
     GPIO_PinInit(GPIO, BOARD_LED_RED_GPIO_PORT, BOARD_LED_RED_GPIO_PIN, &led_config);
 
-#if (BOARD_TYPE == 1)
-    // EVA board
-    GPIO_PinWrite(GPIO, BOARD_LED_RED_GPIO_PORT, BOARD_LED_RED_GPIO_PIN, 1);
-#elif (BOARD_TYPE == 0)
-    // FRDM board
-    GPIO_PinWrite(GPIO, BOARD_LED_RED_GPIO_PORT, BOARD_LED_RED_GPIO_PIN, 0);
-#else
-    #pragma error "Unsupported Board Type, 0: Frdm_board, 1: eva_board"
-#endif
-
+    if (strcmp(BOARD_NAME, "RD-RW61X-BGA") == 0)
+    {
+        // EVA board
+        GPIO_PinWrite(GPIO, BOARD_LED_RED_GPIO_PORT, BOARD_LED_RED_GPIO_PIN, 1);
+    }
+    else if (strcmp(BOARD_NAME, "FRDM-RW612") == 0)
+    {
+        // FRDM board
+        GPIO_PinWrite(GPIO, BOARD_LED_RED_GPIO_PORT, BOARD_LED_RED_GPIO_PIN, 0);
+    }
+    else
+    {
+        ChipLogError(DeviceLayer, "Error: Unsupported Board Type");
+    }
     Set(false);
 }
 
@@ -82,24 +86,22 @@ void LedOnOff::DoSet(bool state)
     if (state)
     {
         // Turn on LED
-#if (BOARD_TYPE == 1)
-        // eva-board
-        GPIO_PortSet(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
-#elif (BOARD_TYPE == 0)
-        // frdm-boar
-        GPIO_PortClear(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
-#endif
+        if (strcmp(BOARD_NAME, "RD-RW61X-BGA") == 0)
+            // eva-board
+            GPIO_PortSet(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
+        else if (strcmp(BOARD_NAME, "FRDM-RW612") == 0)
+            // frdm-board
+            GPIO_PortClear(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
     }
     else
     {
         // Turn off LED
-#if (BOARD_TYPE == 1)
-	// eva-board
-        GPIO_PortClear(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
-#elif (BOARD_TYPE == 0)
-	// frdm-board
-        GPIO_PortSet(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
-#endif
+        if (strcmp(BOARD_NAME, "RD-RW61X-BGA") == 0)
+	        // eva-board
+            GPIO_PortClear(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
+        else if (strcmp(BOARD_NAME, "FRDM-RW612") == 0)
+	        // frdm-board
+            GPIO_PortSet(GPIO, BOARD_LED_RED_GPIO_PORT, 1u << BOARD_LED_RED_GPIO_PIN);
     }
 }
 } // namespace chip::NXP::App
