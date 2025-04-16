@@ -48,6 +48,13 @@ static_library("nxp_crypto_lib") {
     "${chip_root}/src/platform/nxp/crypto/se05x/CHIPCryptoPAL_HostFallBack.cpp",
   ]
 
+  if (true) {
+    sources += [
+      "${chip_root}/src/platform/nxp/crypto/se05x/linux_kvs/KeyValueStoreManagerImpl.cpp",
+      "${chip_root}/src/platform/nxp/crypto/se05x/linux_kvs/KeyValueStoreManagerImpl.h",
+      ]
+  }
+
   public_deps = [ ":public_headers" ]
   deps = [ "${chip_root}/${nxp_crypto_mw_root}:se05x" ]
 
@@ -55,6 +62,10 @@ static_library("nxp_crypto_lib") {
 
   if (!external_mbedtls) {
     public_deps += [ "${mbedtls_root}:mbedtls" ]
+  }
+
+  if (true) {
+    public_deps += [ "${chip_root}/third_party/inipp" ]
   }
 
   include_dirs = [

@@ -16,7 +16,7 @@
  */
 #include "DeviceAttestationSe05xCredsExample.h"
 
-#include <CHIPCryptoPAL_se05x.h>
+#include <platform/nxp/crypto/se05x/CHIPCryptoPAL_se05x.h>
 #include <credentials/examples/ExampleDACs.h>
 #include <credentials/examples/ExamplePAI.h>
 #include <crypto/CHIPCryptoPAL.h>

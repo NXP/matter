@@ -34,7 +34,7 @@ declare_args() {
 
 config("app-main-config") {
   include_dirs = [
-  ".",
+  "../",
   "../../../linux" ]
 }
 
@@ -87,6 +87,7 @@ source_set("app-main") {
     "../../../linux/testing/CustomCSRResponse.h",
     "../../../linux/testing/CustomCSRResponseOperationalKeyStore.cpp",
     "../../../linux/testing/CustomCSRResponseOperationalKeyStore.h",
+    "../DeviceAttestationSe05xCredsExample.cpp",
   ]
 
   public_deps = [
@@ -144,6 +145,8 @@ source_set("app-main") {
     "CHIP_DEVICE_CONFIG_ENABLE_WATER_HEATER_MANAGEMENT_TRIGGER=${chip_enable_water_heater_management_trigger}",
     "CHIP_DEVICE_CONFIG_ENABLE_DEVICE_ENERGY_MANAGEMENT_TRIGGER=${chip_enable_device_energy_management_trigger}",
   ]
+
+  defines += [ "EXTERNAL_KEYVALUESTOREMANAGERIMPL_HEADER=<platform/nxp/crypto/se05x/linux_kvs/KeyValueStoreManagerImpl.h>" ]
 
   public_configs = [ ":app-main-config" ]
 }
