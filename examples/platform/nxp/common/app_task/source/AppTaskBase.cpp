@@ -128,8 +128,7 @@ app::Clusters::NetworkCommissioning::Instance
 #endif
 
 #if CHIP_DEVICE_CONFIG_ENABLE_TBR
-static constexpr EndpointId kThreadBRMgmtEndpoint = 2;
-static CharSpan sBrName("NXP-BR", strlen("NXP-BR"));
+extern char baseServiceInstanceName[];
 #endif
 
 #if CHIP_CONFIG_ENABLE_ICD_SERVER || (CONFIG_CHIP_TEST_EVENT && CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR)
@@ -218,10 +217,6 @@ void chip::NXP::App::AppTaskBase::InitServer(intptr_t arg)
 
 #if CONFIG_CHIP_APP_WIFI_CONNECT_AT_BOOT
     VerifyOrDie(WifiConnectAtboot(chip::NXP::App::GetAppTask().GetWifiDriverInstance()) == CHIP_NO_ERROR);
-#endif
-
-#if CHIP_DEVICE_CONFIG_ENABLE_TBR
-    GetAppTask().EnableTbrManagementCluster();
 #endif
 }
 
@@ -483,15 +478,20 @@ void chip::NXP::App::AppTaskBase::PrintCurrentVersion()
 #if CHIP_DEVICE_CONFIG_ENABLE_TBR
 void chip::NXP::App::AppTaskBase::EnableTbrManagementCluster()
 {
-    auto * persistentStorage = &Server::GetInstance().GetPersistentStorage();
+    if (mTbrmClusterEnabled == false)
+    {
+        mTbrmClusterEnabled      = true;
+        auto * persistentStorage = &Server::GetInstance().GetPersistentStorage();
 
-    static ThreadBorderRouterManagement::GenericOpenThreadBorderRouterDelegate sThreadBRDelegate(persistentStorage);
-    static ThreadBorderRouterManagement::ServerInstance sThreadBRMgmtInstance(kThreadBRMgmtEndpoint, &sThreadBRDelegate,
-                                                                              Server::GetInstance().GetFailSafeContext());
+        static ThreadBorderRouterManagement::GenericOpenThreadBorderRouterDelegate sThreadBRDelegate(persistentStorage);
+        static ThreadBorderRouterManagement::ServerInstance sThreadBRMgmtInstance(kThreadBRMgmtEndpoint, &sThreadBRDelegate,
+                                                                                  Server::GetInstance().GetFailSafeContext());
 
-    // Initialize TBR name
-    sThreadBRDelegate.SetThreadBorderRouterName(sBrName);
-    // Initialize TBR cluster
-    sThreadBRMgmtInstance.Init();
+        // Initialize TBR name
+        CharSpan brName(baseServiceInstanceName, strlen(baseServiceInstanceName));
+        sThreadBRDelegate.SetThreadBorderRouterName(brName);
+        // Initialize TBR cluster
+        sThreadBRMgmtInstance.Init();
+    }
 }
 #endif
