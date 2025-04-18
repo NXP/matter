@@ -56,10 +56,6 @@
 #endif /* CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED */
 #endif
 
-extern "C" {
-#include "osa.h"
-}
-
 #if !CHIP_DEVICE_CONFIG_ENABLE_THREAD && !CHIP_DEVICE_CONFIG_ENABLE_WPA
 
 #include "board.h"
@@ -181,6 +177,13 @@ static CHIP_ERROR EnableWiFiCoexistence(void)
 #endif
 
     return ret;
+}
+#endif
+
+#if !CHIP_DEVICE_CONFIG_ENABLE_WPA
+extern "C" void vApplicationIdleHook(void)
+{
+    chip::DeviceLayer::PlatformManagerImpl::IdleHook();
 }
 #endif
 
@@ -372,6 +375,7 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
     otPlatRandomInit();
 #endif
 
+#if CHIP_DEVICE_CONFIG_ENABLE_WPA
     osError = OSA_SetupIdleFunction(chip::DeviceLayer::PlatformManagerImpl::IdleHook);
     if (osError != WM_SUCCESS)
     {
@@ -379,7 +383,7 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
         err = CHIP_ERROR_NO_MEMORY;
         goto exit;
     }
-#if CHIP_DEVICE_CONFIG_ENABLE_WPA
+
 /* For IW612 transceiver firmware initialization is done by PLATFORM_InitControllers */
 #ifndef WIFI_IW612_BOARD_MURATA_2EL_M2
     err = WiFiInterfaceInit();
