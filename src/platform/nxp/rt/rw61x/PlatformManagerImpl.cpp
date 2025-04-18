@@ -53,10 +53,6 @@ extern "C" void BOARD_InitHardware(void);
 extern "C" void otPlatSetResetFunction(void (*fp)(void));
 extern "C" void initiateResetInIdle(void);
 
-extern "C" {
-#include "osa.h"
-}
-
 #if CHIP_DEVICE_CONFIG_ENABLE_WPA
 
 #include "wlan_bt_fw.h"
@@ -79,6 +75,13 @@ extern "C" void vApplicationMallocFailedHook(void)
 {
     ChipLogError(DeviceLayer, "Malloc Failure");
 }
+
+#if !CHIP_DEVICE_CONFIG_ENABLE_WPA
+extern "C" void vApplicationIdleHook(void)
+{
+    chip::DeviceLayer::PlatformManagerImpl::IdleHook();
+}
+#endif
 
 extern "C" void __wrap_exit(int __status)
 {
@@ -204,6 +207,7 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
     otPlatRandomInit();
 #endif
 
+#if CHIP_DEVICE_CONFIG_ENABLE_WPA
     osError = OSA_SetupIdleFunction(chip::DeviceLayer::PlatformManagerImpl::IdleHook);
     if (osError != WM_SUCCESS)
     {
@@ -212,7 +216,6 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
         goto exit;
     }
 
-#if CHIP_DEVICE_CONFIG_ENABLE_WPA
     err = WiFiInterfaceInit();
 
     if (err != CHIP_NO_ERROR)
