@@ -31,7 +31,16 @@
 #include <vector>
 #include <array>
 
+#define NXP_CRYPTO_KEY_MAGIC                            \
+    {                                                   \
+        0xA5, 0xA6, 0xB5, 0xB6, 0xA5, 0xA6, 0xB5, 0xB6  \
+    }
+#define NIST256_HEADER_OFFSET 26
+#define PUB_KEY_LEN           65
+
+extern CHIP_ERROR Se05xCheckObjectExists(uint32_t keyId);
 extern CHIP_ERROR se05xGetCertificate(uint32_t keyId, uint8_t * buf, size_t * buflen);
+
 
 namespace chip {
 namespace DeviceLayer {
@@ -45,62 +54,112 @@ public:
      * Initalize the KVS, must be called before using.
      */
 
+    static CHIP_ERROR CreateSe05xRefKey(const uint8_t * pubKeyBuf, size_t  pubKeyBufLen, uint32_t keyId, uint8_t * outBuf, size_t * outLen) {
+
+        const uint8_t header[] = { 0x15, 0x24, 0x00, 0x01, 0x30, 0x01, 0x61 };
+        const uint8_t se05x_magic_no[] = NXP_CRYPTO_KEY_MAGIC;
+        size_t offset = 0;
+
+        memcpy(&outBuf[offset], header, sizeof(header));
+        offset += sizeof(header);
+
+        memcpy(&outBuf[offset], pubKeyBuf + 16, pubKeyBufLen - NIST256_HEADER_OFFSET);
+        offset += PUB_KEY_LEN;
+
+        memcpy(&outBuf[offset], se05x_magic_no, sizeof(se05x_magic_no));
+        offset += sizeof(se05x_magic_no);
+
+        uint8_t keyIdBytes[] = {
+           static_cast<uint8_t>((keyId >> 24) & 0xFF),
+           static_cast<uint8_t>((keyId >> 16) & 0xFF),
+           static_cast<uint8_t>((keyId >> 8) & 0xFF),
+           static_cast<uint8_t>(keyId & 0xFF)
+        };
+
+        memcpy(&outBuf[offset], keyIdBytes, sizeof(keyIdBytes));
+        offset += sizeof(keyIdBytes);
+
+        memset(&outBuf[offset], 0x00, 20);
+        offset += 20;
+
+        outBuf[offset++] = 0x18;
+        *outLen = offset;
+
+        return CHIP_NO_ERROR;
+    }
+
     CHIP_ERROR Init(const char *file) {
 
        printf("********************** KVS Init ***************************\n");
 
-       if (access(file, F_OK) == 0) {
-           if (remove(file) != 0) {
-               return CHIP_ERROR_INTERNAL;
-           }
-       }
+        if (access(file, F_OK) == 0) {
+            if (remove(file) != 0) {
+                return CHIP_ERROR_INTERNAL;
+            }
+        }
 
-       CHIP_ERROR fCreate = mStorage.Init(file);
-       if (fCreate != CHIP_NO_ERROR) {
-           return fCreate;
-       }
-    
-       std::array<uint32_t, 9> keyIds = {
-           0x7D300022, 0x7D300013, 0x7D300014, 0x7D300015,
-           0x7D300016, 0x7D300020, 0x7D300017, 0x7D300018, 0x7D300019
-       };
-       for (uint32_t keyId : keyIds) {
-           std::vector<uint8_t> Buf(2000, 0);
-           size_t Buf_len = Buf.size();
-           std::vector<uint8_t> decodeBuf(2000, 0);
-           uint16_t decodeBufLen = 0;
-           CHIP_ERROR status = se05xGetCertificate(keyId, Buf.data(), &Buf_len);
-           if (status != CHIP_NO_ERROR) {
-               printf("se05xGetCertificate failed for Key ID: 0x%X\n", keyId);
-               return status;
-           }
-           size_t start = 0;
-           while (start < Buf_len) {
-               size_t end = start;
-               while (end < Buf_len && Buf[end] != '\n') {
-                   end++;
-               }
-               std::string line(reinterpret_cast<char *>(&Buf[start]), end - start);
-               start = end + 1;
-               size_t pos = line.find('=');
-               if (pos != std::string::npos) {
-                   std::string key = line.substr(0, pos);
-                   std::string value = line.substr(pos + 1);
-                   decodeBufLen = Base64Decode(value.c_str(), value.length(), decodeBuf.data());
-                   if (decodeBufLen > 0) {
-                       CHIP_ERROR err = _Put(key.c_str(), decodeBuf.data(), decodeBufLen);
-                       if (err != CHIP_NO_ERROR) {
-                           printf("Failed to store key: %s\n", key.c_str());
-                           return err;
-                       }
-                   } else {
-                       printf("Base64 decode failed for key: %s\n", key.c_str());
-                   }
-               }
-           }
-       }
-       
-       return CHIP_NO_ERROR;
+        CHIP_ERROR fCreate = mStorage.Init(file);
+        if (fCreate != CHIP_NO_ERROR) {
+            return fCreate;
+        }
+
+        std::vector<std::pair<uint32_t, std::string>> keyIdList = {
+            {0x7D300013, "f/1/ac/0/0"},
+            {0x7D300014, "f/1/g"},
+            {0x7D300015, "f/1/i"},
+            {0x7D300016, "f/1/k/0"},
+            {0x7D300017, "f/1/m"},
+            {0x7D300018, "f/1/n"},
+            {0x7D300019, "f/1/o"},
+            {0x7D300020, "f/1/r"},
+            {0x7D300021, "f/1/s/000000000001B669"},
+            {0x7D300022, "g/fidx"},
+            {0x7D300023, "g/s/pk6lqwxDedYkcy9ukRIuCwx3dx3d"}};
+
+        for(const auto &pair : keyIdList) {
+
+            CHIP_ERROR status = CHIP_NO_ERROR;
+
+            uint32_t keyId = pair.first;
+            const std::string& key = pair.second;
+            std::vector<uint8_t> certBuf(2000);
+            size_t certBufLen = certBuf.size();
+
+            status = Se05xCheckObjectExists(keyId);
+            if(status != CHIP_NO_ERROR) {
+                printf("Se05x is not NFC commisioned\n");
+                break;
+            }
+
+            status = se05xGetCertificate(keyId, certBuf.data(), &certBufLen);
+            if (status != CHIP_NO_ERROR) {
+                printf("se05xGetCertificate failed for Key ID: 0x%X\n", keyId);
+                return status;
+            }
+            if (keyId == 0x7D300019) {
+                std::vector<uint8_t> formattedBuf(200);
+                size_t formattedBufLen = 0;
+
+                status = CreateSe05xRefKey(certBuf.data(), certBufLen, keyId, formattedBuf.data(), &formattedBufLen);
+                if (status != CHIP_NO_ERROR) {
+                    printf("CreateRefKey Failed : 0x%X\n", keyId);
+                    return status;
+                }
+                status = _Put(key.c_str(), formattedBuf.data(), formattedBufLen);
+                if (status != CHIP_NO_ERROR) {
+                    printf("Failed to format the key\n");
+                    return status;
+                }
+            } else {
+                status = _Put(key.c_str(), certBuf.data(), certBufLen);
+                if (status != CHIP_NO_ERROR) {
+                    printf("Failed to store key: %s\n", key.c_str());
+                    return status;
+                }
+            }
+        }
+
+        return CHIP_NO_ERROR;
     }
 
     CHIP_ERROR _Get(const char * key, void * value, size_t value_size, size_t * read_bytes_size = nullptr, size_t offset = 0);

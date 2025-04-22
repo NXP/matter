@@ -112,6 +112,34 @@ CHIP_ERROR se05x_sessionOpen(void)
     return CHIP_NO_ERROR;
 }
 
+CHIP_ERROR Se05xCheckObjectExists(uint32_t keyid)
+{
+    smStatus_t smstatus   = SM_NOT_OK;
+    SE05x_Result_t exists = kSE05x_Result_NA;
+
+    if (se05x_sessionOpen() != CHIP_NO_ERROR)
+    {
+        ChipLogError(Crypto, "se05x error: Error in session open");
+        return CHIP_ERROR_INTERNAL;
+    }
+
+    if(gex_sss_chip_ctx.ks.session != NULL)
+    {
+        smstatus = Se05x_API_CheckObjectExists(&((sss_se05x_session_t *) &gex_sss_chip_ctx.session)->s_ctx, keyid, &exists);
+        if(smstatus != SM_OK) {
+            ChipLogError(Crypto, "se05x error: Error in Se05x_API_CheckObjectExists");
+            return CHIP_ERROR_INTERNAL;
+        }
+        if(exists == kSE05x_Result_FAILURE) {
+            ChipLogError(Crypto, "se05x warn: Key doesnot exists");
+            return CHIP_ERROR_INTERNAL;
+        }
+    }
+
+    return CHIP_NO_ERROR;
+
+}
+
 /* Delete key in se05x */
 void se05x_delete_key(uint32_t keyid)
 {
