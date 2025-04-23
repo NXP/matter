@@ -119,7 +119,7 @@
 #endif // CHIP_DEVICE_LAYER_TARGET_LINUX
 
 #include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_config.h>
-#ifdef ENABLE_SE05X_DEVICE_ATTESTATION
+#if ENABLE_SE05X_DEVICE_ATTESTATION
 #include "DeviceAttestationSe05xCredsExample.h"
 #endif
 
@@ -648,7 +648,7 @@ void ChipLinuxAppMainLoop(AppMainLoopImplementation * impl)
     PrintOnboardingCodes(LinuxDeviceOptions::GetInstance().payload);
 
     // Initialize device attestation config
-#ifdef ENABLE_SE05X_DEVICE_ATTESTATION
+#if ENABLE_SE05X_DEVICE_ATTESTATION
     SetDeviceAttestationCredentialsProvider(chip::Credentials::Examples::GetExampleSe05xDACProvider());
 #else
     SetDeviceAttestationCredentialsProvider(LinuxDeviceOptions::GetInstance().dacProvider);
