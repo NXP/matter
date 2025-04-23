@@ -23,6 +23,7 @@
 #pragma once
 
 #include "CHIPCryptoPALHsm_se05x_config.h"
+#include <crypto/CHIPCryptoPAL.h>
 #include <lib/core/DataModelTypes.h>
 
 #if ((ENABLE_SE05X_SPAKE_VERIFIER) || (ENABLE_SE05X_SPAKE_PROVER))
