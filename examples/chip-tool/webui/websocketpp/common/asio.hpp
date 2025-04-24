@@ -51,7 +51,7 @@
     
     #include <asio.hpp>
     #include <asio/steady_timer.hpp>
-    #include "common/chrono.hpp" 
+    #include "common/chrono.hpp"
 #else
     #include <boost/version.hpp>
     

@@ -71,7 +71,7 @@ inline size_t request::consume(char const * buf, size_t len) {
         
         if (m_header_bytes > max_header_size) {
             // exceeded max header size
-            throw exception("Maximum header size exceeded.hpp",
+            throw exception("Maximum header size exceeded.",
                 status_code::request_header_fields_too_large);
         }
 
@@ -150,7 +150,7 @@ inline std::string request::raw_head() const {
 
 inline void request::set_method(std::string const & method) {
     if (std::find_if(method.begin(),method.end(),is_not_token_char) != method.end()) {
-        throw exception("Invalid method token.hpp",status_code::bad_request);
+        throw exception("Invalid method token.",status_code::bad_request);
     }
 
     m_method = method;

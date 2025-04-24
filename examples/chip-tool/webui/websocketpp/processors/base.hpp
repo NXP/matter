@@ -203,11 +203,11 @@ public:
             case error::not_implemented:
                 return "Operation required not implemented functionality";
             case error::invalid_http_method:
-                return "Invalid HTTP method.hpp";
+                return "Invalid HTTP method.";
             case error::invalid_http_version:
-                return "Invalid HTTP version.hpp";
+                return "Invalid HTTP version.";
             case error::invalid_http_status:
-                return "Invalid HTTP status.hpp";
+                return "Invalid HTTP status.";
             case error::missing_required_header:
                 return "A required HTTP header is missing";
             case error::sha1_library:

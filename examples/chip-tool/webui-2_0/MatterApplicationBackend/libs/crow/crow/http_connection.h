@@ -44,13 +44,13 @@ namespace crow
 
     /// An HTTP connection.
     template<typename Adaptor, typename Handler, typename... Middlewares>
-    class Connection: public std::enable_shared_from_this<Connection<Adaptor, Handler, Middlewares...>>
+    class Connection : public std::enable_shared_from_this<Connection<Adaptor, Handler, Middlewares...>>
     {
         friend struct crow::response;
 
     public:
         Connection(
-          asio::io_service& io_service,
+          asio::io_context& io_context,
           Handler* handler,
           const std::string& server_name,
           std::tuple<Middlewares...>* middlewares,
@@ -58,7 +58,7 @@ namespace crow
           detail::task_timer& task_timer,
           typename Adaptor::context* adaptor_ctx_,
           std::atomic<unsigned int>& queue_length):
-          adaptor_(io_service, adaptor_ctx_),
+          adaptor_(io_context, adaptor_ctx_),
           handler_(handler),
           parser_(this),
           req_(parser_.req),
@@ -128,7 +128,7 @@ namespace crow
                 buffers_.clear();
                 static std::string expect_100_continue = "HTTP/1.1 100 Continue\r\n\r\n";
                 buffers_.emplace_back(expect_100_continue.data(), expect_100_continue.size());
-                do_write();
+                do_write_sync(buffers_);
             }
         }
 
@@ -143,8 +143,8 @@ namespace crow
             ctx_ = detail::context<Middlewares...>();
             req_.middleware_context = static_cast<void*>(&ctx_);
             req_.middleware_container = static_cast<void*>(middlewares_);
-            req_.io_service = &adaptor_.get_io_service();
-            
+            req_.io_context = &adaptor_.get_io_context();
+
             req_.remote_ip_address = adaptor_.remote_endpoint().address().to_string();
 
             add_keep_alive_ = req_.keep_alive;
@@ -160,14 +160,14 @@ namespace crow
                 else if (req_.upgrade)
                 {
                     // h2 or h2c headers
-                    if (req_.get_header_value("upgrade").substr(0, 2) == "h2")
+                    if (req_.get_header_value("upgrade").find("h2")==0)
                     {
                         // TODO(ipkn): HTTP/2
                         // currently, ignore upgrade header
                     }
                     else
                     {
-                
+
                         detail::middleware_call_helper<detail::middleware_call_criteria_only_global,
                                                        0, decltype(ctx_), decltype(*middlewares_)>({}, *middlewares_, req_, res, ctx_);
                         close_connection_ = true;
@@ -188,13 +188,12 @@ namespace crow
                 res.is_alive_helper_ = [self]() -> bool {
                     return self->adaptor_.is_open();
                 };
-                
+
                 detail::middleware_call_helper<detail::middleware_call_criteria_only_global,
                                                0, decltype(ctx_), decltype(*middlewares_)>({}, *middlewares_, req_, res, ctx_);
 
                 if (!res.completed_)
                 {
-                    auto self = this->shared_from_this();
                     res.complete_request_handler_ = [self] {
                         self->complete_request();
                     };
@@ -232,7 +231,7 @@ namespace crow
                   decltype(*middlewares_)>({}, *middlewares_, ctx_, req_, res);
             }
 #ifdef CROW_ENABLE_COMPRESSION
-            if (handler_->compression_used())
+            if (!res.body.empty() && handler_->compression_used())
             {
                 std::string accept_encoding = req_.get_header_value("Accept-Encoding");
                 if (!accept_encoding.empty() && res.compressed)
@@ -259,18 +258,6 @@ namespace crow
                 }
             }
 #endif
-            //if there is a redirection with a partial URL, treat the URL as a route.
-            std::string location = res.get_header_value("Location");
-            if (!location.empty() && location.find("://", 0) == std::string::npos)
-            {
-#ifdef CROW_ENABLE_SSL
-                if (handler_->ssl_used())
-                    location.insert(0, "https://" + req_.get_header_value("Host"));
-                else
-#endif
-                    location.insert(0, "http://" + req_.get_header_value("Host"));
-                res.set_header("location", location);
-            }
 
             prepare_buffers();
 
@@ -440,7 +427,7 @@ namespace crow
                 res_body_copy_.swap(res.body);
                 buffers_.emplace_back(res_body_copy_.data(), res_body_copy_.size());
 
-                do_write();
+                do_write_sync(buffers_);
 
                 if (need_to_start_read_after_complete_)
                 {
@@ -456,12 +443,12 @@ namespace crow
                 if (res.body.length() > 0)
                 {
                     std::vector<asio::const_buffer> buffers{1};
-                    const uint8_t *data = reinterpret_cast<const uint8_t*>(res.body.data());
+                    const uint8_t* data = reinterpret_cast<const uint8_t*>(res.body.data());
                     size_t length = res.body.length();
-                    for(size_t transferred = 0; transferred < length;)
+                    for (size_t transferred = 0; transferred < length;)
                     {
-                        size_t to_transfer = CROW_MIN(16384UL, length-transferred);
-                        buffers[0] = asio::const_buffer(data+transferred, to_transfer);
+                        size_t to_transfer = CROW_MIN(16384UL, length - transferred);
+                        buffers[0] = asio::const_buffer(data + transferred, to_transfer);
                         do_write_sync(buffers);
                         transferred += to_transfer;
                     }
@@ -530,7 +517,7 @@ namespace crow
               adaptor_.socket(), buffers_,
               [self](const error_code& ec, std::size_t /*bytes_transferred*/) {
                   self->res.clear();
-                  self->res_body_copy_.clear();                  
+                  self->res_body_copy_.clear();
                   if (!self->continue_requested)
                   {
                       self->parser_.clear();
@@ -539,7 +526,7 @@ namespace crow
                   {
                       self->continue_requested = false;
                   }
-                  
+
                   if (!ec)
                   {
                       if (self->close_connection_)
@@ -558,19 +545,25 @@ namespace crow
 
         inline void do_write_sync(std::vector<asio::const_buffer>& buffers)
         {
+            error_code ec;
+            asio::write(adaptor_.socket(), buffers, ec);
 
-            asio::write(adaptor_.socket(), buffers, [&](error_code ec, std::size_t) {
-                if (!ec)
-                {
-                    return false;
-                }
-                else
-                {
-                    CROW_LOG_ERROR << ec << " - happened while sending buffers";
-                    CROW_LOG_DEBUG << this << " from write (sync)(2)";
-                    return true;
-                }
-            });
+            this->res.clear();
+            this->res_body_copy_.clear();
+            if (this->continue_requested)
+            {
+                this->continue_requested = false;
+            }
+            else
+            {
+                this->parser_.clear();
+            }
+
+            if (ec)
+            {
+                CROW_LOG_ERROR << ec << " - happened while sending buffers";
+                CROW_LOG_DEBUG << this << " from write (sync)(2)";
+            }
         }
 
         void cancel_deadline_timer()

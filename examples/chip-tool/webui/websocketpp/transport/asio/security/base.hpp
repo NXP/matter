@@ -128,7 +128,7 @@ public:
             case error::pass_through:
                 return "Pass through from socket policy";
             case error::missing_tls_init_handler:
-                return "Required tls_init handler not present.hpp";
+                return "Required tls_init handler not present.";
             case error::tls_handshake_failed:
                 return "TLS handshake failed";
             case error::tls_failed_sni_hostname:

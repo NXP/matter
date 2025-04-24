@@ -67,7 +67,7 @@ inline size_t response::consume(char const * buf, size_t len) {
         
         if (m_header_bytes > max_header_size) {
             // exceeded max header size
-            throw exception("Maximum header size exceeded.hpp",
+            throw exception("Maximum header size exceeded.",
                 status_code::request_header_fields_too_large);
         }
 

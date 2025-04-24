@@ -199,7 +199,7 @@ void connection<config>::ping(std::string const& payload, lib::error_code& ec) {
         if (!m_ping_timer) {
             // Our transport doesn't support timers
             m_elog->write(log::elevel::warn,"Warning: a pong_timeout_handler is \
-                set but the transport in use does not support timeouts.hpp");
+                set but the transport in use does not support timeouts.");
         }
     }
 
@@ -842,7 +842,7 @@ void connection<config>::handle_read_handshake(lib::error_code const & ec,
 
     // Boundaries checking. TODO: How much of this should be done?
     if (bytes_transferred > config::connection_read_buffer_size) {
-        m_elog->write(log::elevel::fatal,"Fatal boundaries checking error.hpp");
+        m_elog->write(log::elevel::fatal,"Fatal boundaries checking error.");
         this->terminate(make_error_code(error::general));
         return;
     }
@@ -861,7 +861,7 @@ void connection<config>::handle_read_handshake(lib::error_code const & ec,
     // More paranoid boundaries checking.
     // TODO: Is this overkill?
     if (bytes_processed > bytes_transferred) {
-        m_elog->write(log::elevel::fatal,"Fatal boundaries checking error.hpp");
+        m_elog->write(log::elevel::fatal,"Fatal boundaries checking error.");
         this->terminate(make_error_code(error::general));
         return;
     }
@@ -1297,7 +1297,7 @@ void connection<config>::write_http_response(lib::error_code const & ec) {
     m_alog->write(log::alevel::devel,"connection write_http_response");
 
     if (ec == error::make_error_code(error::http_connection_ended)) {
-        m_alog->write(log::alevel::http,"An HTTP handler took over the connection.hpp");
+        m_alog->write(log::alevel::http,"An HTTP handler took over the connection.");
         return;
     }
 
@@ -1983,7 +1983,7 @@ void connection<config>::process_control_frame(typename config::message_type::pt
             s.str("");
             if (config::drop_on_protocol_error) {
                 s << "Received invalid close code " << m_remote_close_code
-                  << " dropping connection per config.hpp";
+                  << " dropping connection per config.";
                 m_elog->write(log::elevel::devel,s.str());
                 this->terminate(ec);
             } else {

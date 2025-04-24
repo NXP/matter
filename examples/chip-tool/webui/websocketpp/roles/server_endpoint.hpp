@@ -110,8 +110,8 @@ public:
     /// Starts the server's async connection acceptance loop (exception free)
     /**
      * Initiates the server connection acceptance loop. Must be called after
-     * listen. This method will have no effect until the underlying io_service
-     * starts running. It may be called after the io_service is already running.
+     * listen. This method will have no effect until the underlying io_context
+     * starts running. It may be called after the io_context is already running.
      *
      * Refer to documentation for the transport policy you are using for
      * instructions on how to stop this acceptance loop.
@@ -182,7 +182,7 @@ public:
         start_accept(start_ec);
         if (start_ec == error::async_accept_not_listening) {
             endpoint_type::m_elog->write(log::elevel::info,
-                "Stopping acceptance of new connections because the underlying transport is no longer listening.hpp");
+                "Stopping acceptance of new connections because the underlying transport is no longer listening.");
         } else if (start_ec) {
             endpoint_type::m_elog->write(log::elevel::rerror,
                 "Restarting async_accept loop failed: "+ec.message());
