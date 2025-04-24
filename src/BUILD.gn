@@ -44,12 +44,6 @@ config("includes") {
   # Make __FILE__ and related macros relative to chip_root
   cflags = [ "-fmacro-prefix-map=${build_relative_chip_root}/=" ]
 
-  if (chip_with_web == 1) {
-    defines += [ "CHIP_WITH_WEBUI=1" ]
-  } else {
-    defines += [ "CHIP_WITH_WEBUI=0" ]
-  }
-
   if (chip_with_web2 == 1) {
     defines += [ "CHIP_WITH_WEBUI2=1" ]
   } else {
