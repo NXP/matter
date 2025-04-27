@@ -39,10 +39,38 @@ export class ButtonpanelComponent implements OnInit {
 
   emitButtonPressed(button: {buttonName: string, action: Function}) {
     console.log("Emitting button pressed event from the floating action area component");
-    this.buttonPressedEvent.emit(button); // Emit to the main application body component
+    this.buttonPressedEvent.emit(button);
   }
 
-  // Add 'implements OnInit' to the class.
+  refreshActionFunction() {
+    // this.loaderService.showLoader();
+    // this.getRequestsService.getDevicesIDsAndAliases().subscribe(
+    //   (data: any) => {
+    //     const parsedData = JSON.parse(JSON.stringify(data));
+    //     if (parsedData['result'] === 'successful') {
+    //       this.cards = []; // We update all the cards array
+    //       for (const [key, value] of Object.entries(parsedData['status'])) {
+    //         let card: CardModel;
+    //         const device = key as string;
+    //         card = new CardModel('../../assets/wireless-transparent.png', parseInt(value), [], true, device);
+    //         this.cards.push(card);
+    //       }
+    //       // We emit an event or something to the parent component with the new cards list
+    //       this.loaderService.hideLoader();
+    //       // this.appDialogService.showInfoDialog('Got the list of devices successfully');
+    //     } else {
+    //       this.loaderService.hideLoader();
+    //       this.appDialogService.showErrorDialog('Error getting devices list (id\'s and aliases)');
+    //     }
+    //   },
+    //   (error: any) => {
+    //     console.error('Error received: ', error);
+    //     this.loaderService.hideLoader();
+    //     this.appDialogService.showErrorDialog('Error getting devices list (id\'s and aliases)');
+    //   }
+    // );
+  }
+
   openWifiDeviceDialog() {
      this.appDialogWithInputFieldsService.openDialog(
         'Connect BLE-WIFI Device', '../../../assets/matter-logo-transparent.png',
@@ -71,6 +99,8 @@ export class ButtonpanelComponent implements OnInit {
                   this.loaderService.hideLoader();
                   const parsedResult = JSON.parse(JSON.stringify(data));
                   if (parsedResult.result === 'successful') {
+                    // TODO: Add logic for auto device list refresh
+                    this.refreshActionFunction()
                     this.appDialogService.showInfoDialog('BLE-WIFI device added successfully');
                   } else if (parsedResult.result === 'failed') {
                     this.appDialogService.showErrorDialog('Error adding BLE-WIFI device');
@@ -91,7 +121,7 @@ export class ButtonpanelComponent implements OnInit {
       );
 
   }
-  //Add 'implements OnInit' to the class.
+
   openThreadDeviceDialog() {
       this.appDialogWithInputFieldsService.openDialog(
         'Connect BLE-Thread Device', '../../../assets/matter-logo-transparent.png',
@@ -102,8 +132,6 @@ export class ButtonpanelComponent implements OnInit {
             {inputFieldType: 'text', inputFieldName: 'Device Alias', inputFieldContent: 'DeviceAliasName', inputFieldDefaultValue: 'Default: DeviceAliasName'},
             {inputFieldType: 'text', inputFieldName: 'Device Dataset', inputFieldContent: 'Dataset', inputFieldDefaultValue: 'Default: 0x123123123123123123123123123123123'},
             {inputFieldType: 'text', inputFieldName: 'Device Bluetooth Discriminator (3840)', inputFieldContent: '3840', inputFieldDefaultValue: 'Default: 3840'},
-
-
           ]
         },
         [
@@ -120,6 +148,8 @@ export class ButtonpanelComponent implements OnInit {
                 const parsedResult = JSON.parse(JSON.stringify(data));
                 if (parsedResult.result === 'successful') {
                   this.appDialogService.showInfoDialog('BLE-Thread device added successfully');
+                  // TODO: Add logic for auto device list refresh
+                  this.refreshActionFunction()
                 } else if (parsedResult.result === 'failed') {
                   this.appDialogService.showErrorDialog('Error adding BLE-Thread device');
                 }
@@ -144,6 +174,7 @@ export class ButtonpanelComponent implements OnInit {
                   if (parsedResult.result === 'successful') {
                     this.appDialogService.showInfoDialog('Dataset received successfully.');
                     this.appDialogWithInputFieldsService.updateInputFieldContent(3, parsedResult.dataset);
+                    // Update the device list
                   } else if (parsedResult.result === 'failed') {
                     this.appDialogService.showErrorDialog('Error receiving dataset');
                   }
@@ -207,6 +238,8 @@ export class ButtonpanelComponent implements OnInit {
                 const parsedResult = JSON.parse(JSON.stringify(data));
                 if (parsedResult.result === 'successful') {
                   this.loaderService.hideLoader();
+                  // TODO: Add logic for auto device list refresh
+                  this.refreshActionFunction()
                   this.appDialogService.showInfoDialog('OnNetwork device added successfully');
                 } else if (parsedResult.result === 'failed') {
                   this.loaderService.hideLoader();
@@ -219,6 +252,84 @@ export class ButtonpanelComponent implements OnInit {
                 this.appDialogService.showErrorDialog('Error adding OnNetwork device. Network error.');
               }
             );
+         }, color: 'accent', icon: 'send' },
+        { buttonName: 'Cancel', action: () => {
+          this.appDialogWithInputFieldsService.closeDialog();
+         }, color: 'warn', icon: 'cancel' },
+      ]
+    );
+  }
+
+  openOnboardEcosystemDialog() {
+    this.appDialogWithInputFieldsService.openDialog(
+      'Onboard an Ecosystem with Matter', '../../../assets/matter-logo-transparent.png',
+      {
+        inputFields: [
+          {inputFieldType: 'text', inputFieldName: 'Node ID', inputFieldContent: '1', inputFieldDefaultValue: 'Default: 1'},
+          {inputFieldType: 'text', inputFieldName: 'Onboarding Method', inputFieldContent: '0', inputFieldDefaultValue: 'Default: 0 - BCM, 1 - ECM'},
+          {inputFieldType: 'text', inputFieldName: 'Device Code (20202021)', inputFieldContent: '20202021', inputFieldDefaultValue: 'Default: 20202021'},
+          {inputFieldType: 'text', inputFieldName: 'Device Alias', inputFieldContent: 'DeviceAliasName', inputFieldDefaultValue: 'Default: DeviceAliasName'},
+        ]
+      },
+      [
+        { buttonName: 'Send Command', action: () => {
+
+          var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
+            this.loaderService.showLoader();
+            if (values_for_the_input[1].inputFieldContent == "0") {
+              // BCM Onboarding
+              this.postRequestsService.sendPairOnnetworkJointFabricBCMOnboarding(
+                values_for_the_input[0].inputFieldContent, values_for_the_input[2].inputFieldContent, values_for_the_input[3].inputFieldContent
+              ).subscribe(
+                data => {
+                  console.log('Data received: ', data);
+                  const parsedResult = JSON.parse(JSON.stringify(data));
+                  if (parsedResult.result === 'successful') {
+                    this.loaderService.hideLoader();
+                    // TODO: Add logic for auto device list refresh
+                    this.refreshActionFunction()
+                    this.appDialogService.showInfoDialog('OnNetwork device onboarded successfully');
+                  } else if (parsedResult.result === 'failed') {
+                    this.loaderService.hideLoader();
+                    this.appDialogService.showErrorDialog('Error onboarding OnNetwork device');
+                  }
+                },
+                error => {
+                  console.error('Error received: ', error);
+                  this.loaderService.hideLoader();
+                  this.appDialogService.showErrorDialog('Error onboarding OnNetwork device. Network error.');
+                }
+              );
+
+          } else if (values_for_the_input[1].inputFieldContent == "1") {
+              // ECM Onboarding
+              this.postRequestsService.sendPairOnnetworkJointFabricECMOnboarding(
+                values_for_the_input[0].inputFieldContent, values_for_the_input[2].inputFieldContent
+              ).subscribe(
+                data => {
+                  console.log('Data received: ', data);
+                  const parsedResult = JSON.parse(JSON.stringify(data));
+                  if (parsedResult.result === 'successful') {
+                    this.loaderService.hideLoader();
+                    this.appDialogService.showInfoDialog('OnNetwork device onboarded successfully');
+                    // TODO: Add logic for auto device list refresh
+                    this.refreshActionFunction()
+                  } else if (parsedResult.result === 'failed') {
+                    this.loaderService.hideLoader();
+                    this.appDialogService.showErrorDialog('Error onboarding OnNetwork device');
+                  }
+                },
+                error => {
+                  console.error('Error received: ', error);
+                  this.loaderService.hideLoader();
+                  this.appDialogService.showErrorDialog('Error onboarding OnNetwork device. Network error.');
+                }
+              );
+          } else {
+            this.loaderService.hideLoader();
+            this.appDialogService.showErrorDialog('Please complete the input fields accordingly');
+          }
+
          }, color: 'accent', icon: 'send' },
         { buttonName: 'Cancel', action: () => {
           this.appDialogWithInputFieldsService.closeDialog();

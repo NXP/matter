@@ -2,22 +2,18 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { API_WEBSOCKET_URL } from '../../api_addresses';
-import { min } from 'rxjs';
+import { min, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
 
-  private socket!: WebSocket;
+  private socket = new WebSocket(
+    API_WEBSOCKET_URL
+  )
 
-  constructor(private _snackBar: MatSnackBar) { }
-
-  connect(): void {
-    this.socket = new WebSocket(
-      API_WEBSOCKET_URL
-    );
-
+  constructor(private _snackBar: MatSnackBar) {
     this.socket.onopen = () => {
       console.log('WebSocket connection established.');
       this._snackBar.open('WebSocket connection established.', 'Close', {
@@ -39,12 +35,21 @@ export class WebSocketService {
       });
     };
 
-    this.socket.onerror = (error) => {
-      console.error('WebSocket error:', error);
+    this.socket.onerror = (error: any) => {
+      console.error('WebSocket error:', error.message);
       this._snackBar.open('WebSocket error.', 'Close', {
         duration: 5000,
       });
     };
+  }
+
+  getMessages() {
+    return new Observable(observer => {
+      this.socket.onmessage = (message) => {
+        observer.next(message);
+      }
+      return () => { this.socket.close( )}
+    })
   }
 
   sendMessage(message: string): void {
@@ -52,7 +57,11 @@ export class WebSocketService {
   }
 
   closeConnection(): void {
-    this.socket.close();
+    if(this.socket.OPEN) {
+      this.socket.close();
+    } else {
+      console.log("The web socket client is already disconnected")
+    }
   }
 
   subscribeToDeviceEndpoint(device_id: string, device_endpoint_id: string, min_interval: number, max_interval: number, cluster_name: string, node_alias: string) {
@@ -87,6 +96,5 @@ export class WebSocketService {
   public getWebSocket(): WebSocket {
     return this.socket;
   }
-
 
 }

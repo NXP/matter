@@ -4,10 +4,10 @@
 }" (click)="openEndpointDetails()">
   <mat-card-header>
     <mat-card-title>
-      <span style="font-family: 'DM Sans', sans-serif;">{{endpointModel.endpointName}}</span>
+      <span style="font-family: 'DM Sans', sans-serif;">Endpoint ID: {{endpointModel.endpointId}}</span>
     </mat-card-title>
     <mat-card-subtitle>
-      <span style="font-family: 'DM Sans', sans-serif;">{{endpointModel.endpointId}}</span>
+      <!-- <span style="font-family: 'DM Sans', sans-serif;">{{endpointModel.endpointId}}</span> -->
       <span *ngIf="endpointModel.endpointSubscriptionId">Subscription Id: {{endpointModel.endpointSubscriptionId}}</span>
     </mat-card-subtitle>
   </mat-card-header>
@@ -33,13 +33,13 @@
     </p>
   </mat-card-content>
 
-  <mat-card-actions>
+  <!-- No buttons in endpoint for now -->
+  <!-- <mat-card-actions>
     <mat-chip *ngIf="endpointModel.endpointStatus" color="warn" (click)="turnOffDevice()">
       <a class="nav-link active" aria-current="page" href="#"
           >Turn Off Device</a></mat-chip>
-    <!-- If the device is offline, button to turn it on -->
     <mat-chip *ngIf="!endpointModel.endpointStatus" color="primary" (click)="turnOnDevice()"><a class="nav-link active" aria-current="page" href="#"
       >Turn On Device</a></mat-chip>
-  </mat-card-actions>
+  </mat-card-actions> -->
 </mat-card>
 

@@ -9,7 +9,7 @@ import { LoaderoverlayComponent } from "./loaderoverlay.component"
   selector: '[appLoader]'
 })
 export class LoaderDirective {
-  
+
   overlayRef = this.overlay.create({
       positionStrategy: this.overlay.position().global().centerHorizontally().centerVertically(),
       hasBackdrop: true
@@ -21,7 +21,7 @@ export class LoaderDirective {
   set appOverlayLoader(value: Observable<any>) {
       this.currentSubscription?.unsubscribe()
       this.showLoader()
-      
+
       this.currentSubscription = value.subscribe(
           {
               next: () => this.hideLoader(),

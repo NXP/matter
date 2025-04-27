@@ -51,22 +51,41 @@
   </mat-card-content>
   <mat-card-actions>
     <mat-chip-listbox class="p-2 app-matchip-listbox" id="mat-chip-listbox-el">
-      <div *ngIf="isDeviceOnline">
-        <mat-chip mat-button (click)="scanDeviceEndpoints(deviceId)" class="app-matchip">
-          Scan Device Endpoints
-        </mat-chip>
-      </div>
-
       <mat-chip>
         <button mat-button (click)="forgetDevice(deviceId)">Forget Device</button>
       </mat-chip>
       <mat-chip>
+        <button mat-button (click)="openEditDialog(deviceId)">Edit</button>
+      </mat-chip>
+
+      <mat-chip>
         <button mat-button (click)="interactWithEndpoint(deviceId)">Interact with endpoint</button>
       </mat-chip>
+
+      <mat-chip>
+        <button mat-button (click)="openCommissioningWindow(deviceId)">Open Commissioning Window</button>
+      </mat-chip>
+
 
       <mat-chip *ngIf="withSubscription">
         <button mat-button (click)="subscribeToDevice(deviceId)">Subscribe to device</button>
       </mat-chip>
+
+      <!-- EEVSE -->
+      <mat-chip *ngIf="withEevsePanel">
+        <button mat-button (click)="openEEVSEControlPanelDialog(deviceId)">Energy EVSE</button>
+      </mat-chip>
+
+      <!-- TBRM -->
+      <!-- <mat-chip *ngIf="withTbrmPanel">
+        <button mat-button (click)="openTBRMControlPanelDialog(deviceId)">TBRM</button>
+      </mat-chip> -->
+
+      <!-- MultiAdmin -->
+      <mat-chip *ngIf="openCommissioningWindowPanel">
+        <button mat-button (click)="openCommissioningWindowControlPanelDialog(deviceId)">MultiAdmin</button>
+      </mat-chip>
+
 
     </mat-chip-listbox>
 

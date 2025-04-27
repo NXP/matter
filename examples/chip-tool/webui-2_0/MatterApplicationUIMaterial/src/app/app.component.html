@@ -15,13 +15,13 @@
             <app-applicationheader [sidebarStatus]="getIsDrawerOpen()" (SidebarCollapsed)="onSidebarColapsedEventCatch($event)"></app-applicationheader>
           <!-- </div> -->
           <!-- <div class="body row scroll-y"> -->
-            <div [style]="{'display': 'flex', 'flex-direction': 'column', 'height': '100%'}" class="body-content">
+            <div [style]="{'display': 'flex', 'flex-direction': 'column', 'height': '100%'}" class="body-content" style="min-height: 100vh; display: flex; flex-direction: column">
               <router-outlet class="body-content"
                 [ngStyle]="{'width': '100%', 'height': '100%'}"
               ></router-outlet>
             </div>
           <!-- </div> -->
-          <div id="footer">
+          <div id="footer" style="margin-top:auto">
             <app-footercomponent></app-footercomponent>
           </div>
       </mat-drawer-content>

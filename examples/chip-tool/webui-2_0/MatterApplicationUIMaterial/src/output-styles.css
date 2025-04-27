@@ -572,9 +572,12 @@ video {
 
 html, body {
   height: 100%;
+  min-height: 100vh;
+  display: flex;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  flex-direction: column;
 }
 
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+footer {
+  margin-top: auto;
 }

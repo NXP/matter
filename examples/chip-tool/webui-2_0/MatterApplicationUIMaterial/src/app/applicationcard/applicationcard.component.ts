@@ -33,6 +33,9 @@ export class ApplicationcardComponent {
   @Input() isDeviceOnline!: boolean;
   @Input() deviceName!: string;
   @Input() withSubscription!: boolean;
+  @Input() withEevsePanel!: boolean;
+  @Input() withTbrmPanel!: boolean; // Just for demo use
+  @Input() openCommissioningWindowPanel!: boolean;
 
   public getDeviceTypeImageURL(): string {
     return this.deviceTypeImageURL;
@@ -84,8 +87,8 @@ export class ApplicationcardComponent {
       'Interact with device endpoint', '../../../assets/matter-logo-transparent.png',
       {
         inputFields: [
-          {inputFieldType: 'text', inputFieldName: 'Device ID', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
-          {inputFieldType: 'text', inputFieldName: 'Device Endpoint ID', inputFieldContent: '1', inputFieldDefaultValue: 'Default: 1'},
+          // {inputFieldType: 'text', inputFieldName: 'Device ID', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
+          {inputFieldType: 'text', inputFieldName: 'Endpoint ID', inputFieldContent: '1', inputFieldDefaultValue: 'Default: 1'},
           {inputFieldType: 'text', inputFieldName: 'Subscription Min Interval', inputFieldContent: '10', inputFieldDefaultValue: 'Default: 10'},
           {inputFieldType: 'text', inputFieldName: 'Subscription Max Interval', inputFieldContent: '50', inputFieldDefaultValue: 'Default: 50'},
         ]
@@ -95,43 +98,15 @@ export class ApplicationcardComponent {
           var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
           if (this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem() === undefined) {
             this.appDialogService.showErrorDialog('No command selected');
-            // if (this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem() === undefined) {
-            //   this.appDialogService.showErrorDialog('No command selected');
-            // } else {
-            //   this.loaderService.showLoader();
-            //   this.postRequestsService.sendOnOffToggleEndpointCommand(
-            //     values_for_the_input[0].inputFieldContent.toLowerCase(), values_for_the_input[1].inputFieldContent.toLowerCase(),
-            //       this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem()!.toLowerCase()
-            //   ).subscribe(
-            //     data => {
-            //       console.log('Data received: ', data);
-            //       this.loaderService.hideLoader();
-            //       const parsedResult = JSON.parse(JSON.stringify(data));
-            //       if (parsedResult.result === 'successful') {
-            //         this.appDialogService.showInfoDialog('Endpoint interaction successful');
-            //       } else if (parsedResult.result === 'failed') {
-            //         this.appDialogService.showErrorDialog('Error interacting with the endpoint. Please try again.');
-            //       }
-            //     },
-
-            //     error => {
-            //       console.error('Error received: ', error);
-            //       this.loaderService.hideLoader();
-            //       this.appDialogService.showErrorDialog('Error interacting with the endpoint. Network error.');
-            //     }
-            //   );
-
-            //   this.appDialogWithInputFieldsService.closeDialog();
-            // }
           } else {
             console.log('Subscribing to device endpoint');
-            console.log('Device ID: ', values_for_the_input[0].inputFieldContent);
-            console.log('Device Endpoint ID: ', values_for_the_input[1].inputFieldContent);
-            console.log('Subscription Min Interval: ', values_for_the_input[2].inputFieldContent);
-            console.log('Subscription Max Interval: ', values_for_the_input[3].inputFieldContent);
+            console.log('Device ID: ', deviceId.toString());
+            console.log('Endpoint ID: ', values_for_the_input[0].inputFieldContent);
+            console.log('Subscription Min Interval: ', values_for_the_input[1].inputFieldContent);
+            console.log('Subscription Max Interval: ', values_for_the_input[2].inputFieldContent);
             this.webSocketService.subscribeToDeviceEndpoint(
-              values_for_the_input[0].inputFieldContent.toLowerCase(), values_for_the_input[1].inputFieldContent.toLowerCase(),
-              parseInt(values_for_the_input[2].inputFieldContent), parseInt(values_for_the_input[3].inputFieldContent),
+              deviceId.toString(), values_for_the_input[0].inputFieldContent.toLowerCase(),
+              parseInt(values_for_the_input[1].inputFieldContent), parseInt(values_for_the_input[2].inputFieldContent),
               this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem()!.toLowerCase(),
               this.getDeviceName()
             );
@@ -146,6 +121,96 @@ export class ApplicationcardComponent {
         {name: 'Cluster ON/OFF', color: 'primary'},
       ]
     );
+  }
+
+  openEEVSEControlPanelDialog(deviceId: Number) {
+    // Find dialog options and put them here
+    // Create a dialog that resembles the screen the device is already on
+    // this.appDialogWithInputFieldsService.openDialogWithSelectionItems(
+    //   'Interact with device endpoint', '../../../assets/matter-logo-transparent.png',
+    //   {
+    //     inputFields: [
+    //       {inputFieldType: 'text', inputFieldName: 'Option', inputFieldContent: 0, inputFieldDefaultValue: 'Default: ' + this.deviceName.toString()},
+    //       {inputFieldType: 'text', inputFieldName: 'Discriminator', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
+    //       {inputFieldType: 'text', inputFieldName: 'Iteration', inputFieldContent: '1', inputFieldDefaultValue: 'Default: 1'},
+    //       {inputFieldType: 'text', inputFieldName: 'Window Timeout', inputFieldContent: '1', inputFieldDefaultValue: 'Default: 1'},
+    //     ]
+    //   },
+    //   [
+    //     {buttonName: 'Send Command', action: () => {
+    //       var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
+    //       if (this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem() === undefined) {
+    //         this.appDialogService.showErrorDialog('No command selected');
+    //       } else {
+    //         this.loaderService.showLoader();
+    //         if (this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem() === 'Read') { // Send onoff_report request
+    //           this.postRequestsService.sendOnOffReadEndpointCommand(
+    //             deviceId.toString(), values_for_the_input[0].inputFieldContent.toLowerCase()
+    //           ).subscribe(
+    //             data => {
+    //               console.log('Data received: ', data);
+    //               this.loaderService.hideLoader();
+    //               const parsedResult = JSON.parse(JSON.stringify(data));
+    //               if (parsedResult.result === 'successful') {
+    //                 this.appDialogService.showInfoDialog('Endpoint interaction successful!\n' +
+    //                   "Generated report: " + JSON.stringify(parsedResult.report));
+    //               } else if (parsedResult.result === 'failed') {
+    //                 this.appDialogService.showErrorDialog('Error interacting with the endpoint. Please try again.');
+    //               }
+    //             },
+
+    //             error => {
+    //               console.error('Error received: ', error);
+    //               this.loaderService.hideLoader();
+    //               this.appDialogService.showErrorDialog('Error interacting with the endpoint. Network error.');
+    //             }
+    //           );
+
+    //           this.appDialogWithInputFieldsService.closeDialog();
+
+    //         } else {
+    //           this.postRequestsService.sendOnOffToggleEndpointCommand(
+    //             deviceId.toString(), values_for_the_input[0].inputFieldContent.toLowerCase(),
+    //               this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem()!.toLowerCase()
+    //           ).subscribe(
+    //             data => {
+    //               console.log('Data received: ', data);
+    //               this.loaderService.hideLoader();
+    //               const parsedResult = JSON.parse(JSON.stringify(data));
+    //               if (parsedResult.result === 'successful') {
+    //                 this.appDialogService.showInfoDialog('Endpoint interaction successful');
+    //               } else if (parsedResult.result === 'failed') {
+    //                 this.appDialogService.showErrorDialog('Error interacting with the endpoint. Please try again.');
+    //               }
+    //             },
+
+    //             error => {
+    //               console.error('Error received: ', error);
+    //               this.loaderService.hideLoader();
+    //               this.appDialogService.showErrorDialog('Error interacting with the endpoint. Network error.');
+    //             }
+    //           );
+
+    //           this.appDialogWithInputFieldsService.closeDialog();
+    //         }
+    //        }
+    //     }, color: 'primary'},
+    //     {buttonName: 'Cancel', action: () => {
+    //       this.appDialogWithInputFieldsService.closeDialog();
+    //     }, color: 'warn'}
+    //   ],
+    //   [
+    //     {name: 'ON', color: 'primary'},
+    //     {name: 'OFF', color: 'primary'},
+    //     {name: 'Toggle', color: 'primary'},
+    //     {name: 'Read', color: 'primary'},
+    //   ]
+    // );
+  }
+  openTBRMControlPanelDialog(deviceId: Number) {
+
+  }
+  openCommissioningWindowControlPanelDialog(deviceId: Number) {
 
   }
 
@@ -154,9 +219,9 @@ export class ApplicationcardComponent {
       'Interact with device endpoint', '../../../assets/matter-logo-transparent.png',
       {
         inputFields: [
-          {inputFieldType: 'text', inputFieldName: 'Device Alias', inputFieldContent: this.deviceName.toString(), inputFieldDefaultValue: 'Default: ' + this.deviceName.toString()},
-          {inputFieldType: 'text', inputFieldName: 'Device ID', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
-          {inputFieldType: 'text', inputFieldName: 'Device Endpoint ID', inputFieldContent: '1', inputFieldDefaultValue: 'Default: 1'},
+          // {inputFieldType: 'text', inputFieldName: 'Device Alias', inputFieldContent: this.deviceName.toString(), inputFieldDefaultValue: 'Default: ' + this.deviceName.toString()},
+          // {inputFieldType: 'text', inputFieldName: 'Device ID', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
+          {inputFieldType: 'text', inputFieldName: 'Endpoint ID', inputFieldContent: '1', inputFieldDefaultValue: 'Default: 1'},
         ]
       },
       [
@@ -168,8 +233,7 @@ export class ApplicationcardComponent {
             this.loaderService.showLoader();
             if (this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem() === 'Read') { // Send onoff_report request
               this.postRequestsService.sendOnOffReadEndpointCommand(
-                values_for_the_input[0].inputFieldContent.toLowerCase(),
-                values_for_the_input[1].inputFieldContent.toLowerCase(), values_for_the_input[2].inputFieldContent.toLowerCase()
+                deviceId.toString(), values_for_the_input[0].inputFieldContent.toLowerCase()
               ).subscribe(
                 data => {
                   console.log('Data received: ', data);
@@ -194,8 +258,7 @@ export class ApplicationcardComponent {
 
             } else {
               this.postRequestsService.sendOnOffToggleEndpointCommand(
-                values_for_the_input[0].inputFieldContent.toLowerCase(),
-                values_for_the_input[1].inputFieldContent.toLowerCase(), values_for_the_input[2].inputFieldContent.toLowerCase(),
+                deviceId.toString(), values_for_the_input[0].inputFieldContent.toLowerCase(),
                   this.appDialogWithInputFieldsService.getSelectedDialogSelectionItem()!.toLowerCase()
               ).subscribe(
                 data => {
@@ -229,6 +292,135 @@ export class ApplicationcardComponent {
         {name: 'OFF', color: 'primary'},
         {name: 'Toggle', color: 'primary'},
         {name: 'Read', color: 'primary'},
+      ]
+    );
+  }
+
+  openEditDialog(deviceId: number) {
+    this.appDialogWithInputFieldsService.openDialog(
+      'Edit Device', '../../../assets/matter-logo-transparent.png',
+      {
+        inputFields: [
+          {inputFieldType: 'text', inputFieldName: 'Node Alias', inputFieldContent: 'DeviceName', inputFieldDefaultValue: 'Default: DeviceName; Default Endpoint ID: 0'},
+          // {inputFieldType: 'text', inputFieldName: 'Node ID', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
+          // {inputFieldType: 'text', inputFieldName: 'Endpoint ID', inputFieldContent: '1', inputFieldDefaultValue: 'No default values'},
+        ]
+      },
+      [
+        {buttonName: 'Send Command', action: () => {
+          var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
+          this.loaderService.showLoader();
+
+          this.postRequestsService.sendBasicInformationCommand(
+            values_for_the_input[0].inputFieldContent, deviceId.toString(),
+            "0" // Default endpoint ID = 0
+          ).subscribe(
+            data => {
+              console.log('Data received: ', data);
+              this.loaderService.hideLoader();
+              const parsedResult = JSON.parse(JSON.stringify(data));
+              if (parsedResult.result === 'successful') {
+                this.appDialogService.showInfoDialog('Node edit successful');
+              } else if (parsedResult.result === 'failed') {
+                this.appDialogService.showErrorDialog('Error interacting with the node. Please try again.');
+              }
+            },
+
+            error => {
+              console.error('Error received: ', error);
+              this.loaderService.hideLoader();
+              this.appDialogService.showErrorDialog('Error interacting with the node. Network error.');
+            }
+          );
+
+          this.appDialogWithInputFieldsService.closeDialog();
+        }, color: 'primary'},
+        {buttonName: 'Cancel', action: () => {
+          this.appDialogWithInputFieldsService.closeDialog();
+        }, color: 'warn'}
+      ]
+    );
+  }
+
+
+  openCommissioningWindow(deviceId: number) {
+    this.appDialogWithInputFieldsService.openDialog(
+      'Interact with device endpoint', '../../../assets/matter-logo-transparent.png',
+      {
+        inputFields: [
+          // {inputFieldType: 'text', inputFieldName: 'Node ID', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
+          {inputFieldType: 'text', inputFieldName: 'Window Timeout', inputFieldContent: '1', inputFieldDefaultValue: 'No default values'},
+          {inputFieldType: 'text', inputFieldName: 'Option', inputFieldContent: '1', inputFieldDefaultValue: 'Default: BCM: 0; ECM: 1'},
+          {inputFieldType: 'text', inputFieldName: 'Iteration', inputFieldContent: '1', inputFieldDefaultValue: 'No default values'},
+          {inputFieldType: 'text', inputFieldName: 'Discriminator (3840)', inputFieldContent: '3840', inputFieldDefaultValue: '3840'},
+        ]
+      },
+      [
+        {buttonName: 'Send Command', action: () => {
+          var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
+          this.loaderService.showLoader();
+          if (values_for_the_input[1].inputFieldContent.toLowerCase() == '1') { // Option field
+            // Pairing with ECM
+            this.postRequestsService.sendOpenCommissioningWindowWithECM(
+              deviceId.toString(),
+              values_for_the_input[0].inputFieldContent.toLowerCase(), values_for_the_input[1].inputFieldContent.toLowerCase(),
+              values_for_the_input[2].inputFieldContent.toLowerCase(), values_for_the_input[3].inputFieldContent.toLowerCase(),
+            ).subscribe(
+              data => {
+                console.log('Data received: ', data);
+                this.loaderService.hideLoader();
+                const parsedResult = JSON.parse(JSON.stringify(data));
+                if (parsedResult.result === 'successful') {
+                  this.appDialogService.showInfoDialog('Node interaction successful. Paylaod: ' + parsedResult.payload);
+                } else if (parsedResult.result === 'failed') {
+                  this.appDialogService.showErrorDialog('Error interacting with the node. Please try again.');
+                }
+              },
+
+              error => {
+                console.error('Error received: ', error);
+                this.loaderService.hideLoader();
+                this.appDialogService.showErrorDialog('Error interacting with the node. Network error.');
+              }
+            );
+          } else if (values_for_the_input[1].inputFieldContent.toLowerCase() == '0') { // Option field
+            // Pairing with BCM
+            this.postRequestsService.sendOpenCommissioningWindowWithBCM(
+              // values_for_the_input[0].inputFieldContent.toLowerCase(),
+              deviceId.toString(),
+              values_for_the_input[0].inputFieldContent.toLowerCase(), values_for_the_input[1].inputFieldContent.toLowerCase(),
+              values_for_the_input[2].inputFieldContent.toLowerCase(), values_for_the_input[3].inputFieldContent.toLowerCase(),
+
+            ).subscribe(
+              data => {
+                console.log('Data received: ', data);
+                this.loaderService.hideLoader();
+                const parsedResult = JSON.parse(JSON.stringify(data));
+                if (parsedResult.result === 'successful') {
+                  this.appDialogService.showInfoDialog('Node interaction successful');
+                } else if (parsedResult.result === 'failed') {
+                  this.appDialogService.showErrorDialog('Error interacting with the node. Please try again.');
+                }
+              },
+
+              error => {
+                console.error('Error received: ', error);
+                this.loaderService.hideLoader();
+                this.appDialogService.showErrorDialog('Error interacting with the node. Network error.');
+              }
+            );
+
+          } else {
+            this.loaderService.hideLoader();
+            this.appDialogService.showErrorDialog('Please select the proper options and fill the input fields');
+          }
+
+
+          this.appDialogWithInputFieldsService.closeDialog();
+        }, color: 'primary'},
+        {buttonName: 'Cancel', action: () => {
+          this.appDialogWithInputFieldsService.closeDialog();
+        }, color: 'warn'}
       ]
     );
   }

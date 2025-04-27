@@ -5,6 +5,11 @@ import { SettingsapplicationComponent } from './sidebarroutes/settingsapplicatio
 import { HelpapplicationComponent } from './sidebarroutes/helpapplication/helpapplication.component';
 import { AudioapplicationComponent } from './sidebarroutes/audioapplication/audioapplication.component';
 import { SubscriptionsapplicationComponent } from './sidebarroutes/subscriptionsapplication/subscriptionsapplication.component';
+import { MultiadminapplicationComponent } from './sidebarroutes/multiadminapplication/multiadminapplication.component';
+import { BindingapplicationComponent } from './sidebarroutes/bindingapplication/bindingapplication.component';
+import { EasyevseapplicationComponent } from './sidebarroutes/easyevseapplication/easyevseapplication.component';
+import {TbrmappcomponentComponent} from './sidebarroutes/tbrmappcomponent/tbrmappcomponent.component';
+import { OtaapplicationComponent } from './sidebarroutes/otaapplication/otaapplication.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -14,4 +19,9 @@ export const routes: Routes = [
   {path: 'help', component: HelpapplicationComponent},
   {path: 'audio', component: AudioapplicationComponent},
   {path: 'subscriptions', component: SubscriptionsapplicationComponent},
+  {path: 'multiadmin', component:MultiadminapplicationComponent},
+  {path: 'binding', component: BindingapplicationComponent},
+  {path: 'energy_evse', component: EasyevseapplicationComponent},
+  {path: 'tbrm', component: TbrmappcomponentComponent},
+  {path: 'ota', component: OtaapplicationComponent}
 ];

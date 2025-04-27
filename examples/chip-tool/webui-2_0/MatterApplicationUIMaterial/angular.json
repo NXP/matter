@@ -29,11 +29,20 @@
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "src/styles.css"
+              "node_modules/material-icons-font/material-icons-font.css",
+              "src/styles.css",
+              
+              "src/assets/download/Roboto.css",
+              "src/assets/download/MaterialIcons.css",
+              "src/assets/download/bootstrap.min.css",
+              "src/assets/download/OpenSans.css",
+              "src/assets/download/DMSans.css"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.js",
+              "src/assets/download/es-module-shims.min.js",
+              "src/assets/download/bootstrap.esm.min.js"
             ]
           },
           "configurations": {
@@ -50,6 +59,11 @@
                   "maximumError": "5mb"
                 }
               ],
+              "optimization": {
+                  "scripts": true,
+                  "styles": true,
+                  "fonts": false
+              },
               "outputHashing": "all"
             },
             "development": {
@@ -63,7 +77,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "move-safe:build",
+            "browserTarget": "move-safe:build"
           },
           "configurations": {
             "production": {

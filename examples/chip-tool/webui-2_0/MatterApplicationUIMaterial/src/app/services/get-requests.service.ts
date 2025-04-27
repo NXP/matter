@@ -9,11 +9,11 @@ import { API_BASE_URL } from '../../api_addresses';
 
 export class GetRequestsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
   serverUrl: string = API_BASE_URL;
 
   getInformationAboutTheBackend() : Observable<string> {
-    return this.http.get<string>(
+    return this.httpClient.get<string>(
       `${this.serverUrl}/info`).pipe(
       catchError((error: any) => {
         console.error('Error getting information: ', error);
@@ -23,7 +23,7 @@ export class GetRequestsService {
   }
 
   getDevicesIDsAndAliases() : Observable<string> {
-    return this.http.get<string>(
+    return this.httpClient.get<string>(
       `${this.serverUrl}/get_status`).pipe(
       catchError((error: any) => {
         console.error('Error getting devices status: ', error);
@@ -33,8 +33,18 @@ export class GetRequestsService {
   }
 
   getDataset(): Observable<string> {
-    return this.http.get<string>(
+    return this.httpClient.get<string>(
       `${this.serverUrl}/get_dataset`).pipe(
+      catchError((error: any) => {
+        console.error('Error getting dataset: ', error);
+        return throwError(error);
+      }
+    ));
+  }
+
+  getDevicesList() : Observable<string> {
+    return this.httpClient.get<string>(
+      `${this.serverUrl}/get_devices`).pipe(
       catchError((error: any) => {
         console.error('Error getting dataset: ', error);
         return throwError(error);

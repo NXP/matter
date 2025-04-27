@@ -53,32 +53,22 @@ export class AppComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-    this.initializeSocketConnection();
-    // this.webSocketService.messageReceived.subscribe((message: string) => {
-    //   console.log('Message received in AppComponent: ' + message);
-    // }
-   }
+    // Connect web socket service
+  }
 
    ngOnDestroy() {
     this.disconnectSocket();
-   }
-
-   initializeSocketConnection() {
-    this.webSocketService.connect();
    }
 
    disconnectSocket() {
     this.webSocketService.closeConnection();
    }
 
-
   onSidebarColapsedEventCatch(value: boolean) {
     console.log('Sidebar collapsed event caught in the AppComponent; value: ' + value);
     this.isDrawerOpen = value;
     this.drawer.toggle();
   }
-
-
 
   public getTitle(): string {
     return this.title;

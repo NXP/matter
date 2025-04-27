@@ -13,12 +13,31 @@
 
 }
 
+.container-for-media {
+  position:inherit;
+}
+
+.material-chip {
+  padding: 10px;
+  text-align: center;
+  margin: 10px;
+  display: inline-block;
+}
 
 #page {
   display: flex;
   flex-direction: column;
   height: 100%;
   position: absolute;
+}
+.button-container {
+  align-items: center;
+  display: flex;
+}
+
+.aligned-with-icon{
+  margin-top: 5px;
+  margin-left: 5px; /* optional */
 }
 
 main--application--body--component {
@@ -27,6 +46,35 @@ main--application--body--component {
   position: absolute;
   justify-content: center;
   align-items: center;
+}
+
+.grid-container {
+  display: grid;
+  text-align: center;
+  padding: 20px;
+  font-size: 30px;
+}
+
+.grid-item {
+  text-align: center;
+  padding: 20px;
+  font-size: 30px;
+  margin: 10px
+}
+
+.item1 {
+  grid-column: 1 / span 1;
+  grid-row: 1;
+}
+
+.item2 {
+  grid-column: 2;
+  grid-row: 1 / span 1;
+}
+
+.item3 {
+  grid-column: 1/span 2;
+  grid-row: 2;
 }
 
 .horizontal_line {
@@ -47,6 +95,11 @@ main--application--body--component {
   .header.row { height: 50px; top: 0; }
   .body.row { top: 50px; bottom: 50px; }
   .footer.row { height: 50px; bottom: 0; }
+}
+
+.formfield:hover {
+  transition:cubic-bezier(0.6, 0.04, 0.98, 0.335);
+  opacity:1
 }
 
 

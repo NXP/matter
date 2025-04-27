@@ -114,7 +114,7 @@ export class FloatingActionAreaComponentActions {
                                       this.loaderService.hideLoader();
                                       const parsedResult = JSON.parse(JSON.stringify(data));
                                       if (parsedResult.result === 'successful') {
-                                        this.appDialogService.showInfoDialog('Dataset received successfully.');
+                                        this.appDialogService.showInfoDialog('Dataset received successfully.' + parsedResult.message);
                                         this.appDialogWithInputFieldsService.updateInputFieldContent(3, parsedResult.dataset);
                                       } else if (parsedResult.result === 'failed') {
                                         this.appDialogService.showErrorDialog('Error receiving dataset');

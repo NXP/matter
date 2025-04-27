@@ -2,7 +2,7 @@
   Footer Styles
 */
 
-/* .footer {
+.footer {
   background-color: #f8f9fa;
   padding: 20px 0;
   text-align: center;
@@ -11,7 +11,7 @@
   bottom: 0;
   width: 100%;
   color: black;
-} */
+}
 
 body {
   margin: 0;

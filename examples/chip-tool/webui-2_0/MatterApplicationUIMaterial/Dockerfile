@@ -19,7 +19,7 @@ FROM nginx:latest
 COPY nginx.conf /etc/nginx/nginx.conf
 # copy the built application from the build stage to the nginx html
 # directory
-COPY --from=build /app/dist/matter-application-uimaterial/browser /usr/share/nginx/html
+COPY --from=build /app/dist/matter-application-frontend-angular/browser /usr/share/nginx/html
 
 # The above commands build the Angular app and then configure and build a
 # Docker image for serving it using the nginx web server.

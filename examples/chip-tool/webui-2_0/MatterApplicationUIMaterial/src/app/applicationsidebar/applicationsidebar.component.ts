@@ -83,7 +83,7 @@ export class ApplicationsidebarComponent {
       linkRoute: 'subscriptions',
     },
     {
-      name: 'Audio',
+      name: 'Media',
       icon: 'audiotrack',
       linkRoute: 'audio'
     },
@@ -91,6 +91,26 @@ export class ApplicationsidebarComponent {
       name: 'Help',
       icon: 'help',
       linkRoute: 'help'
+    },
+    {
+      name: 'Multi-Admin',
+      icon: 'person',
+      linkRoute: 'multiadmin'
+    },
+    {
+      name: 'Binding',
+      icon: 'link',
+      linkRoute: 'binding'
+    },
+    {
+      name: 'Energy EVSE',
+      icon: 'ev_station',
+      linkRoute: 'energy_evse'
+    },
+    {
+      name: 'OTA Updates',
+      icon: 'download',
+      linkRoute: 'ota'
     }
   ];
 

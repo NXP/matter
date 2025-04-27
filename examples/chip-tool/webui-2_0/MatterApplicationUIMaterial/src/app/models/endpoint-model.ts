@@ -4,20 +4,24 @@ import { SimpleChanges, model } from "@angular/core";
 import { ApplicationendpointComponent } from "../applicationendpoint/applicationendpoint.component";
 
 export class EndpointModel {
-  
+
   endpointId!: string;
   endpointName!: string;
   endpointImageURL!: string;
   endpointSubscriptionId!: string | undefined;
   endpointStatus!: boolean; // Activated or Deactivated
-  
+
   constructor(endpointId: string, endpointName: string, endpointImageURL: string, endpointStatus: boolean, endpointSubscriptionId: string | undefined) {
+    this.endpointId = endpointId
     this.endpointName = endpointName;
     this.endpointImageURL = endpointImageURL;
     this.endpointSubscriptionId = endpointSubscriptionId;
     this.endpointStatus = endpointStatus;
   }
-  
+
+  public getEndpointID() : string {
+    return this.endpointId
+  }
 
   public getEndpointName(): string {
     return this.endpointName;
