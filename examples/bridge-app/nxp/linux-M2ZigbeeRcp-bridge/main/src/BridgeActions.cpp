@@ -16,9 +16,10 @@
  */
 
 #include <app/EventLogging.h>
+#include <syslog.h>
+#include <stdio.h>
 
 #include "BridgeActions.h"
-//#include "cmd.h"
 
 using namespace chip;
 using namespace chip::app;
@@ -66,7 +67,7 @@ void BridgeActions::unregist()
 
 int BridgeActions::handle(uint16_t actionID, EndpointId endpointID, uint32_t invokeID, bool hasInvokeID, BridgeDevMgr* gDevMgr)
 {
-    ChipLogProgress(DeviceLayer, " --> M2Z-Br : BridgeActions::handle: actionID: 0x%x endpointID: 0x%x ", actionID, endpointID);
+    syslog(LOG_INFO, "%s: BridgeActions::handle: actionID: 0x%x endpointID: 0x%x ", __FUNCTION__, actionID, endpointID);
     
     if (actionID == ActionList[0]->getActionId() && ActionList[0]->getIsVisible())
     {
@@ -123,7 +124,7 @@ void BridgeActions::PermitJoinAction(bool actionOn, EndpointId endpointId, uint1
     }
 
     // Open Bridge permit join
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : BridgeActions::PermitJoinAction: actionOn: 0x%x endpointId: 0x%x actionID: 0x%x ", actionOn, endpointId, actionID);
+    syslog(LOG_INFO, "%s: actionOn: 0x%x endpointId: 0x%x actionID: 0x%x ", __FUNCTION__, actionOn, endpointId, actionID);
     if(actionOn)
     {
         m2z_schedule_request_bdb_start_commissioning();

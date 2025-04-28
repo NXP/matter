@@ -44,6 +44,9 @@ enum m2z_device_state_e
     AUTHORIZATION_DISCOVERY,
     ANNOUNCE_COMPLETED,
     READ_ATTRS_COMPLETED,
+    BRIDGED_REACHABLE,
+    BRIDGED_UNAVAILABLE,
+    BRIDGED_LEFT_NETWORK,
     CONFIGURE_BINDING,
     CONFIGURE_REPORTING,
     COMPLETED,
@@ -316,6 +319,7 @@ zb_uint16_t m2z_dev_get_attr_idx_by_short_addr_and_ep_id_and_cluster_id(zb_uint1
 
 void m2z_remove_and_rejoin_device_delayed(zb_uint8_t idx);
 void m2z_remove_device_delayed(zb_uint8_t idx);
+void m2z_callback_dev_unavailable(zb_zdo_device_unavailable_params_t *);
 
 /* Persisting data into NVRAM routines */
 zb_uint16_t m2z_get_nvram_data_size();

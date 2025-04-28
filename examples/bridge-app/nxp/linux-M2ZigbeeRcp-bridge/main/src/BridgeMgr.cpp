@@ -33,6 +33,8 @@
 #include <app/util/MatterCallbacks.h>
 #include "BridgeMgr.h"
 #include "Bridge.h"
+#include <syslog.h>
+#include <stdio.h>
 
 
 #define USE_EXTERN_C
@@ -112,9 +114,8 @@ public:
 
         if (endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
         {
-            ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mCommandId=0x%x\n", __FUNCTION__,
+            syslog(LOG_INFO, "%s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mCommandId=0x%x\n", __FUNCTION__,
                             commandPath.mEndpointId ,endpointIndex ,commandPath.mClusterId ,commandPath.mCommandId);
-
             Device * dev = BridgeDevMgr::gDevices[endpointIndex];
             BridgeDevMgr *gDevMgr = new BridgeDevMgr;
 
@@ -174,8 +175,14 @@ public:
             if (dev->IsReachable())
             {
                 ret = gDevMgr->HandleSendCommand(static_cast<Device *>(dev));
-            }            
-            ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+            }
+            if(ret != Protocols::InteractionModel::Status::Success)
+            {
+                syslog(LOG_ERR, "%s: Command failed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                            dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
+                return(CHIP_ERROR_INCORRECT_STATE);
+            }
+            syslog(LOG_INFO, "%s: Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
                         dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
             //if the Cluster is OnOff, we need a workarround on the LevelControl cluster if the device has this cluster
             //end the command to move to level = 0 in case of "Off" cmd
@@ -218,7 +225,7 @@ public:
                                 // Uggly workarround: get the current level to toggle it !
                                 uint8_t currentLevel = 0;
                                 ret = gDevMgr->HandleReadAttribute(dev, chip::app::Clusters::LevelControl::Id, chip::app::Clusters::LevelControl::Attributes::CurrentLevel::Id, &currentLevel, sizeof(currentLevel));
-                                ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s currentLevel=%d\n", __FUNCTION__, currentLevel);
+                                syslog(LOG_DEBUG, "%s: currentLevel=%d\n", __FUNCTION__, currentLevel);
                                 if(currentLevel <=1)
                                 {
                                     dev->cmdData[dev->cmdSize++] = 254;
@@ -238,7 +245,13 @@ public:
                         {
                             ret = gDevMgr->HandleSendCommand(static_cast<Device *>(dev));
                         }
-                        ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                        if(ret != Protocols::InteractionModel::Status::Success)
+                        {
+                            syslog(LOG_ERR, "%s: Command failed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                                        dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
+                            return(CHIP_ERROR_INCORRECT_STATE);
+                        }
+                        syslog(LOG_INFO, "%s: Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
                             dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
                             usleep(COMMAND_COMPLETED_TIME_MS * 1000);
                             
@@ -262,19 +275,20 @@ public:
             Device * dev = BridgeDevMgr::gDevices[endpointIndex];
             BridgeDevMgr *gDevMgr = new BridgeDevMgr;
 
-            ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mCommandId=0x%x dev->dev_pending_command: %d\n", __FUNCTION__,
+            syslog(LOG_INFO, "%s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mCommandId=0x%x dev->dev_pending_command: %d\n", __FUNCTION__,
                             commandPath.mEndpointId ,endpointIndex ,commandPath.mClusterId ,commandPath.mCommandId,dev->dev_pending_command);
 
             if(dev->dev_pending_command == true)
             {
-                ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command is pending: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                syslog(LOG_DEBUG, "%s: Command is pending: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
                                 dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
                 if (dev->IsReachable())
                 {
                     //ret = gDevMgr->HandleSendCommand(static_cast<Device *>(dev));
                     dev->dev_pending_command = false;
-                    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
-                                dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);            }
+                    //syslog(LOG_DEBUG, "%s: Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                    //            dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
+                }
 
                 ////if the Cluster is OnOff, we need a workarround on the LevelControl cluster if the device has this cluster
                 ////end the command to move to level = 0 in case of "Off" cmd
@@ -317,7 +331,7 @@ public:
                                     //// Uggly workarround: get the current level to toggle it !
                                     ////uint8_t currentLevel = 0;
                                     ////ret = HandleReadAttribute(dev, chip::app::Clusters::LevelControl::Id, chip::app::Clusters::LevelControl::Attributes::CurrentLevel::Id, &currentLevel, sizeof(currentLevel));
-                                    ////ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s currentLevel=%d\n", __FUNCTION__, currentLevel);
+                                    ////syslog(LOG_DEBUG, "%s currentLevel=%d\n", __FUNCTION__, currentLevel);
                                     ////if(currentLevel <=1)
                                     ////{
                                         ////dev->cmdData[dev->cmdSize++] = 254;
@@ -340,7 +354,7 @@ public:
                             //{
                                 //ret = gDevMgr->HandleSendCommand(static_cast<Device *>(dev));
                             //}
-                            //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                            //syslog(LOG_DEBUG, "%s: Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
                                 //dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
                                 //usleep(COMMAND_COMPLETED_TIME_MS * 1000);
                                 
@@ -365,7 +379,7 @@ BridgeDevMgr::BridgeDevMgr()
 BridgeDevMgr::~BridgeDevMgr()
 {
     RemoveAllDevice();
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : free BridgeDevMgr ! \n");
+    syslog(LOG_INFO, "%s: free BridgeDevMgr ! \n", __FUNCTION__);
 }
 
 void BridgeDevMgr::AddNewZigbeeNode(m2z_device_params_t* zigbee_node)
@@ -380,7 +394,7 @@ void BridgeDevMgr::AddNewZigbeeNode(m2z_device_params_t* zigbee_node)
     std::string supported_clusters=DiscoveredDevice->GetClusters();
     std::string device_id=DiscoveredDevice->GetEndpointDeviceId();
     
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br: %s : Discovered Zigbee Device: Name %s Location: %s Device Id: %s SupportedClusters: %s",__FUNCTION__,
+    syslog(LOG_INFO, "%s : Discovered Zigbee Device: Name %s Location: %s Device Id: %s SupportedClusters: %s",__FUNCTION__,
                     name.c_str(), location.c_str(), device_id.c_str(), supported_clusters.c_str());
     
     bool state = false;
@@ -400,12 +414,12 @@ void BridgeDevMgr::AddNewZigbeeNode(m2z_device_params_t* zigbee_node)
     {
         if (generatedClusters[attr_idx].clusterId == Descriptor::Id)
         {
-            ChipLogProgress(DeviceLayer, "\t-> M2Z-Br: %s : Found GENERATED_CLUSTERS clusterId: %d ",__FUNCTION__, generatedClusters[attr_idx].clusterId);
+            syslog(LOG_DEBUG, "\t%s : Found GENERATED_CLUSTERS clusterId: %d ",__FUNCTION__, generatedClusters[attr_idx].clusterId);
             DiscoveredDevice->clusterList[mapped_clusters_number++] = generatedClusters[attr_idx];
         }
         if (generatedClusters[attr_idx].clusterId == BridgedDeviceBasicInformation::Id)
         {
-            ChipLogProgress(DeviceLayer, "\t-> M2Z-Br: %s : Found GENERATED_CLUSTERS clusterId: %d ",__FUNCTION__, generatedClusters[attr_idx].clusterId);
+            syslog(LOG_DEBUG, "\t%s : Found GENERATED_CLUSTERS clusterId: %d ",__FUNCTION__, generatedClusters[attr_idx].clusterId);
             DiscoveredDevice->clusterList[mapped_clusters_number++] = generatedClusters[attr_idx];
         }
     }
@@ -413,36 +427,36 @@ void BridgeDevMgr::AddNewZigbeeNode(m2z_device_params_t* zigbee_node)
     // Then, try to map all Zigbee clusters to Matter clusters
     for ( zb_uint16_t i = 0; i < zigbee_node->endpoint; i++)
     {
-        ChipLogProgress(DeviceLayer, " -> M2Z-Br:%s : EndpointId: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_id);
-        ChipLogProgress(DeviceLayer, " -> M2Z-Br:%s : Clusters number: %d",__FUNCTION__, zigbee_node->endpoints[i].num_in_clusters + zigbee_node->endpoints[i].num_out_clusters);
+        syslog(LOG_INFO, "%s : EndpointId: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_id);
+        syslog(LOG_INFO, "%s : Clusters number: %d",__FUNCTION__, zigbee_node->endpoints[i].num_in_clusters + zigbee_node->endpoints[i].num_out_clusters);
         for ( zb_uint16_t j = 0; j < (zigbee_node->endpoints[i].num_in_clusters + zigbee_node->endpoints[i].num_out_clusters); j++)
         {
             if(zigbee_node->endpoints[i].ep_cluster[j].in_cluster)
             {
-				ChipLogProgress(DeviceLayer, "\t-> M2Z-Br: %s: ClusterId: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
-				ChipLogProgress(DeviceLayer, "\t-> M2Z-Br: %s : Attributes number: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].num_attrs);
-				for ( zb_uint16_t k = 0; k < zigbee_node->endpoints[i].ep_cluster[j].num_attrs; k++)
-				{
-					ChipLogProgress(DeviceLayer, "\t\t-> M2Z-Br: %s : AttrId: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].attribute[k].attr_id);
-				}
-				for ( zb_uint16_t attr_idx = DUMMY_ENDPOINT_2_FIRST_CLUSTER_INDEX; attr_idx < GENERATED_CLUSTER_COUNT; attr_idx++)
-				{
-					// get the Matter clusterId from the Zigbee clusterId
-					ClusterId clusterId = DiscoveredDevice->GetMatterClusterId(zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
+                syslog(LOG_INFO, "\t%s: ClusterId: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
+                syslog(LOG_INFO, "\t%s : Attributes number: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].num_attrs);
+                for ( zb_uint16_t k = 0; k < zigbee_node->endpoints[i].ep_cluster[j].num_attrs; k++)
+                {
+                    syslog(LOG_DEBUG, "\t\t%s : AttrId: %d",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].attribute[k].attr_id);
+                }
+                for ( zb_uint16_t attr_idx = DUMMY_ENDPOINT_2_FIRST_CLUSTER_INDEX; attr_idx < GENERATED_CLUSTER_COUNT; attr_idx++)
+                {
+                    // get the Matter clusterId from the Zigbee clusterId
+                    ClusterId clusterId = DiscoveredDevice->GetMatterClusterId(zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
 
-					if (generatedClusters[attr_idx].clusterId == clusterId)
-					{
-						ChipLogProgress(DeviceLayer, "\t-> M2Z-Br: %s : Found GENERATED_CLUSTERS clusterId: %d == zigbee_node->endpoints[%d].ep_cluster[%d].cluster_id: %d",__FUNCTION__, generatedClusters[attr_idx].clusterId,
-										i ,j, zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
-						DiscoveredDevice->clusterList[mapped_clusters_number++] = generatedClusters[attr_idx];
-						break;
-					}
-				}
-			}
-			else
-			{
-				ChipLogProgress(DeviceLayer, "\t-> M2Z-Br: %s: ClusterId: %d is OUT Zigbee cluster, skip it",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
-			}
+                    if (generatedClusters[attr_idx].clusterId == clusterId)
+                    {
+                        syslog(LOG_INFO, "\t%s : Found GENERATED_CLUSTERS clusterId: %d == zigbee_node->endpoints[%d].ep_cluster[%d].cluster_id: %d",__FUNCTION__, generatedClusters[attr_idx].clusterId,
+                                        i ,j, zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
+                        DiscoveredDevice->clusterList[mapped_clusters_number++] = generatedClusters[attr_idx];
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                syslog(LOG_DEBUG, "\t%s: ClusterId: %d is OUT Zigbee cluster, skip it",__FUNCTION__, zigbee_node->endpoints[i].ep_cluster[j].cluster_id);
+            }
         }
     }
     
@@ -539,7 +553,7 @@ int BridgeDevMgr::AddDeviceEndpoint(Device * dev, EmberAfEndpointType *ep, Ember
 
     if (dev->IsReachable() == true)
     {
-        ChipLogProgress(DeviceLayer, " -> M2Z-Br : The endpoints has been added!");
+        syslog(LOG_INFO, "%s: The endpoints has been added!", __FUNCTION__);
         return -1;
     }
 
@@ -564,8 +578,7 @@ int BridgeDevMgr::AddDeviceEndpoint(Device * dev, EmberAfEndpointType *ep, Ember
                     dev->SetReachable(true);
                     dev->SetMatterIndex(index);
                     std::string name=dev->GetName();
-                    ChipLogProgress(DeviceLayer,
-                                    " -> M2Z-Br : Added device %s addr %x to dynamic endpoint %d (index=%d)",
+                    syslog(LOG_INFO, "%s: Added device %s addr %x to dynamic endpoint %d (index=%d)", __FUNCTION__,
                                     (dev->GetName()).c_str(), dev->GetZigbeeRcpSaddr(), mCurrentEndpointId, index);
                     return index;
                 }
@@ -582,7 +595,7 @@ int BridgeDevMgr::AddDeviceEndpoint(Device * dev, EmberAfEndpointType *ep, Ember
         }
         index++;
     }
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : Failed to add dynamic endpoint: No endpoints available!");
+    syslog(LOG_ERR, "%s: Failed to add dynamic endpoint: No endpoints available!", __FUNCTION__);
     return -1;
 }
 
@@ -599,7 +612,7 @@ int BridgeDevMgr::RemoveDeviceEndpoint(Device * dev)
             // disabled.
             [[maybe_unused]] EndpointId ep   = emberAfClearDynamicEndpoint(index);
             gDevices[index] = nullptr;
-            ChipLogProgress(DeviceLayer, " -> M2Z-Br : Removed device %s from dynamic endpoint %d (index=%d)",
+            syslog(LOG_INFO, "%s: Removed device %s from dynamic endpoint %d (index=%d)", __FUNCTION__,
                             (dev->GetName()).c_str(), ep, index);
 
             return index;
@@ -613,7 +626,7 @@ void * BridgeDevMgr::ZigbeeRcpComm_handler(void * context)
 {
     BridgeDevMgr * ThisMgr = (BridgeDevMgr *) context;
     m2z_device_params_t *ZigbeeRcp_device;
-    WCS_TRACE_DBGREL(" -> M2Z-Br : BridgeDevMgr::ZigbeeRcpMonitor is running !!!\n");
+    syslog(LOG_INFO, "%s running !!!\n", __FUNCTION__);
     while (1)
     {
         pthread_mutex_lock(&ZigbeeRcpMsg.bridge_mutex);
@@ -621,13 +634,12 @@ void * BridgeDevMgr::ZigbeeRcpComm_handler(void * context)
         {
             if (pthread_cond_wait(&ZigbeeRcpMsg.bridge_cond, &ZigbeeRcpMsg.bridge_mutex) == 0)
             {
-                WCS_TRACE_DBGREL(" ---> ZigbeeRcpComm_handler RECEIVED A MESSAGE\n");
+                syslog(LOG_INFO, " %s RECEIVED A MESSAGE\n", __FUNCTION__);
                 ZigbeeRcp_device = (m2z_device_params_t *)ZigbeeRcpMsg.ZigbeeRcp_dev;
                 
                 switch (ZigbeeRcpMsg.msg_type)
                 {
                     case BRIDGE_ADD_DEV: {
-                        //ThisMgr->NodeReadAllAttributes(ZigbeeRcp_device);
                         ZigbeeRcp_device->dev_state = ANNOUNCE_COMPLETED;
                         ThisMgr->AddNewZigbeeNode(ZigbeeRcp_device);
                         ZigbeeRcpMsg.ZigbeeRcp_dev      = { 0 };
@@ -636,11 +648,54 @@ void * BridgeDevMgr::ZigbeeRcpComm_handler(void * context)
                         {
                             sleep(1);
                         }
-                        WCS_TRACE_DBGREL(" ---> all attributes were read !!!\n");
-                        //ThisMgr->AddNewZigbeeNode(ZigbeeRcp_device);
+                        syslog(LOG_INFO, "%s: all attributes were read !!!\n", __FUNCTION__);
+                        ZigbeeRcp_device->dev_state = BRIDGED_REACHABLE;
                     }
                     break;
 
+                case BRIDGE_SET_DEV_UNSUPPORTED: {
+                    // find which Device is ZigbeeRcp_device from the message
+                    uint8_t index = 0;
+                    Device *dev;
+                    while (index < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
+                    {
+                        dev = gDevices[index];
+                        if( dev->GetZigbeeRcp() == ZigbeeRcp_device)
+                        {
+                            syslog(LOG_DEBUG, "%s: BRIDGE_SET_DEV_UNSUPPORTED: dev->GetZigbeeRcp(): 0x%x ZigbeeRcp_device: %x \n", __FUNCTION__,dev->GetZigbeeRcp(), ZigbeeRcp_device);
+                            break;
+                        }
+                        
+                    }
+                    // Device to be set as UNSUPPORTED Dynamic Endpoint was found
+                    syslog(LOG_INFO, "%s: BRIDGE_SET_DEV_UNSUPPORTED: ---> UNSUPPORTED Dynamic Endpoint: %d !!!\n", __FUNCTION__, dev->GetEndpointId());
+                    DeviceLayer::StackLock lock;
+                    emberAfEndpointEnableDisable(emberAfEndpointFromIndex(dev->GetEndpointId()), false);
+                    ZigbeeRcp_device->dev_state = BRIDGED_LEFT_NETWORK;
+
+                }
+                break;
+                case BRIDGE_SET_DEV_ACTIVE: {
+                    // find which Device is ZigbeeRcp_device from the message
+                    uint8_t index = 0;
+                    Device *dev;
+                    while (index < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
+                    {
+                        dev = gDevices[index];
+                        if( dev->GetZigbeeRcp() == ZigbeeRcp_device)
+                        {
+                            syslog(LOG_DEBUG, "%s: BRIDGE_SET_DEV_ACTIVE: dev->GetZigbeeRcp(): 0x%x ZigbeeRcp_device: %x \n", __FUNCTION__,dev->GetZigbeeRcp(), ZigbeeRcp_device);
+                            break;
+                        }
+                        
+                    }
+                    // Device to be set as UNSUPPORTED Dynamic Endpoint was found
+                    syslog(LOG_INFO, "%s: BRIDGE_SET_DEV_ACTIVE: ---> Activate Dynamic Endpoint: %d !!!\n", __FUNCTION__, dev->GetEndpointId());
+                    DeviceLayer::StackLock lock;
+                    emberAfEndpointEnableDisable(emberAfEndpointFromIndex(dev->GetEndpointId()), true);
+                    ZigbeeRcp_device->dev_state = BRIDGED_REACHABLE;
+                }
+                break;
                 //case BRIDGE_REMOVE_DEV: {
                     //ThisMgr->RemoveDevice(gDevices[ZcbMsg.zcb.matterIndex]);
                     //ZcbMsg.zcb      = { 0 };
@@ -658,8 +713,7 @@ void * BridgeDevMgr::ZigbeeRcpComm_handler(void * context)
 
                 //case BRIDGE_WRITE_ATTRIBUTE: {
                     //ZcbAttribute_t * Data = (ZcbAttribute_t *) ZcbMsg.msg_data;
-                    //ChipLogProgress(DeviceLayer,
-                                    //" -> M2Z-Br : WriteAttributeToDynamicEndpoint: u16ClusterID: %d "
+                    //syslog(LOG_DEBUG, "WriteAttributeToDynamicEndpoint: u16ClusterID: %d "
                                     //"u16AttributeID: %d u64Data: %ld\n",
                                     //Data->u16ClusterID, Data->u16AttributeID, Data->u64Data);
                     //ThisMgr->WriteAttributeToDynamicEndpoint(ZcbMsg.zcb, Data->u16ClusterID, Data->u16AttributeID, Data->u64Data,
@@ -690,7 +744,7 @@ int BridgeDevMgr::start_ZigbeeRcp_comm_thread()
     int res = pthread_create(&ZigbeeRcpComm_thread, NULL, ZigbeeRcpComm_handler, (void *) this);
     if (res)
     {
-        WCS_TRACE_DBGREL(" -> M2Z-Br : Error creating polling thread: %d\n", res);
+        syslog(LOG_DEBUG, "%s: Error creating polling thread: %d\n", __FUNCTION__, res);
         return -1;
     }
 
@@ -708,7 +762,7 @@ void send_message_to_comm_thread(int MsgType, m2z_device_params_t* ZigbeeRcp_dev
         ZigbeeRcpMsg.ZigbeeRcp_dev = ZigbeeRcp_dev;
         ZigbeeRcpMsg.msg_type = MsgType;
         ZigbeeRcpMsg.msg_data = data;
-        WCS_TRACE_DBGREL(" -> M2Z-Br : type: %d", ZigbeeRcpMsg.msg_type);
+        syslog(LOG_DEBUG, "%s: type: %d", __FUNCTION__, ZigbeeRcpMsg.msg_type);
     } else {
         ZigbeeRcpMsg.msg_type = MsgType;
     }
@@ -750,7 +804,7 @@ Protocols::InteractionModel::Status HandleReadBridgedDeviceBasicAttribute(Device
 {
     using namespace BridgedDeviceBasicInformation::Attributes;
 
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: attrId=%d, maxReadLength=%d",__FUNCTION__,
+    syslog(LOG_DEBUG, "%s: attrId=%d, maxReadLength=%d",__FUNCTION__,
                     attributeId, maxReadLength);
 
     //if ((attributeId == Reachable::Id) && (maxReadLength == 1))
@@ -784,7 +838,7 @@ Protocols::InteractionModel::Status BridgeDevMgr::HandleReadAttribute(Device * d
 {
     chip::AttributeId translated_attributeId = attributeId;
     
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: attrId=%d, maxReadLength=%d",__FUNCTION__, translated_attributeId,
+    syslog(LOG_DEBUG, "%s: attrId=%d, maxReadLength=%d",__FUNCTION__, translated_attributeId,
                     maxReadLength);
 
     // if clusterId is BridgedDeviceBasicInformation::Id
@@ -795,31 +849,31 @@ Protocols::InteractionModel::Status BridgeDevMgr::HandleReadAttribute(Device * d
         // a translation is also required from Matter to Zigbee attribute ID
         switch(attributeId)
         {
-			case chip::app::Clusters::BasicInformation::Attributes::DataModelRevision::Id: 		translated_attributeId = ZB_ZCL_ATTR_BASIC_ZCL_VERSION_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::VendorName::Id: 			translated_attributeId = ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::VendorID::Id: 				translated_attributeId = 0xFF;break;
-			case chip::app::Clusters::BasicInformation::Attributes::ProductName::Id: 			translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::ProductID::Id: 				translated_attributeId = ZB_ZCL_ATTR_BASIC_PRODUCT_CODE_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::NodeLabel::Id: 				translated_attributeId = ZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::Location::Id: 				translated_attributeId = ZB_ZCL_ATTR_BASIC_LOCATION_DESCRIPTION_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::HardwareVersion::Id: 		translated_attributeId = ZB_ZCL_ATTR_BASIC_HW_VERSION_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::HardwareVersionString::Id: 	translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::SoftwareVersion::Id: 		translated_attributeId = ZB_ZCL_ATTR_BASIC_SW_BUILD_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::SoftwareVersionString::Id:	translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::ManufacturingDate::Id: 		translated_attributeId = ZB_ZCL_ATTR_BASIC_DATE_CODE_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::PartNumber::Id: 			translated_attributeId = ZB_ZCL_ATTR_BASIC_MANUFACTURER_VERSION_DETAILS_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::ProductURL::Id: 			translated_attributeId = ZB_ZCL_ATTR_BASIC_PRODUCT_URL_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::ProductLabel::Id: 			translated_attributeId = ZB_ZCL_ATTR_BASIC_PRODUCT_LABEL_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::SerialNumber::Id: 			translated_attributeId = ZB_ZCL_ATTR_BASIC_SERIAL_NUMBER_ID;break;
-			case chip::app::Clusters::BasicInformation::Attributes::LocalConfigDisabled::Id: 	translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::Reachable::Id: 				translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::UniqueID::Id: 				translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::CapabilityMinima::Id: 		translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::ProductAppearance::Id: 		translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::SpecificationVersion::Id: 	translated_attributeId = 0xff;break;
-			case chip::app::Clusters::BasicInformation::Attributes::MaxPathsPerInvoke::Id: 		translated_attributeId = 0xff;break;
-			//case chip::app::Clusters::BasicInformation::Attributes::DeviceLocation::Id: 		translated_attributeId = 0xff;break;
-		}
+            case chip::app::Clusters::BasicInformation::Attributes::DataModelRevision::Id:         translated_attributeId = ZB_ZCL_ATTR_BASIC_ZCL_VERSION_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::VendorName::Id:             translated_attributeId = ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::VendorID::Id:                 translated_attributeId = 0xFF;break;
+            case chip::app::Clusters::BasicInformation::Attributes::ProductName::Id:             translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::ProductID::Id:                 translated_attributeId = ZB_ZCL_ATTR_BASIC_PRODUCT_CODE_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::NodeLabel::Id:                 translated_attributeId = ZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::Location::Id:                 translated_attributeId = ZB_ZCL_ATTR_BASIC_LOCATION_DESCRIPTION_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::HardwareVersion::Id:         translated_attributeId = ZB_ZCL_ATTR_BASIC_HW_VERSION_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::HardwareVersionString::Id:     translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::SoftwareVersion::Id:         translated_attributeId = ZB_ZCL_ATTR_BASIC_SW_BUILD_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::SoftwareVersionString::Id:    translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::ManufacturingDate::Id:         translated_attributeId = ZB_ZCL_ATTR_BASIC_DATE_CODE_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::PartNumber::Id:             translated_attributeId = ZB_ZCL_ATTR_BASIC_MANUFACTURER_VERSION_DETAILS_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::ProductURL::Id:             translated_attributeId = ZB_ZCL_ATTR_BASIC_PRODUCT_URL_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::ProductLabel::Id:             translated_attributeId = ZB_ZCL_ATTR_BASIC_PRODUCT_LABEL_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::SerialNumber::Id:             translated_attributeId = ZB_ZCL_ATTR_BASIC_SERIAL_NUMBER_ID;break;
+            case chip::app::Clusters::BasicInformation::Attributes::LocalConfigDisabled::Id:     translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::Reachable::Id:                 translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::UniqueID::Id:                 translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::CapabilityMinima::Id:         translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::ProductAppearance::Id:         translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::SpecificationVersion::Id:     translated_attributeId = 0xff;break;
+            case chip::app::Clusters::BasicInformation::Attributes::MaxPathsPerInvoke::Id:         translated_attributeId = 0xff;break;
+            //case chip::app::Clusters::BasicInformation::Attributes::DeviceLocation::Id:         translated_attributeId = 0xff;break;
+        }
         
     }
     dev->readAttribute(dev, (uint16_t)clusterId, (uint16_t)translated_attributeId);
@@ -844,7 +898,7 @@ Protocols::InteractionModel::Status BridgeDevMgr::HandleReadAttribute(Device * d
 
 Protocols::InteractionModel::Status BridgeDevMgr::HandleWriteAttribute(Device * dev, ClusterId clusterId, chip::AttributeId attributeId, uint8_t * buffer)
 {
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: clusterId=%d attrId=%d",__FUNCTION__, clusterId, attributeId);
+    syslog(LOG_DEBUG, "%s: clusterId=%d attrId=%d",__FUNCTION__, clusterId, attributeId);
     dev->writeAttribute(dev, (uint16_t)clusterId, (uint16_t)attributeId, buffer);
     usleep(COMMAND_COMPLETED_TIME_MS * 1000);
 
@@ -903,14 +957,14 @@ void GetAttributeReadOnlyStatus(ClusterId clusterId, chip::AttributeId attribute
         break;
     }
     
-    WCS_TRACE_DBGREL("<< %s attribute_zb_status: %d ", __FUNCTION__, *attr_zb_status);
+    syslog(LOG_DEBUG, "<< %s attribute_zb_status: %d ", __FUNCTION__, *attr_zb_status);
     
 }
 
 Protocols::InteractionModel::Status CanWriteAttribute(Device * dev, ClusterId clusterId, chip::AttributeId attributeId, bool check_from_standard_spec)
 {
     Protocols::InteractionModel::Status zcl_attr_status = Protocols::InteractionModel::Status::Success;
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: clusterId=%d attrId=%d", __FUNCTION__, clusterId, attributeId);
+    syslog(LOG_DEBUG, "%s: clusterId=%d attrId=%d", __FUNCTION__, clusterId, attributeId);
     if(check_from_standard_spec)
     {
         GetAttributeReadOnlyStatus((uint16_t)clusterId, (uint16_t)attributeId, (Protocols::InteractionModel::Status *)&zcl_attr_status);
@@ -925,7 +979,7 @@ Protocols::InteractionModel::Status CanWriteAttribute(Device * dev, ClusterId cl
 
 Protocols::InteractionModel::Status BridgeDevMgr::HandleSendCommand(Device* dev)
 {
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s:",__FUNCTION__);
+    syslog(LOG_DEBUG, "%s:",__FUNCTION__);
     uint8_t ret = 0;
     ret = dev->sendCommand(dev);
     if (ret != 0)
@@ -957,7 +1011,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeReadCallback(Endpoin
     BridgeDevMgr *gDevMgr = new BridgeDevMgr;
 
     Protocols::InteractionModel::Status ret = Protocols::InteractionModel::Status::Failure;
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: ep=%d endpointIndex=%d clusterId=%d attributeId=%d  maxReadLength=%d\n",__FUNCTION__,
+    syslog(LOG_INFO, "%s: ep=%d endpointIndex=%d clusterId=%d attributeId=%d  maxReadLength=%d\n",__FUNCTION__,
                     endpoint, endpointIndex, clusterId, attributeMetadata->attributeId, maxReadLength);
 
     if ((endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT) && (BridgeDevMgr::gDevices[endpointIndex] != nullptr))
@@ -981,7 +1035,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
     Protocols::InteractionModel::Status ret = Protocols::InteractionModel::Status::Failure;
     bool do_send_command = false;
 
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
+    syslog(LOG_INFO, "%s: ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
                     endpoint, endpointIndex, clusterId, attributeMetadata->attributeId);
 
     if (endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
@@ -1000,7 +1054,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
             {
                 zb_uint16_t endpoint_idx=0;
                 zb_uint16_t cluster_idx=0;
-                ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: UNSUPPORTED_WRITE for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
+                syslog(LOG_INFO, "%s: UNSUPPORTED_WRITE for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
                                 endpoint, endpointIndex, clusterId, attributeMetadata->attributeId);
                 // Matter wants to write a Zigbee bridged node attribute which is ReadOnly attribute
                 // A translation to a Command may be needed here, but not implemented yet...
@@ -1054,10 +1108,10 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
                     //}
                     //if (dev->IsReachable() && do_send_command)
                     //{
-                        //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: HandleSendCommand for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
+                        //syslog(LOG_DEBUG, "%s: HandleSendCommand for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
                             //endpoint, endpointIndex, clusterId, attributeMetadata->attributeId);
                         ////ret = gDevMgr->HandleSendCommand(static_cast<Device *>(dev));
-                        //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: Command successfully processed for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
+                        //syslog(LOG_DEBUG, "%s: Command successfully processed for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
                             //endpoint, endpointIndex, clusterId, attributeMetadata->attributeId);
                         
                     //}
@@ -1065,7 +1119,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
             }
             if(ret == Protocols::InteractionModel::Status::UnsupportedAttribute)
             {
-                ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: UNSUPPORTED_ATTRIBUTE for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
+                syslog(LOG_INFO, "%s: UNSUPPORTED_ATTRIBUTE for ep=%d endpointIndex=%d clusterId=%d attributeId=%d\n", __FUNCTION__,
                                 endpoint, endpointIndex, clusterId, attributeMetadata->attributeId);
             }
         }
@@ -1092,7 +1146,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
     //Protocols::InteractionModel::Status ret = Protocols::InteractionModel::Status::Failure;
     //CHIP_ERROR TLVError = CHIP_NO_ERROR;
 
-    //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mCommandId=0x%x\n", __FUNCTION__,
+    //syslog(LOG_DEBUG, "%s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mCommandId=0x%x\n", __FUNCTION__,
                     //commandPath.mEndpointId ,endpointIndex ,commandPath.mClusterId ,commandPath.mCommandId);
 
     //if (endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
@@ -1167,13 +1221,13 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
         //Device * dev = BridgeDevMgr::gDevices[endpointIndex];
         //if(dev->dev_pending_command == true)
         //{
-            //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command is pending: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+            //syslog(LOG_DEBUG, "%s Command is pending: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
                             //dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
             //if (dev->IsReachable())
             //{
                 //ret = HandleSendCommand(static_cast<Device *>(dev));
                 //dev->dev_pending_command = false;
-                //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                //syslog(LOG_DEBUG, "%s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
                             //dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);            }
 
             ////if the Cluster is OnOff, we need a workarround on the LevelControl cluster if the device has this cluster
@@ -1217,7 +1271,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
                                 //// Uggly workarround: get the current level to toggle it !
                                 ////uint8_t currentLevel = 0;
                                 ////ret = HandleReadAttribute(dev, chip::app::Clusters::LevelControl::Id, chip::app::Clusters::LevelControl::Attributes::CurrentLevel::Id, &currentLevel, sizeof(currentLevel));
-                                ////ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s currentLevel=%d\n", __FUNCTION__, currentLevel);
+                                ////syslog(LOG_DEBUG, "%s currentLevel=%d\n", __FUNCTION__, currentLevel);
                                 ////if(currentLevel <=1)
                                 ////{
                                     ////dev->cmdData[dev->cmdSize++] = 254;
@@ -1240,7 +1294,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
                         //{
                             //ret = HandleSendCommand(static_cast<Device *>(dev));
                         //}
-                        //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
+                        //syslog(LOG_DEBUG, "%s Command successfully processed: mEndpointId=%d endpointIndex=%d clusterId=0x%x commandId=0x%x\n", __FUNCTION__,
                             //dev->pendingCmdEndpointId ,commandPath.mEndpointId ,dev->pendingCmdClusterId ,dev->pendingCmdCommandId);
                             
                     //}
@@ -1258,7 +1312,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
     //if (endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
     //{
         //Device * dev = BridgeDevMgr::gDevices[endpointIndex];
-        //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
+        //syslog(LOG_DEBUG, "%s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
                         //dev->pendingCmdEndpointId ,attributePath.mEndpointId ,attributePath.mClusterId, attributePath.mAttributeId );
     //}
 //}
@@ -1271,7 +1325,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
     //if (endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
     //{
         //Device * dev = BridgeDevMgr::gDevices[endpointIndex];
-        //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
+        //syslog(LOG_DEBUG, "%s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
                         //dev->pendingCmdEndpointId ,attributePath.mEndpointId ,attributePath.mClusterId, attributePath.mAttributeId );
     //}
 //}
@@ -1284,7 +1338,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
     //if (endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
     //{
         //Device * dev = BridgeDevMgr::gDevices[endpointIndex];
-        //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
+        //syslog(LOG_DEBUG, "%s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
                         //dev->pendingCmdEndpointId ,attributePath.mEndpointId ,attributePath.mClusterId, attributePath.mAttributeId );
     //}
 //}
@@ -1297,7 +1351,7 @@ Protocols::InteractionModel::Status emberAfExternalAttributeWriteCallback(Endpoi
     //if (endpointIndex < CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT)
     //{
         //Device * dev = BridgeDevMgr::gDevices[endpointIndex];
-        //ChipLogProgress(DeviceLayer, " -> M2Z-Br : %s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
+        //syslog(LOG_DEBUG, "%s: mEndpointId=%d endpointIndex=%d mClusterId=0x%x mAttributeId=0x%x\n", __FUNCTION__,
                         //dev->pendingCmdEndpointId ,attributePath.mEndpointId ,attributePath.mClusterId, attributePath.mAttributeId );
     //}
 //}

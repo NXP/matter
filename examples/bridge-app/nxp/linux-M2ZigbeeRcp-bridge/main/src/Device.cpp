@@ -21,6 +21,8 @@
 
 #include <cstdio>
 #include <platform/CHIPDeviceLayer.h>
+#include <syslog.h>
+#include <stdio.h>
 
 //#include "zcb.h"
 #define USE_EXTERN_C
@@ -73,20 +75,20 @@ uint8_t Device::NodeReadAttributeIdFromClusterId(m2z_device_params_t * zigbee_no
         attribute = &(zigbee_node->endpoints[ep_id].ep_cluster[cluster_id].attribute[attr_id]);
         memcpy(buffer, &(attribute->attr_value_array), maxReadLength);
 
-		// workarround for different attributes type between Matter and Zigbee
-		if(zcl_cluster_id == ZB_ZCL_CLUSTER_ID_BASIC)
-		{
-			switch(zcl_attr_id)
-			{
-				case ZB_ZCL_ATTR_BASIC_PRODUCT_URL_ID:
-					for ( zb_uint8_t attr_size=buffer[0]; attr_size >= 1; attr_size--)
-					{
-						buffer[attr_size+1] = buffer[attr_size];
-					}
-					buffer[1] = 0;
-				break;
-			}
-		}
+        // workarround for different attributes type between Matter and Zigbee
+        if(zcl_cluster_id == ZB_ZCL_CLUSTER_ID_BASIC)
+        {
+            switch(zcl_attr_id)
+            {
+                case ZB_ZCL_ATTR_BASIC_PRODUCT_URL_ID:
+                    for ( zb_uint8_t attr_size=buffer[0]; attr_size >= 1; attr_size--)
+                    {
+                        buffer[attr_size+1] = buffer[attr_size];
+                    }
+                    buffer[1] = 0;
+                break;
+            }
+        }
         return (0);
     }
     return (0xFF);
@@ -94,14 +96,36 @@ uint8_t Device::NodeReadAttributeIdFromClusterId(m2z_device_params_t * zigbee_no
 
 uint8_t Device::readAttribute(Device* dev, uint16_t zcl_cluster_id, uint16_t zcl_attr_id)
 {
+    if ( dev->mBridgeZigbeeRcpNode->dev_state == BRIDGED_UNAVAILABLE )
+    {
+        dev->mBridgeZigbeeRcpNode->dev_state = BRIDGED_REACHABLE;
+    }
     m2z_schedule_read_attribute(dev->mBridgeZigbeeRcpNode, zcl_cluster_id, zcl_attr_id);
-    return(0);
+    if ( dev->mBridgeZigbeeRcpNode->dev_state == BRIDGED_UNAVAILABLE )
+    {
+        return(-1);
+    }
+    else
+    {
+        return(0);
+    }
 }
 
 uint8_t Device::writeAttribute(Device* dev, uint16_t zcl_cluster_id, uint16_t zcl_attr_id, uint8_t * buffer)
 {
+    if ( dev->mBridgeZigbeeRcpNode->dev_state == BRIDGED_UNAVAILABLE )
+    {
+        dev->mBridgeZigbeeRcpNode->dev_state = BRIDGED_REACHABLE;
+    }
     m2z_schedule_write_attribute(dev->mBridgeZigbeeRcpNode, zcl_cluster_id, zcl_attr_id, buffer);
-    return(0);
+    if ( dev->mBridgeZigbeeRcpNode->dev_state == BRIDGED_UNAVAILABLE )
+    {
+        return(-1);
+    }
+    else
+    {
+        return(0);
+    }
 }
 
 uint8_t Device::canWriteAttribute(Device* dev, uint16_t zcl_cluster_id, uint16_t zcl_attr_id, Protocols::InteractionModel::Status * zcl_attr_status)
@@ -112,8 +136,19 @@ uint8_t Device::canWriteAttribute(Device* dev, uint16_t zcl_cluster_id, uint16_t
 
 uint8_t Device::sendCommand(Device* dev)
 {
+    if ( dev->mBridgeZigbeeRcpNode->dev_state == BRIDGED_UNAVAILABLE )
+    {
+        dev->mBridgeZigbeeRcpNode->dev_state = BRIDGED_REACHABLE;
+    }
     m2z_schedule_send_command(dev->mBridgeZigbeeRcpNode, (uint16_t)dev->pendingCmdClusterId, (uint16_t)dev->pendingCmdCommandId, dev->cmdData, dev->cmdSize);
-    return(0);
+    if ( dev->mBridgeZigbeeRcpNode->dev_state == BRIDGED_UNAVAILABLE )
+    {
+        return(-1);
+    }
+    else
+    {
+        return(0);
+    }
 }
 
 uint8_t Device::GetEndpointClusterAttributeIndexesForClusterAttrId(m2z_device_params_t * zigbee_dev, uint16_t zcl_cluster_id, uint16_t zcl_attr_id, zb_uint16_t* ep_id, zb_uint16_t* cluster_id, zb_uint16_t* attr_id)
@@ -142,93 +177,93 @@ uint8_t Device::GetEndpointClusterAttributeIndexesForClusterAttrId(m2z_device_pa
 
 void Device::BasicClusterForceAttributesRead(zb_uint8_t device_index, zb_uint8_t endpoint_index, m2z_device_cluster_t *cluster)
 {
-	ChipLogProgress(DeviceLayer, " -> M2Z-Br %s Found BASIC cluster, artificially do as if we discovered the whole Cluster !", __FUNCTION__);
-	cluster->num_attrs = 15;
+    syslog(LOG_DEBUG, "%s: Found BASIC cluster, artificially do as if we discovered the whole Cluster !", __FUNCTION__);
+    cluster->num_attrs = 15;
 
-	for(zb_uint8_t attr_idx=0; attr_idx < cluster->num_attrs; attr_idx++)
-	{
-		zb_uint8_t zcl_attr_id;
-		zb_zcl_attr_type_t zcl_attr_data_type;
-		switch(attr_idx){
-			case 0:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_ZCL_VERSION_ID;
-				zcl_attr_data_type = 0x20;
-			break;
-			case 1:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_APPLICATION_VERSION_ID;
-				zcl_attr_data_type = 0x20;
-			break;
-			case 2:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_STACK_VERSION_ID;
-				zcl_attr_data_type = 0x20;
-			break;
-			case 3:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_HW_VERSION_ID;
-				zcl_attr_data_type = 0x20;
-			break;
-			case 4:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID;
-				zcl_attr_data_type = 0x42;
-			break;
-			case 5:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID;
-				zcl_attr_data_type = 0x42;
-			break;
-			case 6:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_DATE_CODE_ID;
-				zcl_attr_data_type = 0x42;
-			break;
-			case 7:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_POWER_SOURCE_ID;
-				zcl_attr_data_type = 0x30;
-			break;
-			case 8:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_GENERIC_DEVICE_CLASS_ID;
-				zcl_attr_data_type = 0x30;
-			break;
-			case 9:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_GENERIC_DEVICE_TYPE_ID;
-				zcl_attr_data_type = 0x30;
-			break;
-			case 10:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_PRODUCT_CODE_ID;
-				zcl_attr_data_type = 0x41;
-			break;
-			case 11:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_PRODUCT_URL_ID;
-				zcl_attr_data_type = 0x42;
-			break;
-			case 12:
-				zcl_attr_id = ZB_ZCL_ATTR_BASIC_SW_BUILD_ID;
-				zcl_attr_data_type = 0x42;
-			break;
-			case 13:
-				zcl_attr_id = 0xfffc;
-				zcl_attr_data_type = 0x1b;
-			break;
-			case 14:
-				zcl_attr_id = 0xfffd;
-				zcl_attr_data_type = 0x21;
-			break;
+    for(zb_uint8_t attr_idx=0; attr_idx < cluster->num_attrs; attr_idx++)
+    {
+        zb_uint8_t zcl_attr_id;
+        zb_zcl_attr_type_t zcl_attr_data_type;
+        switch(attr_idx){
+            case 0:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_ZCL_VERSION_ID;
+                zcl_attr_data_type = 0x20;
+            break;
+            case 1:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_APPLICATION_VERSION_ID;
+                zcl_attr_data_type = 0x20;
+            break;
+            case 2:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_STACK_VERSION_ID;
+                zcl_attr_data_type = 0x20;
+            break;
+            case 3:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_HW_VERSION_ID;
+                zcl_attr_data_type = 0x20;
+            break;
+            case 4:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_MANUFACTURER_NAME_ID;
+                zcl_attr_data_type = 0x42;
+            break;
+            case 5:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_MODEL_IDENTIFIER_ID;
+                zcl_attr_data_type = 0x42;
+            break;
+            case 6:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_DATE_CODE_ID;
+                zcl_attr_data_type = 0x42;
+            break;
+            case 7:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_POWER_SOURCE_ID;
+                zcl_attr_data_type = 0x30;
+            break;
+            case 8:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_GENERIC_DEVICE_CLASS_ID;
+                zcl_attr_data_type = 0x30;
+            break;
+            case 9:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_GENERIC_DEVICE_TYPE_ID;
+                zcl_attr_data_type = 0x30;
+            break;
+            case 10:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_PRODUCT_CODE_ID;
+                zcl_attr_data_type = 0x41;
+            break;
+            case 11:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_PRODUCT_URL_ID;
+                zcl_attr_data_type = 0x42;
+            break;
+            case 12:
+                zcl_attr_id = ZB_ZCL_ATTR_BASIC_SW_BUILD_ID;
+                zcl_attr_data_type = 0x42;
+            break;
+            case 13:
+                zcl_attr_id = 0xfffc;
+                zcl_attr_data_type = 0x1b;
+            break;
+            case 14:
+                zcl_attr_id = 0xfffd;
+                zcl_attr_data_type = 0x21;
+            break;
 
-		}
-		cluster->attribute[attr_idx].attr_state = DISCOVERED_ATTR;
-		cluster->attribute[attr_idx].attr_id = zcl_attr_id;
-		cluster->attribute[attr_idx].attr_type = zcl_attr_data_type;
+        }
+        cluster->attribute[attr_idx].attr_state = DISCOVERED_ATTR;
+        cluster->attribute[attr_idx].attr_id = zcl_attr_id;
+        cluster->attribute[attr_idx].attr_type = zcl_attr_data_type;
 
-		cluster->attribute[attr_idx].read_req.dev_idx = device_index;
-		cluster->attribute[attr_idx].read_req.zed_ep = endpoint_index;
-		cluster->attribute[attr_idx].read_req.zc_ep = MATTER_ZIGBEERCP_BRIDGE_ENDPOINT;
-		cluster->attribute[attr_idx].read_req.cluster_id = cluster->cluster_id;
-		cluster->attribute[attr_idx].read_req.attr_id = zcl_attr_id;
+        cluster->attribute[attr_idx].read_req.dev_idx = device_index;
+        cluster->attribute[attr_idx].read_req.zed_ep = endpoint_index;
+        cluster->attribute[attr_idx].read_req.zc_ep = MATTER_ZIGBEERCP_BRIDGE_ENDPOINT;
+        cluster->attribute[attr_idx].read_req.cluster_id = cluster->cluster_id;
+        cluster->attribute[attr_idx].read_req.attr_id = zcl_attr_id;
 
-		cluster->attribute[attr_idx].write_req.dev_idx = device_index;
-		cluster->attribute[attr_idx].write_req.zed_ep = endpoint_index;
-		cluster->attribute[attr_idx].write_req.zc_ep = MATTER_ZIGBEERCP_BRIDGE_ENDPOINT;
-		cluster->attribute[attr_idx].write_req.cluster_id = cluster->cluster_id;
-		cluster->attribute[attr_idx].write_req.attr_id = zcl_attr_id;
-		cluster->attribute[attr_idx].write_req.attr_type = zcl_attr_data_type;
-	}
+        cluster->attribute[attr_idx].write_req.dev_idx = device_index;
+        cluster->attribute[attr_idx].write_req.zed_ep = endpoint_index;
+        cluster->attribute[attr_idx].write_req.zc_ep = MATTER_ZIGBEERCP_BRIDGE_ENDPOINT;
+        cluster->attribute[attr_idx].write_req.cluster_id = cluster->cluster_id;
+        cluster->attribute[attr_idx].write_req.attr_id = zcl_attr_id;
+        cluster->attribute[attr_idx].write_req.attr_type = zcl_attr_data_type;
+    }
 }
 bool Device::NodeReadAllAttributes(m2z_device_params_t* zigbee_node)
 {
@@ -237,7 +272,7 @@ bool Device::NodeReadAllAttributes(m2z_device_params_t* zigbee_node)
     m2z_device_cluster_attr_t *attribute = NULL;
     bool attr_to_read = false;
     
-	ChipLogProgress(DeviceLayer, " -> M2Z-Br %s IN ", __FUNCTION__);
+    syslog(LOG_DEBUG, "%s IN ", __FUNCTION__);
     for( zb_uint8_t ep_idx=0; ep_idx < zigbee_node->endpoint; ep_idx++)
     {
         endpoint=&(zigbee_node->endpoints[ep_idx]);
@@ -247,8 +282,8 @@ bool Device::NodeReadAllAttributes(m2z_device_params_t* zigbee_node)
             // if this Zigbee device didn't answer to DiscoverAttribute request, force the Basic Cluster attributes read
             if(cluster->cluster_id == ZB_ZCL_CLUSTER_ID_BASIC && cluster->num_attrs == 0)
             {
-				BasicClusterForceAttributesRead(zigbee_node->dev_index, ep_idx, cluster);
-			}
+                BasicClusterForceAttributesRead(zigbee_node->dev_index, ep_idx, cluster);
+            }
             for ( zb_uint8_t attr_idx=0; attr_idx < cluster->num_attrs; attr_idx++)
             {
                 attribute = &(cluster->attribute[attr_idx]);
@@ -261,7 +296,7 @@ bool Device::NodeReadAllAttributes(m2z_device_params_t* zigbee_node)
             }
         }
     }
-	ChipLogProgress(DeviceLayer, " -> M2Z-Br %s OUT ", __FUNCTION__);
+    syslog(LOG_DEBUG, "%s OUT ", __FUNCTION__);
     return(attr_to_read);
 }
 
@@ -425,7 +460,7 @@ void Device::HandleDeviceChange(Device * device, Device::Changed_t changeMask)
 
 void Device::DiscoverNode(m2z_device_params_t* zigbee_node){
     
-	ChipLogProgress(DeviceLayer, " -> M2Z-Br %s IN", __FUNCTION__);
+    syslog(LOG_DEBUG, "%s IN", __FUNCTION__);
 
     bool attrs_to_read = this->NodeReadAllAttributes(zigbee_node);
     if (!attrs_to_read)
@@ -444,14 +479,14 @@ void Device::DiscoverNode(m2z_device_params_t* zigbee_node){
     this->SetName(("ZED_" + manuf_name + "-" + model_name + "@" + std::to_string(zigbee_node->short_addr)).c_str());
     this->SetLocation(location);
     this->SetEndpointDeviceId(device_id);
-	ChipLogProgress(DeviceLayer, " -> M2Z-Br %s OUT", __FUNCTION__);
+    syslog(LOG_DEBUG, "%s OUT", __FUNCTION__);
 }
 
 ClusterId Device::GetMatterClusterId(uint16_t zcl_cluster_id)
 {
 
-	switch(zcl_cluster_id)
-	{
+    switch(zcl_cluster_id)
+    {
         case ZB_ZCL_CLUSTER_ID_BASIC:
             return( BasicInformation::Id);
         break;
@@ -549,7 +584,7 @@ ClusterId Device::GetMatterClusterId(uint16_t zcl_cluster_id)
             return( FanControl::Id);
         break;
         case ZB_ZCL_CLUSTER_ID_DEHUMID_CONTROL:
-			return(0xFFFF);
+            return(0xFFFF);
         break;
         case ZB_ZCL_CLUSTER_ID_THERMOSTAT_UI_CONFIG:
             return( ThermostatUserInterfaceConfiguration::Id);
@@ -662,7 +697,7 @@ ClusterId Device::GetMatterClusterId(uint16_t zcl_cluster_id)
         case ZB_ZCL_CLUSTER_ID_DIRECT_CONFIGURATION:
             return(0xFFFF);
         break;
-	}
+    }
 }
 
 bool Device::HasCluster(uint16_t zcl_cluster_id)
@@ -973,11 +1008,11 @@ void Device::SetReachable(bool aReachable)
 
     if (aReachable)
     {
-        ChipLogProgress(DeviceLayer, " -> M2Z-Br %s : Device[%s]: ONLINE", __FUNCTION__, mName.c_str());
+        syslog(LOG_DEBUG, "%s : Device[%s]: ONLINE", __FUNCTION__, mName.c_str());
     }
     else
     {
-        ChipLogProgress(DeviceLayer, " -> M2Z-Br %s : Device[%s]: OFFLINE", __FUNCTION__, mName.c_str());
+        syslog(LOG_DEBUG, "%s : Device[%s]: OFFLINE", __FUNCTION__, mName.c_str());
     }
 
     if (changed)
@@ -989,7 +1024,7 @@ void Device::SetReachable(bool aReachable)
 void Device::SetName(std::string szName)
 {
     bool changed = (mName.compare(szName) != 0);
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br %s : Device[%s]: New Name=\"%s\"", __FUNCTION__, mName.c_str(), szName.c_str());
+    syslog(LOG_INFO, "%s : Device[%s]: New Name=\"%s\"", __FUNCTION__, mName.c_str(), szName.c_str());
     mName = szName;
 
     if (changed)
@@ -1004,7 +1039,7 @@ void Device::SetLocation(std::string szLocation)
 
     mLocation = szLocation;
 
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br %s : Device[%s]: Location=\"%s\"", __FUNCTION__, mName.c_str(), mLocation.c_str());
+    syslog(LOG_INFO, "%s : Device[%s]: Location=\"%s\"", __FUNCTION__, mName.c_str(), mLocation.c_str());
 
     if (changed)
     {
@@ -1015,7 +1050,7 @@ void Device::SetLocation(std::string szLocation)
 void Device::SetEndpointDeviceId(std::string szDeviceId)
 {
     mEpDeviceId = szDeviceId;
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br %s : Device[%s]: DeviceId=\"%s\"", __FUNCTION__, mName.c_str(), mEpDeviceId.c_str());
+    syslog(LOG_INFO, "%s : Device[%s]: DeviceId=\"%s\"", __FUNCTION__, mName.c_str(), mEpDeviceId.c_str());
 }
 
 void Device::SetClusters()

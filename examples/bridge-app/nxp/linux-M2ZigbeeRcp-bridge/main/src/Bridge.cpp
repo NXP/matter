@@ -16,6 +16,8 @@
  */
 
 #include <cstring>
+#include <syslog.h>
+#include <stdio.h>
 
 #include "Bridge.h"
 
@@ -37,7 +39,7 @@ Bridge::~Bridge()
     gActions = NULL;
     gDevMgr = NULL;
 
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : free bridge ! \n");
+    syslog(LOG_INFO, " -> %s :Bring-up", __FUNCTION__);
 }
 
 CHIP_ERROR Bridge::Init()
@@ -86,7 +88,7 @@ bool emberAfActionsClusterInstantActionCallback(app::CommandHandler * commandObj
     EndpointId endpointID = commandPath.mEndpointId;
     auto & actionID       = commandData.actionID;
 
-    ChipLogProgress(DeviceLayer, " -> M2Z-Br : emberAfActionsClusterInstantActionCallback: ep=%d action=0%x", endpointID,actionID);
+    syslog(LOG_INFO, "%s: ep=%d action=0%x", __FUNCTION__, endpointID,actionID);
     if (commandData.invokeID.HasValue())
     {
         hasInvokeID = true;
