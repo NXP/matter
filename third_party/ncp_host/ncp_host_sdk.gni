@@ -1,5 +1,6 @@
 # Copyright (c) 2022 Project CHIP Authors
 # Copyright 2023 NXP
+# Copyright 2025 NXP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,6 +37,7 @@ template("ncp_host_sdk") {
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/uart/",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/usb/",
       "${ncp_host_sdk_root}/src/wifi/",
+      "${ncp_host_sdk_root}/src/wifi/inet/",
       "${ncp_host_sdk_root}/src/common/crc/",
       "${ncp_host_sdk_root}/src/common/lpm/",
       "${ncp_host_sdk_root}/src/ble/",
@@ -86,6 +88,7 @@ template("ncp_host_sdk") {
       "${ncp_host_sdk_root}/src/common/ncp_cmd_node/ncp_cmd_node.c",
       "${ncp_host_sdk_root}/src/wifi/ncp_host_command_wifi.c",
       "${ncp_host_sdk_root}/src/wifi/ncp_wifi_api.c",
+      "${ncp_host_sdk_root}/src/wifi/inet/ncp_inet.c",
       "${ncp_host_sdk_root}/src/ncp_host_command.c",
       "${ncp_host_sdk_root}/src/system/ncp_host_app_system.c",
       "${ncp_host_sdk_root}/src/system/ncp_host_command_system.c",

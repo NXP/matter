@@ -1,4 +1,5 @@
 # Copyright (c) 2020-2021 Project CHIP Authors
+# Copyright 2025 NXP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +31,10 @@ if (chip_system_config_use_lwip) {
   import("//build_overrides/lwip.gni")
 }
 
+if (chip_system_config_use_ncp) {
+  import("//build_overrides/ncp_host_sdk.gni")
+}
+
 declare_args() {
   # Extra header to include in SystemConfig.h for project.
   chip_inet_project_config_include = ""
@@ -56,9 +61,13 @@ buildconfig_header("inet_buildconfig") {
         [ "INET_PLATFORM_CONFIG_INCLUDE=${chip_inet_platform_config_include}" ]
   }
 
-  defines += [ "INET_TCP_END_POINT_IMPL_CONFIG_FILE=<inet/TCPEndPointImpl${chip_system_config_inet}.h>" ]
-  defines += [ "INET_UDP_END_POINT_IMPL_CONFIG_FILE=<inet/UDPEndPointImpl${chip_system_config_inet}.h>" ]
-
+  if (chip_system_config_inet == "Ncp") {
+    defines += [ "INET_TCP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/TCPEndPointImplNcp.h>" ]
+    defines += [ "INET_UDP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/UDPEndPointImplNcp.h>" ]
+  } else {
+    defines += [ "INET_TCP_END_POINT_IMPL_CONFIG_FILE=<inet/TCPEndPointImpl${chip_system_config_inet}.h>" ]
+    defines += [ "INET_UDP_END_POINT_IMPL_CONFIG_FILE=<inet/UDPEndPointImpl${chip_system_config_inet}.h>" ]
+  }
   visibility = [ ":inet_config_header" ]
 }
 
@@ -88,7 +97,6 @@ static_library("inet") {
   #   - src/inet/EndPointStateSockets.h
   sources = [
     "EndPointBasis.h",
-    "EndPointState${chip_system_config_inet}.h",
     "IANAConstants.h",
     "IPAddress-StringFuncts.cpp",
     "IPAddress.cpp",
@@ -108,6 +116,17 @@ static_library("inet") {
     "arpa-inet-compatibility.h",
   ]
 
+  if (chip_system_config_inet == "Ncp") {
+  } else {
+    sources += [
+      "EndPointState${chip_system_config_inet}.h",
+      "TCPEndPointImpl${chip_system_config_inet}.cpp",
+      "TCPEndPointImpl${chip_system_config_inet}.h",
+      "UDPEndPointImpl${chip_system_config_inet}.cpp",
+      "UDPEndPointImpl${chip_system_config_inet}.h",
+    ]
+  }
+
   public_deps = [
     ":impl_header",
     ":inet_config_header",
@@ -121,7 +140,9 @@ static_library("inet") {
     sources += [ "EndPointStateLwIP.cpp" ]
     public_deps += [ "${lwip_root}:lwip" ]
   }
-
+  if (chip_system_config_use_ncp) {
+    public_deps += [ "${chip_root}/third_party/ncp_host:ncp_host_imx" ]
+  }
   if (chip_system_config_use_open_thread_inet_endpoints) {
     public_deps += [ "${chip_root}/third_party/openthread:openthread" ]
   }
@@ -137,8 +158,6 @@ static_library("inet") {
     sources += [
       "TCPEndPoint.cpp",
       "TCPEndPoint.h",
-      "TCPEndPointImpl${chip_system_config_inet}.cpp",
-      "TCPEndPointImpl${chip_system_config_inet}.h",
       "TCPEndPointImpl.h",
     ]
   }
@@ -158,8 +177,6 @@ static_library("inet") {
       "EndpointQueueFilter.h",
       "UDPEndPoint.cpp",
       "UDPEndPoint.h",
-      "UDPEndPointImpl${chip_system_config_inet}.cpp",
-      "UDPEndPointImpl${chip_system_config_inet}.h",
       "UDPEndPointImpl.h",
     ]
 

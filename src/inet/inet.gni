@@ -1,4 +1,5 @@
 # Copyright (c) 2020 Project CHIP Authors
+# Copyright 2025 NXP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,6 +30,8 @@ declare_args() {
   # Inet implementation type.
   if (chip_system_config_use_open_thread_inet_endpoints) {
     chip_system_config_inet = "OpenThread"
+  } else if (chip_system_config_use_ncp) {
+    chip_system_config_inet = "Ncp"
   } else if (chip_system_config_use_lwip) {
     chip_system_config_inet = "LwIP"
   } else {
