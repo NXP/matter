@@ -115,10 +115,8 @@ static_library("efr32") {
     "${chip_root}/src/platform:platform_base",
     "${chip_root}/src/platform/logging:headers",
   ]
-  deps = [
-    "${chip_root}/src/app/common:ids",
-    "${sl_provision_root}:headers",
-  ]
+  deps = [ "${sl_provision_root}:headers" ]
+  public_configs = []
 
   # Add platform crypto implementation
   if (chip_crypto == "platform") {

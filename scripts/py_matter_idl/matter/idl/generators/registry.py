@@ -16,7 +16,6 @@ import enum
 import importlib
 
 from matter.idl.generators.cpp.application import CppApplicationGenerator
-from matter.idl.generators.cpp.sdk import SdkGenerator
 from matter.idl.generators.cpp.tlvmeta import TLVMetaDataGenerator
 from matter.idl.generators.idl import IdlGenerator
 from matter.idl.generators.java import JavaClassGenerator, JavaJNIGenerator
@@ -35,7 +34,6 @@ class CodeGenerator(enum.Enum):
     KOTLIN_CLASS = enum.auto()
     CPP_APPLICATION = enum.auto()
     CPP_TLVMETA = enum.auto()
-    CPP_SDK = enum.auto()
     IDL = enum.auto()
     SUMMARY_MARKDOWN = enum.auto()
     CUSTOM = enum.auto()
@@ -51,8 +49,6 @@ class CodeGenerator(enum.Enum):
             return CppApplicationGenerator(*args, **kargs)
         elif self == CodeGenerator.CPP_TLVMETA:
             return TLVMetaDataGenerator(*args, **kargs)
-        elif self == CodeGenerator.CPP_SDK:
-            return SdkGenerator(*args, **kargs)
         elif self == CodeGenerator.IDL:
             return IdlGenerator(*args, **kargs)
         elif self == CodeGenerator.SUMMARY_MARKDOWN:
@@ -87,7 +83,6 @@ GENERATORS = {
     'kotlin-class': CodeGenerator.KOTLIN_CLASS,
     'cpp-app': CodeGenerator.CPP_APPLICATION,
     'cpp-tlvmeta': CodeGenerator.CPP_TLVMETA,
-    'cpp-sdk': CodeGenerator.CPP_SDK,
     'idl': CodeGenerator.IDL,
     'summary-markdown': CodeGenerator.SUMMARY_MARKDOWN,
     'custom': CodeGenerator.CUSTOM,
