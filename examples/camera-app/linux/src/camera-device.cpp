@@ -33,6 +33,8 @@
 using namespace chip::app::Clusters;
 using namespace chip::app::Clusters::Chime;
 using namespace chip::app::Clusters::CameraAvStreamManagement;
+using namespace chip::app::Clusters::CameraAvSettingsUserLevelManagement;
+
 using namespace Camera;
 
 CameraDevice::CameraDevice()
@@ -50,8 +52,9 @@ CameraDevice::CameraDevice()
     // Initialize WebRTC connnection
     mWebRTCProviderManager.Init();
 
-    // Set the CameraHALInterface in CameraAVStreamManager.
+    // Set the CameraHALInterface in CameraAVStreamManager and CameraAVsettingsUserLevelManager.
     mCameraAVStreamManager.SetCameraDeviceHAL(this);
+    mCameraAVSettingsUserLevelManager.SetCameraDeviceHAL(this);
 }
 
 CameraDevice::~CameraDevice()
@@ -273,14 +276,15 @@ CameraError CameraDevice::SetV4l2Control(uint32_t controlId, int value)
     return CameraError::SUCCESS;
 }
 
-CameraError CameraDevice::CaptureSnapshot(const uint16_t streamID, const VideoResolutionStruct & resolution,
-                                          ImageSnapshot & outImageSnapshot)
+CameraError CameraDevice::CaptureSnapshot(const chip::app::DataModel::Nullable<uint16_t> streamID,
+                                          const VideoResolutionStruct & resolution, ImageSnapshot & outImageSnapshot)
 {
-    auto it = std::find_if(snapshotStreams.begin(), snapshotStreams.end(),
-                           [streamID](const SnapshotStream & s) { return s.snapshotStreamParams.snapshotStreamID == streamID; });
+    uint16_t streamId = streamID.IsNull() ? 1 : streamID.Value();
+    auto it           = std::find_if(snapshotStreams.begin(), snapshotStreams.end(),
+                                     [streamId](const SnapshotStream & s) { return s.snapshotStreamParams.snapshotStreamID == streamId; });
     if (it == snapshotStreams.end())
     {
-        ChipLogError(Camera, "Snapshot streamID : %u not found", streamID);
+        ChipLogError(Camera, "Snapshot streamID : %u not found", streamId);
         return CameraError::ERROR_CAPTURE_SNAPSHOT_FAILED;
     }
 
@@ -574,19 +578,19 @@ CameraError CameraDevice::StopSnapshotStream(uint16_t streamID)
     return CameraError::SUCCESS;
 }
 
-uint8_t CameraDevice::GetMaxConcurrentVideoEncoders()
+uint8_t CameraDevice::GetMaxConcurrentEncoders()
 {
-    return MAX_CONCURRENT_VIDEO_ENCODERS;
+    return kMaxConcurrentEncoders;
 }
 
 uint32_t CameraDevice::GetMaxEncodedPixelRate()
 {
-    return MAX_ENCODED_PIXEL_RATE;
+    return kMaxEncodedPixelRate;
 }
 
 VideoSensorParamsStruct & CameraDevice::GetVideoSensorParams()
 {
-    static VideoSensorParamsStruct videoSensorParams = { 4608, 2592, 120,
+    static VideoSensorParamsStruct videoSensorParams = { kVideoSensorWidthPixels, kVideoSensorHeightPixels, kMaxVideoFrameRate,
                                                          chip::Optional<uint16_t>(30) }; // Typical numbers for Pi camera.
     return videoSensorParams;
 }
@@ -598,18 +602,52 @@ bool CameraDevice::GetNightVisionCapable()
 
 VideoResolutionStruct & CameraDevice::GetMinViewport()
 {
-    static VideoResolutionStruct minViewport = { 854, 480 }; // Assuming 480p resolution.
+    static VideoResolutionStruct minViewport = { kMinResolutionWidth, kMinResolutionHeight };
     return minViewport;
+}
+
+std::vector<RateDistortionTradeOffStruct> & CameraDevice::GetRateDistortionTradeOffPoints()
+{
+    static std::vector<RateDistortionTradeOffStruct> rateDistTradeOffs = {
+        { VideoCodecEnum::kH264, { kMinResolutionWidth, kMinResolutionHeight }, 10000 /* bitrate */ }
+    };
+    return rateDistTradeOffs;
 }
 
 uint32_t CameraDevice::GetMaxContentBufferSize()
 {
-    return MAX_CONTENT_BUFFER_SIZE_BYTES;
+    return kMaxContentBufferSizeBytes;
+}
+
+AudioCapabilitiesStruct & CameraDevice::GetMicrophoneCapabilities()
+{
+    static std::array<AudioCodecEnum, 2> audioCodecs = { AudioCodecEnum::kOpus, AudioCodecEnum::kAacLc };
+    static std::array<uint32_t, 2> sampleRates       = { 48000, 32000 }; // Sample rates in Hz
+    static std::array<uint8_t, 2> bitDepths          = { 24, 32 };
+    static AudioCapabilitiesStruct audioCapabilities = { kMicrophoneMaxChannelCount, chip::Span<AudioCodecEnum>(audioCodecs),
+                                                         chip::Span<uint32_t>(sampleRates), chip::Span<uint8_t>(bitDepths) };
+    return audioCapabilities;
+}
+
+AudioCapabilitiesStruct & CameraDevice::GetSpeakerCapabilities()
+{
+    static AudioCapabilitiesStruct speakerCapabilities = {};
+    return speakerCapabilities;
+}
+
+std::vector<SnapshotCapabilitiesStruct> & CameraDevice::GetSnapshotCapabilities()
+{
+    static std::vector<SnapshotCapabilitiesStruct> snapshotCapabilities = { { { kMinResolutionWidth, kMinResolutionHeight },
+                                                                              kSnapshotStreamFrameRate,
+                                                                              ImageCodecEnum::kJpeg,
+                                                                              false,
+                                                                              chip::MakeOptional(static_cast<bool>(false)) } };
+    return snapshotCapabilities;
 }
 
 uint32_t CameraDevice::GetMaxNetworkBandwidth()
 {
-    return MAX_NETWORK_BANDWIDTH_MBPS;
+    return kMaxNetworkBandwidthMbps;
 }
 
 uint16_t CameraDevice::GetCurrentFrameRate()
@@ -624,10 +662,24 @@ CameraError CameraDevice::SetHDRMode(bool hdrMode)
     return CameraError::SUCCESS;
 }
 
+std::vector<StreamUsageEnum> & CameraDevice::GetSupportedStreamUsages()
+{
+    static std::vector<StreamUsageEnum> supportedStreamUsage = { StreamUsageEnum::kLiveView, StreamUsageEnum::kRecording };
+    return supportedStreamUsage;
+}
+
 CameraError CameraDevice::SetViewport(const ViewportStruct & viewPort)
 {
     mViewport = viewPort;
 
+    return CameraError::SUCCESS;
+}
+
+CameraError CameraDevice::SetViewport(VideoStream & stream, const ViewportStruct & viewport)
+{
+    ChipLogDetail(Camera, "Setting per stream viewport for stream %d.", stream.videoStreamParams.videoStreamID);
+    ChipLogDetail(Camera, "New viewport. x1=%d, x2=%d, y1=%d, y2=%d.", viewport.x1, viewport.x2, viewport.y1, viewport.y2);
+    stream.viewport = viewport;
     return CameraError::SUCCESS;
 }
 
@@ -647,24 +699,71 @@ CameraError CameraDevice::SetMicrophoneVolume(uint8_t microphoneVol)
     return CameraError::SUCCESS;
 }
 
+int16_t CameraDevice::GetPanMin()
+{
+    return kMinPanValue;
+}
+
+int16_t CameraDevice::GetPanMax()
+{
+    return kMaxPanValue;
+}
+
+int16_t CameraDevice::GetTiltMin()
+{
+    return kMinTiltValue;
+}
+
+int16_t CameraDevice::GetTiltMax()
+{
+    return kMaxTiltValue;
+}
+
+uint8_t CameraDevice::GetZoomMax()
+{
+    return kMaxZoomValue;
+}
+
+// Set the Pan level
+CameraError CameraDevice::SetPan(int16_t aPan)
+{
+    mPan = aPan;
+    return CameraError::SUCCESS;
+}
+
+// Set the Tilt level
+CameraError CameraDevice::SetTilt(int16_t aTilt)
+{
+    mTilt = aTilt;
+    return CameraError::SUCCESS;
+}
+
+// Set the Zoom level
+CameraError CameraDevice::SetZoom(uint8_t aZoom)
+{
+    mZoom = aZoom;
+    return CameraError::SUCCESS;
+}
+
 void CameraDevice::InitializeVideoStreams()
 {
     // Create single video stream with typical supported parameters
     VideoStream videoStream = { { 1 /* Id */,
                                   StreamUsageEnum::kLiveView /* StreamUsage */,
                                   VideoCodecEnum::kH264,
-                                  15 /* MinFrameRate */,
-                                  120 /* MaxFrameRate */,
-                                  { 320, 240 } /* MinResolution */,
-                                  { 640, 480 } /* MaxResolution */,
-                                  10000 /* MinBitRate */,
-                                  2000000 /* MaxBitRate */,
-                                  1000 /* MinFragmentLen */,
-                                  10000 /* MaxFragmentLen */,
+                                  kMinVideoFrameRate /* MinFrameRate */,
+                                  kMaxVideoFrameRate /* MaxFrameRate */,
+                                  { kMinResolutionWidth, kMinResolutionHeight } /* MinResolution */,
+                                  { kMaxResolutionWidth, kMaxResolutionHeight } /* MaxResolution */,
+                                  kMinBitRateBps /* MinBitRate */,
+                                  kMaxBitRateBps /* MaxBitRate */,
+                                  kMinFragLenMsec /* MinFragmentLen */,
+                                  kMaxFragLenMsec /* MaxFragmentLen */,
                                   chip::MakeOptional(static_cast<bool>(false)) /* WMark */,
                                   chip::MakeOptional(static_cast<bool>(false)) /* OSD */,
                                   0 /* RefCount */ },
                                 false,
+                                { mViewport.x1, mViewport.y1, mViewport.x2, mViewport.y2 },
                                 nullptr };
 
     videoStreams.push_back(videoStream);
@@ -687,10 +786,9 @@ void CameraDevice::InitializeSnapshotStreams()
     // Create single snapshot stream with typical supported parameters
     SnapshotStream snapshotStream = { { 1 /* Id */,
                                         ImageCodecEnum::kJpeg,
-                                        30 /* FrameRate */,
-                                        512000 /* BitRate*/,
-                                        { 320, 240 } /* MinResolution*/,
-                                        { 320, 240 } /* MaxResolution */,
+                                        kSnapshotStreamFrameRate /* FrameRate */,
+                                        { kMinResolutionWidth, kMinResolutionHeight } /* MinResolution*/,
+                                        { kMinResolutionWidth, kMinResolutionHeight } /* MaxResolution */,
                                         90 /* Quality */,
                                         0 /* RefCount */ },
                                       false,
@@ -712,6 +810,11 @@ WebRTCTransportProvider::Delegate & CameraDevice::GetWebRTCProviderDelegate()
 CameraAVStreamMgmtDelegate & CameraDevice::GetCameraAVStreamMgmtDelegate()
 {
     return mCameraAVStreamManager;
+}
+
+CameraAvSettingsUserLevelManagement::Delegate & CameraDevice::GetCameraAVSettingsUserLevelMgmtDelegate()
+{
+    return mCameraAVSettingsUserLevelManager;
 }
 
 MediaController & CameraDevice::GetMediaController()

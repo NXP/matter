@@ -748,6 +748,22 @@
               "reportableChange": 0
             },
             {
+              "name": "ConfigurationVersion",
+              "code": 24,
+              "mfgCode": null,
+              "side": "server",
+              "type": "int32u",
+              "included": 1,
+              "storageOption": "External",
+              "singleton": 0,
+              "bounded": 0,
+              "defaultValue": "1",
+              "reportable": 1,
+              "minInterval": 1,
+              "maxInterval": 65534,
+              "reportableChange": 0
+            },
+            {
               "name": "GeneratedCommandList",
               "code": 65528,
               "mfgCode": null,
@@ -821,7 +837,7 @@
               "storageOption": "RAM",
               "singleton": 1,
               "bounded": 0,
-              "defaultValue": "3",
+              "defaultValue": "5",
               "reportable": 1,
               "minInterval": 0,
               "maxInterval": 65344,
@@ -4188,6 +4204,30 @@
               "source": "client",
               "isIncoming": 1,
               "isEnabled": 1
+            },
+            {
+              "name": "SetVIDVerificationStatement",
+              "code": 12,
+              "mfgCode": null,
+              "source": "client",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
+              "name": "SignVIDVerificationRequest",
+              "code": 13,
+              "mfgCode": null,
+              "source": "client",
+              "isIncoming": 1,
+              "isEnabled": 1
+            },
+            {
+              "name": "SignVIDVerificationResponse",
+              "code": 14,
+              "mfgCode": null,
+              "source": "server",
+              "isIncoming": 0,
+              "isEnabled": 1
             }
           ],
           "attributes": [
@@ -4831,20 +4871,20 @@
     },
     {
       "id": 2,
-      "name": "MA-windowcovering",
+      "name": "Anonymous Endpoint Type",
       "deviceTypeRef": {
         "code": 560,
         "profileId": 259,
-        "label": "MA-closurebase",
-        "name": "MA-closurebase",
+        "label": "MA-closure",
+        "name": "MA-closure",
         "deviceTypeOrder": 0
       },
       "deviceTypes": [
         {
           "code": 560,
           "profileId": 259,
-          "label": "MA-closurebase",
-          "name": "MA-closurebase",
+          "label": "MA-closure",
+          "name": "MA-closure",
           "deviceTypeOrder": 0
         }
       ],
@@ -4854,7 +4894,7 @@
       "deviceIdentifiers": [
         560
       ],
-      "deviceTypeName": "MA-closurebase",
+      "deviceTypeName": "MA-closure",
       "deviceTypeCode": 560,
       "deviceTypeProfileId": 259,
       "clusters": [
@@ -4910,7 +4950,7 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "0x05",
+              "defaultValue": "0x00",
               "reportable": 1,
               "minInterval": 1,
               "maxInterval": 65534,
@@ -4990,10 +5030,10 @@
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
-              "defaultValue": "4",
+              "defaultValue": "6",
               "reportable": 1,
-              "minInterval": 0,
-              "maxInterval": 65344,
+              "minInterval": 1,
+              "maxInterval": 65534,
               "reportableChange": 0
             }
           ]
@@ -5007,14 +5047,6 @@
           "enabled": 1,
           "commands": [
             {
-              "name": "AddGroup",
-              "code": 0,
-              "mfgCode": null,
-              "source": "client",
-              "isIncoming": 1,
-              "isEnabled": 1
-            },
-            {
               "name": "AddGroupResponse",
               "code": 0,
               "mfgCode": null,
@@ -5023,8 +5055,8 @@
               "isEnabled": 1
             },
             {
-              "name": "ViewGroup",
-              "code": 1,
+              "name": "AddGroup",
+              "code": 0,
               "mfgCode": null,
               "source": "client",
               "isIncoming": 1,
@@ -5039,8 +5071,8 @@
               "isEnabled": 1
             },
             {
-              "name": "GetGroupMembership",
-              "code": 2,
+              "name": "ViewGroup",
+              "code": 1,
               "mfgCode": null,
               "source": "client",
               "isIncoming": 1,
@@ -5052,6 +5084,14 @@
               "mfgCode": null,
               "source": "server",
               "isIncoming": 0,
+              "isEnabled": 1
+            },
+            {
+              "name": "GetGroupMembership",
+              "code": 2,
+              "mfgCode": null,
+              "source": "client",
+              "isIncoming": 1,
               "isEnabled": 1
             },
             {
@@ -5100,8 +5140,8 @@
               "bounded": 0,
               "defaultValue": "",
               "reportable": 1,
-              "minInterval": 0,
-              "maxInterval": 65344,
+              "minInterval": 1,
+              "maxInterval": 65534,
               "reportableChange": 0
             },
             {
@@ -5180,8 +5220,8 @@
               "bounded": 0,
               "defaultValue": "4",
               "reportable": 1,
-              "minInterval": 0,
-              "maxInterval": 65344,
+              "minInterval": 1,
+              "maxInterval": 65534,
               "reportableChange": 0
             }
           ]
@@ -5550,7 +5590,7 @@
       "parentEndpointIdentifier": null
     },
     {
-      "endpointTypeName": "MA-windowcovering",
+      "endpointTypeName": "Anonymous Endpoint Type",
       "endpointTypeIndex": 1,
       "profileId": 259,
       "endpointId": 1,
