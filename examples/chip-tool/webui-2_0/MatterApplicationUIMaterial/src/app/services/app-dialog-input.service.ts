@@ -59,12 +59,22 @@ export class AppDialogWithInputFieldsService {
 
     this.dialogRef.closed.subscribe((result : unknown) => {
       console.log(`Dialog result: ${result}`);
+      this.dialogRef = null;
     });
 
-    this.dialogRef.componentInstance!.dialogImageSrc = dialogImageSrc;
-    this.dialogRef.componentInstance!.dialogTitle = title;
-    this.dialogRef.componentInstance!.dialogContent = content;
-    this.dialogRef.componentInstance!.dialogButtons = buttons;
+    //this.dialogRef.componentInstance!.dialogImageSrc = dialogImageSrc;
+    //this.dialogRef.componentInstance!.dialogTitle = title;
+    //this.dialogRef.componentInstance!.dialogContent = content;
+    //this.dialogRef.componentInstance!.dialogButtons = buttons;
+
+    if (this.dialogRef.componentInstance) {
+      this.dialogRef.componentInstance.dialogImageSrc = dialogImageSrc;
+      this.dialogRef.componentInstance.dialogTitle = title;
+      this.dialogRef.componentInstance.dialogContent = content;
+      this.dialogRef.componentInstance.dialogButtons = buttons;
+    } else {
+        console.warn("app-dialog-input service: componentInstance is not available immediately after open. This might be an issue if inputs are not set via DIALOG_DATA.");
+    }
 
     return this.dialogRef;
   }
@@ -84,11 +94,21 @@ export class AppDialogWithInputFieldsService {
       console.log(`Dialog result: ${result}`);
     });
 
-    this.dialogRef.componentInstance!.dialogImageSrc = dialogImageSrc;
-    this.dialogRef.componentInstance!.dialogTitle = title;
-    this.dialogRef.componentInstance!.dialogContent = content;
-    this.dialogRef.componentInstance!.dialogButtons = buttons;
-    this.dialogRef.componentInstance!.dialogAvailableSelectionItems = availableSelectionItems;
+    //this.dialogRef.componentInstance!.dialogImageSrc = dialogImageSrc;
+    //this.dialogRef.componentInstance!.dialogTitle = title;
+    //this.dialogRef.componentInstance!.dialogContent = content;
+    //this.dialogRef.componentInstance!.dialogButtons = buttons;
+    //this.dialogRef.componentInstance!.dialogAvailableSelectionItems = availableSelectionItems;
+
+    if (this.dialogRef.componentInstance) {
+      this.dialogRef.componentInstance.dialogImageSrc = dialogImageSrc;
+      this.dialogRef.componentInstance.dialogTitle = title;
+      this.dialogRef.componentInstance.dialogContent = content;
+      this.dialogRef.componentInstance.dialogButtons = buttons;
+      this.dialogRef.componentInstance.dialogAvailableSelectionItems = availableSelectionItems;
+    } else {
+      console.warn("app-dialog-input service: componentInstance is not available immediately after open for selection dialog.");
+    }
 
     return this.dialogRef;
   }
@@ -97,15 +117,17 @@ export class AppDialogWithInputFieldsService {
     return this.dialogRef?.componentInstance?.getInputFields();
   }
 
-  closeDialog() {
-    this.dialogRef?.close();
+  closeDialog(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
+    }
   }
 
   getSelectedDialogSelectionItem() : string | undefined {
     return this.dialogRef?.componentInstance?.selectedSelectionItem;
   }
 
-  updateInputFieldContent(input_field_index: number, data: any): void {
+  /*updateInputFieldContent(input_field_index: number, data: any): void {
     if (this.dialogRef?.componentInstance?.dialogContent.inputFields === undefined) {
       return;
     }
@@ -116,6 +138,38 @@ export class AppDialogWithInputFieldsService {
       ){
         this.dialogRef.componentInstance.dialogContent.inputFields[i].inputFieldContent = data;
       }
+    }
+  }*/
+  updateInputFieldContent(input_field_index: number, data: any): void {
+    if (!this.dialogRef || !this.dialogRef.componentInstance) {
+      console.error('Service app-dialog-input: updateInputFieldContent - dialogRef or componentInstance is not available.');
+      return;
+    }
+
+    const componentInst = this.dialogRef.componentInstance;
+
+    if (!componentInst.dialogContent || !componentInst.dialogContent.inputFields) {
+      console.error('Service app-dialog-input: updateInputFieldContent - dialogContent or inputFields not found on componentInstance.');
+      return;
+    }
+
+    const inputFields = componentInst.dialogContent.inputFields;
+
+    if (input_field_index >= 0 && input_field_index < inputFields.length) {
+      console.log(`Service app-dialog-input: Updating field [${input_field_index}] from "${inputFields[input_field_index].inputFieldContent}" to "${data}"`);
+
+      inputFields[input_field_index].inputFieldContent = String(data);
+      console.log('Service app-dialog-input: Input field content updated on component instance.');
+
+      if (typeof componentInst.refreshView === 'function') {
+        console.log('Service app-dialog-input: Calling refreshView() on component instance.');
+        componentInst.refreshView();
+      } else {
+        console.warn('Service app-dialog-input: refreshView() method not found on component instance. UI might not update.');
+      }
+
+    } else {
+      console.error(`Service app-dialog-input: updateInputFieldContent - Invalid input_field_index: ${input_field_index}. Available fields: ${inputFields.length}`);
     }
   }
 

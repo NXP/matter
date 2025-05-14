@@ -13,6 +13,7 @@ import { AppDialogWithInputFieldsService } from '../services/app-dialog-input.se
 import { PostRequestsService } from '../services/post-requests.service';
 import { LoaderService } from '../services/loader.service';
 import { WebSocketService } from '../services/web-socket.service';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-applicationcard',
@@ -349,9 +350,9 @@ export class ApplicationcardComponent {
       {
         inputFields: [
           // {inputFieldType: 'text', inputFieldName: 'Node ID', inputFieldContent: deviceId.toString(), inputFieldDefaultValue: 'Default: ' + deviceId.toString()},
-          {inputFieldType: 'text', inputFieldName: 'Window Timeout', inputFieldContent: '1', inputFieldDefaultValue: 'No default values'},
+          {inputFieldType: 'text', inputFieldName: 'Window Timeout', inputFieldContent: '300', inputFieldDefaultValue: '300 seconds'},
           {inputFieldType: 'text', inputFieldName: 'Option', inputFieldContent: '1', inputFieldDefaultValue: 'Default: BCM: 0; ECM: 1'},
-          {inputFieldType: 'text', inputFieldName: 'Iteration', inputFieldContent: '1', inputFieldDefaultValue: 'No default values'},
+          {inputFieldType: 'text', inputFieldName: 'Iteration', inputFieldContent: '1000', inputFieldDefaultValue: '1000'},
           {inputFieldType: 'text', inputFieldName: 'Discriminator (3840)', inputFieldContent: '3840', inputFieldDefaultValue: '3840'},
         ]
       },
@@ -371,9 +372,28 @@ export class ApplicationcardComponent {
                 this.loaderService.hideLoader();
                 const parsedResult = JSON.parse(JSON.stringify(data));
                 if (parsedResult.result === 'successful') {
-                  this.appDialogService.showInfoDialog('Node interaction successful. Paylaod: ' + parsedResult.payload);
+                  //this.appDialogService.showInfoDialog('Pairing with ECM completed successfully. The payload is: ' + data.payload);
+                  const qrCodeData = parsedResult.qrCode;
+                  const qrCodeImage = document.createElement('img');
+                  QRCode.toDataURL(qrCodeData, { errorCorrectionLevel: 'H' })
+                  .then(url => {
+                    qrCodeImage.src = url;
+                    qrCodeImage.alt = 'QR Code';
+                    this.appDialogService.showQrCodeInfoDialog(
+                      `Node interaction successful.
+                      Manual Code: ${parsedResult.payload}
+                      QRCode:`,
+                      qrCodeImage
+                    );
+                  })
+                  .catch(err => {
+                    console.error("Error generating QR Code:", err);
+                    this.appDialogService.showInfoDialog(
+                      `Node interaction successful. Manul code: ${parsedResult.payload}.  QR Code generation failed.`
+                    );
+                  });
                 } else if (parsedResult.result === 'failed') {
-                  this.appDialogService.showErrorDialog('Error interacting with the node. Please try again.');
+                  this.appDialogService.showErrorDialog('Open commissioning window with ECM completed with errors');
                 }
               },
 

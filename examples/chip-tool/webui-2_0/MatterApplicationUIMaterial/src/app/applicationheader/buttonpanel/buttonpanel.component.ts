@@ -1,10 +1,10 @@
 import { AppDialogService } from './../../services/app-dialog.service';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NgClass, NgOptimizedImage, NgStyle } from '@angular/common'
-import {MatMenuModule} from '@angular/material/menu';
-import {MatIconModule} from '@angular/material/icon';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatChipsModule } from '@angular/material/chips';
 import { OnInit } from '@angular/core';
 import { AppDialogWithInputFieldsService } from '../../services/app-dialog-input.service';
 import { LoaderService } from '../../services/loader.service';
@@ -226,9 +226,10 @@ export class ButtonpanelComponent implements OnInit {
         ]
       },
       [
-        { buttonName: 'Send Command', action: () => {
+        {
+          buttonName: 'Send Command', action: () => {
 
-          var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
+            var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
             this.loaderService.showLoader();
             this.postRequestsService.sendPairOnNetworkCommand(
               values_for_the_input[0].inputFieldContent, values_for_the_input[1].inputFieldContent, values_for_the_input[2].inputFieldContent
@@ -250,6 +251,64 @@ export class ButtonpanelComponent implements OnInit {
                 console.error('Error received: ', error);
                 this.loaderService.hideLoader();
                 this.appDialogService.showErrorDialog('Error adding OnNetwork device. Network error.');
+              }
+            );
+         }, color: 'accent', icon: 'send' },
+        { buttonName: 'Cancel', action: () => {
+          this.appDialogWithInputFieldsService.closeDialog();
+         }, color: 'warn', icon: 'cancel' },
+      ]
+    );
+  }
+
+  openQRCodeDeviceDialog() {
+    this.appDialogWithInputFieldsService.openDialog(
+      'Connect Device by QRCode', '../../../assets/matter-logo-transparent.png',
+      {
+        inputFields: [
+          {inputFieldType: 'text', inputFieldName: 'Device ID', inputFieldContent: '1234', inputFieldDefaultValue: 'Default: 1234'},
+          {inputFieldType: 'text', inputFieldName: 'QRCode', inputFieldContent: 'MT:XXXXXXXXXXXXXXXXXXX', inputFieldDefaultValue: 'Default: MT:XXXXXXXXXXXXXXXXXXX'},
+          {inputFieldType: 'text', inputFieldName: 'Device Alias', inputFieldContent: 'DeviceAliasName', inputFieldDefaultValue: 'Default: DeviceAliasName'},
+        ]
+      },
+      [
+        {
+          buttonName: 'Scan QR Code', action: () => {
+            this.appDialogService.showQrCodeScanDialog().subscribe(result => {
+              if (result) {
+                this.appDialogWithInputFieldsService.updateInputFieldContent(1, result);
+                console.log('Updated Device Code with scanned value:', result);
+              } else {
+                this.appDialogService.showErrorDialog('Scan QRCode failed, please retry.');
+              }
+            });
+          },
+          color: 'primary', icon: 'qr_code_scanner'
+        },
+        {
+          buttonName: 'Send Command', action: () => {
+
+            var values_for_the_input = this.appDialogWithInputFieldsService.getInputFieldsValues()!;
+            this.loaderService.showLoader();
+            this.postRequestsService.sendPairQRCodeCommand(
+              values_for_the_input[0].inputFieldContent, values_for_the_input[1].inputFieldContent, values_for_the_input[2].inputFieldContent
+            ).subscribe(
+              data => {
+                console.log('Data received: ', data);
+                const parsedResult = JSON.parse(JSON.stringify(data));
+                if (parsedResult.result === 'successful') {
+                  this.loaderService.hideLoader();
+                  this.refreshActionFunction()
+                  this.appDialogService.showInfoDialog('Added device by QRCode successfully');
+                } else if (parsedResult.result === 'failed') {
+                  this.loaderService.hideLoader();
+                  this.appDialogService.showErrorDialog('Error adding device by QRCode');
+                }
+              },
+              error => {
+                console.error('Error received: ', error);
+                this.loaderService.hideLoader();
+                this.appDialogService.showErrorDialog('Error adding device by QRCode. Network error.');
               }
             );
          }, color: 'accent', icon: 'send' },
@@ -337,8 +396,4 @@ export class ButtonpanelComponent implements OnInit {
       ]
     );
   }
-
-
-
-
 }

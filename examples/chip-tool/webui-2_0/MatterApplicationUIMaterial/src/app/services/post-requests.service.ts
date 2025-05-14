@@ -87,6 +87,28 @@ export class PostRequestsService {
     ));
   }
 
+  sendPairQRCodeCommand(deviceId: string, payload: string, nodeAlias: string) : Observable<string>{
+    const data = {
+      nodeId: deviceId,
+      payload: payload,
+      type: "qrcode",
+      nodeAlias: nodeAlias
+    };
+
+    console.log(
+      `Sending pairing request to ${this.serverUrl}/pairing with data: ${JSON.stringify(data)}`
+    )
+
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/pairing`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending pairing request', error);
+        return throwError(error.message)
+      }
+    ));
+  }
+
   sendPairOnnetworkJointFabricBCMOnboarding(deviceId: string, passCode: string, nodeAlias: string) {
     const data = {
       nodeId: deviceId,

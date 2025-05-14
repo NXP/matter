@@ -72,16 +72,16 @@
         <input class="grid-item item1" matInput id="option-input">
       </mat-form-field>
       <mat-form-field class="formfield item3 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Discriminator</mat-label>
-        <input class="grid-item item1" matInput id="discriminator-input">
+        <mat-label style="color: #000000">Window Timeout</mat-label>
+        <input class="grid-item item1" matInput id="window-timeout-input">
       </mat-form-field>
       <mat-form-field class="formfield item4 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
         <mat-label style="color: #000000">Iteration</mat-label>
         <input class="grid-item item1" matInput id="iteration-input">
       </mat-form-field>
       <mat-form-field class="formfield item5 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Window Timeout</mat-label>
-        <input class="grid-item item1" matInput id="window-timeout-input">
+        <mat-label style="color: #000000">Discriminator</mat-label>
+        <input class="grid-item item1" matInput id="discriminator-input">
       </mat-form-field>
       </div>
     </div>
@@ -100,17 +100,7 @@
         <span class="aligned-with-icon">Open Commissioning Window with ECM</span>
       </mat-chip>
     </div>
-
-    <mat-form-field class="formfield item5 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-      <mat-label style="color: #000000">Payload</mat-label>
-      <input class="grid-item item1" matInput id="payload-input">
-    </mat-form-field>
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="parsePayloadFunctionForECMPairing()" >
-        <mat-icon>build</mat-icon>
-        <span class="aligned-with-icon">Payload Parse (ECM)</span>
-      </mat-chip>
-    </div>
+    
     <app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>
 
   </div>

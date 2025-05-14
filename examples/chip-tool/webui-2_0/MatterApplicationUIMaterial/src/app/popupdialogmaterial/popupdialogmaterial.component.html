@@ -39,6 +39,11 @@
     <div class="container-fluid">
       <div class="row">
           <p>{{ dialogContent }}</p>
+          <!-- QR Code Image Section -->
+          <div *ngIf="qrCodeImage" class="qr-code-container">
+            <img [src]="qrCodeImage.src" [alt]="qrCodeImage.alt" class="qr-code-image">
+          </div>
+          <!-- End QR Code Image Section -->
       </div>
     </div>
   </mat-dialog-content>

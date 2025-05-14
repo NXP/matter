@@ -22,6 +22,7 @@ import { NgxMasonryComponent, NgxMasonryModule } from 'ngx-masonry';
 import { CardModel } from '../../models/card-model';
 import { MatDialog } from '@angular/material/dialog';
 import { GetRequestsService } from '../../services/get-requests.service';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-multiadminapplication',
@@ -102,9 +103,9 @@ export class MultiadminapplicationComponent {
         this.loaderService.hideLoader();
         const parsedResult = JSON.parse(JSON.stringify(data));
         if (parsedResult.result === 'successful') {
-          this.appDialogService.showInfoDialog('Pairing with BCM completed successfully');
+          this.appDialogService.showInfoDialog('Open commissioning window with BCM completed successfully');
         } else if (parsedResult.result === 'failed') {
-          this.appDialogService.showErrorDialog('Pairing with BCM completed with errors');
+          this.appDialogService.showErrorDialog('Open commissioning window with BCM completed with errors');
         }
       },
 
@@ -137,9 +138,29 @@ export class MultiadminapplicationComponent {
         this.loaderService.hideLoader();
         const parsedResult = JSON.parse(JSON.stringify(data));
         if (parsedResult.result === 'successful') {
-          this.appDialogService.showInfoDialog('Pairing with ECM completed successfully. The payload is: ' + data.payload);
+          //this.appDialogService.showInfoDialog('Pairing with ECM completed successfully. The payload is: ' + data.payload);
+          const qrCodeData = parsedResult.qrCode;
+          const qrCodeImage = document.createElement('img');
+          QRCode.toDataURL(qrCodeData, { errorCorrectionLevel: 'H' })
+          .then(url => {
+            qrCodeImage.src = url;
+            qrCodeImage.alt = 'QR Code';
+
+            this.appDialogService.showQrCodeInfoDialog(
+              `Node interaction successful.
+              Manual Code: ${parsedResult.payload}
+              QRCode:`,
+              qrCodeImage
+            );
+          })
+          .catch(err => {
+            console.error("Error generating QR ode:", err);
+            this.appDialogService.showInfoDialog(
+              `Node interaction successful. Manual Code: ${parsedResult.payload}.  QR Code generation failed.`
+            );
+          });
         } else if (parsedResult.result === 'failed') {
-          this.appDialogService.showErrorDialog('Pairing with ECM completed with errors');
+          this.appDialogService.showErrorDialog('Open commissioning window with ECM completed with errors');
         }
       },
 
@@ -152,7 +173,7 @@ export class MultiadminapplicationComponent {
 
   }
 
-  parsePayloadFunctionForECMPairing() : void {
+  /*parsePayloadFunctionForECMPairing() : void {
     interface DataPayload {
       passcode: string,
       result: string
@@ -182,6 +203,6 @@ export class MultiadminapplicationComponent {
         this.appDialogService.showErrorDialog('Error: '+ error);
       }
     );
-  }
+  }*/
 
 }

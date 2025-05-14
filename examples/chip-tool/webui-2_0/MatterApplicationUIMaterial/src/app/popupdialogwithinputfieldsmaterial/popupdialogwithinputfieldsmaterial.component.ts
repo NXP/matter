@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-
+import { Component, Input, ChangeDetectorRef } from '@angular/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -36,7 +35,10 @@ import {ThemePalette} from '@angular/material/core';
 
 
 export class PopupdialogwithinputfieldsmaterialComponent {
-  constructor(public dialogRef: DialogRef<PopupdialogwithinputfieldsmaterialComponent>) {}
+  constructor(
+    public dialogRef: DialogRef<unknown, PopupdialogwithinputfieldsmaterialComponent>,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   dialogType: string = 'info';
 
@@ -46,6 +48,11 @@ export class PopupdialogwithinputfieldsmaterialComponent {
   @Input() dialogButtons!: {buttonName: string, action: Function, color: string, icon?: string}[];
   @Input() dialogAvailableSelectionItems? : {name: string, color: string}[];
   public selectedSelectionItem?: string;
+
+  public refreshView(): void {
+    console.log('PopupdialogwithinputfieldsmaterialComponent: refreshView() called.');
+    this.cdr.detectChanges();
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
