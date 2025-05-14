@@ -244,11 +244,7 @@ void GenericPlatformManagerImpl_FreeRTOS<ImplClass>::_RunEventLoop(void)
         while (eventReceived == pdTRUE)
         {
             Impl()->DispatchEvent(&event);
-            {
-                // Unlock the CHIP stack, to prevent the Matter task from remaining locked for too long
-                StackUnlock unlock;
-                eventReceived = xQueueReceive(mChipEventQueue, &event, 0);
-            }
+            eventReceived = xQueueReceive(mChipEventQueue, &event, 0);
         }
     }
 }
