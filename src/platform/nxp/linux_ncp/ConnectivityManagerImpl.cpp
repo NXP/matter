@@ -40,6 +40,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 #include <lib/support/BytesToHex.h>
 #include <lib/support/CHIPMemString.h>
@@ -351,9 +354,18 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
         
         if(mpConnectCallback != nullptr)
         {
+            sleep(2);
             ChipLogProgress(DeviceLayer, "xinyutest onreselt send event kOperationalNetworkEnabled\r\n");
-            mpConnectCallback->OnResult(Status::kSuccess, CharSpan(), 0);
-            mpConnectCallback = nullptr;
+            DeviceLayer::SystemLayer().ScheduleLambda([this]() {
+                if (mpConnectCallback != nullptr)
+                {
+                    mpConnectCallback->OnResult(NetworkCommissioning::Status::kSuccess, CharSpan(), 0);
+                    mpConnectCallback = nullptr;
+                }
+                ConnectivityMgrImpl().PostNetworkConnect();
+            });
+ 
+            wlan_ncp_netif_update();
         }
     }
     else
@@ -402,6 +414,34 @@ ConnectivityManagerImpl::ConnectWiFiNetworkAsync(ByteSpan ssid, ByteSpan credent
     GVariant * args = g_variant_builder_end(&builder);
 
     return _ConnectWiFiNetworkAsync(args, connectCallback);
+}
+
+void ConnectivityManagerImpl::PostNetworkConnect()
+{
+    if (strncmp(wlan_ncp_get_state(), "COMPLETED", 9))
+    {
+        return ;
+    }
+    NCP_CMD_IP_CONFIG ncp_addr;
+
+    wlan_ncp_get_ip_config(&ncp_addr);
+    struct in_addr ip_in_addr;
+    ip_in_addr.s_addr = ncp_addr.ipv4.address;
+
+    chip::Inet::IPAddress addr = chip::Inet::IPAddress(ip_in_addr);
+
+    ChipDeviceEvent event;
+    event.Type                                 = DeviceEventType::kInternetConnectivityChange;
+    event.InternetConnectivityChange.IPv4      = kConnectivity_Established;
+    event.InternetConnectivityChange.IPv6      = kConnectivity_NoChange;
+    event.InternetConnectivityChange.ipAddress = addr;
+
+    char ipStrBuf[chip::Inet::IPAddress::kMaxStringLength] = { 0 };
+    addr.ToString(ipStrBuf);
+
+    ChipLogDetail(DeviceLayer, "Got IP address on interface: %s IP: %s", "ncp_wlan", ipStrBuf);
+
+    PlatformMgr().PostEventOrDie(&event);
 }
 
 CHIP_ERROR ConnectivityManagerImpl::CommitConfig()

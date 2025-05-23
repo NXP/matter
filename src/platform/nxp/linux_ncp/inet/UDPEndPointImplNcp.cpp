@@ -44,9 +44,17 @@
 #include <zephyr/net/socket.h>
 #endif // CHIP_SYSTEM_CONFIG_USE_ZEPHYR_SOCKETS
 
+#include <arpa/inet.h>
 #include <cerrno>
 #include <unistd.h>
 #include <utility>
+
+#if CHIP_SYSTEM_CONFIG_USE_NCP
+extern "C" {
+#include "ncp_wifi_api.h"
+}
+extern ncp_netif ncp_netif_list;
+#endif
 
 // SOCK_CLOEXEC not defined on all platforms, e.g. iOS/macOS:
 #ifndef SOCK_CLOEXEC
@@ -99,11 +107,10 @@ CHIP_ERROR IPv6Bind(int socket, const IPAddress & address, uint16_t port, Interf
     sa.sin6_port                          = htons(port);
     sa.sin6_addr                          = address.ToIPv6();
     InterfaceId::PlatformType interfaceId = interface.GetPlatformInterface();
-    if (!CanCastTo<decltype(sa.sin6_scope_id)>(interfaceId))
+    if(interfaceId != nullptr)
     {
-        return CHIP_ERROR_INCORRECT_STATE;
+        sa.sin6_scope_id = ncp_netif_list.num;
     }
-    sa.sin6_scope_id = static_cast<decltype(sa.sin6_scope_id)>(interfaceId);
 
     CHIP_ERROR status = CHIP_NO_ERROR;
 
@@ -295,9 +302,11 @@ CHIP_ERROR UDPEndPointImplNcp::SendMsgImpl(const IPPacketInfo * aPktInfo, System
         peerSockAddr.in6.sin6_port       = htons(aPktInfo->DestPort);
         peerSockAddr.in6.sin6_addr       = aPktInfo->DestAddress.ToIPv6();
         InterfaceId::PlatformType intfId = aPktInfo->Interface.GetPlatformInterface();
-        VerifyOrReturnError(CanCastTo<decltype(peerSockAddr.in6.sin6_scope_id)>(intfId), CHIP_ERROR_INCORRECT_STATE);
-        peerSockAddr.in6.sin6_scope_id   = static_cast<decltype(peerSockAddr.in6.sin6_scope_id)>(intfId);
-        namelen                          = sizeof(sockaddr_in6);
+        if(intfId != nullptr)
+        {
+            peerSockAddr.in6.sin6_scope_id = ncp_netif_list.num;
+        }
+        namelen = sizeof(sockaddr_in6);
     }
 #if INET_CONFIG_ENABLE_IPV4
     else
