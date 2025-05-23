@@ -230,22 +230,8 @@ CHIP_ERROR UDPEndPointImplNcp::BindInterfaceImpl(IPAddressType addressType, Inte
 #if HAVE_SO_BINDTODEVICE
     CHIP_ERROR status = CHIP_NO_ERROR;
 
-    if (interfaceId.IsPresent())
+    if (!interfaceId.IsPresent())
     {
-        // Start filtering on the passed interface.
-        char interfaceName[IF_NAMESIZE];
-        if (if_indextoname(interfaceId.GetPlatformInterface(), interfaceName) == nullptr)
-        {
-            status = CHIP_ERROR_POSIX(errno);
-        }
-        else if (ncp_setsockopt(mSocket, SOL_SOCKET, SO_BINDTODEVICE, interfaceName, socklen_t(strlen(interfaceName))) == -1)
-        {
-            status = CHIP_ERROR_POSIX(errno);
-        }
-    }
-    else
-    {
-        // Stop interface-based filtering.
         if (ncp_setsockopt(mSocket, SOL_SOCKET, SO_BINDTODEVICE, "", 0) == -1)
         {
             status = CHIP_ERROR_POSIX(errno);
