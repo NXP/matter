@@ -18,8 +18,8 @@
 
 #pragma once
 
-#include "../../linux/LinuxCommissionableDataProvider.h"
-#include "../../linux/Options.h"
+#include "LinuxCommissionableDataProvider.h"
+#include "Options.h"
 #include <lib/core/CHIPError.h>
 #include <platform/ConfigurationManager.h>
 #include <platform/PlatformManager.h>

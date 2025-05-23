@@ -28,7 +28,7 @@
 #include <platform/PlatformManager.h>
 #include <transport/TransportMgr.h>
 
-#include "../../linux/Options.h"
+#include "Options.h"
 
 // Applications can optionally provide the endpoint id of a secondary network
 // commissioning endpoint, if one is supported.

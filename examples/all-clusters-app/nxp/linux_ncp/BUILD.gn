@@ -83,6 +83,7 @@ source_set("chip-all-clusters-common") {
   ]
 
   include_dirs = [
+    "${chip_root}/examples/platform/linux",
     "${chip_root}/examples/all-clusters-app/all-clusters-common/include",
     "${chip_root}/examples/energy-management-app/energy-management-common/include",
   ]

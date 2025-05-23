@@ -29,10 +29,14 @@ declare_args() {
   chip_enable_energy_reporting_trigger = false
   chip_with_trusty_os = false
   chip_with_imx_ele = false
+  linux_example_root = "//third_party/connectedhomeip/examples/platform/linux"
 }
 
 config("app-main-config") {
-  include_dirs = [ "." ]
+  include_dirs = [ 
+    ".",
+    "${linux_example_root}",
+   ]
 }
 
 source_set("ota-test-event-trigger") {
@@ -64,14 +68,14 @@ source_set("app-main") {
     "AppMain.h",
     "CommissionableInit.cpp",
     "CommissionableInit.h",
-    "../../linux/CommissionerMain.cpp",
-    "../../linux/CommissionerMain.h",
-    "../../linux/LinuxCommissionableDataProvider.cpp",
-    "../../linux/LinuxCommissionableDataProvider.h",
-    "../../linux/NamedPipeCommands.cpp",
-    "../../linux/NamedPipeCommands.h",
-    "../../linux/Options.cpp",
-    "../../linux/Options.h",
+    "Options.cpp",
+    "${linux_example_root}/CommissionerMain.cpp",
+    "${linux_example_root}/CommissionerMain.h",
+    "${linux_example_root}/LinuxCommissionableDataProvider.cpp",
+    "${linux_example_root}/LinuxCommissionableDataProvider.h",
+    "${linux_example_root}/NamedPipeCommands.cpp",
+    "${linux_example_root}/NamedPipeCommands.h",
+    "${linux_example_root}/Options.h",
     "testing/CustomCSRResponse.cpp",
     "testing/CustomCSRResponse.h",
     "testing/CustomCSRResponseOperationalKeyStore.cpp",
@@ -80,20 +84,20 @@ source_set("app-main") {
 
   if (chip_with_trusty_os == 1) {
     sources += [
-      "../../linux/DeviceAttestationCredsTrusty.cpp",
-      "../../linux/DeviceAttestationCredsTrusty.h",
-      "../../linux/PersistentStorageOperationalKeystoreTrusty.cpp",
-      "../../linux/PersistentStorageOperationalKeystoreTrusty.h",
+      "${linux_example_root}/DeviceAttestationCredsTrusty.cpp",
+      "${linux_example_root}/DeviceAttestationCredsTrusty.h",
+      "${linux_example_root}/PersistentStorageOperationalKeystoreTrusty.cpp",
+      "${linux_example_root}/PersistentStorageOperationalKeystoreTrusty.h",
     ]
   }
 
   if (chip_with_imx_ele == 1) {
     sources += [
       #TODO enable this when official tool ready
-      #      "../../linux/DeviceAttestationCredsEle.cpp",
-      #      "../../linux/DeviceAttestationCredsEle.h",
-      "../../linux/PersistentStorageOperationalKeystoreEle.cpp",
-      "../../linux/PersistentStorageOperationalKeystoreEle.h",
+      #      "${linux_example_root}/DeviceAttestationCredsEle.cpp",
+      #      "${linux_example_root}/DeviceAttestationCredsEle.h",
+      "${linux_example_root}/linux/PersistentStorageOperationalKeystoreEle.cpp",
+      "${linux_example_root}/PersistentStorageOperationalKeystoreEle.h",
     ]
   }
 
@@ -148,10 +152,10 @@ source_set("app-main") {
   if (chip_build_libshell) {
     defines += [ "ENABLE_CHIP_SHELL" ]
     sources += [
-      "../../linux/CommissioneeShellCommands.cpp",
-      "../../linux/CommissioneeShellCommands.h",
-      "../../linux/ControllerShellCommands.cpp",
-      "../../linux/ControllerShellCommands.h",
+      "${linux_example_root}/CommissioneeShellCommands.cpp",
+      "${linux_example_root}/CommissioneeShellCommands.h",
+      "${linux_example_root}/ControllerShellCommands.cpp",
+      "${linux_example_root}/ControllerShellCommands.h",
     ]
   }
 
@@ -179,8 +183,8 @@ source_set("app-main") {
 source_set("commissioner-main") {
   defines = []
   sources = [
-    "../../linux/CommissionerMain.cpp",
-    "../../linux/CommissionerMain.h",
+    "${linux_example_root}/CommissionerMain.cpp",
+    "${linux_example_root}/CommissionerMain.h",
   ]
 
   if (chip_build_libshell) {

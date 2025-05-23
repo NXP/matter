@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "../../linux/NamedPipeCommands.h"
+#include "NamedPipeCommands.h"
 
 #include <json/json.h>
 #include <platform/DiagnosticDataProvider.h>

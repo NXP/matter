@@ -37,7 +37,7 @@
 #include "rvc-modes.h"
 #include "rvc-operational-state-delegate-impl.h"
 #include "tcc-mode.h"
-#include <../../linux/Options.h>
+#include "Options.h"
 #include <app-common/zap-generated/attributes/Accessors.h>
 #include <app/CommandHandler.h>
 #include <app/clusters/diagnostic-logs-server/diagnostic-logs-server.h>

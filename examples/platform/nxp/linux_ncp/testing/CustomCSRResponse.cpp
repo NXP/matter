@@ -16,7 +16,7 @@
  *    limitations under the License.
  */
 
-#include "../../linux/Options.h"
+#include "Options.h"
 
 #include <algorithm>
 #include <app-common/zap-generated/cluster-objects.h>
