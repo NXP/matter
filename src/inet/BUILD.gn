@@ -33,6 +33,10 @@ if (chip_system_config_use_lwip) {
 
 if (chip_system_config_use_ncp) {
   import("//build_overrides/ncp_host_sdk.gni")
+  declare_args() {
+  # InetInterface files dir for MATTER-NCP
+  chip_inet_matter_ncp_inet_dir = "${chip_root}/src/platform/nxp/linux_ncp/inet"
+  }
 }
 
 declare_args() {
@@ -110,11 +114,20 @@ static_library("inet") {
     "InetArgParser.h",
     "InetError.cpp",
     "InetError.h",
-    "InetInterface.cpp",
-    "InetInterface.h",
     "InetLayer.h",
     "arpa-inet-compatibility.h",
   ]
+  if (chip_system_config_inet == "Ncp") {
+    sources += [
+      "${chip_inet_matter_ncp_inet_dir}/InetInterface.cpp",
+      "${chip_inet_matter_ncp_inet_dir}/InetInterface.h",
+    ]
+  } else {
+    sources += [
+      "InetInterface.cpp",
+      "InetInterface.h",
+    ]
+  }
 
   if (chip_system_config_inet == "Ncp") {
   } else {
