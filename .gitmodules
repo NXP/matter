@@ -58,7 +58,7 @@
 	platforms = nxp
 [submodule "third_party/openthread/ot-nxp"]
 	path = third_party/openthread/ot-nxp
-	url = ../ot-nxp.git
+	url = https://github.com/NXP/ot-nxp.git
 	platforms = nxp
 [submodule "third_party/openthread/ot-qorvo"]
 	path = third_party/openthread/ot-qorvo
@@ -298,7 +298,7 @@
 	platforms = infineon
 [submodule "third_party/nxp/nxp_matter_support"]
 	path = third_party/nxp/nxp_matter_support
-	url = ../nxp_matter_support.git
+	url = https://github.com/NXP/nxp_matter_support.git
 	branch = master
 	platforms = nxp
 [submodule "third_party/infineon/psoc6/psoc6_sdk/libs/btstack-integration"]
