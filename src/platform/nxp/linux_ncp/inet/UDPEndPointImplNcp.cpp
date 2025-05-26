@@ -44,17 +44,10 @@
 #include <zephyr/net/socket.h>
 #endif // CHIP_SYSTEM_CONFIG_USE_ZEPHYR_SOCKETS
 
-#include <arpa/inet.h>
 #include <cerrno>
 #include <unistd.h>
 #include <utility>
-
-#if CHIP_SYSTEM_CONFIG_USE_NCP
-extern "C" {
-#include "ncp_wifi_api.h"
-}
-extern ncp_netif ncp_netif_list;
-#endif
+#include <arpa/inet.h>
 
 // SOCK_CLOEXEC not defined on all platforms, e.g. iOS/macOS:
 #ifndef SOCK_CLOEXEC
@@ -66,9 +59,13 @@ extern ncp_netif ncp_netif_list;
 #define INADDR_ANY 0
 #endif
 
+#if CHIP_SYSTEM_CONFIG_USE_NCP
 extern "C" {
+#include "ncp_wifi_api.h"
 #include "ncp_inet.h"
 }
+extern ncp_netif ncp_netif_list;
+#endif
 
 #if CHIP_SYSTEM_CONFIG_USE_ZEPHYR_SOCKET_EXTENSIONS
 #include "ZephyrSocket.h"
@@ -113,7 +110,6 @@ CHIP_ERROR IPv6Bind(int socket, const IPAddress & address, uint16_t port, Interf
     }
 
     CHIP_ERROR status = CHIP_NO_ERROR;
-
     // NOLINTNEXTLINE(clang-analyzer-unix.StdCLibraryFunctions): Function called only with valid socket after GetSocket
     if (ncp_bind(socket, reinterpret_cast<const sockaddr *>(&sa), static_cast<unsigned>(sizeof(sa))) != 0)
     {
@@ -121,14 +117,14 @@ CHIP_ERROR IPv6Bind(int socket, const IPAddress & address, uint16_t port, Interf
     }
     else
     {
-#ifdef IPV6_MULTICAST_IF
+#ifdef UNDEFINE
         // Instruct the kernel that any messages to multicast destinations should be
         // sent down the interface specified by the caller.
         ncp_setsockopt(socket, IPPROTO_IPV6, IPV6_MULTICAST_IF, &interfaceId, sizeof(interfaceId));
 #endif // defined(IPV6_MULTICAST_IF)
     }
 
-#ifdef IPV6_MULTICAST_HOPS
+#ifdef UNDEFINE
     // Instruct the kernel that any messages to multicast destinations should be
     // set with the configured hop limit value.
     int hops = INET_CONFIG_IP_MULTICAST_HOP_LIMIT;
@@ -302,11 +298,8 @@ CHIP_ERROR UDPEndPointImplNcp::SendMsgImpl(const IPPacketInfo * aPktInfo, System
         peerSockAddr.in6.sin6_port       = htons(aPktInfo->DestPort);
         peerSockAddr.in6.sin6_addr       = aPktInfo->DestAddress.ToIPv6();
         InterfaceId::PlatformType intfId = aPktInfo->Interface.GetPlatformInterface();
-        if(intfId != nullptr)
-        {
-            peerSockAddr.in6.sin6_scope_id = ncp_netif_list.num;
-        }
-        namelen = sizeof(sockaddr_in6);
+        peerSockAddr.in6.sin6_scope_id   = ncp_netif_list.num;
+        namelen                          = sizeof(sockaddr_in6);
     }
 #if INET_CONFIG_ENABLE_IPV4
     else
@@ -510,7 +503,7 @@ void UDPEndPointImplNcp::HandlePendingIO(System::SocketEvents events, intptr_t d
 void UDPEndPointImplNcp::HandlePendingIO(System::SocketEvents events)
 {
     unsigned char *recv_buf = 0;
-	int recv_len = 0;
+    int recv_len = 0;
     if (mState != State::kListening || OnMessageReceived == nullptr || !events.Has(System::SocketEventFlags::kRead))
     {
         return;
@@ -529,13 +522,12 @@ void UDPEndPointImplNcp::HandlePendingIO(System::SocketEvents events)
     if (!lBuffer.IsNull())
     {
         SockAddr lPeerSockAddr;
-		socklen_t namelen;
+        socklen_t namelen;
 
         recv_buf = lBuffer->Start();
         recv_len  = lBuffer->AvailableDataLength();
         memset(&lPeerSockAddr, 0, sizeof(lPeerSockAddr));
-		
-		ssize_t rcvLen = ncp_recvfrom(mSocket, recv_buf, recv_len, MSG_DONTWAIT, (struct sockaddr *)&lPeerSockAddr, &namelen);
+        ssize_t rcvLen = ncp_recvfrom(mSocket, recv_buf, recv_len, MSG_DONTWAIT, (struct sockaddr *)&lPeerSockAddr, &namelen);
         if (rcvLen == -1)
         {
             lStatus = CHIP_ERROR_POSIX(errno);
