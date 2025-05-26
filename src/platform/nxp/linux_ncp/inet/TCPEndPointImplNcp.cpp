@@ -65,10 +65,13 @@
 #define TCP_IDLE_INTERVAL_OPT_NAME TCP_KEEPALIVE
 #endif
 
+#if CHIP_SYSTEM_CONFIG_USE_NCP
 extern "C" {
+#include "ncp_wifi_api.h"
 #include "ncp_inet.h"
 }
-
+extern ncp_netif ncp_netif_list;
+#endif
 
 namespace chip {
 namespace Inet {
@@ -237,7 +240,7 @@ CHIP_ERROR TCPEndPointImplNcp::ConnectImpl(const IPAddress & addr, uint16_t port
         sa.in6.sin6_port     = htons(port);
         sa.in6.sin6_flowinfo = 0;
         sa.in6.sin6_addr     = addr.ToIPv6();
-        sa.in6.sin6_scope_id = intfId.GetPlatformInterface();
+        sa.in6.sin6_scope_id = ncp_netif_list.num;
         sockaddrsize         = sizeof(sockaddr_in6);
     }
 #if INET_CONFIG_ENABLE_IPV4

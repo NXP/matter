@@ -3,6 +3,7 @@
  *    Copyright (c) 2020 Project CHIP Authors
  *    Copyright (c) 2019 Google LLC.
  *    Copyright (c) 2013-2017 Nest Labs, Inc.
+*     Copyright 2025 NXP
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -31,6 +32,12 @@
 #include <inet/IPAddress.h>
 #include <inet/InetError.h>
 #include <lib/support/DLLUtil.h>
+
+#if CHIP_SYSTEM_CONFIG_USE_NCP
+extern "C" {
+#include "ncp_wifi_api.h"
+}
+#endif
 
 #if CHIP_SYSTEM_CONFIG_USE_LWIP && !CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT
 #include <lwip/netif.h>
@@ -85,7 +92,7 @@ public:
     static constexpr size_t kMaxIfNameLength = 13; // Names are formatted as %c%c%d
 #endif                                             // CHIP_SYSTEM_CONFIG_USE_LWIP
 
-#if CHIP_SYSTEM_CONFIG_USE_SOCKETS && CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS
+#if CHIP_SYSTEM_CONFIG_USE_SOCKETS && CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS && !CHIP_SYSTEM_CONFIG_USE_NCP
     using PlatformType                       = unsigned int;
     static constexpr size_t kMaxIfNameLength = IF_NAMESIZE;
 #endif // CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS
@@ -100,10 +107,20 @@ public:
     static constexpr size_t kMaxIfNameLength = 6;
 #endif
 
+#if CHIP_SYSTEM_CONFIG_USE_NCP
+    using PlatformType                       = struct ncp_netif_t *;
+    static constexpr size_t kMaxIfNameLength = 10; // Names are formatted as %c%c%d
+#endif
+
     ~InterfaceId() = default;
 
     constexpr InterfaceId() : mPlatformInterface(kPlatformNull) {}
     explicit constexpr InterfaceId(PlatformType interface) : mPlatformInterface(interface) {}
+
+#if CHIP_SYSTEM_CONFIG_USE_NCP    
+    explicit constexpr InterfaceId(unsigned int) : InterfaceId() {}
+    explicit constexpr InterfaceId(int) : InterfaceId() {}
+#endif
 
     constexpr InterfaceId(const InterfaceId & other) : mPlatformInterface(other.mPlatformInterface) {}
     constexpr InterfaceId & operator=(const InterfaceId & other)
@@ -197,7 +214,7 @@ private:
     static constexpr PlatformType kPlatformNull = nullptr;
 #endif // CHIP_SYSTEM_CONFIG_USE_LWIP
 
-#if CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS
+#if CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS && !CHIP_SYSTEM_CONFIG_USE_NCP
     static constexpr PlatformType kPlatformNull = 0;
 #endif // CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS
 
@@ -207,6 +224,10 @@ private:
 
 #if CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT
     static constexpr PlatformType kPlatformNull = 0;
+#endif
+
+#if CHIP_SYSTEM_CONFIG_USE_NCP
+    static constexpr PlatformType kPlatformNull = nullptr;
 #endif
 
     PlatformType mPlatformInterface;
@@ -355,7 +376,7 @@ protected:
     struct netif * mCurNetif;
 #endif // CHIP_SYSTEM_CONFIG_USE_LWIP
 
-#if CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS
+#if CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS && !CHIP_SYSTEM_CONFIG_USE_NCP
     struct if_nameindex * mIntfArray;
     size_t mCurIntf;
     short mIntfFlags;
@@ -370,6 +391,10 @@ protected:
 #endif // CHIP_SYSTEM_CONFIG_USE_ZEPHYR_NET_IF
 #if CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT
     struct otIp6AddressInfo * mCurNetif;
+#endif
+
+#if CHIP_SYSTEM_CONFIG_USE_NCP
+    struct ncp_netif_t * mCurNetif;
 #endif
 };
 
@@ -547,7 +572,7 @@ private:
     int mCurAddrIndex;
 #endif // CHIP_SYSTEM_CONFIG_USE_LWIP
 
-#if CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS
+#if CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS && !CHIP_SYSTEM_CONFIG_USE_NCP
     struct ifaddrs * mAddrsList;
     struct ifaddrs * mCurAddr;
 #endif // CHIP_SYSTEM_CONFIG_USE_BSD_IFADDRS
@@ -561,6 +586,16 @@ private:
     const otNetifAddress * mNetifAddrList;
     const otNetifAddress * mCurAddr;
 #endif // #if CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT
+
+#if CHIP_SYSTEM_CONFIG_USE_NCP
+    enum
+    {
+        kBeforeStartIndex = -1
+    };
+
+    InterfaceIterator mIntfIter;
+    int mCurAddrIndex;
+#endif // CHIP_SYSTEM_CONFIG_USE_NCP
 };
 
 #if CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT
@@ -606,5 +641,17 @@ inline InterfaceIterator::~InterfaceIterator()               = default;
 inline InterfaceAddressIterator::~InterfaceAddressIterator() = default;
 #endif // CHIP_SYSTEM_CONFIG_USE_ZEPHYR_NET_IF
 
+#if CHIP_SYSTEM_CONFIG_USE_NCP
+
+inline InterfaceIterator::~InterfaceIterator(void) {}
+
+inline InterfaceAddressIterator::InterfaceAddressIterator(void)
+{
+    mCurAddrIndex = kBeforeStartIndex;
+}
+
+inline InterfaceAddressIterator::~InterfaceAddressIterator(void) {}
+
+#endif // CHIP_SYSTEM_CONFIG_USE_NCP
 } // namespace Inet
 } // namespace chip
