@@ -1960,7 +1960,6 @@ endpoint 0 {
     callback attribute maxPathsPerInvoke;
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     ram      attribute featureMap default = 0;
     ram      attribute clusterRevision default = 4;
@@ -2015,7 +2014,6 @@ endpoint 0 {
     callback attribute supportedWiFiBands;
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     ram      attribute featureMap default = 1;
     ram      attribute clusterRevision default = 3;
@@ -2034,7 +2032,6 @@ endpoint 0 {
   server cluster DiagnosticLogs {
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     ram      attribute featureMap default = 0;
     ram      attribute clusterRevision default = 1;
@@ -2053,7 +2050,6 @@ endpoint 0 {
     callback attribute testEventTriggersEnabled default = false;
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     callback attribute featureMap;
     callback attribute clusterRevision;
@@ -2070,7 +2066,6 @@ endpoint 0 {
     callback attribute currentHeapHighWatermark;
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     callback attribute featureMap;
     ram      attribute clusterRevision default = 1;
@@ -2097,7 +2092,6 @@ endpoint 0 {
     callback attribute overrunCount;
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     ram      attribute featureMap default = 3;
     ram      attribute clusterRevision default = 1;
@@ -2174,7 +2168,6 @@ endpoint 1 {
     ram      attribute identifyType default = 0x0;
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     ram      attribute featureMap default = 0;
     ram      attribute clusterRevision default = 5;
@@ -2194,7 +2187,6 @@ endpoint 1 {
 
   server cluster FixedLabel {
     callback attribute labelList;
-    callback attribute eventList;
     ram      attribute featureMap default = 0;
     ram      attribute clusterRevision default = 1;
   }
@@ -2203,7 +2195,6 @@ endpoint 1 {
     callback attribute labelList;
     callback attribute generatedCommandList;
     callback attribute acceptedCommandList;
-    callback attribute eventList;
     callback attribute attributeList;
     ram      attribute featureMap default = 0;
     ram      attribute clusterRevision default = 1;
