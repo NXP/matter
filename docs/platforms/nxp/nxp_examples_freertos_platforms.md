@@ -27,6 +27,7 @@ Matter example applications are supported on the following NXP platforms :
 | RW61x        | [Matter NXP Guide for RW61x platform](./nxp_rw61x_guide.md)   |
 | RT1170       | [Matter NXP Guide for RT1170 platform](./nxp_rt1170_guide.md) |
 | RT1060       | [Matter NXP Guide for RT1060 platform](./nxp_rt1060_guide.md) |
+| MCXW71       | [Matter NXP Guide for MCXW71 platform](./nxp_mcxw71_guide.md) |
 
 ## Building
 
@@ -60,7 +61,7 @@ user@ubuntu:~/Desktop/git/connectedhomeip$ scripts/checkout_submodules.py --shal
 
 -   Step 2 : Activate Matter environment :
 
-If you are setting the Matter environment for the first time, or your local
+If you are setting up the Matter environment for the first time, or your local
 environment is out of date, run the following script :
 
 ```
@@ -79,7 +80,7 @@ user@ubuntu:~/Desktop/git/connectedhomeip$ source scripts/activate.sh
 user@ubuntu:~/Desktop/git$ third_party/nxp/nxp_matter_support/scripts/update_nxp_sdk.py --platform common
 ```
 
--   Step 4 : Source mcux-env.sh
+-   Step 4 : Source mcux-env.sh (only applicable to CMake build)
 
 ```
 user@ubuntu:~/Desktop/git/connectedhomeip$ source <path to mcux sdk>/mcux-env.sh
@@ -97,8 +98,8 @@ export the path as follows :
 user@ubuntu:~/Desktop/git/connectedhomeip$ export ARMGCC_DIR=/path/to/connectedhomeip/.environment/cipd/packages/arm
 ```
 
-> Note : Steps 1 to 3 can be skipped if your environment is up to date. Steps 4
-> and 5 should be repeated in each new terminal session to ensure the
+> Note : Steps 1 and 3 can be skipped if your environment is up to date. Steps
+> 2, 4, and 5 should be repeated in each new terminal session to ensure the
 > environment is correctly configured.
 
 ### Build the application
@@ -155,22 +156,24 @@ Additional arguments that can be passed in the `west build` command line :
 
 ##### Available project configuration files and platform compatibility
 
-| Configuration File                         | Description                                            | Supported platforms   |
-| ------------------------------------------ | ------------------------------------------------------ | --------------------- |
-| `prj_wifi.conf`                            | Wi-Fi                                                  | RW61x, RT1060, RT1170 |
-| `prj_wifi_fdata.conf`                      | Wi-Fi, factory data                                    | RW61x, RT1060, RT1170 |
-| `prj_wifi_ota_fdata.conf`                  | Wi-Fi, factory data, OTA                               | RW61x, RT1060, RT1170 |
-| `prj_wifi_ota_fdata_v2.conf`               | Wi-Fi, factory data, OTA, with SW v2                   | RW61x, RT1060, RT1170 |
-| `prj_wifi_ota.conf`                        | Wi-Fi, OTA                                             | RW61x, RT1060, RT1170 |
-| `prj_wifi_ota_v2.conf`                     | Wi-Fi, OTA, SW v2                                      | RW61x, RT1060, RT1170 |
-| `prj_wifi_onnetwork.conf`                  | Wi-Fi onnetwork without BLE                            | RW61x, RT1060, RT1170 |
-| `prj_thread_ftd.conf`                      | Thread FTD                                             | RW61x, RT1060, RT1170 |
-| `prj_thread_ftd_ota.conf`                  | Thread FTD, OTA                                        | RW61x, RT1060, RT1170 |
-| `prj_thread_ftd_ota_fdata.conf`            | Thread FTD, OTA, factory data                          | RW61x, RT1060, RT1170 |
-| `prj_thread_ftd_wifi_br_ota.conf`          | Wi-Fi + Thread Border Router, OTA                      | RW61x, RT1060, RT1170 |
-| `prj_thread_ftd_wifi_br_ota_fdata.conf`    | Wi-Fi + Thread Border Router, OTA, factory data        | RW61x, RT1060, RT1170 |
-| `prj_thread_ftd_wifi_br_ota_fdata_v2.conf` | Wi-Fi + Thread Border Router, OTA SW v2 , factory data | RW61x, RT1060, RT1170 |
-| `prj_thread_ftd_wifi_br_ota_v2.conf`       | Wi-Fi + Thread Border Router, OTA with SW v2           | RW61x, RT1060, RT1170 |
+| Configuration File                         | Description                                            | Supported platforms           |
+| ------------------------------------------ | ------------------------------------------------------ | ----------------------------- |
+| `prj_wifi.conf`                            | Wi-Fi                                                  | RW61x, RT1060, RT1170         |
+| `prj_wifi_fdata.conf`                      | Wi-Fi, factory data                                    | RW61x, RT1060, RT1170         |
+| `prj_wifi_ota_fdata.conf`                  | Wi-Fi, factory data, OTA                               | RW61x, RT1060, RT1170         |
+| `prj_wifi_ota_fdata_v2.conf`               | Wi-Fi, factory data, OTA, with SW v2                   | RW61x, RT1060, RT1170         |
+| `prj_wifi_ota.conf`                        | Wi-Fi, OTA                                             | RW61x, RT1060, RT1170         |
+| `prj_wifi_ota_v2.conf`                     | Wi-Fi, OTA, SW v2                                      | RW61x, RT1060, RT1170         |
+| `prj_wifi_onnetwork.conf`                  | Wi-Fi onnetwork without BLE                            | RW61x, RT1060, RT1170         |
+| `prj_thread_ftd.conf`                      | Thread FTD                                             | RW61x, RT1060, RT1170, MCXW71 |
+| `prj_thread_ftd_ota.conf`                  | Thread FTD, OTA                                        | RW61x, RT1060, RT1170, MCXW71 |
+| `prj_thread_ftd_ota_fdata.conf`            | Thread FTD, OTA, factory data                          | RW61x, RT1060, RT1170, MCXW71 |
+| `prj_thread_ftd_wifi_br_ota.conf`          | Wi-Fi + Thread Border Router, OTA                      | RW61x, RT1060, RT1170         |
+| `prj_thread_ftd_wifi_br_ota_fdata.conf`    | Wi-Fi + Thread Border Router, OTA, factory data        | RW61x, RT1060, RT1170         |
+| `prj_thread_ftd_wifi_br_ota_fdata_v2.conf` | Wi-Fi + Thread Border Router, OTA SW v2 , factory data | RW61x, RT1060, RT1170         |
+| `prj_thread_ftd_wifi_br_ota_v2.conf`       | Wi-Fi + Thread Border Router, OTA with SW v2           | RW61x, RT1060, RT1170         |
+| `prj_thread_mtd.conf`                      | Thread MTD                                             | MCXW71                        |
+| `prj_thread_mtd_low_power.conf`            | Thread MTD operating in low power mode                 | MCXW71                        |
 
 The build output can be found under the `build_dir` specified in the
 `west build` command, the binary can be found under the following name :
@@ -225,7 +228,7 @@ _gn gen_ command when building an application.
 ## Flashing and debugging
 
 For flashing and debugging the example application, follow detailed instructions
-form the [dedicated readme](#supported-platforms) to the platform you are
+from the [dedicated readme](#supported-platforms) to the platform you are
 targeting.
 
 ## Testing the example
@@ -266,7 +269,7 @@ In this configuration, the device can be commissioned over Wi-Fi with the
 
 ### Testing the example application without Matter CLI:
 
-1. Prepare the board with the flashed example application.
+1. Prepare the board with the flashed example applications.
 2. The All-cluster example uses UART1 to print logs while running the server. To
    view raw UART output, start a terminal emulator like PuTTY and connect to the
    used COM port with the following UART settings:
@@ -292,7 +295,7 @@ The Matter CLI can be enabled with the NXP CHIP application.
 For more information about the Matter CLI default commands, you can refer to the
 dedicated [ReadMe](../../../examples/shell/README.md).
 
-The NXP application supports additional commands :
+The NXP applications support additional commands :
 
 ```
 > help
