@@ -298,12 +298,6 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
     gboolean result;
     NCP_WLAN_NETWORK sta_network;
 
-    if (!wlan_ncp_scan())
-    {
-        ChipLogProgress(DeviceLayer, "Error: scan request failed");
-        ret = CHIP_ERROR_INTERNAL;
-    }
-
     if (wlan_ncp_get_current_network(&sta_network) == WM_SUCCESS)
     {
         GAutoPtr<GError> error;
