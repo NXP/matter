@@ -1,6 +1,6 @@
-# CHIP NXP Zephyr All-clusters Application
+# Matter NXP Zephyr Application
 
-The all-clusters example implements a server which can be accessed by a CHIP
+The examples provided implement a server which can be accessed by a CHIP
 controller and can accept basic cluster commands.
 
 The example is based on
@@ -49,15 +49,15 @@ distribution (the demo-application was compiled on Ubuntu 20.04).
 
 Prerequisites:
 
--   Follow instruction from [BUILDING.md](../../../../docs/guides/BUILDING.md)
-    to setup the Matter environment
+-   Follow instruction from [BUILDING.md](../../guides/BUILDING.md) to setup the
+    Matter environment
 -   Follow instruction from
     [Getting Started Guide](https://docs.zephyrproject.org/4.0.0/develop/getting_started/index.html)
     to setup a Zephyr workspace, however, the west init command to use is as
     follows:
 
 ```shell
-$ west init zephyrproject -m ssh://git@bitbucket.sw.nxp.com/mcucore/nxp-zsdk.git --mr nxp-v4.1.0-rc1
+$ west init zephyrproject -m https://github.com/nxp-zephyr/nxp-zsdk.git --mr nxp-v4.0.0
 ```
 
 > **Note**: While some of NXP platforms are supported in Zephyr upstream, we
@@ -65,7 +65,7 @@ $ west init zephyrproject -m ssh://git@bitbucket.sw.nxp.com/mcucore/nxp-zsdk.git
 > not upstream yet. While you can decide to use nxp-zsdk top of tree, we
 > recommend using a proper release tag delivered by NXP. This will ensure a
 > certain level of quality of the nxp-zsdk in use. Currently, we highly
-> recommend using the `nxp-v4.1.0-rc1` tag, based on Zephyr 4.1 release. Reach to
+> recommend using the `nxp-v4.0.0` tag, based on Zephyr 4.0 release. Reach to
 > your NXP contact for more details.
 
 Steps to build the example:
@@ -208,32 +208,21 @@ the partition address: please refer to `factory_partition` defined in
 #### Manually
 
 See
-[Guide for writing manufacturing data on NXP devices](../../../../docs/platforms/nxp/nxp_manufacturing_flow.md)
+[Guide for writing manufacturing data on NXP devices](./nxp_manufacturing_flow.md)
 
 <a name="ota-software-update"></a>
-
-### Build in release mode
-
-To build the example in release mode, you can add
-`-DEXTRA_CONF_FILE=prj_release.conf` in the west build command line.
-
-Example:
-
-```bash
-west build -b <board> -p  <path to example folder> -- -DEXTRA_CONF_FILE=prj_release.conf
-```
 
 ## OTA Software Update
 
 See
-[Guide for OTA Software Update on NXP devices using Zephyr SDK](../../../../docs/platforms/nxp/nxp_zephyr_ota_software_update.md)
+[Guide for OTA Software Update on NXP devices using Zephyr SDK](./nxp_zephyr_ota_software_update.md)
 
 <a name="testing-the-example"></a>
 
 ## Testing the example
 
 To know how to commission a device over BLE, follow the instructions from
-[chip-tool's README.md 'Commission a device over BLE'](../../../chip-tool/README.md#commission-a-device-over-ble).
+[chip-tool's README.md 'Commission a device over BLE'](../../../examples/chip-tool/README.md#commission-a-device-over-ble).
 
 <a name="using-matter-cli-in-nxp-zephyr-examples"></a>
 
