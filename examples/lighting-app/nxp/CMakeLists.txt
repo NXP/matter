@@ -86,7 +86,7 @@ target_sources(app
 # This is a temporary workaround to avoid a popular linker limitation.
 # The linker is unable to replace weak symbols with their strong
 # counterparts when both weak and strong symbols are hosted in a static
-# library. A solution for this issue is to add the object files which
+# library. A dirty solution for this issue is to add the object files which
 # are defining the strong symbols directly to the linker command line.
 if(CONFIG_CHIP_NXP_PLATFORM_MCXW71 OR CONFIG_CHIP_NXP_PLATFORM_MCXW72)
     target_sources(app
