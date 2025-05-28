@@ -97,7 +97,7 @@ mcxw72_sdk("sdk") {
 
   if (nxp_multiple_ble_connections)
   {
-    include_dirs += [ "${common_example_dir}/../mcxw71_k32w1/app_ble/include" ]
+    include_dirs += [ "${common_example_dir}/../mcxw71/app_ble/include" ]
     defines += [
       "EXTRA_GATT_DB_HEADER=\"extra_gatt_db.h\"",
       "EXTRA_GATT_UUID_HEADER=\"extra_gatt_uuid128.h\"",
@@ -168,7 +168,7 @@ mcxw72_executable("lock_app") {
     "${common_example_dir}/device_manager/source/CHIPDeviceManager.cpp",
     "${common_example_dir}/icd/source/ICDUtil.cpp",
     "${common_example_dir}/factory_data/source/AppFactoryDataDefaultImpl.cpp",
-    "${common_example_dir}/../mcxw71_k32w1/clusters/Identify.cpp",
+    "${common_example_dir}/../mcxw71/clusters/Identify.cpp",
   ]
 
   if (nxp_use_low_power) {
@@ -200,14 +200,14 @@ mcxw72_executable("lock_app") {
     ]
     sources += [
       "${common_example_dir}/ota_requestor/source/OTARequestorInitiatorMultiImage.cpp",
-      "${common_example_dir}/../mcxw71_k32w1/ota/OtaUtils.cpp"
+      "${common_example_dir}/../mcxw71/ota/OtaUtils.cpp"
     ]
     deps += [ "${chip_root}/src/platform/nxp:nxp_ota" ]
   }
 
   if (nxp_multiple_ble_connections)
   {
-    sources += [ "${common_example_dir}/../mcxw71_k32w1/app_ble/source/BLEApplicationManager.cpp", ]
+    sources += [ "${common_example_dir}/../mcxw71/app_ble/source/BLEApplicationManager.cpp", ]
   }
   else
   {
@@ -236,9 +236,9 @@ mcxw72_executable("lock_app") {
     "../common/main",
     "../common/main/include",
     "${chip_root}/examples/lock-app/lock-common/include",
-    "${common_example_dir}/../mcxw71_k32w1/util",
-    "${common_example_dir}/../mcxw71_k32w1/app/support",
-    "${common_example_dir}/../mcxw71_k32w1/button",
+    "${common_example_dir}/../mcxw71/util",
+    "${common_example_dir}/../mcxw71/app/support",
+    "${common_example_dir}/../mcxw71/button",
   ]
 
   sources += [
@@ -253,7 +253,7 @@ mcxw72_executable("lock_app") {
   if (!nxp_use_low_power) {
     sources += [
       "${common_example_dir}/ui_feedback/source/LedManager.cpp",
-      "${common_example_dir}/../mcxw71_k32w1/util/LedOnOff.cpp",
+      "${common_example_dir}/../mcxw71/util/LedOnOff.cpp",
     ]
   }
 
