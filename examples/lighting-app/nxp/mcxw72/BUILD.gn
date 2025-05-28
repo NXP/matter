@@ -156,7 +156,7 @@ mcxw72_executable("light_app") {
     ]
     sources += [
       "${common_example_dir}/ota_requestor/source/OTARequestorInitiatorMultiImage.cpp",
-      "${common_example_dir}/../mcxw71_k32w1/ota/OtaUtils.cpp"
+      "${common_example_dir}/../mcxw71/ota/OtaUtils.cpp"
     ]
     deps += [ "${chip_root}/src/platform/nxp:nxp_ota" ]
   }
@@ -179,17 +179,17 @@ mcxw72_executable("light_app") {
 
   sources += [
     "${common_example_dir}/ui_feedback/source/LedManager.cpp",
-    "${common_example_dir}/../mcxw71_k32w1/clusters/Identify.cpp",
-    "${common_example_dir}/../mcxw71_k32w1/util/LedOnOff.cpp",
+    "${common_example_dir}/../mcxw71/clusters/Identify.cpp",
+    "${common_example_dir}/../mcxw71/util/LedOnOff.cpp",
   ]
 
   include_dirs += [
     "../common",
     "../common/include",
     "include/config",
-    "${common_example_dir}/../mcxw71_k32w1/util",
-    "${common_example_dir}/../mcxw71_k32w1/app/support",
-    "${common_example_dir}/../mcxw71_k32w1/button",
+    "${common_example_dir}/../mcxw71/util",
+    "${common_example_dir}/../mcxw71/app/support",
+    "${common_example_dir}/../mcxw71/button",
   ]
 
   deps += [
