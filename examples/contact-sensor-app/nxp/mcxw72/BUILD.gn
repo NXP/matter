@@ -226,7 +226,7 @@ if (!nxp_use_low_power) {
   ]
 
   deps += [
-    "${chip_root}/examples/providers:device_info_provider",
+    "${chip_root}/examples/providers:device_info_provider_please_do_not_reuse_as_is",
     "${chip_root}/src/platform/logging:default",
     "${chip_root}/src/setup_payload:onboarding-codes-utils",
   ]
