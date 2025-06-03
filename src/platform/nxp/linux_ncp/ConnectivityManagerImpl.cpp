@@ -247,7 +247,7 @@ void ConnectivityManagerImpl::_ClearWiFiStationProvision()
 
         if (ret != true)
         {
-            ChipLogProgress(DeviceLayer, "failed to remove all networks ");
+            ChipLogProgress(DeviceLayer, "[ncp-host] failed to remove all networks ");
         }
     }
 
@@ -306,11 +306,11 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
 
         if (result)
         {
-            ChipLogProgress(DeviceLayer, "removed network name: %s", sta_network.name);
+            ChipLogProgress(DeviceLayer, "[ncp-host] removed network name: %s", sta_network.name);
         }
         else
         {
-            ChipLogProgress(DeviceLayer, "failed to stop AP mode");
+            ChipLogProgress(DeviceLayer, "[ncp-host] failed to stop AP mode");
             ret = CHIP_ERROR_INTERNAL;
         }
 
@@ -340,7 +340,7 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
 
     if (result)
     {
-        ChipLogProgress(DeviceLayer, "added network: %s", network_name);
+        ChipLogProgress(DeviceLayer, "[ncp-host] added network: %s", network_name);
         wlan_ncp_disconnect();
         ChipLogProgress(DeviceLayer, "[ncp-host] do connect with network name %s.", network_name);
         wlan_ncp_connect(network_name);
@@ -349,7 +349,6 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
         if(mpConnectCallback != nullptr)
         {
             sleep(2);
-            ChipLogProgress(DeviceLayer, "xinyutest onreselt send event kOperationalNetworkEnabled\r\n");
             DeviceLayer::SystemLayer().ScheduleLambda([this]() {
                 if (mpConnectCallback != nullptr)
                 {
@@ -364,7 +363,7 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
     }
     else
     {
-        ChipLogError(DeviceLayer, "failed to add network");
+        ChipLogError(DeviceLayer, "[ncp-host] failed to add network");
         ret = CHIP_ERROR_INTERNAL;
     }
 
