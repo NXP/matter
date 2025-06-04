@@ -43,7 +43,7 @@ network.
 
 ## Introduction
 
-![FRDM-MCXW71](../../../platform/nxp/mcxw71_k32w1/doc/images/frdm-mcxw71.jpg)
+![FRDM-MCXW71](../../../platform/nxp/mcxw71/doc/images/frdm-mcxw71.jpg)
 
 The MCXW71 Light Switch Combo example provides a working demonstration of a dual endpoint application built using the Project CHIP codebase and the NXP MCXW71 SDK. The example supports remote access (e.g.: using CHIP Tool from a mobile phone) and control of a light bulb over a low-power, 802.15.4 Thread network. It is capable of being paired into an existing Project CHIP network along with other Project CHIP-enabled devices.
 
@@ -169,7 +169,7 @@ Some Matter instances and global variables can be placed in the NBU's SMU2 memor
 * `Server::sServer` from Server.cpp.
 * `ThreadStackManagerImpl::sInstance` from ThreadStackManagerImpl.cpp.
 
-These instances and global variables are placed in SMU2 memory through name matching in the application linker script. They should not be changed or, if changed, the names must be updated in `app.ld`. See [app.ld](../../../platform/nxp/mcxw71_k32w1/app/ldscripts/app.ld) for names and SMU2 memory range size.
+These instances and global variables are placed in SMU2 memory through name matching in the application linker script. They should not be changed or, if changed, the names must be updated in `app.ld`. See [app.ld](../../../platform/nxp/mcxw71/app/ldscripts/app.ld) for names and SMU2 memory range size.
 
 The OpenThread buffers can be allocated from a 13KB SMU2 range after a successful commmissioning process until a factory reset is initiated. This way, the OpenThread buffers will be dynamically allocated instead of statically, freeing some SRAM. To enable this feature compile with OpenThread FTD support (`chip_openthread_ftd=true`) and with `nxp_use_smu2_dynamic=true`.
 
@@ -233,7 +233,7 @@ One option for debugging would be to use MCUXpresso IDE.
 
 - Drag-and-drop the zip file containing the NXP SDK in the "Installed SDKs" tab:
 
-![Installed SDKs](../../../platform/nxp/mcxw71_k32w1/doc/images/installed_sdks.jpg)
+![Installed SDKs](../../../platform/nxp/mcxw71/doc/images/installed_sdks.jpg)
 
 - Import any demo application from the installed SDK:
 
@@ -241,7 +241,7 @@ One option for debugging would be to use MCUXpresso IDE.
 Import SDK example(s).. -> choose a demo app (demo_apps -> hello_world) -> Finish
 ```
 
-![Import demo](../../../platform/nxp/mcxw71_k32w1/doc/images/import_demo.jpg)
+![Import demo](../../../platform/nxp/mcxw71/doc/images/import_demo.jpg)
 
 - Flash the previously imported demo application on the board:
 
@@ -259,7 +259,7 @@ be used later on for debugging the application resulted after ot-nxp compilation
 File -> Import -> C/C++ -> Existing Code as Makefile Project
 ```
 
-![New Project](../../../platform/nxp/mcxw71_k32w1/doc/images/new_project.jpg)
+![New Project](../../../platform/nxp/mcxw71/doc/images/new_project.jpg)
 
 - Replace the path of the existing demo application with the path of the MCXW71 application:
 
@@ -267,7 +267,7 @@ File -> Import -> C/C++ -> Existing Code as Makefile Project
 Run -> Debug Configurations... -> C/C++ Application
 ```
 
-![Debug K32W1](../../../platform/nxp/mcxw71_k32w1/doc/images/debug_k32w1.jpg)
+![Debug K32W1](../../../platform/nxp/mcxw71/doc/images/debug_k32w1.jpg)
 
 <a name="ota"></a>
 
@@ -320,7 +320,7 @@ A note regarding OTA image header version (`-vn` option). An application binary 
 The OTA topology used for OTA testing is illustrated in the figure below.
 Topology is similar with the one used for Matter Test Events.
 
-![OTA_TOPOLOGY](../../../platform/nxp/mcxw71_k32w1/doc/images/ota_topology.JPG)
+![OTA_TOPOLOGY](../../../platform/nxp/mcxw71/doc/images/ota_topology.JPG)
 
 The concept for OTA is the next one:
 
