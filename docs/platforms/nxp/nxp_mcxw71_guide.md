@@ -244,7 +244,7 @@ and global variables in the shared memory area from `NBU` domain.
 Note: These instances and global variables are placed in `SMU2` memory through
 name matching in the application linker script. They should not be changed or,
 if changed, the names must be updated in `app.ld`. See
-[app.ld](../../../examples/platform/nxp/mcxw71_k32w1/app/ldscripts/app.ld) for names and
+[app.ld](../../../examples/platform/nxp/mcxw71/app/ldscripts/app.ld) for names and
 `SMU2` memory range size.
 
 When compiling the application as an OT Full Thread Device
@@ -264,4 +264,3 @@ commissioning process.
 
 `nxp_use_smu2_static` and `nxp_use_smu2_dynamic` are set to `true` in the
 default example.
-
