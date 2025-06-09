@@ -348,7 +348,8 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
         
         if(mpConnectCallback != nullptr)
         {
-            sleep(2);
+            wlan_ncp_wait_ipv6_dad();
+            ChipLogProgress(DeviceLayer, "[ncp-host] Get DAD sem.\r\n");
             DeviceLayer::SystemLayer().ScheduleLambda([this]() {
                 if (mpConnectCallback != nullptr)
                 {
