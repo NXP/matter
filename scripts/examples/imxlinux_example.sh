@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#    Copyright (c) 2022 Project CHIP Authors
+#    Copyright (c) 2022, 2025 Project CHIP Authors
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
 #    you may not use this file except in compliance with the License.
@@ -15,64 +15,87 @@
 #    limitations under the License.
 #
 
-helpFunction()
-{
-    cat << EOF
+set -e
+set -x
+helpFunction() {
+    cat <<EOF
 Usage: $0 -s|--src <src folder> -o|--out <out folder> [-d|--debug] [-n|--no-init] [-t|--trusty] [-m|--imx_ele] [-p|--use-pregen]
-    -s, --src           Source folder
-    -o, --out           Output folder
-    -d, --debug         Debug build (optional)
-    -n, --no-init       No init mode (optional)
-    -t, --trusty        Build with Trusty OS backed security enhancement (optional)
-    -m, --imx_ele       Build with IMX ELE (EdgeLock Enclave) based security enhancement (optional)
+    -s, --src       Source folder
+    -o, --out       Output folder
+    -d, --debug     Debug build (optional)
+    -n, --no-init   No init mode (optional)
+    -t, --trusty    Build with Trusty OS backed security enhancement (optional)
+    -m, --imx_ele   Build with IMX ELE (EdgeLock Enclave) based security enhancement (optional)
     -p, --use-pregen    Use pregen zap codes instead of generate it duirng build time (optional)
 EOF
-exit 1
+    exit 1
 }
 
-trusty=0
-imx_ele=0
+trusty=false
+imx_ele=false
+imx_ele_path="third_party/imx-secure-enclave/repo/"
+pregen_arg=""
 release_build=true
 CURRENT_FOLDER=$(pwd)
 PARSED_OPTIONS="$(getopt -o s:o:tdmnp --long src:,out:,trusty,imx_ele,debug,no-init,use-pregen -- "$@")"
-if [ $? -ne 0 ];
-then
-  helpFunction
+if [ $? -ne 0 ]; then
+    helpFunction
 fi
 eval set -- "$PARSED_OPTIONS"
 while true; do
     case "$1" in
-        -s|--src) src="$2"; shift 2 ;;
-        -o|--out) out="$2"; shift 2 ;;
-        -t|--trusty) trusty=1; shift ;;
-        -m|--imx_ele) imx_ele=1; shift ;;
-        -d|--debug) release_build=false; shift ;;
-        -n|--no-init) no_init=1; shift ;;
-        -p|--use-pregen) use_pregen=1; shift ;;
-        --) shift; break ;;
-        *) echo "Invalid option: $1" >&2; exit 1 ;;
+        -s | --src)
+            src="$2"
+            shift 2
+            ;;
+        -o | --out)
+            out="$2"
+            shift 2
+            ;;
+        -t | --trusty)
+            trusty=true
+            shift
+            ;;
+        -m | --imx_ele)
+            imx_ele=true
+            shift
+            ;;
+        -d | --debug)
+            release_build=false
+            shift
+            ;;
+        -n | --no-init)
+            no_init=1
+            shift
+            ;;
+        -p | --use-pregen)
+            use_pregen=1
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Invalid option: $1" >&2
+            exit 1
+            ;;
     esac
 done
 
-if [ -z "$src" ] || [ -z "$out" ];
-then
-    echo "Some or all of the required -s|--src and -o|--out parameters are empty.";
+if [ -z "$src" ] || [ -z "$out" ]; then
+    echo "Some or all of the required -s|--src and -o|--out parameters are empty."
     helpFunction
 fi
-
 
 if [ "$no_init" != 1 ]; then
     source "$(dirname "$0")/../../scripts/activate.sh"
 fi
 
-set -e
-set -x
-
 if [ "$IMX_SDK_ROOT" = "" -o ! -d "$IMX_SDK_ROOT" ]; then
     echo "the Yocto SDK path is not specified with the shell env IMX_SDK_ROOT or an invalid path is specified"
-    exit -1
+    exit 1
 fi
-env
 
 entries="$(echo "$(ls "$IMX_SDK_ROOT")" | tr -s '\n' ',')"
 IFS=',' read -ra entry_array <<<"$entries"
@@ -82,37 +105,30 @@ for entry in "${entry_array[@]}"; do
         break
     fi
 done
-
 if [ -z "$env_setup_script" ]; then
     echo "The SDK environment setup script is not found, make sure the env IMX_SDK_ROOT is correctly set."
     exit 1
 fi
-
 while read line; do
     # trim the potential whitespaces
     line=$(echo "$line" | xargs)
-
     if [ "$(echo "$line" | grep -E "^export SDKTARGETSYSROOT=")" != "" ]; then
         sdk_target_sysroot=${line#"export SDKTARGETSYSROOT="}
     fi
-
     if [ "$(echo "$line" | grep -E "^export CC=")" != "" ]; then
         cc=${line#"export CC="}
         cc=${cc#"\""}
         cc=${cc%"\""}
         cc=${cc/"\$SDKTARGETSYSROOT"/$sdk_target_sysroot}
     fi
-
     if [ "$(echo "$line" | grep -E "^export CXX=")" != "" ]; then
         cxx=${line#"export CXX="}
         cxx=${cxx#"\""}
         cxx=${cxx%"\""}
         cxx=${cxx/"\$SDKTARGETSYSROOT"/$sdk_target_sysroot}
     fi
-
     if [ "$(echo "$line" | grep -E "^export ARCH=")" != "" ]; then
         target_cpu=${line#"export ARCH="}
-
         if [ "$target_cpu" = "arm64" ]; then
             arm_arch="armv8-a"
         elif [ "$target_cpu" = "arm" ]; then
@@ -122,40 +138,33 @@ while read line; do
             exit 1
         fi
     fi
-
     if [ "$(echo "$line" | grep -E "^export CROSS_COMPILE=")" != "" ]; then
         cross_compile=${line#"export CROSS_COMPILE="}
         cross_compile=${cross_compile%"-"}
     fi
 done <"$IMX_SDK_ROOT/$env_setup_script"
-
 if [ -z "$sdk_target_sysroot" ]; then
     echo "SDKTARGETSYSROOT is not found in the SDK environment setup script."
     exit 1
 fi
-
 if [ -z "$cc" -o -z "$cxx" ]; then
     echo "CC and/or CXX are not found in the SDK environment setup script."
     exit 1
 fi
-
 if [ -z "$target_cpu" -o -z "$cross_compile" ]; then
     echo "ARCH and/or CROSS_COMPILE are not found in the SDK environment setup script."
     exit 1
 fi
 
-without_pw=false
-executable_python=""
-if [ "$no_init" = "1" ]; then
-    without_pw=true
-    executable_python=--script-executable="/usr/bin/python3"
+if [ "$imx_ele" = "true" ]; then
+    if [ -f "$imx_ele_path/Makefile" ]; then
+        make -C "third_party/imx-secure-enclave/repo" "install_version"
+    else
+        echo "Makefile does not exist in $imx_ele_path."
+        exit 1
+    fi
 fi
 
-if [ "$trusty" = "1" ]; then
-    trusty_arg="chip_with_trusty_os=true"
-else
-    trusty_arg=""
-fi
 if [ "$use_pregen" = "1" ]; then
     pregen_arg="chip_code_pre_generated_directory=\"${CURRENT_FOLDER}/zzz_pregencodes\""
 else
@@ -163,17 +172,10 @@ else
 fi
 
 PLATFORM_CFLAGS='-DCHIP_DEVICE_CONFIG_WIFI_STATION_IF_NAME=\"mlan0\"'
-chip_with_web2=${NXP_CHIPTOOL_WITH_WEB2:-0}
-additional_gn_args=""
-if [ "$chip_with_web2" = 1 ]; then
-    additional_gn_args+=" enable_rtti=true chip_with_web2=$chip_with_web2"
-fi
-gn gen $executable_python --check --fail-on-unused-args --root="$src" "$out" --args="target_os=\"linux\" target_cpu=\"$target_cpu\" arm_arch=\"$arm_arch\"
-$trusty_arg
-$pregen_arg
+gn gen --check --fail-on-unused-args --root="$src" "$out" --args="target_os=\"linux\" target_cpu=\"$target_cpu\" arm_arch=\"$arm_arch\"
+chip_with_trusty_os=$trusty
 chip_with_imx_ele=$imx_ele
-build_without_pw=$without_pw
-enable_exceptions=true
+$pregen_arg
 treat_warnings_as_errors=false
 import(\"//build_overrides/build.gni\")
 sysroot=\"$sdk_target_sysroot\"
@@ -182,7 +184,8 @@ custom_toolchain=\"\${build_root}/toolchain/custom\"
 target_cc=\"$IMX_SDK_ROOT/sysroots/x86_64-pokysdk-linux/usr/bin/$cross_compile/$cc\"
 target_cxx=\"$IMX_SDK_ROOT/sysroots/x86_64-pokysdk-linux/usr/bin/$cross_compile/$cxx\"
 target_ar=\"$IMX_SDK_ROOT/sysroots/x86_64-pokysdk-linux/usr/bin/$cross_compile/$cross_compile-ar\"
-$(if [ "$release_build" = "true" ]; then echo "is_debug=false"; else echo "optimize_debug=true"; fi)
-$additional_gn_args"
+$(if [ "$release_build" = "true" ]; then echo "is_debug=false"; else echo "optimize_debug=true"; fi)"
+
+echo $pregen_arg
 
 ninja -C "$out"
