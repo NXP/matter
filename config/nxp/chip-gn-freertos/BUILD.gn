@@ -21,6 +21,7 @@ assert(current_os == "freertos")
 
 declare_args() {
   chip_build_example_providers = false
+  chip_enable_ethernet = false
   chip_malloc_sys_heap = false
 }
 
