@@ -46,17 +46,19 @@ DeviceLayer::StaticESP32DeviceInfoProvider deviceInfoProvider;
 // Define array for Supported Calendar Types
 using namespace chip::app::Clusters::TimeFormatLocalization::CalendarTypeEnum;
 CalendarTypeEnum supportedCalendarTypes[] = {
-    CalendarTypeEnum::kGregorian,
+    CalendarTypeEnum::kGregorian, CalendarTypeEnum::kCoptic,
+    CalendarTypeEnum::kEthiopian, CalendarTypeEnum::kChinese,
 };
 
 // Define array for Supported Locales
 const char* supportedLocales[] = {
     "en-US",
-    "en-GB",
+    "en-EU",
 };
 
 // Define array for Fixed labels { EndpointId, Label, Value }
 struct StaticESP32DeviceInfoProvider::FixedLabelEntry fixedLabels[] = {
+    { 0, "Room", "Bedroom 2" },
     { 0, "Orientation", "North" },
     { 0, "Direction", "Up" },
 };
