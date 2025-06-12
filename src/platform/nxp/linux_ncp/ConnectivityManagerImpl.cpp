@@ -298,6 +298,12 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
     gboolean result;
     NCP_WLAN_NETWORK sta_network;
 
+    if (!wlan_ncp_scan())
+    {
+        ChipLogProgress(DeviceLayer, "Error: scan request failed");
+        ret = CHIP_ERROR_INTERNAL;
+    }
+
     if (wlan_ncp_get_current_network(&sta_network) == WM_SUCCESS)
     {
         GAutoPtr<GError> error;
@@ -343,7 +349,9 @@ ConnectivityManagerImpl::_ConnectWiFiNetworkAsync(GVariant * args,
         ChipLogProgress(DeviceLayer, "[ncp-host] added network: %s", network_name);
         wlan_ncp_disconnect();
         ChipLogProgress(DeviceLayer, "[ncp-host] do connect with network name %s.", network_name);
+
         wlan_ncp_connect(network_name);
+
         mpConnectCallback = apCallback;
         
         if(mpConnectCallback != nullptr)
