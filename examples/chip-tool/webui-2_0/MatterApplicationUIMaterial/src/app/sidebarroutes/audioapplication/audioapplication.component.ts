@@ -7,9 +7,9 @@ import { ScrollgallerycomponentComponent } from '../../mainapplicationbody/scrol
 import { MatFormField } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatSelectModule} from '@angular/material/select';
+import { MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatChip } from '@angular/material/chips';
 import { FloatingActionAreaComponentActions } from '../../mainapplicationbody/floatingactionarea/floating-action-area-component-actions';
 import { AppDialogService } from '../../services/app-dialog.service';
@@ -27,10 +27,12 @@ import { LoaderService } from '../../services/loader.service';
   templateUrl: './audioapplication.component.html',
   styleUrl: './audioapplication.component.css'
 })
+
 export class AudioapplicationComponent {
   constructor(private httpClient: HttpClient, private appDialogService: AppDialogService, private postRequestsService: PostRequestsService,
     private loaderService: LoaderService
   ) {}
+
   onButtonPressedEventCatch(value: {
     buttonName: string;
     action: Function;

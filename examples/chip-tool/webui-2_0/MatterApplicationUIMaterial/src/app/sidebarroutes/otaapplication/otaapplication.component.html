@@ -99,24 +99,19 @@
 
     <div class="container-for-media" style="align-items:center; justify-content: center;">
       <div class="grid-container">
-        <!-- <mat-form-field class="formfield grid-item item1-eevse-charging-enable" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">Charging Enabled Until</mat-label>
-          <input class="grid-item item1" matInput id="charging-enabled-until">
-        </mat-form-field> -->
-
         <mat-form-field class="formfield grid-item item1-eevse-charging-enable" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">Command</mat-label>
+          <mat-label style="color: #000000">Command*</mat-label>
           <input class="grid-item item1-span" matInput id="command" value="ota provider">
         </mat-form-field>
 
         <mat-form-field class="formfield grid-item item2-eevse-charging-enable" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">Discriminator</mat-label>
+          <mat-label style="color: #000000">Discriminator*</mat-label>
           <input class="grid-item item3" matInput id="discriminator" value="22">
         </mat-form-field>
 
         <mat-form-field class="formfield item3-eevse-charging-enable grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">File Path</mat-label>
-          <input class="grid-item item3" matInput id="file-path" value="nxp-thermostat-app.ota">
+          <mat-label style="color: #000000">File Name*</mat-label>
+          <input class="grid-item item3" matInput id="file-path" placeholder="nxp-thermostat-app.ota">
         </mat-form-field>
 
       </div>
@@ -135,8 +130,8 @@
       <!-- Create a form for the input fields and buttons related to the application -->
       <div class="grid-container">
       <mat-form-field class="formfield" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Chip-OTA-Provider device node ID</mat-label>
-        <input class="grid-item item1" matInput id="chip-ota-provider-device-nodeid" value="0xDEADBEEF">
+        <mat-label style="color: #000000">Chip-OTA-Provider device node ID*</mat-label>
+        <input class="grid-item item1" matInput id="chip-ota-provider-device-nodeid">
       </mat-form-field>
       </div>
     </div>
@@ -157,13 +152,13 @@
         </mat-form-field> -->
 
         <mat-form-field class="formfield grid-item item1-span" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">OTA Provider Node ID</mat-label>
-          <input class="grid-item item1-span" matInput id="ota-provider-node-id" value="0xDEADBEEF">
+          <mat-label style="color: #000000">OTA Provider Node ID*</mat-label>
+          <input class="grid-item item1-span" matInput id="ota-provider-node-id">
         </mat-form-field>
 
         <mat-form-field class="formfield item3-eevse-charging-enable grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">OTA Requestor Node ID</mat-label>
-          <input class="grid-item item3" matInput id="ota-requestor-node-id" value="0x1234567890">
+          <mat-label style="color: #000000">OTA Requestor Node ID*</mat-label>
+          <input class="grid-item item3" matInput id="ota-requestor-node-id">
         </mat-form-field>
 
       </div>
@@ -174,7 +169,6 @@
         <span class="aligned-with-icon">Send OTA software update requestor command</span>
       </mat-chip>
     </div>
-
 
     <app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>
   </div>

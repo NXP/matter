@@ -2,7 +2,7 @@ import { WebSocketService } from './services/web-socket.service';
 import { FootercomponentComponent } from './footercomponent/footercomponent.component';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule} from '@angular/material/chips';
 import { ThemePalette } from '@angular/material/core';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule, NgStyle } from '@angular/common';
@@ -12,7 +12,7 @@ import { MainapplicationbodyComponent } from './mainapplicationbody/mainapplicat
 import { MatSidenavContainer } from '@angular/material/sidenav';
 import { ApplicationsidebarComponent } from './applicationsidebar/applicationsidebar.component';
 import { MatSidenav } from '@angular/material/sidenav';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 // For mat-toolbar
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -30,7 +30,7 @@ export interface ChipColor {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatChipsModule,CommonModule, NgbModule,FormsModule,
+  imports: [RouterOutlet, MatChipsModule,CommonModule, NgbModule, FormsModule,
     ApplicationheaderComponent, FloatingactionareaComponent, NgStyle, MatToolbarModule, FootercomponentComponent,
     MatSidenavModule, MainapplicationbodyComponent, MatSidenavContainer, ApplicationsidebarComponent, ApplicationsidebarComponent,
     LoaderoverlayComponent

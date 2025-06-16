@@ -173,36 +173,4 @@ export class MultiadminapplicationComponent {
 
   }
 
-  /*parsePayloadFunctionForECMPairing() : void {
-    interface DataPayload {
-      passcode: string,
-      result: string
-    }
-    console.log('Sending parse payload command');
-    var payload_value = ((document.getElementById('payload-input')) as HTMLInputElement).value
-    this.loaderService.showLoader();
-
-    this.postRequestsService.sendPayloadParsePostRequest(
-      payload_value
-    ).subscribe(
-      (data: any) => {
-        data = data as DataPayload
-        console.log('Data received: ', data);
-        this.loaderService.hideLoader();
-        const parsedResult = JSON.parse(JSON.stringify(data));
-        if (parsedResult.result === 'successful') {
-          this.appDialogService.showInfoDialog('Paylaod parsing completed successfully. The passcode is: ' + data.passcode);
-        } else if (parsedResult.result === 'failed') {
-          this.appDialogService.showErrorDialog('Payload parsing completed with errors');
-        }
-      },
-
-      error => {
-        console.error('Error received: ', error);
-        this.loaderService.hideLoader();
-        this.appDialogService.showErrorDialog('Error: '+ error);
-      }
-    );
-  }*/
-
 }
