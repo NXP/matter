@@ -327,4 +327,4 @@
 	platforms = infineon
 [submodule "third_party/ncp_host/repo"]
 	path = third_party/ncp_host/repo
-	url = ssh://git@bitbucket.sw.nxp.com/wmcuapps/ncp_mpu_host.git
+	url = https://github.com/nxp-imx-support/ncp_mpu_host.git
