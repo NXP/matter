@@ -33,9 +33,11 @@ exit 1
 trusty=0
 imx_ele=0
 ncp_host=1
+ncp_host_interface=0
 release_build=true
 CURRENT_FOLDER=$(pwd)
-PARSED_OPTIONS="$(getopt -o s:o:tdmnp --long src:,out:,trusty,imx_ele,debug,no-init,use-pregen -- "$@")"
+PARSED_OPTIONS="$(getopt -o s:o:tdmnphi: --long src:,out:,trusty,imx_ele,debug,no-init,use-pregen,ncp_host,ncp_host_interface: -- "$@")"
+
 if [ $? -ne 0 ];
 then
   helpFunction
@@ -48,6 +50,7 @@ while true; do
         -t|--trusty) trusty=1; shift ;;
         -m|--imx_ele) imx_ele=1; shift ;;
         -h|--ncp_host) ncp_host=1; shift ;;
+        -i|--ncp_host_interface) ncp_host_interface="$2"; shift 2;;
         -d|--debug) release_build=false; shift ;;
         -n|--no-init) no_init=1; shift ;;
         -p|--use-pregen) use_pregen=1; shift ;;
@@ -62,6 +65,16 @@ then
     helpFunction
 fi
 
+case "$ncp_host_interface" in
+    "usb")   interface_value="1" ;;
+    "uart")  interface_value="2" ;;
+    "spi")   interface_value="3" ;;
+    "sdio")  interface_value="4" ;;
+    *)
+        echo "error invalid interface '$ncp_host_interface',please choose usb, uart, spi, sdio"
+        exit 1
+        ;;
+esac
 
 if [ "$no_init" != 1 ]; then
     source "$(dirname "$0")/../../scripts/activate.sh"
@@ -178,6 +191,7 @@ gn gen $executable_python --check --fail-on-unused-args --root="$src" "$out" --a
 $pregen_arg chip_with_trusty_os=$trusty
 chip_with_imx_ele=$imx_ele
 chip_with_linux_ncp_host=$ncp_host
+ncp_host_interface=$interface_value
 #build_without_pw=$without_pw
 enable_exceptions=true
 treat_warnings_as_errors=false

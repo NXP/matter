@@ -18,6 +18,7 @@
 import("//build_overrides/build.gni")
 import("//build_overrides/chip.gni")
 import("//build_overrides/ncp_host_sdk.gni")
+import("${chip_root}/src/lib/ncp_host.gni")
 
 ncp_host_sdk_root = "${chip_root}/third_party/ncp_host/repo/ncp_host"
 
@@ -53,13 +54,32 @@ template("ncp_host_sdk") {
 
   config("${ncp_host_target_name}_base_flags"){
     cflags = [
-      "-DCONFIG_NCP_USB  = 1",
+      #"-DCONFIG_NCP_USB  = 1",
       "-DCONFIG_NCP_WIFI = 1",
       "-DCONFIG_NCP_BLE  = 1",
       "-DCONFIG_MATTER_NCP",
       "-DCONFIG_NCP_USE_ENCRYPT = 1",
       "-DCONFIG_NCP_HOST_AUTO_TRIG_ENCRYPT = 1"
     ]
+
+    if (ncp_host_interface == 1) {
+      cflags += [
+        "-DCONFIG_NCP_USB  = 1",
+      ]
+    } else if (ncp_host_interface == 2) {
+      cflags += [
+        "-DCONFIG_NCP_UART = 1",
+      ]
+    } else if (ncp_host_interface == 3) {
+      cflags += [
+        "-DCONFIG_NCP_SPI = 1",
+      ]
+    } else if (ncp_host_interface == 4) {
+      cflags += [
+        "-DCONFIG_NCP_SDIO = 1",
+      ]
+    }
+
   }
 
   source_set(ncp_host_target_name) {
