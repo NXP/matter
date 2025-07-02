@@ -228,6 +228,11 @@ bool ConnectivityManagerImpl::_IsWiFiStationConnected()
     return (mWiFiStationState == kWiFiStationState_Connected);
 }
 
+bool ConnectivityManagerImpl::_IsWiFiStationProvisioned()
+{
+    return mWifiIsProvisioned;
+}
+
 bool ConnectivityManagerImpl::_IsWiFiStationApplicationControlled()
 {
     return mWiFiStationMode == ConnectivityManager::kWiFiStationMode_ApplicationControlled;
@@ -641,6 +646,7 @@ CHIP_ERROR ConnectivityManagerImpl::ProvisionWiFiNetwork(const char * ssid, uint
         pNetworkData->security.password_len = static_cast<uint8_t>(password_actual_copy_len);
     }
 
+    mWifiIsProvisioned = true;
     ConnectNetworkTimerHandler(NULL, (void *) pNetworkData);
 
 exit:

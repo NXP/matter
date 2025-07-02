@@ -119,6 +119,7 @@ private:
 
     bool _IsWiFiStationEnabled();
     bool _IsWiFiStationConnected();
+    bool _IsWiFiStationProvisioned();
     bool _IsWiFiStationApplicationControlled();
     CHIP_ERROR _DisconnectNetwork(void);
 #endif /* CHIP_DEVICE_CONFIG_ENABLE_WPA */
@@ -138,7 +139,8 @@ private:
     bool mBorderRouterInit = false;
 
 #if CHIP_DEVICE_CONFIG_ENABLE_WPA
-    bool mWifiManagerInit = false;
+    bool mWifiManagerInit   = false;
+    bool mWifiIsProvisioned = false;
 
     enum WiFiEventGroup{
         kWiFiEventGroup_WiFiStationModeBit = (1 << 0),
