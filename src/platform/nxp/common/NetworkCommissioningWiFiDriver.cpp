@@ -1,7 +1,7 @@
 /*
  *
  *    Copyright (c) 2021-2022 Project CHIP Authors
- *    Copyright 2023 NXP
+ *    Copyright 2023,2025 NXP
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -474,7 +474,10 @@ bool NXPWiFiDriver::WiFiNetworkIterator::Next(Network & item)
         if (connectedNetwork.networkIDLen == item.networkIDLen &&
             memcmp(connectedNetwork.networkID, item.networkID, item.networkIDLen) == 0)
         {
-            item.connected = true;
+            if (ConnectivityMgr().IsWiFiStationConnected())
+            {
+                item.connected = true;
+            }
         }
     }
 

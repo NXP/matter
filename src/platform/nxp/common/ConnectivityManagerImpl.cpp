@@ -2,7 +2,7 @@
  *
  *    Copyright (c) 2020-2022 Project CHIP Authors
  *    Copyright (c) 2020 Nest Labs, Inc.
- *    Copyright 2023-2024 NXP
+ *    Copyright 2023-2025 NXP
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
@@ -163,6 +163,25 @@ void ConnectivityManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
     {
         DeviceLayer::SystemLayer().StartTimer(System::Clock::Milliseconds32(kWlanInitWaitMs), ConnectNetworkTimerHandler,
                                               (void *) event->Platform.pNetworkDataEvent);
+    }
+    else if (event->Type == DeviceLayer::DeviceEventType::kFailSafeTimerExpired)
+    {
+        /*
+         * This special case must be handled to address Wi-Fi connection failures during Matter commissioning.
+         * For instance, if an incorrect SSID or password is provided, we need a mechanism to stop the Wi-Fi driver from attempting
+         * to connect, allowing a new connection attempt later. If the failSafeTimer expires while the system is still in the
+         * process of connecting, a disconnect event should be scheduled. This ensures that, once disconnected, the
+         * wlan_remove_network function is called as part of the RevertConfiguration process.
+         */
+        if (mWiFiStationState == kWiFiStationState_Connecting)
+        {
+            mWiFiStationState = kWiFiStationState_Connecting_Failed;
+            int ret           = wlan_disconnect();
+            if (ret != WM_SUCCESS)
+            {
+                ChipLogError(NetworkProvisioning, "Failed to disconnect from network with error: %u", (uint8_t) ret);
+            }
+        }
     }
 #endif
 }
@@ -330,6 +349,19 @@ void ConnectivityManagerImpl::ProcessWlanEvent(enum wlan_event_reason wlanEvent)
 
     case WLAN_REASON_USER_DISCONNECT:
         ChipLogProgress(DeviceLayer, "Disconnected from WLAN network");
+        /*
+         * If a disconnect was scheduled by the fail-safe timer while Wi-Fi was still in the connecting state,
+         * a new call to RevertConfiguration must be made to remove the Wi-Fi credentials from the driver.
+         * This step is necessary because the Wi-Fi driver's state machine requires a complete disconnection before
+         * wlan_remove_network can be invoked.
+         * Additionnaly mWifiIsProvisioned needs to be re-initialized to false
+         *
+         */
+        if (mWiFiStationState == kWiFiStationState_Connecting_Failed)
+        {
+            NetworkCommissioning::NXPWiFiDriver::GetInstance().RevertConfiguration();
+            mWifiIsProvisioned = false;
+        }
         sInstance._SetWiFiStationState(kWiFiStationState_NotConnected);
         sInstance.OnStationDisconnected();
         if (delegate)
@@ -488,7 +520,6 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState()
 
         ChipLogProgress(DeviceLayer, "%s Internet connectivity %s", "IPv6", (haveIPv6Conn) ? "ESTABLISHED" : "LOST");
     }
-
 }
 
 void ConnectivityManagerImpl::_NetifExtCallback(struct netif * netif, netif_nsc_reason_t reason,
@@ -688,7 +719,7 @@ CHIP_ERROR ConnectivityManagerImpl::_DisconnectNetwork(void)
     int ret        = 0;
     CHIP_ERROR err = CHIP_NO_ERROR;
 
-    if (ConnectivityMgrImpl().IsWiFiStationConnected())
+    if (ConnectivityMgrImpl().IsWiFiStationConnected() || (mWiFiStationState == kWiFiStationState_Connecting))
     {
         ChipLogProgress(NetworkProvisioning, "Disconnecting from WiFi network.");
 
