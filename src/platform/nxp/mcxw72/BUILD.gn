@@ -143,7 +143,6 @@ static_library("nxp_platform") {
     sources += [ "../mcxw71/LowPowerHooks.cpp" ]
   }
 
-
   deps += [ 
     "${chip_root}/src/platform/logging:headers",
     "${chip_root}/src/lib/dnssd:constants",
@@ -158,6 +157,10 @@ static_library("nxp_platform") {
 
     deps += [ "${chip_root}/third_party/openthread:openthread" ]
     public_deps += [ "${chip_root}/third_party/openthread:openthread-platform" ]
+
+    if (nxp_enable_matter_cli) {
+      public_deps += [ "${chip_root}/third_party/openthread:openthread_cli" ]
+    }
 
     if (chip_mdns == "platform") {
         sources += [
