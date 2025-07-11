@@ -1,0 +1,110 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterBindingPluginServerInitCallback();
+void MatterCameraAvSettingsUserLevelManagementPluginServerInitCallback();
+void MatterCameraAvStreamManagementPluginServerInitCallback();
+void MatterChimePluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDiagnosticLogsPluginServerInitCallback();
+void MatterEthernetNetworkDiagnosticsPluginServerInitCallback();
+void MatterFaultInjectionPluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterGroupsPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterLocalizationConfigurationPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterSoftwareDiagnosticsPluginServerInitCallback();
+void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
+void MatterTimeSynchronizationPluginServerInitCallback();
+void MatterUserLabelPluginServerInitCallback();
+void MatterWebRTCTransportProviderPluginServerInitCallback();
+void MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterBindingPluginServerShutdownCallback();
+void MatterCameraAvSettingsUserLevelManagementPluginServerShutdownCallback();
+void MatterCameraAvStreamManagementPluginServerShutdownCallback();
+void MatterChimePluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDiagnosticLogsPluginServerShutdownCallback();
+void MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();
+void MatterFaultInjectionPluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterGroupsPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterLocalizationConfigurationPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
+void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
+void MatterTimeSynchronizationPluginServerShutdownCallback();
+void MatterUserLabelPluginServerShutdownCallback();
+void MatterWebRTCTransportProviderPluginServerShutdownCallback();
+void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT \
+    MatterAccessControlPluginServerInitCallback(); \
+    MatterAdministratorCommissioningPluginServerInitCallback(); \
+    MatterBasicInformationPluginServerInitCallback(); \
+    MatterBindingPluginServerInitCallback(); \
+    MatterCameraAvSettingsUserLevelManagementPluginServerInitCallback(); \
+    MatterCameraAvStreamManagementPluginServerInitCallback(); \
+    MatterChimePluginServerInitCallback(); \
+    MatterDescriptorPluginServerInitCallback(); \
+    MatterDiagnosticLogsPluginServerInitCallback(); \
+    MatterEthernetNetworkDiagnosticsPluginServerInitCallback(); \
+    MatterFaultInjectionPluginServerInitCallback(); \
+    MatterGeneralCommissioningPluginServerInitCallback(); \
+    MatterGeneralDiagnosticsPluginServerInitCallback(); \
+    MatterGroupKeyManagementPluginServerInitCallback(); \
+    MatterGroupsPluginServerInitCallback(); \
+    MatterIdentifyPluginServerInitCallback(); \
+    MatterLocalizationConfigurationPluginServerInitCallback(); \
+    MatterNetworkCommissioningPluginServerInitCallback(); \
+    MatterOperationalCredentialsPluginServerInitCallback(); \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
+    MatterSoftwareDiagnosticsPluginServerInitCallback(); \
+    MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
+    MatterTimeSynchronizationPluginServerInitCallback(); \
+    MatterUserLabelPluginServerInitCallback(); \
+    MatterWebRTCTransportProviderPluginServerInitCallback(); \
+    MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN \
+    MatterAccessControlPluginServerShutdownCallback(); \
+    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
+    MatterBasicInformationPluginServerShutdownCallback(); \
+    MatterBindingPluginServerShutdownCallback(); \
+    MatterCameraAvSettingsUserLevelManagementPluginServerShutdownCallback(); \
+    MatterCameraAvStreamManagementPluginServerShutdownCallback(); \
+    MatterChimePluginServerShutdownCallback(); \
+    MatterDescriptorPluginServerShutdownCallback(); \
+    MatterDiagnosticLogsPluginServerShutdownCallback(); \
+    MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback(); \
+    MatterFaultInjectionPluginServerShutdownCallback(); \
+    MatterGeneralCommissioningPluginServerShutdownCallback(); \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
+    MatterGroupKeyManagementPluginServerShutdownCallback(); \
+    MatterGroupsPluginServerShutdownCallback(); \
+    MatterIdentifyPluginServerShutdownCallback(); \
+    MatterLocalizationConfigurationPluginServerShutdownCallback(); \
+    MatterNetworkCommissioningPluginServerShutdownCallback(); \
+    MatterOperationalCredentialsPluginServerShutdownCallback(); \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
+    MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
+    MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
+    MatterTimeSynchronizationPluginServerShutdownCallback(); \
+    MatterUserLabelPluginServerShutdownCallback(); \
+    MatterWebRTCTransportProviderPluginServerShutdownCallback(); \
+    MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
+
