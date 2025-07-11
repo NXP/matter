@@ -1,0 +1,86 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDeviceEnergyManagementPluginServerInitCallback();
+void MatterDeviceEnergyManagementModePluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterLocalizationConfigurationPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
+void MatterThermostatPluginServerInitCallback();
+void MatterTimeFormatLocalizationPluginServerInitCallback();
+void MatterUnitLocalizationPluginServerInitCallback();
+void MatterWaterHeaterManagementPluginServerInitCallback();
+void MatterWaterHeaterModePluginServerInitCallback();
+void MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDeviceEnergyManagementPluginServerShutdownCallback();
+void MatterDeviceEnergyManagementModePluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterLocalizationConfigurationPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
+void MatterThermostatPluginServerShutdownCallback();
+void MatterTimeFormatLocalizationPluginServerShutdownCallback();
+void MatterUnitLocalizationPluginServerShutdownCallback();
+void MatterWaterHeaterManagementPluginServerShutdownCallback();
+void MatterWaterHeaterModePluginServerShutdownCallback();
+void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT \
+    MatterAccessControlPluginServerInitCallback(); \
+    MatterAdministratorCommissioningPluginServerInitCallback(); \
+    MatterBasicInformationPluginServerInitCallback(); \
+    MatterDescriptorPluginServerInitCallback(); \
+    MatterDeviceEnergyManagementPluginServerInitCallback(); \
+    MatterDeviceEnergyManagementModePluginServerInitCallback(); \
+    MatterGeneralCommissioningPluginServerInitCallback(); \
+    MatterGeneralDiagnosticsPluginServerInitCallback(); \
+    MatterGroupKeyManagementPluginServerInitCallback(); \
+    MatterIdentifyPluginServerInitCallback(); \
+    MatterLocalizationConfigurationPluginServerInitCallback(); \
+    MatterNetworkCommissioningPluginServerInitCallback(); \
+    MatterOperationalCredentialsPluginServerInitCallback(); \
+    MatterPowerSourcePluginServerInitCallback(); \
+    MatterThermostatPluginServerInitCallback(); \
+    MatterTimeFormatLocalizationPluginServerInitCallback(); \
+    MatterUnitLocalizationPluginServerInitCallback(); \
+    MatterWaterHeaterManagementPluginServerInitCallback(); \
+    MatterWaterHeaterModePluginServerInitCallback(); \
+    MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN \
+    MatterAccessControlPluginServerShutdownCallback(); \
+    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
+    MatterBasicInformationPluginServerShutdownCallback(); \
+    MatterDescriptorPluginServerShutdownCallback(); \
+    MatterDeviceEnergyManagementPluginServerShutdownCallback(); \
+    MatterDeviceEnergyManagementModePluginServerShutdownCallback(); \
+    MatterGeneralCommissioningPluginServerShutdownCallback(); \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
+    MatterGroupKeyManagementPluginServerShutdownCallback(); \
+    MatterIdentifyPluginServerShutdownCallback(); \
+    MatterLocalizationConfigurationPluginServerShutdownCallback(); \
+    MatterNetworkCommissioningPluginServerShutdownCallback(); \
+    MatterOperationalCredentialsPluginServerShutdownCallback(); \
+    MatterPowerSourcePluginServerShutdownCallback(); \
+    MatterThermostatPluginServerShutdownCallback(); \
+    MatterTimeFormatLocalizationPluginServerShutdownCallback(); \
+    MatterUnitLocalizationPluginServerShutdownCallback(); \
+    MatterWaterHeaterManagementPluginServerShutdownCallback(); \
+    MatterWaterHeaterModePluginServerShutdownCallback(); \
+    MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
+

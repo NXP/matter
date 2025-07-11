@@ -1,0 +1,122 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterActivatedCarbonFilterMonitoringPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterAirQualityPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterCarbonDioxideConcentrationMeasurementPluginServerInitCallback();
+void MatterCarbonMonoxideConcentrationMeasurementPluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDiagnosticLogsPluginServerInitCallback();
+void MatterFanControlPluginServerInitCallback();
+void MatterFormaldehydeConcentrationMeasurementPluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterGroupsPluginServerInitCallback();
+void MatterHepaFilterMonitoringPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterNitrogenDioxideConcentrationMeasurementPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOzoneConcentrationMeasurementPluginServerInitCallback();
+void MatterPm10ConcentrationMeasurementPluginServerInitCallback();
+void MatterPm1ConcentrationMeasurementPluginServerInitCallback();
+void MatterPm25ConcentrationMeasurementPluginServerInitCallback();
+void MatterRadonConcentrationMeasurementPluginServerInitCallback();
+void MatterRelativeHumidityMeasurementPluginServerInitCallback();
+void MatterTemperatureMeasurementPluginServerInitCallback();
+void MatterThermostatPluginServerInitCallback();
+void MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterActivatedCarbonFilterMonitoringPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterAirQualityPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterCarbonDioxideConcentrationMeasurementPluginServerShutdownCallback();
+void MatterCarbonMonoxideConcentrationMeasurementPluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDiagnosticLogsPluginServerShutdownCallback();
+void MatterFanControlPluginServerShutdownCallback();
+void MatterFormaldehydeConcentrationMeasurementPluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterGroupsPluginServerShutdownCallback();
+void MatterHepaFilterMonitoringPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterNitrogenDioxideConcentrationMeasurementPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOzoneConcentrationMeasurementPluginServerShutdownCallback();
+void MatterPm10ConcentrationMeasurementPluginServerShutdownCallback();
+void MatterPm1ConcentrationMeasurementPluginServerShutdownCallback();
+void MatterPm25ConcentrationMeasurementPluginServerShutdownCallback();
+void MatterRadonConcentrationMeasurementPluginServerShutdownCallback();
+void MatterRelativeHumidityMeasurementPluginServerShutdownCallback();
+void MatterTemperatureMeasurementPluginServerShutdownCallback();
+void MatterThermostatPluginServerShutdownCallback();
+void MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT \
+    MatterAccessControlPluginServerInitCallback(); \
+    MatterActivatedCarbonFilterMonitoringPluginServerInitCallback(); \
+    MatterAdministratorCommissioningPluginServerInitCallback(); \
+    MatterAirQualityPluginServerInitCallback(); \
+    MatterBasicInformationPluginServerInitCallback(); \
+    MatterCarbonDioxideConcentrationMeasurementPluginServerInitCallback(); \
+    MatterCarbonMonoxideConcentrationMeasurementPluginServerInitCallback(); \
+    MatterDescriptorPluginServerInitCallback(); \
+    MatterDiagnosticLogsPluginServerInitCallback(); \
+    MatterFanControlPluginServerInitCallback(); \
+    MatterFormaldehydeConcentrationMeasurementPluginServerInitCallback(); \
+    MatterGeneralCommissioningPluginServerInitCallback(); \
+    MatterGeneralDiagnosticsPluginServerInitCallback(); \
+    MatterGroupKeyManagementPluginServerInitCallback(); \
+    MatterGroupsPluginServerInitCallback(); \
+    MatterHepaFilterMonitoringPluginServerInitCallback(); \
+    MatterIdentifyPluginServerInitCallback(); \
+    MatterNetworkCommissioningPluginServerInitCallback(); \
+    MatterNitrogenDioxideConcentrationMeasurementPluginServerInitCallback(); \
+    MatterOperationalCredentialsPluginServerInitCallback(); \
+    MatterOzoneConcentrationMeasurementPluginServerInitCallback(); \
+    MatterPm10ConcentrationMeasurementPluginServerInitCallback(); \
+    MatterPm1ConcentrationMeasurementPluginServerInitCallback(); \
+    MatterPm25ConcentrationMeasurementPluginServerInitCallback(); \
+    MatterRadonConcentrationMeasurementPluginServerInitCallback(); \
+    MatterRelativeHumidityMeasurementPluginServerInitCallback(); \
+    MatterTemperatureMeasurementPluginServerInitCallback(); \
+    MatterThermostatPluginServerInitCallback(); \
+    MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN \
+    MatterAccessControlPluginServerShutdownCallback(); \
+    MatterActivatedCarbonFilterMonitoringPluginServerShutdownCallback(); \
+    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
+    MatterAirQualityPluginServerShutdownCallback(); \
+    MatterBasicInformationPluginServerShutdownCallback(); \
+    MatterCarbonDioxideConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterCarbonMonoxideConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterDescriptorPluginServerShutdownCallback(); \
+    MatterDiagnosticLogsPluginServerShutdownCallback(); \
+    MatterFanControlPluginServerShutdownCallback(); \
+    MatterFormaldehydeConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterGeneralCommissioningPluginServerShutdownCallback(); \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
+    MatterGroupKeyManagementPluginServerShutdownCallback(); \
+    MatterGroupsPluginServerShutdownCallback(); \
+    MatterHepaFilterMonitoringPluginServerShutdownCallback(); \
+    MatterIdentifyPluginServerShutdownCallback(); \
+    MatterNetworkCommissioningPluginServerShutdownCallback(); \
+    MatterNitrogenDioxideConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterOperationalCredentialsPluginServerShutdownCallback(); \
+    MatterOzoneConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterPm10ConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterPm1ConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterPm25ConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterRadonConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterRelativeHumidityMeasurementPluginServerShutdownCallback(); \
+    MatterTemperatureMeasurementPluginServerShutdownCallback(); \
+    MatterThermostatPluginServerShutdownCallback(); \
+    MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerShutdownCallback();
+

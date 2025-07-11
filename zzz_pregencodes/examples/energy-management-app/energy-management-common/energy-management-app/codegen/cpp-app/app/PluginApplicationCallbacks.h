@@ -1,0 +1,98 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDeviceEnergyManagementPluginServerInitCallback();
+void MatterDeviceEnergyManagementModePluginServerInitCallback();
+void MatterElectricalEnergyMeasurementPluginServerInitCallback();
+void MatterElectricalPowerMeasurementPluginServerInitCallback();
+void MatterEnergyEvsePluginServerInitCallback();
+void MatterEnergyEvseModePluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterLocalizationConfigurationPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
+void MatterPowerTopologyPluginServerInitCallback();
+void MatterUnitLocalizationPluginServerInitCallback();
+void MatterWaterHeaterManagementPluginServerInitCallback();
+void MatterWaterHeaterModePluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDeviceEnergyManagementPluginServerShutdownCallback();
+void MatterDeviceEnergyManagementModePluginServerShutdownCallback();
+void MatterElectricalEnergyMeasurementPluginServerShutdownCallback();
+void MatterElectricalPowerMeasurementPluginServerShutdownCallback();
+void MatterEnergyEvsePluginServerShutdownCallback();
+void MatterEnergyEvseModePluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterLocalizationConfigurationPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
+void MatterPowerTopologyPluginServerShutdownCallback();
+void MatterUnitLocalizationPluginServerShutdownCallback();
+void MatterWaterHeaterManagementPluginServerShutdownCallback();
+void MatterWaterHeaterModePluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT \
+    MatterAccessControlPluginServerInitCallback(); \
+    MatterAdministratorCommissioningPluginServerInitCallback(); \
+    MatterBasicInformationPluginServerInitCallback(); \
+    MatterDescriptorPluginServerInitCallback(); \
+    MatterDeviceEnergyManagementPluginServerInitCallback(); \
+    MatterDeviceEnergyManagementModePluginServerInitCallback(); \
+    MatterElectricalEnergyMeasurementPluginServerInitCallback(); \
+    MatterElectricalPowerMeasurementPluginServerInitCallback(); \
+    MatterEnergyEvsePluginServerInitCallback(); \
+    MatterEnergyEvseModePluginServerInitCallback(); \
+    MatterGeneralCommissioningPluginServerInitCallback(); \
+    MatterGeneralDiagnosticsPluginServerInitCallback(); \
+    MatterGroupKeyManagementPluginServerInitCallback(); \
+    MatterIdentifyPluginServerInitCallback(); \
+    MatterLocalizationConfigurationPluginServerInitCallback(); \
+    MatterNetworkCommissioningPluginServerInitCallback(); \
+    MatterOperationalCredentialsPluginServerInitCallback(); \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
+    MatterPowerSourcePluginServerInitCallback(); \
+    MatterPowerTopologyPluginServerInitCallback(); \
+    MatterUnitLocalizationPluginServerInitCallback(); \
+    MatterWaterHeaterManagementPluginServerInitCallback(); \
+    MatterWaterHeaterModePluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN \
+    MatterAccessControlPluginServerShutdownCallback(); \
+    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
+    MatterBasicInformationPluginServerShutdownCallback(); \
+    MatterDescriptorPluginServerShutdownCallback(); \
+    MatterDeviceEnergyManagementPluginServerShutdownCallback(); \
+    MatterDeviceEnergyManagementModePluginServerShutdownCallback(); \
+    MatterElectricalEnergyMeasurementPluginServerShutdownCallback(); \
+    MatterElectricalPowerMeasurementPluginServerShutdownCallback(); \
+    MatterEnergyEvsePluginServerShutdownCallback(); \
+    MatterEnergyEvseModePluginServerShutdownCallback(); \
+    MatterGeneralCommissioningPluginServerShutdownCallback(); \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
+    MatterGroupKeyManagementPluginServerShutdownCallback(); \
+    MatterIdentifyPluginServerShutdownCallback(); \
+    MatterLocalizationConfigurationPluginServerShutdownCallback(); \
+    MatterNetworkCommissioningPluginServerShutdownCallback(); \
+    MatterOperationalCredentialsPluginServerShutdownCallback(); \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
+    MatterPowerSourcePluginServerShutdownCallback(); \
+    MatterPowerTopologyPluginServerShutdownCallback(); \
+    MatterUnitLocalizationPluginServerShutdownCallback(); \
+    MatterWaterHeaterManagementPluginServerShutdownCallback(); \
+    MatterWaterHeaterModePluginServerShutdownCallback();
+
