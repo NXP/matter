@@ -36,11 +36,11 @@ using chip::System::Clock::ClockBase;
 using chip::System::Clock::Microseconds64;
 using chip::System::Clock::Milliseconds64;
 
-constexpr uint16_t kOptionMinCommissioningTimeout    = 0xFF02;
-constexpr uint16_t kOptionEndUserSupportFilePath     = 0xFF03;
-constexpr uint16_t kOptionNetworkDiagnosticsFilePath = 0xFF04;
-constexpr uint16_t kOptionCrashFilePath              = 0xFF05;
-constexpr uint16_t kOptionUseMockClock               = 0xFF06;
+constexpr uint16_t kOptionMinCommissioningTimeout    = 0xE002;
+constexpr uint16_t kOptionEndUserSupportFilePath     = 0xE003;
+constexpr uint16_t kOptionNetworkDiagnosticsFilePath = 0xE004;
+constexpr uint16_t kOptionCrashFilePath              = 0xE005;
+constexpr uint16_t kOptionUseMockClock               = 0xE006;
 
 namespace {
 struct MockClock : public ClockBase
