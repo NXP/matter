@@ -1,0 +1,8 @@
+import("//build_overrides/pigweed.gni")
+
+import("$dir_pw_build/python_venv.gni")
+pw_python_venv("imx_yocto_venv") {
+   path = "$root_build_dir/python-venv"
+   constraints = []
+   requirements = []
+}
