@@ -28,6 +28,11 @@
 #include <lib/core/Optional.h>
 #include <setup_payload/SetupPayload.h>
 
+#if (CHIP_WITH_WEBUI2)
+std::string GetCtwPayloadValue();
+std::string GetCtwQRCode();
+#endif
+
 namespace chip {
 namespace Controller {
 

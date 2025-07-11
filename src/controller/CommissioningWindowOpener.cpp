@@ -27,6 +27,19 @@ using namespace chip::app::Clusters;
 using namespace chip::System::Clock;
 using namespace chip::Crypto;
 
+#if (CHIP_WITH_WEBUI2)
+static std::string ctwPayload = "";
+static std::string ctwQRCode = "";
+
+std::string GetCtwPayloadValue() {
+    return ctwPayload;
+}
+
+std::string GetCtwQRCode() {
+    return ctwQRCode;
+}
+#endif
+
 namespace {
 // TODO: What should the timed invoke timeout here be?
 constexpr uint16_t kTimedInvokeTimeoutMs = 10000;
@@ -255,6 +268,9 @@ void CommissioningWindowOpener::OnOpenCommissioningWindowSuccess(void * context,
         if (err == CHIP_NO_ERROR)
         {
             ChipLogProgress(Controller, "Manual pairing code: [%s]", payloadBuffer);
+            #if (CHIP_WITH_WEBUI2)
+            ctwPayload = payloadBuffer;
+            #endif
         }
         else
         {
@@ -266,6 +282,9 @@ void CommissioningWindowOpener::OnOpenCommissioningWindowSuccess(void * context,
         if (err == CHIP_NO_ERROR)
         {
             ChipLogProgress(Controller, "SetupQRCode: [%s]", payloadBuffer);
+            #if (CHIP_WITH_WEBUI2)
+            ctwQRCode = payloadBuffer;
+            #endif
         }
         else
         {

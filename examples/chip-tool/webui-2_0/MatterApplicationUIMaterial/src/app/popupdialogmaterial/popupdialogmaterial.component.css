@@ -1,0 +1,83 @@
+:not(mat-icon) {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+:host {
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  padding: 10px;
+  border-color: #cbb001;
+  border-radius: 20px;
+  transition: box-shadow 0.3s;
+  background-color: #fff;
+}
+
+h2[mat-dialog-title] .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#logo {
+  width: 80px;
+  height: auto;
+  display: block;
+  margin-bottom: 8px;
+}
+
+h2[mat-dialog-title] .column p {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+mat-dialog-content {
+  padding: 10px;
+}
+
+mat-dialog-content .row p {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* QR Code Styles */
+.qr-code-container {
+  width: 100%;
+  max-width: 250px;
+  margin: 15px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-code-image {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- Dialog Actions Section --- */
+mat-dialog-actions {
+  padding: 8px 24px;
+  justify-content: flex-end;
+  /* justify-content: center; */
+}
+
+.material--dialog--actions--content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.qr-scanner-dialog-container .dialog-container {
+  background-color: white;
+}

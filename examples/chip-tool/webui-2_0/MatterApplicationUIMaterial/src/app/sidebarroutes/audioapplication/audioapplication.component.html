@@ -1,0 +1,117 @@
+<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+  <div class="not-yet-implemented-maindiv"
+    style="margin-top: 20px; margin-bottom: 20px; margin-left: 20px; margin-right: 20px; padding: 20px;
+    border-radius: 20px; width: 100%; height: 100%;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
+    background-color: #ffffff;
+    "
+  >
+    <div class="container-for-media" style="align-items:center; justify-content: center;">
+      <!-- Create a form for the input fields and buttons related to the application -->
+      <div class="grid-container">
+      <mat-form-field class="formfield grid-item item1" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+        <mat-label style="color: #000000">Node Alias (Optional)</mat-label>
+        <input class="grid-item item1" matInput id="nodealias-input">
+      </mat-form-field>
+      <mat-form-field class="formfield item2 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+        <mat-label style="color: #000000">Node ID*</mat-label>
+        <input class="grid-item item1" matInput id="nodeid-input">
+      </mat-form-field>
+      <mat-form-field class="formfield item3 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+        <mat-label style="color: #000000">Endpoint ID*</mat-label>
+        <input class="grid-item item1" matInput id="endpoint-input">
+      </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onLaunchButtonApplicationPress()">
+        <mat-icon>build</mat-icon>
+        <span class="aligned-with-icon">Launch App</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onStopButtonApplicationPress()">
+        <mat-icon>build</mat-icon>
+        <span class="aligned-with-icon">Stop App</span>
+      </mat-chip>
+    </div>
+
+    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Media Control</p>
+    <div class="button-container" style="align-items: center; justify-content: center; text-align: center; display:flex; align-items: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onPlayAppMediaControl()">
+        <mat-icon>album</mat-icon>
+        <span class="aligned-with-icon">Play App</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; align-content: horizontal;" (click)="onPauseAppMediaControl()">
+        <mat-icon>pause</mat-icon>
+        <span class="aligned-with-icon">Pause App</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onStopAppMediaControl()">
+        <mat-icon>stop</mat-icon>
+        <span class="aligned-with-icon">Stop App</span>
+      </mat-chip>
+    </div>
+    <div class="button-container" style="align-items: center; justify-content: center; text-align: center; display:flex; align-items: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; display: flex;" (click)="onPreviousAppMediaControl()">
+        <mat-icon>skip_previous</mat-icon>
+        <span class="aligned-with-icon">Previous</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; align-content: horizontal;" (click)="onNextAppMediaControl()">
+        <mat-icon>skip_next</mat-icon>
+        <span class="aligned-with-icon">Next</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onStartOverAppMediaControl()">
+        <mat-icon>replay</mat-icon>
+        <span class="aligned-with-icon">Start Over</span>
+      </mat-chip>
+    </div>
+    <div class="button-container" style="align-items: center; justify-content: center; text-align: center; display:flex; align-items: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onRewindAppMediaControl()">
+        <mat-icon>fast_rewind</mat-icon>
+        <span class="aligned-with-icon">Fast Rewind</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; align-content: horizontal;" (click)="onFastForwardAppMediaControl()">
+        <mat-icon>fast_forward</mat-icon>
+        <span class="aligned-with-icon">Fast Forward</span>
+      </mat-chip>
+    </div>
+
+    <!-- Media read -->
+    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Media Read</p>
+    <div class="button-container" style="align-items: center; justify-content: center; text-align: center; display:flex; align-items: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateMediaRead('currentstate')">
+        <mat-icon>info</mat-icon>
+        <span class="aligned-with-icon">Current State</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; align-content: horizontal;" (click)="onCurrentStateMediaRead('starttime')">
+        <mat-icon>schedule</mat-icon>
+        <span class="aligned-with-icon">Start time</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateMediaRead('duration')">
+        <mat-icon>schedule</mat-icon>
+        <span class="aligned-with-icon">Duration</span>
+      </mat-chip>
+    </div>
+
+    <div class="button-container" style="align-items: center; justify-content: center; text-align: center; display:flex; align-items: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; display: flex;" (click)="onCurrentStateMediaRead('sampledposition')">
+        <mat-icon>where_to_vote</mat-icon>
+        <span class="aligned-with-icon">Sampled Position</span>
+      </mat-chip>
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; align-content: horizontal;" (click)="onCurrentStateMediaRead('playbackspeed')">
+        <mat-icon>speed</mat-icon>
+        <span class="aligned-with-icon">Playback Speed</span>
+      </mat-chip>
+    </div>
+
+  </div>
+
+  <div class="d-flex justify-content-center"
+      style="display: flex; justify-content: center; align-items: center; flex-direction: row; width: 100%; height: auto;">
+      <div class="line">
+        <app-scrollgallerycomponent></app-scrollgallerycomponent>
+      </div>
+  </div>
+
+  <app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>
+
+</div>

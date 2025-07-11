@@ -1,0 +1,176 @@
+<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+  <div class="not-yet-implemented-maindiv"
+    style="margin-top: 20px; margin-bottom: 20px; margin-left: 20px; margin-right: 20px; padding: 20px;
+    border-radius: 20px; width: 100%; height: 100%; align-items: center; justify-content: center;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
+    background-color: #ffffff;
+    "
+  >
+    <!-- If we have cards available  -->
+    <!-- <div *ngIf="cards.length > 0" class="container-fluid" style="align-items: center; justify-content: center;" >
+      <div #ngxmasonry_container fxLayoutAlign="center js-masonry masonry-container"
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 100%;
+        "
+        class="mt-4" data-masonry-options='{ "isFitWidth": true }'>
+        <ngx-masonry [options]="{ gutter: 10, fitWidth: true }" style="margin: 10px"
+          fxLayout="row" fxLayoutAlign="center" #masonry_item_container [style]="
+            'flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 100%;'
+          "
+        >
+          <div
+            #card_component_container
+            id="card--component--container--id"
+            *ngFor="let card of cards"
+            class="card pr-3 masonry-item masonry-item--width2"
+            style="
+              box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
+                0 2px 10px 0 rgba(0, 0, 0, 0.12);
+              transition: box-shadow 0.3s;
+              border-radius: 20px;
+              align-items: center;
+              justify-content: center;
+              display: flex;
+            "
+            [ngStyle] = "{
+              'margin': '{{getMasonryLayoutGap(card)}}',
+            }"
+
+            ngxMasonryItem>
+            <app-applicationcard
+              [deviceTypeImageURL]="card.deviceTypeImageURL"
+              [isDeviceOnline]="card.isDeviceOnline"
+              [deviceId]="card.deviceId"
+              [deviceName]="card.deviceName"
+              [endpoints]="card.endpoints"
+              [withSubscription]="false"
+            ></app-applicationcard>
+          </div>
+
+        </ngx-masonry>
+      </div>
+
+    </div> -->
+
+    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Upload OTA File</p>
+
+    <div class="container-for-media" style="align-items:center; justify-content: center;">
+      <form enctype="multipart/form-data" (ngSubmit)="onUploadOTASubmitted($event)" id="form">
+        <div class="container-for-media" style="align-items:center; justify-content: center; display: flex; margin: 10px; padding: 10px; margin-left:auto;
+          margin-right:auto;
+          height:auto;
+          width:auto;">
+    
+          <div style="float: left;">
+            <label for="file-upload" class="custom-file-upload">
+              <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" >
+                <mat-icon>attach_file</mat-icon>
+                <span class="aligned-with-icon">Press here to select the OTA file to upload</span>
+              </mat-chip>
+            </label>
+            <input type="file" class="file-input" id="file-upload"
+            (change)="onFileSelected($event)" #fileUpload>
+          </div>
+    
+          <div class="file-upload float-left" style="clear: left;">
+            {{fileName || "No file uploaded yet."}}
+          </div>
+    
+        </div>
+    
+        <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
+          <button class="onsubmitformbutton" type="submit">
+            <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;">
+              <mat-icon>upload</mat-icon>
+              <span class="aligned-with-icon">Upload File</span>
+            </mat-chip>
+          </button>
+        </div>
+      </form>
+    </div>  
+    
+
+    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Run Chip-OTA-Provider</p>
+
+    <div class="container-for-media" style="align-items:center; justify-content: center;">
+      <div class="grid-container">
+        <mat-form-field class="formfield grid-item item1-eevse-charging-enable" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Command*</mat-label>
+          <input class="grid-item item1-span" matInput id="command" value="ota provider">
+        </mat-form-field>
+
+        <mat-form-field class="formfield grid-item item2-eevse-charging-enable" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Discriminator*</mat-label>
+          <input class="grid-item item3" matInput id="discriminator" value="22">
+        </mat-form-field>
+
+        <mat-form-field class="formfield item3-eevse-charging-enable grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">File Name*</mat-label>
+          <input class="grid-item item3" matInput id="file-path" placeholder="nxp-thermostat-app.ota">
+        </mat-form-field>
+
+      </div>
+    </div>
+
+    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onRunChipOTAProvider()">
+        <mat-icon>upload</mat-icon>
+        <span class="aligned-with-icon">Run Chip-OTA-Provider</span>
+      </mat-chip>
+    </div>
+
+    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Write ACL (OTA)</p>
+
+    <div class="container-for-media" style="align-items:center; justify-content: center;">
+      <!-- Create a form for the input fields and buttons related to the application -->
+      <div class="grid-container">
+      <mat-form-field class="formfield" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+        <mat-label style="color: #000000">Chip-OTA-Provider device node ID*</mat-label>
+        <input class="grid-item item1" matInput id="chip-ota-provider-device-nodeid">
+      </mat-form-field>
+      </div>
+    </div>
+
+    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onRunACLOTAProvider()" >
+        <mat-icon>upload</mat-icon>
+        <span class="aligned-with-icon">Send Write ACL (OTA) command</span>
+      </mat-chip>
+    </div>
+
+    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">OTA Software Update Requestor</p>
+    <div class="container-for-media" style="align-items:center; justify-content: center;">
+      <div class="grid-container">
+        <!-- <mat-form-field class="formfield grid-item item1-eevse-charging-enable" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Charging Enabled Until</mat-label>
+          <input class="grid-item item1" matInput id="charging-enabled-until">
+        </mat-form-field> -->
+
+        <mat-form-field class="formfield grid-item item1-span" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">OTA Provider Node ID*</mat-label>
+          <input class="grid-item item1-span" matInput id="ota-provider-node-id">
+        </mat-form-field>
+
+        <mat-form-field class="formfield item3-eevse-charging-enable grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">OTA Requestor Node ID*</mat-label>
+          <input class="grid-item item3" matInput id="ota-requestor-node-id">
+        </mat-form-field>
+
+      </div>
+    </div>
+    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
+      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onRunOTASoftwareUpdateRequestor()">
+        <mat-icon>upload</mat-icon>
+        <span class="aligned-with-icon">Send OTA software update requestor command</span>
+      </mat-chip>
+    </div>
+
+    <app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>
+  </div>
+</div>
+
