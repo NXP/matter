@@ -1,0 +1,90 @@
+# Copyright (c) 2020 Project CHIP Authors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build_overrides/chip.gni")
+
+import("${chip_root}/src/app/chip_data_model.gni")
+import("${chip_root}/src/lib/lib.gni")
+
+chip_data_model("nxp-media-common") {
+  zap_file = "nxp-media-app.zap"
+
+  is_server = true
+}
+
+config("config") {
+  include_dirs = [
+    "include",
+    "clusters",
+    "${chip_root}/examples/tv-app/tv-common/clusters",
+    "${chip_root}/examples/tv-app/tv-common/include",
+  ]
+  if (chip_build_libshell) {
+    include_dirs += [ "shell" ]
+  }
+}
+
+source_set("nxp-media-common-sources") {
+  deps = [
+    "${chip_root}/examples/platform/linux:app-main",
+    "${chip_root}/examples/nxp-media-app/nxp-media-common",
+    "${chip_root}/src/lib",
+    "${chip_root}/third_party/jsoncpp",
+  ]
+  public_configs = [ ":config" ]
+  sources = [
+    "${chip_root}/examples/tv-app/tv-common/clusters/account-login/AccountLoginManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/account-login/AccountLoginManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/application-basic/ApplicationBasicManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/application-basic/ApplicationBasicManager.h",
+    "clusters/application-launcher/ApplicationLauncherManager.cpp",
+    "clusters/application-launcher/ApplicationLauncherManager.h",
+    "clusters/audio-output/AudioOutputManager.cpp",
+    "clusters/audio-output/AudioOutputManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/channel/ChannelManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/channel/ChannelManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/content-control/ContentController.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/content-control/ContentController.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/content-launcher/ContentLauncherManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/content-launcher/ContentLauncherManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/keypad-input/KeypadInputManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/keypad-input/KeypadInputManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/low-power/LowPowerManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/low-power/LowPowerManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/media-input/MediaInputManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/media-input/MediaInputManager.h",
+    "clusters/media-playback/MediaPlaybackManager.cpp",
+    "clusters/media-playback/MediaPlaybackManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/messages/MessagesManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/messages/MessagesManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/target-navigator/TargetNavigatorManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/target-navigator/TargetNavigatorManager.h",
+    "${chip_root}/examples/tv-app/tv-common/clusters/wake-on-lan/WakeOnLanManager.cpp",
+    "${chip_root}/examples/tv-app/tv-common/clusters/wake-on-lan/WakeOnLanManager.h",
+    "${chip_root}/examples/tv-app/tv-common/include/AppTv.h",
+    "${chip_root}/examples/tv-app/tv-common/include/CHIPProjectAppConfig.h",
+    "include/MediaIPCHelper.h",
+    "${chip_root}/examples/tv-app/tv-common/src/AppTv.cpp",
+    "src/MediaIPCHelper.cpp",
+    "src/AudioOutput.cpp",
+    "${chip_root}/examples/tv-app/tv-common/src/ZCLCallbacks.cpp",
+  ]
+
+  if (chip_build_libshell) {
+    sources += [
+      "shell/AppTvShellCommands.cpp",
+      "shell/AppTvShellCommands.h",
+    ]
+  }
+}
