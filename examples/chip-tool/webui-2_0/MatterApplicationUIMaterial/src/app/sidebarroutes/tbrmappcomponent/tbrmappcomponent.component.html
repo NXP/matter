@@ -1,0 +1,127 @@
+<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+    <div class="not-yet-implemented-maindiv"
+      style="margin-top: 20px; margin-bottom: 20px; margin-left: 20px; margin-right: 20px; padding: 20px;
+      border-radius: 20px; width: 100%; height: 100%; align-items: center; justify-content: center;
+      box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
+      background-color: #ffffff;
+      "
+    >
+
+    <!-- <div *ngIf="cards.length > 0" class="container-fluid" style="align-items: center; justify-content: center;" >
+    <div #ngxmasonry_container fxLayoutAlign="center js-masonry masonry-container"
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+      "
+      class="mt-4" data-masonry-options='{ "isFitWidth": true }'>
+      <ngx-masonry [options]="{ gutter: 10, fitWidth: true }" style="margin: 10px"
+        fxLayout="row" fxLayoutAlign="center" #masonry_item_container [style]="
+          'flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 100%;'
+        "
+      >
+        <div
+          #card_component_container
+          id="card--component--container--id"
+          *ngFor="let card of cards"
+          class="card pr-3 masonry-item masonry-item--width2"
+          style="
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
+              0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            transition: box-shadow 0.3s;
+            border-radius: 20px;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+          "
+          [ngStyle] = "{
+            'margin': '{{getMasonryLayoutGap(card)}}',
+          }"
+
+          ngxMasonryItem>
+          <app-applicationcard
+            [deviceTypeImageURL]="card.deviceTypeImageURL"
+            [isDeviceOnline]="card.isDeviceOnline"
+            [deviceId]="card.deviceId"
+            [deviceName]="card.deviceName"
+            [endpoints]="card.endpoints"
+            [withSubscription]="false"
+          ></app-applicationcard>
+        </div>
+
+      </ngx-masonry>
+    </div>
+
+    </div> --!>
+
+    <!-- sendOpenCommissioningWindowWithBCM(nodeId: string, windowTimeout: string, option: string, iteration: string, discriminator: string) : Observable<string> {
+      -->
+      <div class="container-for-media" style="align-items:center; justify-content: center;">
+        <!-- Create a form for the input fields and buttons related to the application -->
+        <div class="grid-container">
+        <mat-form-field class="formfield grid-item item1" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Type (eg. armfailsafe, commissioningcomplete)</mat-label>
+          <input class="grid-item item1" matInput id="type-input">
+        </mat-form-field>
+        <mat-form-field class="formfield item2 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Expiry Length (Seconds)*</mat-label>
+          <input class="grid-item item1" matInput id="explength-input">
+        </mat-form-field>
+        <mat-form-field class="formfield item3 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Breadcrumb*</mat-label>
+          <input class="grid-item item1" matInput id="breadcrumb-input">
+        </mat-form-field>
+        <mat-form-field class="formfield item4 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Node ID</mat-label>
+          <input class="grid-item item1" matInput id="nodeid-input">
+        </mat-form-field>
+        <mat-form-field class="formfield item5 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Endpoint ID</mat-label>
+          <input class="grid-item item1" matInput id="endpointid-input">
+        </mat-form-field>
+        </div>
+      </div>
+
+      <div>* = only for armfailsafe</div>
+
+      <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Actions</p>
+      <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
+        <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="sendTBRMCommissioningArmDisarm()">
+          <mat-icon>build</mat-icon>
+          <span class="aligned-with-icon">Send TBRM arm / disarm Command</span>
+        </mat-chip>
+      </div>
+
+      <div class="container-for-media" style="align-items:center; justify-content: center;">
+        <!-- Create a form for the input fields and buttons related to the application -->
+        <div class="grid-container">
+        <mat-form-field class="formfield grid-item item1" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Dataset</mat-label>
+          <input class="grid-item item1" matInput id="dataset-input" value="0e080000000000010000000300001235060004001fffe002082ad51c02fe8f64f20708fddb8af85255f93a051083e2b9b2cc609b00125adbf823ea2ab20102c4d904100a133626c411d7de02a570ca3c3d80470c0402a0f7f8031054687265616441637469766554657374">
+        </mat-form-field>
+        <mat-form-field class="formfield item2 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Node ID</mat-label>
+          <input class="grid-item item1" matInput id="nodeid2-input">
+        </mat-form-field>
+        <mat-form-field class="formfield item3 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
+          <mat-label style="color: #000000">Endpoint ID</mat-label>
+          <input class="grid-item item1" matInput id="endpointid2-input">
+        </mat-form-field>
+        </div>
+      </div>
+
+      <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Actions</p>
+      <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
+        <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="sendTBRMCommissioningSetActiveDataset()">
+          <mat-icon>build</mat-icon>
+          <span class="aligned-with-icon">Send TBRM Set Dataset Command</span>
+        </mat-chip>
+      </div>
+
+      <app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>
+
+    </div>
+  </div>

@@ -1,0 +1,90 @@
+.qr-scanner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    border-color: #cbb001;
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    background-color: #222;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.button-wrapper {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 8px 12px;
+    background: #d8d8d8;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    justify-content: center;
+}
+
+.button-wrapper .action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    height: auto;
+    border-width: 1px;
+    border-style: solid;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s, background-color 0.3s, border-color 0.3s;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* Specific button colors (Start Scan) */
+.button-wrapper .action-button.start-button {
+    border-color: #28a745;
+    background-color: #28a745;
+    color: white;
+}
+
+.button-wrapper .action-button.start-button:hover:not(:disabled) {
+    background-color: #218838;
+    border-color: #218838;
+}
+
+/* Specific button colors (Cancel) */
+.button-wrapper .action-button.cancel-button {
+    border-color: #dc3545;
+    background-color: white;
+    /* Or slightly off-white if needed */
+    color: #dc3545;
+}
+
+.button-wrapper .action-button.cancel-button:hover:not(:disabled) {
+    background-color: rgba(220, 53, 69, 0.08);
+}
+
+.button-wrapper .action-button:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.button-wrapper .action-button:disabled {
+    border-color: #cccccc;
+    background-color: #e0e0e0;
+    color: #aaaaaa;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.button-wrapper .action-button mat-icon {
+    margin-right: 8px;
+}
