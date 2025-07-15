@@ -190,6 +190,8 @@
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    0x00000201, /* Cluster: Thermostat, Command: AddThermostatSuggestion, Privilege: manage */ \
+    0x00000201, /* Cluster: Thermostat, Command: RemoveThermostatSuggestion, Privilege: manage */ \
     0x00000201, /* Cluster: Thermostat, Command: AtomicRequest, Privilege: manage */ \
 }
 
@@ -229,6 +231,8 @@
     0x00000001, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     0x00000003, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     0x00000004, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    0x00000007, /* Cluster: Thermostat, Command: AddThermostatSuggestion, Privilege: manage */ \
+    0x00000008, /* Cluster: Thermostat, Command: RemoveThermostatSuggestion, Privilege: manage */ \
     0x000000FE, /* Cluster: Thermostat, Command: AtomicRequest, Privilege: manage */ \
 }
 
@@ -268,6 +272,8 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Thermostat, Command: AddThermostatSuggestion, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Thermostat, Command: RemoveThermostatSuggestion, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Thermostat, Command: AtomicRequest, Privilege: manage */ \
 }
 
