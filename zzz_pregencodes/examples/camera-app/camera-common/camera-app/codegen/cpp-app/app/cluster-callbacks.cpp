@@ -70,6 +70,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::OtaSoftwareUpdateRequestor::Id:
         emberAfOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
         break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterInitCallback(endpoint);
+        break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterInitCallback(endpoint);
         break;
@@ -158,6 +161,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::OtaSoftwareUpdateRequestor::Id:
         emberAfOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterShutdownCallback(endpoint);

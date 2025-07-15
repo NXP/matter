@@ -19,6 +19,7 @@ void MatterLocalizationConfigurationPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
 void MatterSoftwareDiagnosticsPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterTimeSynchronizationPluginServerInitCallback();
@@ -45,6 +46,7 @@ void MatterLocalizationConfigurationPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterTimeSynchronizationPluginServerShutdownCallback();
@@ -73,6 +75,7 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterNetworkCommissioningPluginServerInitCallback(); \
     MatterOperationalCredentialsPluginServerInitCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
+    MatterPowerSourcePluginServerInitCallback(); \
     MatterSoftwareDiagnosticsPluginServerInitCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterTimeSynchronizationPluginServerInitCallback(); \
@@ -101,6 +104,7 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterNetworkCommissioningPluginServerShutdownCallback(); \
     MatterOperationalCredentialsPluginServerShutdownCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
+    MatterPowerSourcePluginServerShutdownCallback(); \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterTimeSynchronizationPluginServerShutdownCallback(); \
