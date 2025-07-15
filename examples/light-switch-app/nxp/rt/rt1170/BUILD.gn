@@ -128,7 +128,6 @@ rt_executable("light-switch") {
     "${chip_root}/examples/providers/DeviceInfoProviderImpl.cpp",
     "../../common/main/AppTask.cpp",
     "../../common/main/DeviceCallbacks.cpp",
-    "../../common/main/ZclCallbacks.cpp",
     "../../common/main/include/AppEvent.h",
     "../../common/main/include/AppTask.h",
     "../../common/main/include/DeviceCallbacks.h",
@@ -167,6 +166,7 @@ rt_executable("light-switch") {
     "${common_example_dir}/factory_data/source/AppFactoryDataDefaultImpl.cpp",
     "${common_example_dir}/app_task/source/AppTaskBase.cpp",
     "${common_example_dir}/app_task/source/AppTaskFreeRTOS.cpp",
+    "${common_example_dir}/clusters/source/ZclCallbacks.cpp",
   ]
 
   deps = [

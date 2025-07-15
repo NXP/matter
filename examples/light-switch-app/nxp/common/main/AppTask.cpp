@@ -49,20 +49,20 @@ static CHIP_ERROR cliLightSwitch(int argc, char * argv[])
     if (!strcmp(argv[0], "on"))
     {
         ChipLogDetail(Shell, "OpLightSwitch : Set Light to %s state", argv[0]);
-		switch_cmd_id = 0x1;
-		LightSwitchApp::AppTask::GetDefaultInstance().NotifyBoundDeviceHandler();
+        switch_cmd_id = 0x1;
+        LightSwitchApp::AppTask::GetDefaultInstance().NotifyBoundDeviceHandler();
     }
     else if (!strcmp(argv[0], "off"))
     {
         ChipLogDetail(Shell, "OpLightSwitch : Set Light to %s state", argv[0]);
         switch_cmd_id = 0x2;
-		LightSwitchApp::AppTask::GetDefaultInstance().NotifyBoundDeviceHandler();
+        LightSwitchApp::AppTask::GetDefaultInstance().NotifyBoundDeviceHandler();
     }
 	else if (!strcmp(argv[0], "toggle"))
     {
         ChipLogDetail(Shell, "OpLightSwitch : Toggle Light");
         switch_cmd_id = 0x3;
-		LightSwitchApp::AppTask::GetDefaultInstance().NotifyBoundDeviceHandler();
+        LightSwitchApp::AppTask::GetDefaultInstance().NotifyBoundDeviceHandler();
     }
     else
     {
@@ -108,6 +108,14 @@ chip::NXP::App::AppTaskBase & chip::NXP::App::GetAppTask()
     return LightSwitchApp::AppTask::GetDefaultInstance();
 }
 
+CHIP_ERROR LightSwitchApp::AppTask::ProcessSetStateClusterHandler(void)
+{
+    switch_cmd_id = 0x3;
+    NotifyBoundDeviceHandler();
+
+    return CHIP_NO_ERROR;
+}
+
 void LightSwitchApp::AppTask::NotifyBoundDevice(intptr_t arg)
 {
     CHIP_ERROR error;
@@ -115,18 +123,19 @@ void LightSwitchApp::AppTask::NotifyBoundDevice(intptr_t arg)
 
     switch (switch_cmd_id) {
     case 1 :
-        PRINTF("-->  Turn on light\r\n");
+        ChipLogProgress(DeviceLayer, "Turn on light");
         data->localEndpointId = 1;
         data->clusterId   = chip::app::Clusters::OnOff::Id;
         data->commandId   = chip::app::Clusters::OnOff::Commands::On::Id;
         break;
     case 2 :
-        PRINTF("--> Turn off light\r\n");
+        ChipLogProgress(DeviceLayer, "Turn off light");
         data->localEndpointId = 1;
         data->clusterId   = chip::app::Clusters::OnOff::Id;
         data->commandId   = chip::app::Clusters::OnOff::Commands::Off::Id;
         break;
     case 3 :
+        ChipLogProgress(DeviceLayer, "Toggle light");
         data->localEndpointId = 1;
         data->clusterId = chip::app::Clusters::OnOff::Id;
         data->commandId = chip::app::Clusters::OnOff::Commands::Toggle::Id;
