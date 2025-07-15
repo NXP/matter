@@ -520,6 +520,24 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
             }
             break;
         }
+        case Commands::AddThermostatSuggestion::Id: {
+            Commands::AddThermostatSuggestion::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfThermostatClusterAddThermostatSuggestionCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::RemoveThermostatSuggestion::Id: {
+            Commands::RemoveThermostatSuggestion::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfThermostatClusterRemoveThermostatSuggestionCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
         case Commands::AtomicRequest::Id: {
             Commands::AtomicRequest::DecodableType commandData;
             TLVError = DataModel::Decode(aDataTlv, commandData);

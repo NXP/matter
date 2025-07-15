@@ -527,96 +527,6 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
 
 } // namespace Identify
 
-namespace JointFabricAdministrator {
-
-Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
-                                                          TLV::TLVReader & aDataTlv)
-{
-    CHIP_ERROR TLVError = CHIP_NO_ERROR;
-    bool wasHandled     = false;
-    {
-        switch (aCommandPath.mCommandId)
-        {
-        case Commands::ICACCSRRequest::Id: {
-            Commands::ICACCSRRequest::DecodableType commandData;
-            TLVError = DataModel::Decode(aDataTlv, commandData);
-            if (TLVError == CHIP_NO_ERROR)
-            {
-                wasHandled = emberAfJointFabricAdministratorClusterICACCSRRequestCallback(apCommandObj, aCommandPath, commandData);
-            }
-            break;
-        }
-        case Commands::AddICAC::Id: {
-            Commands::AddICAC::DecodableType commandData;
-            TLVError = DataModel::Decode(aDataTlv, commandData);
-            if (TLVError == CHIP_NO_ERROR)
-            {
-                wasHandled = emberAfJointFabricAdministratorClusterAddICACCallback(apCommandObj, aCommandPath, commandData);
-            }
-            break;
-        }
-        case Commands::OpenJointCommissioningWindow::Id: {
-            Commands::OpenJointCommissioningWindow::DecodableType commandData;
-            TLVError = DataModel::Decode(aDataTlv, commandData);
-            if (TLVError == CHIP_NO_ERROR)
-            {
-                wasHandled = emberAfJointFabricAdministratorClusterOpenJointCommissioningWindowCallback(apCommandObj, aCommandPath,
-                                                                                                        commandData);
-            }
-            break;
-        }
-        case Commands::TransferAnchorRequest::Id: {
-            Commands::TransferAnchorRequest::DecodableType commandData;
-            TLVError = DataModel::Decode(aDataTlv, commandData);
-            if (TLVError == CHIP_NO_ERROR)
-            {
-                wasHandled =
-                    emberAfJointFabricAdministratorClusterTransferAnchorRequestCallback(apCommandObj, aCommandPath, commandData);
-            }
-            break;
-        }
-        case Commands::TransferAnchorComplete::Id: {
-            Commands::TransferAnchorComplete::DecodableType commandData;
-            TLVError = DataModel::Decode(aDataTlv, commandData);
-            if (TLVError == CHIP_NO_ERROR)
-            {
-                wasHandled =
-                    emberAfJointFabricAdministratorClusterTransferAnchorCompleteCallback(apCommandObj, aCommandPath, commandData);
-            }
-            break;
-        }
-        case Commands::AnnounceJointFabricAdministrator::Id: {
-            Commands::AnnounceJointFabricAdministrator::DecodableType commandData;
-            TLVError = DataModel::Decode(aDataTlv, commandData);
-            if (TLVError == CHIP_NO_ERROR)
-            {
-                wasHandled = emberAfJointFabricAdministratorClusterAnnounceJointFabricAdministratorCallback(
-                    apCommandObj, aCommandPath, commandData);
-            }
-            break;
-        }
-        default: {
-            // Unrecognized command ID, error status will apply.
-            ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
-                         ChipLogValueMEI(aCommandPath.mCommandId), ChipLogValueMEI(aCommandPath.mClusterId));
-            return Protocols::InteractionModel::Status::UnsupportedCommand;
-        }
-        }
-    }
-
-    if (CHIP_NO_ERROR != TLVError || !wasHandled)
-    {
-        ChipLogProgress(Zcl, "Failed to dispatch command, TLVError=%" CHIP_ERROR_FORMAT, TLVError.Format());
-        return Protocols::InteractionModel::Status::InvalidCommand;
-    }
-
-    // We use success as a marker that no special handling is required
-    // This is to avoid having a std::optional which uses slightly more code.
-    return Protocols::InteractionModel::Status::Success;
-}
-
-} // namespace JointFabricAdministrator
-
 namespace JointFabricDatastore {
 
 Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
@@ -1259,9 +1169,6 @@ void DispatchSingleClusterCommand(const ConcreteCommandPath & aCommandPath, TLV:
         break;
     case Clusters::Identify::Id:
         errorStatus = Clusters::Identify::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
-        break;
-    case Clusters::JointFabricAdministrator::Id:
-        errorStatus = Clusters::JointFabricAdministrator::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
     case Clusters::JointFabricDatastore::Id:
         errorStatus = Clusters::JointFabricDatastore::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
