@@ -35,7 +35,6 @@ set(COMMON_KCONFIG_ENV_SETTINGS CHIP_ROOT=${CHIP_ROOT})
 get_filename_component(GEN_DIR ${CHIP_ROOT}/zzz_generated/ REALPATH)
 get_filename_component(NXP_EXAMPLE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/common REALPATH)
 get_filename_component(NXP_EXAMPLE_ZAP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/zap REALPATH)
-get_filename_component(ALL_CLUSTERS_COMMON_DIR ${CHIP_ROOT}/examples/all-clusters-app/all-clusters-common REALPATH)
 get_filename_component(EXAMPLE_PLATFORM_NXP_COMMON_DIR ${CHIP_ROOT}/examples/platform/nxp/common REALPATH)
 get_filename_component(NXP_MATTER_SUPPORT_DIR ${CHIP_ROOT}/third_party/nxp/nxp_matter_support REALPATH)
 
@@ -76,8 +75,8 @@ include(${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_common.cmake)
 
 target_include_directories(app
     PRIVATE
+    ${NXP_EXAMPLE_DIR}/main
     ${NXP_EXAMPLE_DIR}/main/include
-    ${ALL_CLUSTERS_COMMON_DIR}/include
     ${GEN_DIR}/app-common
 )
 
@@ -86,10 +85,22 @@ target_sources(app
     ${NXP_EXAMPLE_DIR}/main/main.cpp
     ${NXP_EXAMPLE_DIR}/main/AppTask.cpp
     ${NXP_EXAMPLE_DIR}/main/DeviceCallbacks.cpp
-    ${NXP_EXAMPLE_DIR}/main/ZclCallbacks.cpp
     ${NXP_EXAMPLE_DIR}/main/include/binding-handler.h
     ${NXP_EXAMPLE_DIR}/main/binding-handler.cpp
 )
+
+# This is a temporary workaround to avoid a popular linker limitation.
+# The linker is unable to replace weak symbols with their strong
+# counterparts when both weak and strong symbols are hosted in a static
+# library. A solution for this issue is to add the object files which
+# are defining the strong symbols directly to the linker command line.
+if(CONFIG_CHIP_NXP_PLATFORM_MCXW71 OR CONFIG_CHIP_NXP_PLATFORM_MCXW72)
+    target_sources(app
+        PRIVATE
+        ${SdkRootDirPath}/middleware/multicore/mcmgr/src/mcmgr_imu_internal.c
+        ${SdkRootDirPath}/components/gpio/fsl_adapter_gpio.c
+    )
+endif()
 
 if(CONFIG_CHIP_ETHERNET)
     message(FATAL_ERROR "Ethernet configuration is not supported in this application.")
