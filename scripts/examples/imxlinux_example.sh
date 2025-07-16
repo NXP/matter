@@ -175,6 +175,7 @@ PLATFORM_CFLAGS='-DCHIP_DEVICE_CONFIG_WIFI_STATION_IF_NAME=\"mlan0\"'
 gn gen --check --fail-on-unused-args --root="$src" "$out" --args="target_os=\"linux\" target_cpu=\"$target_cpu\" arm_arch=\"$arm_arch\"
 chip_with_trusty_os=$trusty
 chip_with_imx_ele=$imx_ele
+enable_exceptions=true
 $pregen_arg
 treat_warnings_as_errors=false
 import(\"//build_overrides/build.gni\")
