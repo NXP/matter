@@ -29,13 +29,10 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::ServerList::Id,
 };
 inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
     Attributes::ClientList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::DeviceTypeList::Id,
     Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
     Attributes::PartsList::Id,
     Attributes::ServerList::Id,
 };

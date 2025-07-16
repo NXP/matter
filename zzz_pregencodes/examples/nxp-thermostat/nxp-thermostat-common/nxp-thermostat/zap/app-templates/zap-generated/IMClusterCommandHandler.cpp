@@ -37,6 +37,88 @@ namespace app {
 
 namespace Clusters {
 
+namespace DiagnosticLogs {
+
+Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
+                                                          TLV::TLVReader & aDataTlv)
+{
+    CHIP_ERROR TLVError = CHIP_NO_ERROR;
+    bool wasHandled     = false;
+    {
+        switch (aCommandPath.mCommandId)
+        {
+        case Commands::RetrieveLogsRequest::Id: {
+            Commands::RetrieveLogsRequest::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfDiagnosticLogsClusterRetrieveLogsRequestCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        default: {
+            // Unrecognized command ID, error status will apply.
+            ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
+                         ChipLogValueMEI(aCommandPath.mCommandId), ChipLogValueMEI(aCommandPath.mClusterId));
+            return Protocols::InteractionModel::Status::UnsupportedCommand;
+        }
+        }
+    }
+
+    if (CHIP_NO_ERROR != TLVError || !wasHandled)
+    {
+        ChipLogProgress(Zcl, "Failed to dispatch command, TLVError=%" CHIP_ERROR_FORMAT, TLVError.Format());
+        return Protocols::InteractionModel::Status::InvalidCommand;
+    }
+
+    // We use success as a marker that no special handling is required
+    // This is to avoid having a std::optional which uses slightly more code.
+    return Protocols::InteractionModel::Status::Success;
+}
+
+} // namespace DiagnosticLogs
+
+namespace EthernetNetworkDiagnostics {
+
+Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
+                                                          TLV::TLVReader & aDataTlv)
+{
+    CHIP_ERROR TLVError = CHIP_NO_ERROR;
+    bool wasHandled     = false;
+    {
+        switch (aCommandPath.mCommandId)
+        {
+        case Commands::ResetCounts::Id: {
+            Commands::ResetCounts::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfEthernetNetworkDiagnosticsClusterResetCountsCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        default: {
+            // Unrecognized command ID, error status will apply.
+            ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
+                         ChipLogValueMEI(aCommandPath.mCommandId), ChipLogValueMEI(aCommandPath.mClusterId));
+            return Protocols::InteractionModel::Status::UnsupportedCommand;
+        }
+        }
+    }
+
+    if (CHIP_NO_ERROR != TLVError || !wasHandled)
+    {
+        ChipLogProgress(Zcl, "Failed to dispatch command, TLVError=%" CHIP_ERROR_FORMAT, TLVError.Format());
+        return Protocols::InteractionModel::Status::InvalidCommand;
+    }
+
+    // We use success as a marker that no special handling is required
+    // This is to avoid having a std::optional which uses slightly more code.
+    return Protocols::InteractionModel::Status::Success;
+}
+
+} // namespace EthernetNetworkDiagnostics
+
 namespace GroupKeyManagement {
 
 Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
@@ -241,6 +323,48 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
 
 } // namespace Identify
 
+namespace OtaSoftwareUpdateRequestor {
+
+Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
+                                                          TLV::TLVReader & aDataTlv)
+{
+    CHIP_ERROR TLVError = CHIP_NO_ERROR;
+    bool wasHandled     = false;
+    {
+        switch (aCommandPath.mCommandId)
+        {
+        case Commands::AnnounceOTAProvider::Id: {
+            Commands::AnnounceOTAProvider::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled =
+                    emberAfOtaSoftwareUpdateRequestorClusterAnnounceOTAProviderCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        default: {
+            // Unrecognized command ID, error status will apply.
+            ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
+                         ChipLogValueMEI(aCommandPath.mCommandId), ChipLogValueMEI(aCommandPath.mClusterId));
+            return Protocols::InteractionModel::Status::UnsupportedCommand;
+        }
+        }
+    }
+
+    if (CHIP_NO_ERROR != TLVError || !wasHandled)
+    {
+        ChipLogProgress(Zcl, "Failed to dispatch command, TLVError=%" CHIP_ERROR_FORMAT, TLVError.Format());
+        return Protocols::InteractionModel::Status::InvalidCommand;
+    }
+
+    // We use success as a marker that no special handling is required
+    // This is to avoid having a std::optional which uses slightly more code.
+    return Protocols::InteractionModel::Status::Success;
+}
+
+} // namespace OtaSoftwareUpdateRequestor
+
 namespace OperationalCredentials {
 
 Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
@@ -326,6 +450,26 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
             }
             break;
         }
+        case Commands::SetVIDVerificationStatement::Id: {
+            Commands::SetVIDVerificationStatement::DecodableType commandData;
+            TLVError = commandData.Decode(aDataTlv, apCommandObj->GetAccessingFabricIndex());
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfOperationalCredentialsClusterSetVIDVerificationStatementCallback(apCommandObj, aCommandPath,
+                                                                                                     commandData);
+            }
+            break;
+        }
+        case Commands::SignVIDVerificationRequest::Id: {
+            Commands::SignVIDVerificationRequest::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled =
+                    emberAfOperationalCredentialsClusterSignVIDVerificationRequestCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
         default: {
             // Unrecognized command ID, error status will apply.
             ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
@@ -367,6 +511,42 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
             }
             break;
         }
+        case Commands::SetActivePresetRequest::Id: {
+            Commands::SetActivePresetRequest::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfThermostatClusterSetActivePresetRequestCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::AddThermostatSuggestion::Id: {
+            Commands::AddThermostatSuggestion::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfThermostatClusterAddThermostatSuggestionCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::RemoveThermostatSuggestion::Id: {
+            Commands::RemoveThermostatSuggestion::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfThermostatClusterRemoveThermostatSuggestionCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::AtomicRequest::Id: {
+            Commands::AtomicRequest::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfThermostatClusterAtomicRequestCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
         default: {
             // Unrecognized command ID, error status will apply.
             ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
@@ -389,6 +569,47 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
 
 } // namespace Thermostat
 
+namespace ThreadNetworkDiagnostics {
+
+Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
+                                                          TLV::TLVReader & aDataTlv)
+{
+    CHIP_ERROR TLVError = CHIP_NO_ERROR;
+    bool wasHandled     = false;
+    {
+        switch (aCommandPath.mCommandId)
+        {
+        case Commands::ResetCounts::Id: {
+            Commands::ResetCounts::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfThreadNetworkDiagnosticsClusterResetCountsCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        default: {
+            // Unrecognized command ID, error status will apply.
+            ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
+                         ChipLogValueMEI(aCommandPath.mCommandId), ChipLogValueMEI(aCommandPath.mClusterId));
+            return Protocols::InteractionModel::Status::UnsupportedCommand;
+        }
+        }
+    }
+
+    if (CHIP_NO_ERROR != TLVError || !wasHandled)
+    {
+        ChipLogProgress(Zcl, "Failed to dispatch command, TLVError=%" CHIP_ERROR_FORMAT, TLVError.Format());
+        return Protocols::InteractionModel::Status::InvalidCommand;
+    }
+
+    // We use success as a marker that no special handling is required
+    // This is to avoid having a std::optional which uses slightly more code.
+    return Protocols::InteractionModel::Status::Success;
+}
+
+} // namespace ThreadNetworkDiagnostics
+
 } // namespace Clusters
 
 void DispatchSingleClusterCommand(const ConcreteCommandPath & aCommandPath, TLV::TLVReader & aReader, CommandHandler * apCommandObj)
@@ -397,6 +618,12 @@ void DispatchSingleClusterCommand(const ConcreteCommandPath & aCommandPath, TLV:
 
     switch (aCommandPath.mClusterId)
     {
+    case Clusters::DiagnosticLogs::Id:
+        errorStatus = Clusters::DiagnosticLogs::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
+    case Clusters::EthernetNetworkDiagnostics::Id:
+        errorStatus = Clusters::EthernetNetworkDiagnostics::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
     case Clusters::GroupKeyManagement::Id:
         errorStatus = Clusters::GroupKeyManagement::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
@@ -406,11 +633,17 @@ void DispatchSingleClusterCommand(const ConcreteCommandPath & aCommandPath, TLV:
     case Clusters::Identify::Id:
         errorStatus = Clusters::Identify::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
+    case Clusters::OtaSoftwareUpdateRequestor::Id:
+        errorStatus = Clusters::OtaSoftwareUpdateRequestor::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
     case Clusters::OperationalCredentials::Id:
         errorStatus = Clusters::OperationalCredentials::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
     case Clusters::Thermostat::Id:
         errorStatus = Clusters::Thermostat::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
+    case Clusters::ThreadNetworkDiagnostics::Id:
+        errorStatus = Clusters::ThreadNetworkDiagnostics::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
     default:
         ChipLogError(Zcl, "Unknown cluster " ChipLogFormatMEI, ChipLogValueMEI(aCommandPath.mClusterId));
