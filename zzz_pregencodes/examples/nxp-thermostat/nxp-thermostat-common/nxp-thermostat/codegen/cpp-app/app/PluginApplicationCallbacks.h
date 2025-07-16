@@ -2,7 +2,10 @@
 void MatterAccessControlPluginServerInitCallback();
 void MatterAdministratorCommissioningPluginServerInitCallback();
 void MatterBasicInformationPluginServerInitCallback();
+void MatterBindingPluginServerInitCallback();
 void MatterDescriptorPluginServerInitCallback();
+void MatterDiagnosticLogsPluginServerInitCallback();
+void MatterEthernetNetworkDiagnosticsPluginServerInitCallback();
 void MatterGeneralCommissioningPluginServerInitCallback();
 void MatterGeneralDiagnosticsPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
@@ -11,14 +14,21 @@ void MatterIdentifyPluginServerInitCallback();
 void MatterLocalizationConfigurationPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterSoftwareDiagnosticsPluginServerInitCallback();
 void MatterThermostatPluginServerInitCallback();
-void MatterTimeFormatLocalizationPluginServerInitCallback();
+void MatterThermostatUserInterfaceConfigurationPluginServerInitCallback();
+void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterUnitLocalizationPluginServerInitCallback();
+void MatterUserLabelPluginServerInitCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 void MatterAccessControlPluginServerShutdownCallback();
 void MatterAdministratorCommissioningPluginServerShutdownCallback();
 void MatterBasicInformationPluginServerShutdownCallback();
+void MatterBindingPluginServerShutdownCallback();
 void MatterDescriptorPluginServerShutdownCallback();
+void MatterDiagnosticLogsPluginServerShutdownCallback();
+void MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterGeneralCommissioningPluginServerShutdownCallback();
 void MatterGeneralDiagnosticsPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
@@ -27,16 +37,23 @@ void MatterIdentifyPluginServerShutdownCallback();
 void MatterLocalizationConfigurationPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThermostatPluginServerShutdownCallback();
-void MatterTimeFormatLocalizationPluginServerShutdownCallback();
+void MatterThermostatUserInterfaceConfigurationPluginServerShutdownCallback();
+void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterUnitLocalizationPluginServerShutdownCallback();
+void MatterUserLabelPluginServerShutdownCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 
 #define MATTER_PLUGINS_INIT \
     MatterAccessControlPluginServerInitCallback(); \
     MatterAdministratorCommissioningPluginServerInitCallback(); \
     MatterBasicInformationPluginServerInitCallback(); \
+    MatterBindingPluginServerInitCallback(); \
     MatterDescriptorPluginServerInitCallback(); \
+    MatterDiagnosticLogsPluginServerInitCallback(); \
+    MatterEthernetNetworkDiagnosticsPluginServerInitCallback(); \
     MatterGeneralCommissioningPluginServerInitCallback(); \
     MatterGeneralDiagnosticsPluginServerInitCallback(); \
     MatterGroupKeyManagementPluginServerInitCallback(); \
@@ -45,16 +62,23 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterLocalizationConfigurationPluginServerInitCallback(); \
     MatterNetworkCommissioningPluginServerInitCallback(); \
     MatterOperationalCredentialsPluginServerInitCallback(); \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
+    MatterSoftwareDiagnosticsPluginServerInitCallback(); \
     MatterThermostatPluginServerInitCallback(); \
-    MatterTimeFormatLocalizationPluginServerInitCallback(); \
+    MatterThermostatUserInterfaceConfigurationPluginServerInitCallback(); \
+    MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterUnitLocalizationPluginServerInitCallback(); \
+    MatterUserLabelPluginServerInitCallback(); \
     MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 
 #define MATTER_PLUGINS_SHUTDOWN \
     MatterAccessControlPluginServerShutdownCallback(); \
     MatterAdministratorCommissioningPluginServerShutdownCallback(); \
     MatterBasicInformationPluginServerShutdownCallback(); \
+    MatterBindingPluginServerShutdownCallback(); \
     MatterDescriptorPluginServerShutdownCallback(); \
+    MatterDiagnosticLogsPluginServerShutdownCallback(); \
+    MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterGeneralCommissioningPluginServerShutdownCallback(); \
     MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
     MatterGroupKeyManagementPluginServerShutdownCallback(); \
@@ -63,8 +87,12 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterLocalizationConfigurationPluginServerShutdownCallback(); \
     MatterNetworkCommissioningPluginServerShutdownCallback(); \
     MatterOperationalCredentialsPluginServerShutdownCallback(); \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
+    MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
     MatterThermostatPluginServerShutdownCallback(); \
-    MatterTimeFormatLocalizationPluginServerShutdownCallback(); \
+    MatterThermostatUserInterfaceConfigurationPluginServerShutdownCallback(); \
+    MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterUnitLocalizationPluginServerShutdownCallback(); \
+    MatterUserLabelPluginServerShutdownCallback(); \
     MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 

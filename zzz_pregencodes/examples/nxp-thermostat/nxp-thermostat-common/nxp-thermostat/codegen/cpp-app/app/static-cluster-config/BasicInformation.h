@@ -22,19 +22,27 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AttributeList::Id,
     Attributes::CapabilityMinima::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::ConfigurationVersion::Id,
     Attributes::DataModelRevision::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::HardwareVersion::Id,
     Attributes::HardwareVersionString::Id,
+    Attributes::LocalConfigDisabled::Id,
     Attributes::Location::Id,
+    Attributes::ManufacturingDate::Id,
     Attributes::MaxPathsPerInvoke::Id,
     Attributes::NodeLabel::Id,
+    Attributes::PartNumber::Id,
     Attributes::ProductID::Id,
+    Attributes::ProductLabel::Id,
     Attributes::ProductName::Id,
+    Attributes::ProductURL::Id,
+    Attributes::SerialNumber::Id,
     Attributes::SoftwareVersion::Id,
     Attributes::SoftwareVersionString::Id,
     Attributes::SpecificationVersion::Id,
+    Attributes::UniqueID::Id,
     Attributes::VendorID::Id,
     Attributes::VendorName::Id,
 };
@@ -59,19 +67,27 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::AttributeList::Id:
     case Attributes::CapabilityMinima::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::ConfigurationVersion::Id:
     case Attributes::DataModelRevision::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::HardwareVersion::Id:
     case Attributes::HardwareVersionString::Id:
+    case Attributes::LocalConfigDisabled::Id:
     case Attributes::Location::Id:
+    case Attributes::ManufacturingDate::Id:
     case Attributes::MaxPathsPerInvoke::Id:
     case Attributes::NodeLabel::Id:
+    case Attributes::PartNumber::Id:
     case Attributes::ProductID::Id:
+    case Attributes::ProductLabel::Id:
     case Attributes::ProductName::Id:
+    case Attributes::ProductURL::Id:
+    case Attributes::SerialNumber::Id:
     case Attributes::SoftwareVersion::Id:
     case Attributes::SoftwareVersionString::Id:
     case Attributes::SpecificationVersion::Id:
+    case Attributes::UniqueID::Id:
     case Attributes::VendorID::Id:
     case Attributes::VendorName::Id:
       return true;

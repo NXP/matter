@@ -19,8 +19,17 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         emberAfBasicInformationClusterInitCallback(endpoint);
         break;
+    case app::Clusters::Binding::Id:
+        emberAfBindingClusterInitCallback(endpoint);
+        break;
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::DiagnosticLogs::Id:
+        emberAfDiagnosticLogsClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::EthernetNetworkDiagnostics::Id:
+        emberAfEthernetNetworkDiagnosticsClusterInitCallback(endpoint);
         break;
     case app::Clusters::GeneralCommissioning::Id:
         emberAfGeneralCommissioningClusterInitCallback(endpoint);
@@ -46,14 +55,26 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterInitCallback(endpoint);
         break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        emberAfOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::SoftwareDiagnostics::Id:
+        emberAfSoftwareDiagnosticsClusterInitCallback(endpoint);
+        break;
     case app::Clusters::Thermostat::Id:
         emberAfThermostatClusterInitCallback(endpoint);
         break;
-    case app::Clusters::TimeFormatLocalization::Id:
-        emberAfTimeFormatLocalizationClusterInitCallback(endpoint);
+    case app::Clusters::ThermostatUserInterfaceConfiguration::Id:
+        emberAfThermostatUserInterfaceConfigurationClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::ThreadNetworkDiagnostics::Id:
+        emberAfThreadNetworkDiagnosticsClusterInitCallback(endpoint);
         break;
     case app::Clusters::UnitLocalization::Id:
         emberAfUnitLocalizationClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::UserLabel::Id:
+        emberAfUserLabelClusterInitCallback(endpoint);
         break;
     case app::Clusters::WiFiNetworkDiagnostics::Id:
         emberAfWiFiNetworkDiagnosticsClusterInitCallback(endpoint);
@@ -78,8 +99,17 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         emberAfBasicInformationClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::Binding::Id:
+        emberAfBindingClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::DiagnosticLogs::Id:
+        emberAfDiagnosticLogsClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::EthernetNetworkDiagnostics::Id:
+        emberAfEthernetNetworkDiagnosticsClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::GeneralCommissioning::Id:
         emberAfGeneralCommissioningClusterShutdownCallback(endpoint);
@@ -105,14 +135,26 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        emberAfOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::SoftwareDiagnostics::Id:
+        emberAfSoftwareDiagnosticsClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::Thermostat::Id:
         emberAfThermostatClusterShutdownCallback(endpoint);
         break;
-    case app::Clusters::TimeFormatLocalization::Id:
-        emberAfTimeFormatLocalizationClusterShutdownCallback(endpoint);
+    case app::Clusters::ThermostatUserInterfaceConfiguration::Id:
+        emberAfThermostatUserInterfaceConfigurationClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::ThreadNetworkDiagnostics::Id:
+        emberAfThreadNetworkDiagnosticsClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::UnitLocalization::Id:
         emberAfUnitLocalizationClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::UserLabel::Id:
+        emberAfUserLabelClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::WiFiNetworkDiagnostics::Id:
         emberAfWiFiNetworkDiagnosticsClusterShutdownCallback(endpoint);
