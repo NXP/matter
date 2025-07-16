@@ -109,6 +109,10 @@
 #define CONFIG_THREAD_DEVICE_TYPE kThreadDeviceType_Router
 #endif
 
+#if CHIP_CONFIG_SYNCHRONOUS_REPORTS_ENABLED
+#include <app/reporting/SynchronizedReportSchedulerImpl.h>
+#endif
+
 using namespace chip;
 using namespace chip::TLV;
 using namespace ::chip::Credentials;
@@ -161,6 +165,13 @@ void UnlockOpenThreadTask(void)
 void chip::NXP::App::AppTaskBase::InitServer(intptr_t arg)
 {
     GetAppTask().PreInitMatterServerInstance();
+
+#if CHIP_CONFIG_SYNCHRONOUS_REPORTS_ENABLED
+    // Report scheduler and timer delegate instance
+    static chip::app::DefaultTimerDelegate sTimerDelegate;
+    static chip::app::reporting::SynchronizedReportSchedulerImpl sReportScheduler(&sTimerDelegate);
+    initParams.reportScheduler = &sReportScheduler;
+#endif
 
 #if CONFIG_CHIP_TEST_EVENT && CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
     static OTATestEventTriggerDelegate testEventTriggerDelegate{ ByteSpan(sTestEventTriggerEnableKey) };
