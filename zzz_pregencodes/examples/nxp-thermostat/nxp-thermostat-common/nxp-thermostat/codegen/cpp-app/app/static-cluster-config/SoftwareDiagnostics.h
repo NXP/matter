@@ -1,45 +1,41 @@
 // DO NOT EDIT - Generated file
 //
-// Application configuration for Identify based on EMBER configuration
+// Application configuration for SoftwareDiagnostics based on EMBER configuration
 // from /opt/matter/matter_dev/connectedhomeip/examples/nxp-thermostat/nxp-thermostat-common/nxp-thermostat.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
-#include <clusters/Identify/AttributeIds.h>
-#include <clusters/Identify/CommandIds.h>
-#include <clusters/Identify/Enums.h>
+#include <clusters/SoftwareDiagnostics/AttributeIds.h>
+#include <clusters/SoftwareDiagnostics/CommandIds.h>
+#include <clusters/SoftwareDiagnostics/Enums.h>
 
 #include <array>
 
 namespace chip {
 namespace app {
 namespace Clusters {
-namespace Identify {
+namespace SoftwareDiagnostics {
 namespace StaticApplicationConfig {
 namespace detail {
-inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
+inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::ClusterRevision::Id,
+    Attributes::CurrentHeapFree::Id,
+    Attributes::CurrentHeapHighWatermark::Id,
+    Attributes::CurrentHeapUsed::Id,
     Attributes::FeatureMap::Id,
-    Attributes::IdentifyTime::Id,
-    Attributes::IdentifyType::Id,
+    Attributes::ThreadMetrics::Id,
 };
-
-inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::Identify::Id,
-    Commands::TriggerEffect::Id,
-};
-
 } // namespace detail
 
-using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
+using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 1,
+        .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
+        .enabledCommands = Span<const CommandId>(),
     },
 } };
 
@@ -47,9 +43,11 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
 inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
   switch (attributeId) {
     case Attributes::ClusterRevision::Id:
+    case Attributes::CurrentHeapFree::Id:
+    case Attributes::CurrentHeapHighWatermark::Id:
+    case Attributes::CurrentHeapUsed::Id:
     case Attributes::FeatureMap::Id:
-    case Attributes::IdentifyTime::Id:
-    case Attributes::IdentifyType::Id:
+    case Attributes::ThreadMetrics::Id:
       return true;
     default:
       return false;
@@ -59,16 +57,13 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
 // If a specific command is supported at all across all endpoint static instantiations
 inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
   switch (commandId) {
-    case Commands::Identify::Id:
-    case Commands::TriggerEffect::Id:
-      return true;
     default:
       return false;
   }
 }
 
 } // namespace StaticApplicationConfig
-} // namespace Identify
+} // namespace SoftwareDiagnostics
 } // namespace Clusters
 } // namespace app
 } // namespace chip

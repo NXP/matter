@@ -20,12 +20,14 @@ namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::AttributeList::Id,
+    Attributes::BootReason::Id,
     Attributes::ClusterRevision::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::NetworkInterfaces::Id,
     Attributes::RebootCount::Id,
     Attributes::TestEventTriggersEnabled::Id,
+    Attributes::TotalOperationalHours::Id,
     Attributes::UpTime::Id,
 };
 
@@ -54,12 +56,14 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
   switch (attributeId) {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
+    case Attributes::BootReason::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::NetworkInterfaces::Id:
     case Attributes::RebootCount::Id:
     case Attributes::TestEventTriggersEnabled::Id:
+    case Attributes::TotalOperationalHours::Id:
     case Attributes::UpTime::Id:
       return true;
     default:

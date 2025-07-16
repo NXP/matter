@@ -18,23 +18,44 @@ namespace Thermostat {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
+    Attributes::AbsMaxCoolSetpointLimit::Id,
     Attributes::AbsMaxHeatSetpointLimit::Id,
+    Attributes::AbsMinCoolSetpointLimit::Id,
     Attributes::AbsMinHeatSetpointLimit::Id,
     Attributes::AcceptedCommandList::Id,
+    Attributes::ActivePresetHandle::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::ControlSequenceOfOperation::Id,
+    Attributes::CurrentThermostatSuggestion::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::LocalTemperature::Id,
+    Attributes::LocalTemperatureCalibration::Id,
+    Attributes::MaxCoolSetpointLimit::Id,
     Attributes::MaxHeatSetpointLimit::Id,
+    Attributes::MaxThermostatSuggestions::Id,
+    Attributes::MinCoolSetpointLimit::Id,
     Attributes::MinHeatSetpointLimit::Id,
+    Attributes::MinSetpointDeadBand::Id,
+    Attributes::NumberOfPresets::Id,
+    Attributes::OccupiedCoolingSetpoint::Id,
     Attributes::OccupiedHeatingSetpoint::Id,
-    Attributes::PIHeatingDemand::Id,
+    Attributes::Presets::Id,
+    Attributes::PresetTypes::Id,
+    Attributes::SetpointHoldExpiryTimestamp::Id,
     Attributes::SystemMode::Id,
+    Attributes::ThermostatSuggestionNotFollowingReason::Id,
+    Attributes::ThermostatSuggestions::Id,
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
+    Commands::AddThermostatSuggestion::Id,
+    Commands::AddThermostatSuggestionResponse::Id,
+    Commands::AtomicRequest::Id,
+    Commands::AtomicResponse::Id,
+    Commands::RemoveThermostatSuggestion::Id,
+    Commands::SetActivePresetRequest::Id,
     Commands::SetpointRaiseLower::Id,
 };
 
@@ -46,7 +67,10 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
     {
         .endpointNumber = 1,
         .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kHeating// feature bit 0x1
+            FeatureBitmapType::kHeating, // feature bit 0x1
+            FeatureBitmapType::kCooling, // feature bit 0x2
+            FeatureBitmapType::kAutoMode, // feature bit 0x20
+            FeatureBitmapType::kPresets// feature bit 0x100
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
@@ -56,20 +80,35 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
 // If a specific attribute is supported at all across all endpoint static instantiations
 inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
   switch (attributeId) {
-    case Attributes::PIHeatingDemand::Id:
+    case Attributes::AbsMaxCoolSetpointLimit::Id:
     case Attributes::AbsMaxHeatSetpointLimit::Id:
+    case Attributes::AbsMinCoolSetpointLimit::Id:
     case Attributes::AbsMinHeatSetpointLimit::Id:
     case Attributes::AcceptedCommandList::Id:
+    case Attributes::ActivePresetHandle::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::ControlSequenceOfOperation::Id:
+    case Attributes::CurrentThermostatSuggestion::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::LocalTemperature::Id:
+    case Attributes::LocalTemperatureCalibration::Id:
+    case Attributes::MaxCoolSetpointLimit::Id:
     case Attributes::MaxHeatSetpointLimit::Id:
+    case Attributes::MaxThermostatSuggestions::Id:
+    case Attributes::MinCoolSetpointLimit::Id:
     case Attributes::MinHeatSetpointLimit::Id:
+    case Attributes::MinSetpointDeadBand::Id:
+    case Attributes::NumberOfPresets::Id:
+    case Attributes::OccupiedCoolingSetpoint::Id:
     case Attributes::OccupiedHeatingSetpoint::Id:
+    case Attributes::PresetTypes::Id:
+    case Attributes::Presets::Id:
+    case Attributes::SetpointHoldExpiryTimestamp::Id:
     case Attributes::SystemMode::Id:
+    case Attributes::ThermostatSuggestionNotFollowingReason::Id:
+    case Attributes::ThermostatSuggestions::Id:
       return true;
     default:
       return false;
@@ -79,6 +118,12 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
 // If a specific command is supported at all across all endpoint static instantiations
 inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
   switch (commandId) {
+    case Commands::AddThermostatSuggestion::Id:
+    case Commands::AddThermostatSuggestionResponse::Id:
+    case Commands::AtomicRequest::Id:
+    case Commands::AtomicResponse::Id:
+    case Commands::RemoveThermostatSuggestion::Id:
+    case Commands::SetActivePresetRequest::Id:
     case Commands::SetpointRaiseLower::Id:
       return true;
     default:
