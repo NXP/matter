@@ -96,9 +96,10 @@ export class CardscomponentComponent implements AfterViewInit, OnDestroy {
 
                 console.log("Node alias: " + current_node_alias)
                 console.log("Current node ID: " + current_node_id)
-                console.log("Node endpoint info data: " + Object.entries(node_endpoint_info_data).toString())
-                
+
                 if (node_endpoint_info_data != null) {
+                  console.log("Node endpoint info data: " + Object.entries(node_endpoint_info_data).toString())
+
                   for (const [key, value] of Object.entries(node_endpoint_info_data)) {
                     for (let j = 0; j < (value as any).length; ++j) {
                       // Adaugam endpoint la card curent cu ID = key si nume = endpoint_info_data[key][j]
@@ -109,7 +110,7 @@ export class CardscomponentComponent implements AfterViewInit, OnDestroy {
                           true, // Enabled Status
                           undefined // Not subscribed (no subscription ID)
                         )
-                        console.log("Creez endpoint-ul: " + current_endpoint.endpointId + "; " + current_endpoint.endpointName + "; " + current_endpoint.endpointImageURL)
+                        console.log("Create endpoint-ul: " + current_endpoint.endpointId + "; " + current_endpoint.endpointName + "; " + current_endpoint.endpointImageURL)
                         card.endpoints.push(current_endpoint)
 
                         // If it is not a Matter Root node, show it
@@ -118,13 +119,18 @@ export class CardscomponentComponent implements AfterViewInit, OnDestroy {
                           true, // Enabled Status
                           undefined // Not subscribed (no subscription ID)
                         )
-                        console.log("Creez endpoint-ul: " + current_endpoint.endpointId + "; " + current_endpoint.endpointName + "; " + current_endpoint.endpointImageURL)
+                        console.log("Create endpoint-ul: " + current_endpoint.endpointId + "; " + current_endpoint.endpointName + "; " + current_endpoint.endpointImageURL)
                         card.endpoints.push(current_endpoint)
                       }
-
                     }
                   }
-                }
+                } else {
+                  let current_endpoint = new EndpointModel("", "Offline device", "../../../../assets/unknown-device.png",
+                          false, // Enabled Status
+                          undefined // Not subscribed (no subscription ID)
+                        )
+                  card.endpoints.push(current_endpoint)
+                } 
                 this.cards.push(card)
               }
             }

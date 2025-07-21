@@ -12,14 +12,11 @@ import { API_BASE_URL } from '../../api_addresses';
 })
 
 export class PostRequestsService {
-  
-
-
 
   constructor(private httpClient: HttpClient, private appDialogService: AppDialogService) { }
   serverUrl: string = API_BASE_URL;
 
-  sendPairBLEThreadCommand(deviceId: string, pinCode: string, nodeAlias: string, dataset: string, discriminator: string) : Observable<string> {
+  sendPairBLEThreadCommand(deviceId: string, pinCode: string, nodeAlias: string, dataset: string, discriminator: string): Observable<string> {
     const data = {
       nodeId: deviceId,
       pinCode: pinCode,
@@ -34,15 +31,16 @@ export class PostRequestsService {
     );
 
     return this.httpClient.post<string>(
-      `${this.serverUrl}/pairing`, JSON.stringify(data)).pipe(
+      `${this.serverUrl}/pairing`, JSON.stringify(data)
+    ).pipe(
       catchError((error: any) => {
         console.error('Error sending pairing request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
-  sendPairBLEWifiCommand(deviceId: string, pinCode: string, nodeAlias: string, net_ssid: string, net_pass: string, discriminator: string) : Observable<string> {
+  sendPairBLEWifiCommand(deviceId: string, pinCode: string, nodeAlias: string, net_ssid: string, net_pass: string, discriminator: string): Observable<string> {
     const data = {
       nodeId: deviceId,
       pinCode: pinCode,
@@ -57,15 +55,16 @@ export class PostRequestsService {
     )
     // Send the pairing request to the server
     return this.httpClient.post<string>(
-      `${this.serverUrl}/pairing`, JSON.stringify(data)).pipe(
+      `${this.serverUrl}/pairing`, JSON.stringify(data)
+    ).pipe(
       catchError((error: any) => {
         console.error('Error sending pairing request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
-  sendPairOnNetworkCommand(deviceId: string, passCode: string, nodeAlias: string) : Observable<string>{
+  sendPairOnNetworkCommand(deviceId: string, passCode: string, nodeAlias: string): Observable<string> {
     const data = {
       nodeId: deviceId,
       pinCode: passCode,
@@ -83,11 +82,11 @@ export class PostRequestsService {
       catchError((error: any) => {
         console.error('Error sending pairing request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
-  sendPairQRCodeCommand(deviceId: string, payload: string, nodeAlias: string) : Observable<string>{
+  sendPairQRCodeCommand(deviceId: string, payload: string, nodeAlias: string): Observable<string> {
     const data = {
       nodeId: deviceId,
       payload: payload,
@@ -105,8 +104,29 @@ export class PostRequestsService {
       catchError((error: any) => {
         console.error('Error sending pairing request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
+  }
+
+  sendUnpairCommand(nodeAlias: string, deviceId: string): Observable<string> {
+    const data = {
+      nodeAlias: nodeAlias,
+      nodeId: deviceId,
+      type: "unpair"
+    };
+
+    console.log(
+      `Sending pairing unpair request to ${this.serverUrl}/pairing with data: ${JSON.stringify(data)}`
+    )
+
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/pairing`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending pairing request', error);
+        return throwError(error.message)
+      })
+    );
   }
 
   sendPairOnnetworkJointFabricBCMOnboarding(deviceId: string, passCode: string, nodeAlias: string) {
@@ -127,8 +147,8 @@ export class PostRequestsService {
       catchError((error: any) => {
         console.error('Error sending pairing request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
   sendPairOnnetworkJointFabricECMOnboarding(deviceId: string, passCode: string) {
     const data = {
@@ -148,11 +168,11 @@ export class PostRequestsService {
       catchError((error: any) => {
         console.error('Error sending pairing request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
-  sendPairEthernetCommand(deviceId: string, pinCode: string, discriminator: string, ip_address: string, port: string) : Observable<string> {
+  sendPairEthernetCommand(deviceId: string, pinCode: string, discriminator: string, ip_address: string, port: string): Observable<string> {
     const data = {
       nodeId: deviceId,
       pinCode: pinCode,
@@ -167,16 +187,34 @@ export class PostRequestsService {
     );
 
     return this.httpClient.post<string>(
-      `${this.serverUrl}/pairing`, JSON.stringify(data)).pipe(
+      `${this.serverUrl}/pairing`, JSON.stringify(data)
+    ).pipe(
       catchError((error: any) => {
         console.error('Error sending pairing request', error);
         return throwError(error.message)
-      }
-    ));
-
+      })
+    );
   }
 
-  sendOnOffToggleEndpointCommand(deviceId: string, endPointId: string, type: string) : Observable<string> {
+  sendForgetDeviceCommand(deviceName: string): Observable<string> {
+    const data = {
+      nodeAlias: deviceName
+    };
+    console.log(
+      `Sending delete_storageNode request to ${this.serverUrl}/delete_storageNode with data: ${JSON.stringify(data)}`
+    );
+
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/delete_storageNode`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending pairing request', error);
+        return throwError(error.message)
+      })
+    );
+  }
+
+  sendOnOffToggleEndpointCommand(deviceId: string, endPointId: string, type: string): Observable<string> {
     const data = {
       nodeAlias: "No Value",
       nodeId: deviceId,
@@ -188,15 +226,16 @@ export class PostRequestsService {
     );
 
     return this.httpClient.post<string>(
-      `${this.serverUrl}/onoff`, JSON.stringify(data)).pipe(
+      `${this.serverUrl}/onoff`, JSON.stringify(data)
+    ).pipe(
       catchError((error: any) => {
         console.error('Error sending on/off toggle request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
-  sendOnOffReadEndpointCommand(deviceId: string, endPointId: string) : Observable<string> {
+  sendOnOffReadEndpointCommand(deviceId: string, endPointId: string): Observable<string> {
     const data = {
       nodeAlias: "No Value",
       nodeId: deviceId,
@@ -207,12 +246,13 @@ export class PostRequestsService {
     );
 
     return this.httpClient.post<string>(
-      `${this.serverUrl}/onoff_report`, JSON.stringify(data)).pipe(
+      `${this.serverUrl}/onoff_report`, JSON.stringify(data)
+    ).pipe(
       catchError((error: any) => {
         console.error('Error sending on/off read request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
   sendBasicInformationCommand(nodeAlias: string, nodeId: string, endPointId: string) {
@@ -226,17 +266,18 @@ export class PostRequestsService {
     );
 
     return this.httpClient.post<string>(
-      `${this.serverUrl}/basicinformation`, JSON.stringify(data)).pipe(
+      `${this.serverUrl}/basicinformation`, JSON.stringify(data)
+    ).pipe(
       catchError((error: any) => {
         console.error('Error sending edit command', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
   // For Open Commissioning Window with BCM/ECM
-  sendOpenCommissioningWindowWithBCM(nodeId: string, windowTimeout: string, option: string, iteration: string, discriminator: string) : Observable<string> {
-    if(nodeId.length == 0 || windowTimeout.length == 0 || option.length == 0 || iteration.length == 0 || discriminator.length == 0) {
+  sendOpenCommissioningWindowWithBCM(nodeId: string, windowTimeout: string, option: string, iteration: string, discriminator: string): Observable<string> {
+    if (nodeId.length == 0 || windowTimeout.length == 0 || option.length == 0 || iteration.length == 0 || discriminator.length == 0) {
       return throwError("Please fill in all the input fields");
     }
     const data = {
@@ -249,12 +290,13 @@ export class PostRequestsService {
     if (data.option == "0") {
       console.log(`Sending Pairing open-commissioning window with BCM option to ${this.serverUrl}/multiadmin with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/multiadmin`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/multiadmin`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending multiadmin pairing BCM request', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("The option field is not 0, please correct the command or send with ECM (option = 1)")
     }
@@ -270,16 +312,17 @@ export class PostRequestsService {
     }
     console.log("Removing stoage node with alias: " + nodeAlias)
     return this.httpClient.post<string>(
-      `${this.serverUrl}/delete_storageNode`, JSON.stringify(data)).pipe(
+      `${this.serverUrl}/delete_storageNode`, JSON.stringify(data)
+    ).pipe(
       catchError((error: any) => {
         console.error('Error sendig delete storageNode request', error);
         return throwError(error.message)
-      }
-    ));
+      })
+    );
   }
 
-  sendOpenCommissioningWindowWithECM(nodeId: string, windowTimeout: string, option: string, iteration: string, discriminator: string) : Observable<string> {
-    if(nodeId.length == 0 || windowTimeout.length == 0 || option.length == 0 || iteration.length == 0 || discriminator.length == 0) {
+  sendOpenCommissioningWindowWithECM(nodeId: string, windowTimeout: string, option: string, iteration: string, discriminator: string): Observable<string> {
+    if (nodeId.length == 0 || windowTimeout.length == 0 || option.length == 0 || iteration.length == 0 || discriminator.length == 0) {
       return throwError("Please fill in all the input fields");
     }
     const data = {
@@ -292,12 +335,13 @@ export class PostRequestsService {
     if (data.option == "1") {
       console.log(`Sending Pairing open-commissioning window with ECM option to ${this.serverUrl}/multiadmin with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/multiadmin`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/multiadmin`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending multiadmin pairing ECM request', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("The option field is not 1, please correct the command or send with BCM (option = 0)")
     }
@@ -305,8 +349,8 @@ export class PostRequestsService {
 
   // For EEVSE
 
-  sendEEVSEEnableChargingCommand(nodeId: string, nodeAlias: string, endpointId: string, minimumChargeCurrent: string, maximumChargeCurrent: string, commandType: string, chargingEnabledUntil?: string) : Observable<string> {
-    var fieldCheck : Function = () => {
+  sendEEVSEEnableChargingCommand(nodeId: string, nodeAlias: string, endpointId: string, minimumChargeCurrent: string, maximumChargeCurrent: string, commandType: string, chargingEnabledUntil?: string): Observable<string> {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && minimumChargeCurrent.length > 0 && maximumChargeCurrent.length > 0;
     }
 
@@ -323,19 +367,20 @@ export class PostRequestsService {
     if (fieldCheck()) {
       console.log(`Sending enable charging EEVSE command to ${this.serverUrl}/eevse_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/eevse_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/eevse_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE enable charging command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId, chargingEnabledUntil, minimumChargeCurrent, maximumChargeCurrent")
+      }
     }
-  }
 
   sendEEVSEWriteUserMaximumChargeCurrentCommand(nodeId: string, nodeAlias: string, endpointId: string, userMaximumChargeCurrent: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && userMaximumChargeCurrent.length > 0;
     }
     const data = {
@@ -346,22 +391,23 @@ export class PostRequestsService {
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending write user maximum charge current EEVSE command to ${this.serverUrl}/eevse_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/eevse_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/eevse_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE write max user charge current command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId, usermaximumchargecurrent)")
     }
   }
 
   sendEEVSEDisableChargingCommand(nodeId: string, nodeAlias: string, endpointId: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0
     }
 
@@ -372,52 +418,53 @@ export class PostRequestsService {
       type: "disable"
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending EEVSE disable charging command to ${this.serverUrl}/eevse_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/eevse_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/eevse_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE disable charging command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId)")
     }
   }
 
 
-sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, nodeAlias? :string) {
-    var fieldCheckCurrentState : Function = () => {
+  sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, nodeAlias?: string) {
+    var fieldCheckCurrentState: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "state"
     }
 
-    var fieldCheckSupplyState : Function = () => {
+    var fieldCheckSupplyState: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "supplystate"
     }
 
-    var fieldCheckFaultState : Function = () => {
+    var fieldCheckFaultState: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "faultstate"
     }
 
-    var fieldCheckChargingEnabledUntil : Function = () => {
+    var fieldCheckChargingEnabledUntil: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "chargingenableduntil"
     }
 
-    var fieldCheckMinimumChargeCurrent : Function = () => {
+    var fieldCheckMinimumChargeCurrent: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "minimumchargecurrent"
     }
 
-    var fieldCheckMaximumChargeCurrent : Function = () => {
+    var fieldCheckMaximumChargeCurrent: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "maximumchargecurrent"
     }
 
-    var fieldCheckSessionId : Function = () => {
+    var fieldCheckSessionId: Function = () => {
 
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "sessionid"
     }
 
-    var fieldCheckSessionDuration : Function = () => {
+    var fieldCheckSessionDuration: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "sessionduration"
     }
 
@@ -428,15 +475,16 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheckCurrentState() || fieldCheckSupplyState() || fieldCheckFaultState() || fieldCheckChargingEnabledUntil() || fieldCheckMinimumChargeCurrent() || fieldCheckMaximumChargeCurrent() || fieldCheckSessionId() || fieldCheckSessionDuration()) {
+    if (fieldCheckCurrentState() || fieldCheckSupplyState() || fieldCheckFaultState() || fieldCheckChargingEnabledUntil() || fieldCheckMinimumChargeCurrent() || fieldCheckMaximumChargeCurrent() || fieldCheckSessionId() || fieldCheckSessionDuration()) {
       console.log(`Sending EEVSE read command to ${this.serverUrl}/eevse_read with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/eevse_read`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/eevse_read`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE read command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
@@ -445,7 +493,7 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
 
   // For Media control read / control
   sendPlayAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "play"
     }
 
@@ -455,22 +503,23 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media play command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media Play command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendPauseAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "pause"
     }
 
@@ -480,22 +529,23 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media pause command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media pause command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendStopAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "stop"
     }
 
@@ -505,22 +555,23 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media stop command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media stop command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendStartOverAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "startover"
     }
 
@@ -530,22 +581,23 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media startover command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media start-over command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendPreviousAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "previous"
     }
 
@@ -555,22 +607,23 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media previous command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media previous command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendNextAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "next"
     }
 
@@ -580,22 +633,23 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media next command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media next command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendRewindAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "rewind"
     }
 
@@ -605,22 +659,23 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media rewind command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media rewind command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendFastForwardAppMediaControlCommmand(nodeId: string, endpointId: string, commandType: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "fastforward"
     }
 
@@ -630,38 +685,39 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       console.log(`Sending Media fastforward command to ${this.serverUrl}/media_control with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_control`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_control`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media fastforward command', error);
           return throwError(error.message);
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
   }
 
   sendOnMediaReadMediaControlCommand(nodeId: string, endpointId: string, commandType: string, nodeAlias: string) {
-    var fieldCheckCurrentState : Function = () => {
+    var fieldCheckCurrentState: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "currentstate" && nodeAlias.length > 0
     }
 
-    var fieldCheckStartTime : Function = () => {
+    var fieldCheckStartTime: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "starttime" && nodeAlias.length > 0
     }
 
-    var fieldCheckDuration : Function = () => {
+    var fieldCheckDuration: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "duration" && nodeAlias.length > 0
     }
 
-    var fieldCheckSampledPosition : Function = () => {
+    var fieldCheckSampledPosition: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "sampledposition" && nodeAlias.length > 0
     }
 
-    var fieldCheckPlaybackSpeedPosition : Function = () => {
+    var fieldCheckPlaybackSpeedPosition: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "playbackspeed" && nodeAlias.length > 0
     }
 
@@ -673,15 +729,16 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       type: commandType
     }
 
-    if(fieldCheckCurrentState() || fieldCheckStartTime() || fieldCheckDuration() || fieldCheckSampledPosition() || fieldCheckPlaybackSpeedPosition()) {
+    if (fieldCheckCurrentState() || fieldCheckStartTime() || fieldCheckDuration() || fieldCheckSampledPosition() || fieldCheckPlaybackSpeedPosition()) {
       console.log(`Sending Media read command to ${this.serverUrl}/media_read with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/media_read`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/media_read`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending Media read command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
     }
@@ -689,7 +746,7 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
 
   sendPayloadParsePostRequest(payload: string) {
     // Returns passcode, result
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return payload.length > 0
     }
 
@@ -700,12 +757,13 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
     if (fieldCheck()) {
       console.log(`Sending Media read command to ${this.serverUrl}/payload_parse with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/payload_parse`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/payload_parse`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending payload parse command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields (payload).")
     }
@@ -713,11 +771,11 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
   }
 
   sendTBRMCommissioningCommand(type: string, expLength: string, breadcrumb: string, nodeId: string, endpointId: string) {
-    var fieldCheckArmFailsafe : Function = () => {
+    var fieldCheckArmFailsafe: Function = () => {
       return type.length > 0 && expLength.length > 0 && breadcrumb.length > 0 && nodeId.length > 0 && endpointId.length > 0 && type === "armfailsafe"
     }
 
-    var fieldCheckCommissioningComplete : Function = () => {
+    var fieldCheckCommissioningComplete: Function = () => {
       return type.length > 0 && nodeId.length > 0 && endpointId.length > 0 && type === "commissioningcomplete"
     }
 
@@ -733,12 +791,13 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
 
       console.log(`Sending TBRM commissioning arm failsafe command to ${this.serverUrl}/generalcommissioning with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/generalcommissioning`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/generalcommissioning`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending TBRM arm failsafe commissioning command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
 
     } else if (fieldCheckCommissioningComplete() && !fieldCheckArmFailsafe()) {
       const data = {
@@ -749,12 +808,13 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
 
       console.log(`Sending TBRM commissioning complete command to ${this.serverUrl}/generalcommissioning with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/generalcommissioning`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/generalcommissioning`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending TBRM commissioning complete command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
 
     } else {
       return throwError("Please complete all the missing input fields")
@@ -763,7 +823,7 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
   }
 
   sendTBRMCommissioningSetActiveDatasetCommand(dataset: string, nodeId: string, endpointId: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+    var fieldCheckSetActiveDataset: Function = () => {
       return dataset.length > 0 && nodeId.length > 0 && endpointId.length > 0
     }
 
@@ -777,19 +837,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
 
       console.log(`Sending TBRM commissioning set active dataset command to ${this.serverUrl}/threadborderroutermanagement with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/threadborderroutermanagement`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/threadborderroutermanagement`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending TBRM set active dataset commissioning command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
     } else {
       return throwError("Please complete all the missing input fields")
     }
   }
 
   sendMediaControlLaunchCommand(nodeId: string, endpointId: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -805,19 +866,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
 
       console.log(`Sending media launch request to ${this.serverUrl}/launcher with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/launcher`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/launcher`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending media launch command', error);
           return throwError(error.message)
-        }
-      ));
-    } else{
+        })
+      );
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
 
   sendMediaControlStopCommand(nodeId: string, endpointId: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && endpointId.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -833,19 +895,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
 
       console.log(`Sending media launch request to ${this.serverUrl}/launcher with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/launcher`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/launcher`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending media launch command', error);
           return throwError(error.message)
-        }
-      ));
-    } else{
+        })
+      );
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
 
   sendEEVSEClearChargingDemandEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && key.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -857,19 +920,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/event_trigger with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/event_trigger`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/event_trigger`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
 
-    } else{
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
   sendEEVSETriggerChargingDemandEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && key.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -881,19 +945,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/event_trigger with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/event_trigger`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/event_trigger`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE command', error);
-          return throwError(error.message)
-        }
-      ));
+           return throwError(error.message)
+        })
+      );
 
-    } else{
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
   sendEEVSEClearPluggedinEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && key.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -905,19 +970,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/event_trigger with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/event_trigger`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/event_trigger`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
 
-    } else{
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
-  sendEEVSEStartPluggedinEvent(nodeId: string,  nodeAlias: string | undefined, key: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+  sendEEVSEStartPluggedinEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && key.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -929,19 +995,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/event_trigger with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/event_trigger`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/event_trigger`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
 
-    } else{
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
-  sendEEVSEClearTriggerEvent(nodeId: string,  nodeAlias: string | undefined, key: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+  sendEEVSEClearTriggerEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && key.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -953,19 +1020,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/event_trigger with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/event_trigger`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/event_trigger`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
 
-    } else{
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
   sendEEVSEStartTriggerEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
-    var fieldCheckSetActiveDataset : Function = () => {
+    var fieldCheckSetActiveDataset: Function = () => {
       return nodeId.length > 0 && key.length > 0
     }
     if (fieldCheckSetActiveDataset()) {
@@ -977,20 +1045,21 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/event_trigger with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/event_trigger`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/event_trigger`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending EEVSE command', error);
           return throwError(error.message)
-        }
-      ));
+        })
+      );
 
-    } else{
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
 
   sendWriteACLBindingCommand(lightNodeId: string, switchNodeId: string, aclEndpointId: string) {
-    var fieldChechSetActiveDataset : Function = () => {
+    var fieldChechSetActiveDataset: Function = () => {
       return lightNodeId.length > 0 && switchNodeId.length > 0 && aclEndpointId.length > 0
     }
     if (fieldChechSetActiveDataset()) {
@@ -1014,19 +1083,20 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/write_acl with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/write_acl`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/write_acl`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending write_acl command', error);
           return throwError(error.message)
-        }
-      ));
-    } else{
+        })
+      );
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
 
   sendWriteBindingCommand(lightNodeId: string, lightEndpointId: string, switchNodeId: string, switchEndpointId: string) {
-    var fieldChechSetActiveDataset : Function = () => {
+    var fieldChechSetActiveDataset: Function = () => {
       return lightNodeId.length > 0 && switchNodeId.length > 0 && lightEndpointId.length > 0 && switchEndpointId.length > 0
     }
     if (fieldChechSetActiveDataset()) {
@@ -1042,13 +1112,14 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/write_binding with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/write_binding`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/write_binding`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending write_binding command', error);
           return throwError(error.message)
-        }
-      ));
-    } else{
+        })
+      );
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
@@ -1063,7 +1134,7 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
   }
 
   sendRunACLOTAProviderCommand(acldevice_nodeid: string) {
-    var fieldCheck : Function = () => {
+    var fieldCheck: Function = () => {
       return acldevice_nodeid.length > 0
     }
 
@@ -1089,13 +1160,14 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/write_acl with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/write_acl`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/write_acl`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending write_acl OTA command', error);
           return throwError(error.message)
-        }
-      ));
-    } else{
+        })
+      );
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
@@ -1104,7 +1176,7 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
     var fieldCheck: Function = () => {
       return ota_provider_id.length > 0 && ota_requestor_id.length > 0
     }
-    if(fieldCheck()) {
+    if (fieldCheck()) {
       const data =
       {
         "otaProviderNodeId": ota_provider_id,
@@ -1112,13 +1184,14 @@ sendEEVSEReadCommand(nodeId: string, endpointId: string, commandType: string, no
       }
       console.log(`Sending request to ${this.serverUrl}/otasoftwareupdaterequestor with data: ${JSON.stringify(data)}`)
       return this.httpClient.post<string>(
-        `${this.serverUrl}/otasoftwareupdaterequestor`, JSON.stringify(data)).pipe(
+        `${this.serverUrl}/otasoftwareupdaterequestor`, JSON.stringify(data)
+      ).pipe(
         catchError((error: any) => {
           console.error('Error sending otasoftwareupdaterequestor OTA command', error);
           return throwError(error.message)
-        }
-      ));
-    } else{
+        })
+      );
+    } else {
       return throwError("Please complete all missing fields")
     }
   }
