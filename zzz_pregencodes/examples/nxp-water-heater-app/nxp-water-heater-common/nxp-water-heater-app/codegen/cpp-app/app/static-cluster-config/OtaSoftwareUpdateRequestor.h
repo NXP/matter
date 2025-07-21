@@ -1,38 +1,41 @@
 // DO NOT EDIT - Generated file
 //
-// Application configuration for NetworkCommissioning based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-evse-app/nxp-evse-common/nxp-evse-app.matter
+// Application configuration for OtaSoftwareUpdateRequestor based on EMBER configuration
+// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-water-heater-app/nxp-water-heater-common/nxp-water-heater-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
-#include <clusters/NetworkCommissioning/AttributeIds.h>
-#include <clusters/NetworkCommissioning/CommandIds.h>
-#include <clusters/NetworkCommissioning/Enums.h>
+#include <clusters/OtaSoftwareUpdateRequestor/AttributeIds.h>
+#include <clusters/OtaSoftwareUpdateRequestor/CommandIds.h>
+#include <clusters/OtaSoftwareUpdateRequestor/Enums.h>
 
 #include <array>
 
 namespace chip {
 namespace app {
 namespace Clusters {
-namespace NetworkCommissioning {
+namespace OtaSoftwareUpdateRequestor {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::DefaultOTAProviders::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
-    Attributes::InterfaceEnabled::Id,
-    Attributes::LastConnectErrorValue::Id,
-    Attributes::LastNetworkID::Id,
-    Attributes::LastNetworkingStatus::Id,
-    Attributes::MaxNetworks::Id,
-    Attributes::Networks::Id,
+    Attributes::UpdatePossible::Id,
+    Attributes::UpdateState::Id,
+    Attributes::UpdateStateProgress::Id,
 };
+
+inline constexpr CommandId kEndpoint0EnabledCommands[] = {
+    Commands::AnnounceOTAProvider::Id,
+};
+
 } // namespace detail
 
-using FeatureBitmapType = Feature;
+using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
@@ -40,7 +43,7 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
@@ -50,14 +53,12 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::DefaultOTAProviders::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
-    case Attributes::InterfaceEnabled::Id:
-    case Attributes::LastConnectErrorValue::Id:
-    case Attributes::LastNetworkID::Id:
-    case Attributes::LastNetworkingStatus::Id:
-    case Attributes::MaxNetworks::Id:
-    case Attributes::Networks::Id:
+    case Attributes::UpdatePossible::Id:
+    case Attributes::UpdateState::Id:
+    case Attributes::UpdateStateProgress::Id:
       return true;
     default:
       return false;
@@ -67,13 +68,15 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
 // If a specific command is supported at all across all endpoint static instantiations
 inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
   switch (commandId) {
+    case Commands::AnnounceOTAProvider::Id:
+      return true;
     default:
       return false;
   }
 }
 
 } // namespace StaticApplicationConfig
-} // namespace NetworkCommissioning
+} // namespace OtaSoftwareUpdateRequestor
 } // namespace Clusters
 } // namespace app
 } // namespace chip

@@ -50,7 +50,6 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
     {
         .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kThreadNetworkInterface// feature bit 0x2
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
         .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
