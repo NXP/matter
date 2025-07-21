@@ -704,7 +704,7 @@ int main()
             auto nodeAlias = std::string(x_body_decoded["nodeAlias"].s());
             ChipLogError(NotSpecified, "Received POST request for pairing with Node ID: %s, Type: %s, Node Alias: %s",
                 std::string(nodeId).c_str(), std::string(type).c_str(), std::string(nodeAlias).c_str());
-            if(webCommissionerStorage.SyncDoesKeyExist(std::string(nodeAlias).c_str())){
+            if(type != "unpair" && webCommissionerStorage.SyncDoesKeyExist(std::string(nodeAlias).c_str())){
                 root.put("result", RESPONSE_FAILURE);
                 root.put("cause", "repeat nodeAlias");
             } else {
@@ -731,6 +731,8 @@ int main()
                 } else if (type == "qrcode") {
                     auto payload = std::string(x_body_decoded["payload"].s());
                     command = "pairing code " + nodeId + " " + payload;
+                } else if (type == "unpair") {
+                    command = "pairing unpair " + nodeId;
                 }
                 ChipLogError(NotSpecified, "Received POST request for pairing with command: %s", command.c_str());
                 wsClient.sendMessage(command);
@@ -748,7 +750,11 @@ int main()
                         root.put("result", RESPONSE_SUCCESS);
                         chip::NodeId nodeIdStorage = std::stoul(nodeId);
                         const char * nodeAliasStorage = nodeAlias.c_str();
-                        webCommissionerStorage.SetLocalKeyNodeId(nodeAliasStorage, nodeIdStorage);
+                        if (type == "unpair") {
+                            webCommissionerStorage.SyncDeleteKeyValue(nodeAlias.c_str());
+                        } else {
+                            webCommissionerStorage.SetLocalKeyNodeId(nodeAliasStorage, nodeIdStorage);
+                        }
                     } else {
                         root.put("result", RESPONSE_FAILURE);
                         ChipLogError(NotSpecified, "Recieved response meaasge after sending pairing command, but pairing failed!");
@@ -1007,15 +1013,12 @@ int main()
                     wsClient.sendMessage(command);
                     ChipLogError(NotSpecified, "Send read device-type-list command to chip-tool WS server");
                     int sleepTime = 0;
-                    while (reportQueue.empty() && sleepTime < 20)
+                    while (reportQueue.empty() && sleepTime < 50)
                     {
                         this_thread::sleep_for(chrono::seconds(1));
                         sleepTime++;
                     }
-                    if (sleepTime == 20) {
-                        continue;
-                        ChipLogError(NotSpecified, "Execute read device-type-list command overtime!");
-                    } else {
+                    if (!reportQueue.empty()) {
                         Json::Value resultsReport = wsClient.dequeueReport();
                         Json::Value endpointInfo;
                         for (const auto& report : resultsReport) {
@@ -1032,9 +1035,12 @@ int main()
                                 std::string clusterType = DeviceTypeIdToText(value["0"].asInt());
                                 endpointClusters.append(clusterType);
                             }
-                            endpointInfo[endpointId]    = endpointClusters;
+                            endpointInfo[endpointId] = endpointClusters;
                         }
                         nodeInfo["endpointInfo"] = endpointInfo;
+                    } else {
+                        ChipLogError(NotSpecified, "Execute read device-type-list command failed, no result response!");
+                        continue;
                     }
                     nodeList.append(nodeInfo);
                 }
