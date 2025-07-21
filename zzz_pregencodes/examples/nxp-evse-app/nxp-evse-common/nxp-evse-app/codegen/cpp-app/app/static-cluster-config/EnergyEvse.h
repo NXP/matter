@@ -24,7 +24,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::ChargingEnabledUntil::Id,
     Attributes::CircuitCapacity::Id,
     Attributes::ClusterRevision::Id,
-    Attributes::EventList::Id,
     Attributes::FaultState::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -77,7 +76,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ChargingEnabledUntil::Id:
     case Attributes::CircuitCapacity::Id:
     case Attributes::ClusterRevision::Id:
-    case Attributes::EventList::Id:
     case Attributes::FaultState::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:

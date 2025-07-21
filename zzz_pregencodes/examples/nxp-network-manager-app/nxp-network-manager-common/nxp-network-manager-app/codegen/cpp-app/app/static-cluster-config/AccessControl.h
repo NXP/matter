@@ -45,8 +45,6 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
     {
         .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kExtension, // feature bit 0x1
-            FeatureBitmapType::kManagedDevice// feature bit 0x2
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
         .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),

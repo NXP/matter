@@ -1,46 +1,48 @@
 // DO NOT EDIT - Generated file
 //
-// Application configuration for NetworkCommissioning based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-evse-app/nxp-evse-common/nxp-evse-app.matter
+// Application configuration for EnergyEvseMode based on EMBER configuration
+// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-water-heater-app/nxp-water-heater-common/nxp-water-heater-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
-#include <clusters/NetworkCommissioning/AttributeIds.h>
-#include <clusters/NetworkCommissioning/CommandIds.h>
-#include <clusters/NetworkCommissioning/Enums.h>
+#include <clusters/EnergyEvseMode/AttributeIds.h>
+#include <clusters/EnergyEvseMode/CommandIds.h>
+#include <clusters/EnergyEvseMode/Enums.h>
 
 #include <array>
 
 namespace chip {
 namespace app {
 namespace Clusters {
-namespace NetworkCommissioning {
+namespace EnergyEvseMode {
 namespace StaticApplicationConfig {
 namespace detail {
-inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
+inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::CurrentMode::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
-    Attributes::InterfaceEnabled::Id,
-    Attributes::LastConnectErrorValue::Id,
-    Attributes::LastNetworkID::Id,
-    Attributes::LastNetworkingStatus::Id,
-    Attributes::MaxNetworks::Id,
-    Attributes::Networks::Id,
+    Attributes::SupportedModes::Id,
 };
+
+inline constexpr CommandId kEndpoint1EnabledCommands[] = {
+    Commands::ChangeToMode::Id,
+    Commands::ChangeToModeResponse::Id,
+};
+
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
+        .endpointNumber = 1,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
+        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
@@ -50,14 +52,10 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::CurrentMode::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
-    case Attributes::InterfaceEnabled::Id:
-    case Attributes::LastConnectErrorValue::Id:
-    case Attributes::LastNetworkID::Id:
-    case Attributes::LastNetworkingStatus::Id:
-    case Attributes::MaxNetworks::Id:
-    case Attributes::Networks::Id:
+    case Attributes::SupportedModes::Id:
       return true;
     default:
       return false;
@@ -67,13 +65,16 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
 // If a specific command is supported at all across all endpoint static instantiations
 inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
   switch (commandId) {
+    case Commands::ChangeToMode::Id:
+    case Commands::ChangeToModeResponse::Id:
+      return true;
     default:
       return false;
   }
 }
 
 } // namespace StaticApplicationConfig
-} // namespace NetworkCommissioning
+} // namespace EnergyEvseMode
 } // namespace Clusters
 } // namespace app
 } // namespace chip

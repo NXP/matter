@@ -25,7 +25,6 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::ChannelPage0Mask::Id,
     Attributes::ClusterRevision::Id,
     Attributes::DataVersion::Id,
-    Attributes::EventList::Id,
     Attributes::ExtendedPanId::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -66,7 +65,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ChannelPage0Mask::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::DataVersion::Id:
-    case Attributes::EventList::Id:
     case Attributes::ExtendedPanId::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:

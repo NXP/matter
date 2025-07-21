@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for ElectricalPowerMeasurement based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-battery-storage-app/nxp-battery-storage-common/nxp-battery-storage-app.matter
+// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-water-heater-app/nxp-water-heater-common/nxp-water-heater-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -43,16 +43,49 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::RMSVoltage::Id,
     Attributes::Voltage::Id,
 };
+inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id,
+    Attributes::Accuracy::Id,
+    Attributes::ActiveCurrent::Id,
+    Attributes::ActivePower::Id,
+    Attributes::ApparentCurrent::Id,
+    Attributes::ApparentPower::Id,
+    Attributes::AttributeList::Id,
+    Attributes::ClusterRevision::Id,
+    Attributes::FeatureMap::Id,
+    Attributes::Frequency::Id,
+    Attributes::GeneratedCommandList::Id,
+    Attributes::HarmonicCurrents::Id,
+    Attributes::HarmonicPhases::Id,
+    Attributes::NeutralCurrent::Id,
+    Attributes::NumberOfMeasurementTypes::Id,
+    Attributes::PowerFactor::Id,
+    Attributes::PowerMode::Id,
+    Attributes::Ranges::Id,
+    Attributes::ReactiveCurrent::Id,
+    Attributes::ReactivePower::Id,
+    Attributes::RMSCurrent::Id,
+    Attributes::RMSPower::Id,
+    Attributes::RMSVoltage::Id,
+    Attributes::Voltage::Id,
+};
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
+        .enabledCommands = Span<const CommandId>(),
+    },
+    {
+        .endpointNumber = 2,
+        .featureMap = BitFlags<FeatureBitmapType> {
+        },
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
         .enabledCommands = Span<const CommandId>(),
     },
 } };

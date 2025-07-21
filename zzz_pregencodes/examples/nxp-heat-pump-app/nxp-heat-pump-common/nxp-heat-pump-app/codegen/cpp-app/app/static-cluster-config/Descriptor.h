@@ -34,7 +34,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::ClientList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::DeviceTypeList::Id,
-    Attributes::EventList::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::PartsList::Id,
@@ -46,7 +45,6 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::ClientList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::DeviceTypeList::Id,
-    Attributes::EventList::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::PartsList::Id,
@@ -88,7 +86,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ClientList::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::DeviceTypeList::Id:
-    case Attributes::EventList::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::PartsList::Id:

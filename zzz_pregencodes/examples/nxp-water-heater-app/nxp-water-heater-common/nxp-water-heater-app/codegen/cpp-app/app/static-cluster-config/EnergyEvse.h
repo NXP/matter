@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for EnergyEvse based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-device-energy-management-app/nxp-device-energy-management-common/nxp-device-energy-management-app.matter
+// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-water-heater-app/nxp-water-heater-common/nxp-water-heater-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -21,13 +21,16 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::ApproximateEVEfficiency::Id,
     Attributes::AttributeList::Id,
+    Attributes::BatteryCapacity::Id,
     Attributes::ChargingEnabledUntil::Id,
     Attributes::CircuitCapacity::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::DischargingEnabledUntil::Id,
     Attributes::FaultState::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::MaximumChargeCurrent::Id,
+    Attributes::MaximumDischargeCurrent::Id,
     Attributes::MinimumChargeCurrent::Id,
     Attributes::NextChargeRequiredEnergy::Id,
     Attributes::NextChargeStartTime::Id,
@@ -36,10 +39,13 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::RandomizationDelayWindow::Id,
     Attributes::SessionDuration::Id,
     Attributes::SessionEnergyCharged::Id,
+    Attributes::SessionEnergyDischarged::Id,
     Attributes::SessionID::Id,
     Attributes::State::Id,
+    Attributes::StateOfCharge::Id,
     Attributes::SupplyState::Id,
     Attributes::UserMaximumChargeCurrent::Id,
+    Attributes::VehicleID::Id,
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
@@ -73,13 +79,16 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::AcceptedCommandList::Id:
     case Attributes::ApproximateEVEfficiency::Id:
     case Attributes::AttributeList::Id:
+    case Attributes::BatteryCapacity::Id:
     case Attributes::ChargingEnabledUntil::Id:
     case Attributes::CircuitCapacity::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::DischargingEnabledUntil::Id:
     case Attributes::FaultState::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::MaximumChargeCurrent::Id:
+    case Attributes::MaximumDischargeCurrent::Id:
     case Attributes::MinimumChargeCurrent::Id:
     case Attributes::NextChargeRequiredEnergy::Id:
     case Attributes::NextChargeStartTime::Id:
@@ -88,10 +97,13 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::RandomizationDelayWindow::Id:
     case Attributes::SessionDuration::Id:
     case Attributes::SessionEnergyCharged::Id:
+    case Attributes::SessionEnergyDischarged::Id:
     case Attributes::SessionID::Id:
     case Attributes::State::Id:
+    case Attributes::StateOfCharge::Id:
     case Attributes::SupplyState::Id:
     case Attributes::UserMaximumChargeCurrent::Id:
+    case Attributes::VehicleID::Id:
       return true;
     default:
       return false;
