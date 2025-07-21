@@ -34,7 +34,6 @@ EOF
 trusty=false
 imx_ele=false
 imx_ele_path="third_party/imx-secure-enclave/repo/"
-pregen_arg=""
 release_build=true
 CURRENT_FOLDER=$(pwd)
 PARSED_OPTIONS="$(getopt -o s:o:tdmnp --long src:,out:,trusty,imx_ele,debug,no-init,use-pregen -- "$@")"
@@ -165,18 +164,35 @@ if [ "$imx_ele" = "true" ]; then
     fi
 fi
 
+pregen_arg=""
 if [ "$use_pregen" = "1" ]; then
     pregen_arg="chip_code_pre_generated_directory=\"${CURRENT_FOLDER}/zzz_pregencodes\""
 else
     pregen_arg=""
 fi
 
+without_pw=false
+executable_python=""
+if [ "$no_init" = "1" ]; then
+    without_pw=true
+    executable_python=--script-executable="/usr/bin/python3"
+fi
+
+chip_with_web2=${NXP_CHIPTOOL_WITH_WEB2:-0}
+additional_gn_args=""
+if [ "$chip_with_web2" = 1 ]; then
+    additional_gn_args+=" enable_rtti=true chip_with_web2=$chip_with_web2"
+fi
+
 PLATFORM_CFLAGS='-DCHIP_DEVICE_CONFIG_WIFI_STATION_IF_NAME=\"mlan0\"'
-gn gen --check --fail-on-unused-args --root="$src" "$out" --args="target_os=\"linux\" target_cpu=\"$target_cpu\" arm_arch=\"$arm_arch\"
+
+gn gen $executable_python --check --fail-on-unused-args --root="$src" "$out" --args="target_os=\"linux\" target_cpu=\"$target_cpu\" arm_arch=\"$arm_arch\"
+$pregen_arg
+$additional_gn_args
 chip_with_trusty_os=$trusty
 chip_with_imx_ele=$imx_ele
+build_without_pw=$without_pw
 enable_exceptions=true
-$pregen_arg
 treat_warnings_as_errors=false
 import(\"//build_overrides/build.gni\")
 sysroot=\"$sdk_target_sysroot\"
@@ -186,7 +202,5 @@ target_cc=\"$IMX_SDK_ROOT/sysroots/x86_64-pokysdk-linux/usr/bin/$cross_compile/$
 target_cxx=\"$IMX_SDK_ROOT/sysroots/x86_64-pokysdk-linux/usr/bin/$cross_compile/$cxx\"
 target_ar=\"$IMX_SDK_ROOT/sysroots/x86_64-pokysdk-linux/usr/bin/$cross_compile/$cross_compile-ar\"
 $(if [ "$release_build" = "true" ]; then echo "is_debug=false"; else echo "optimize_debug=true"; fi)"
-
-echo $pregen_arg
 
 ninja -C "$out"
