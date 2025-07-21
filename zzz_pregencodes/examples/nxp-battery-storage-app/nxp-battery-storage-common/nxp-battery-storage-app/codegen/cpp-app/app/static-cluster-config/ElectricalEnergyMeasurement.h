@@ -25,7 +25,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::CumulativeEnergyExported::Id,
     Attributes::CumulativeEnergyImported::Id,
     Attributes::CumulativeEnergyReset::Id,
-    Attributes::EventList::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::PeriodicEnergyExported::Id,
@@ -55,7 +54,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::CumulativeEnergyExported::Id:
     case Attributes::CumulativeEnergyImported::Id:
     case Attributes::CumulativeEnergyReset::Id:
-    case Attributes::EventList::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::PeriodicEnergyExported::Id:

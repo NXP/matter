@@ -167,7 +167,7 @@ static const Structs::MeasurementAccuracyStruct::Type kMeasurementAccuracies[] =
 
 uint8_t ElectricalPowerMeasurementDelegate::GetNumberOfMeasurementTypes()
 {
-    return ArraySize(kMeasurementAccuracies);
+    return MATTER_ARRAY_SIZE(kMeasurementAccuracies);
 };
 
 /* @brief This function is called by the cluster server at the start of read cycle
@@ -182,7 +182,7 @@ CHIP_ERROR ElectricalPowerMeasurementDelegate::StartAccuracyRead()
 CHIP_ERROR ElectricalPowerMeasurementDelegate::GetAccuracyByIndex(uint8_t accuracyIndex,
                                                                   Structs::MeasurementAccuracyStruct::Type & accuracy)
 {
-    if (accuracyIndex >= ArraySize(kMeasurementAccuracies))
+    if (accuracyIndex >= MATTER_ARRAY_SIZE(kMeasurementAccuracies))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
@@ -278,7 +278,7 @@ ElectricalPowerMeasurementDelegate::GetHarmonicCurrentsByIndex(uint8_t harmonicC
      */
 
     /* Added to support testing using a static array for now */
-    if (harmonicCurrentsIndex >= ArraySize(kHarmonicCurrentMeasurements))
+    if (harmonicCurrentsIndex >= MATTER_ARRAY_SIZE(kHarmonicCurrentMeasurements))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }
@@ -323,7 +323,7 @@ CHIP_ERROR ElectricalPowerMeasurementDelegate::GetHarmonicPhasesByIndex(uint8_t 
      */
 
     /* Added to support testing using a static array for now */
-    if (harmonicPhaseIndex >= ArraySize(kHarmonicPhaseMeasurements))
+    if (harmonicPhaseIndex >= MATTER_ARRAY_SIZE(kHarmonicPhaseMeasurements))
     {
         return CHIP_ERROR_PROVIDER_LIST_EXHAUSTED;
     }

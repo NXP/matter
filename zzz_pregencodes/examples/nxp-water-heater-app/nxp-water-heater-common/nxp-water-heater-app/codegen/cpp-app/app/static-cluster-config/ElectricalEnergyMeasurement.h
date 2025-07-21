@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for ElectricalEnergyMeasurement based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-evse-app/nxp-evse-common/nxp-evse-app.matter
+// from /opt/matter/matter_dev/connectedhomeip/examples/nxp-water-heater-app/nxp-water-heater-common/nxp-water-heater-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -30,16 +30,36 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::PeriodicEnergyExported::Id,
     Attributes::PeriodicEnergyImported::Id,
 };
+inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id,
+    Attributes::Accuracy::Id,
+    Attributes::AttributeList::Id,
+    Attributes::ClusterRevision::Id,
+    Attributes::CumulativeEnergyExported::Id,
+    Attributes::CumulativeEnergyImported::Id,
+    Attributes::CumulativeEnergyReset::Id,
+    Attributes::FeatureMap::Id,
+    Attributes::GeneratedCommandList::Id,
+    Attributes::PeriodicEnergyExported::Id,
+    Attributes::PeriodicEnergyImported::Id,
+};
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
+        .enabledCommands = Span<const CommandId>(),
+    },
+    {
+        .endpointNumber = 2,
+        .featureMap = BitFlags<FeatureBitmapType> {
+        },
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
         .enabledCommands = Span<const CommandId>(),
     },
 } };
