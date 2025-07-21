@@ -51,9 +51,6 @@
   </mat-card-content>
   <mat-card-actions>
     <mat-chip-listbox class="p-2 app-matchip-listbox" id="mat-chip-listbox-el">
-      <mat-chip>
-        <button mat-button (click)="forgetDevice(deviceId)">Forget Device</button>
-      </mat-chip>
 
       <!--mat-chip>
         <button mat-button (click)="openEditDialog(deviceId)">Edit</button>
@@ -70,6 +67,14 @@
 
       <mat-chip *ngIf="withSubscription">
         <button mat-button (click)="subscribeToDevice(deviceId)">Subscribe to device</button>
+      </mat-chip>
+
+      <mat-chip>
+        <button mat-button (click)="forgetDevice(deviceName)">Forget Device</button>
+      </mat-chip>
+
+      <mat-chip>
+        <button mat-button (click)="unpairDevice(deviceName, deviceId)">Unpair Device</button>
       </mat-chip>
 
       <!-- EEVSE -->
@@ -92,4 +97,3 @@
 
   </mat-card-actions>
 </mat-card>
-
