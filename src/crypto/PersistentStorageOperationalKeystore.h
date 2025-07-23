@@ -114,10 +114,6 @@ protected:
     // `NewOpKeypairForFabric` if the mPendingKeypair should not be deleted when no longer in use.
     bool mIsExternallyOwnedKeypair = false;
 
-#if CHIP_OP_KEYSTORE_TRUSTY_OS
-private:
-    mutable matter::TrustyMatter trusty_matter;
-#endif
 #if CHIP_OP_KEYSTORE_ELE
 private:
     void ResetPendingKey(bool delete_key);
