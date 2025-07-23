@@ -33,6 +33,7 @@ namespace chip {
 using namespace chip::Crypto;
 
 PersistentStorageOperationalKeystore::PersistentStorageOperationalKeystore() = default;
+matter::TrustyMatter trusty_matter_keystore;
 
 void PersistentStorageOperationalKeystore::Finish()
 {
@@ -52,7 +53,7 @@ bool PersistentStorageOperationalKeystore::HasOpKeypairForFabric(FabricIndex fab
         return true;
     }
 
-    return trusty_matter.HasOpKeypairForFabric(fabricIndex);
+    return trusty_matter_keystore.HasOpKeypairForFabric(fabricIndex);
 }
 
 CHIP_ERROR PersistentStorageOperationalKeystore::NewOpKeypairForFabric(FabricIndex fabricIndex,
@@ -110,7 +111,7 @@ CHIP_ERROR PersistentStorageOperationalKeystore::CommitOpKeypairForFabric(Fabric
     VerifyOrReturnError(mIsPendingKeypairActive == true, CHIP_ERROR_INCORRECT_STATE);
 
     // Try to store persistent key. On failure, leave everything pending as-is
-    rc = trusty_matter.CommitOpKeypairForFabric(mPendingKeypair->p256_handler, fabricIndex);
+    rc = trusty_matter_keystore.CommitOpKeypairForFabric(mPendingKeypair->p256_handler, fabricIndex);
     if (rc != MATTER_ERROR_OK)
         ReturnErrorOnFailure(CHIP_ERROR_INTERNAL);
 
@@ -135,7 +136,7 @@ CHIP_ERROR PersistentStorageOperationalKeystore::RemoveOpKeypairForFabric(Fabric
         RevertPendingKeypair();
     }
 
-    rc = trusty_matter.RemoveOpKeypairForFabric(fabricIndex);
+    rc = trusty_matter_keystore.RemoveOpKeypairForFabric(fabricIndex);
     if (rc != MATTER_ERROR_OK)
         return CHIP_ERROR_INVALID_FABRIC_INDEX;
 
@@ -164,7 +165,7 @@ CHIP_ERROR PersistentStorageOperationalKeystore::SignWithOpKeypair(FabricIndex f
         return mPendingKeypair->ECDSA_sign_msg(message.data(), message.size(), outSignature);
     }
 
-    rc = trusty_matter.SignWithStoredOpKey(fabricIndex, message.data(), message.size(), sig, sig_size);
+    rc = trusty_matter_keystore.SignWithStoredOpKey(fabricIndex, message.data(), message.size(), sig, sig_size);
     if (rc != MATTER_ERROR_OK)
         return CHIP_ERROR_INTERNAL;
 
