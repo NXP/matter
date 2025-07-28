@@ -119,6 +119,13 @@ static_library("Linux") {
     ]
   }
 
+  if (chip_with_imx_ele) {
+    sources += [
+      "DeviceAttestationCredsEle.cpp",
+      "DeviceAttestationCredsEle.h",
+    ]
+  }
+
   public_deps = [
     "${chip_root}/src/app/common:cluster-objects",
     "${chip_root}/src/platform:platform_base",
@@ -175,6 +182,10 @@ static_library("Linux") {
 
   if (chip_with_trusty_os) {
     public_deps += [ "${chip_root}/third_party/libtrustymatter" ]
+  }
+
+  if (chip_with_imx_ele) {
+    public_deps += [ "${chip_root}/third_party/imx-secure-enclave:libelematter" ]
   }
 
   if (chip_device_config_enable_wifipaf) {

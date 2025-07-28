@@ -62,6 +62,24 @@ public:
     const uint32_t authen_nonce = 0x1111;
 };
 
+class EleManagerAttestation : public EleManagerImpl
+{
+private:
+    EleManagerAttestation();
+    virtual ~EleManagerAttestation();
+
+    EleManagerAttestation(const EleManagerAttestation&) = delete;
+    EleManagerAttestation& operator=(const EleManagerAttestation&) = delete;
+
+    static std::weak_ptr<EleManagerAttestation> mWeakInstance;
+
+public:
+    static std::shared_ptr<EleManagerAttestation> getInstance();
+
+    const uint32_t key_store_id = 0xBBBB;
+    const uint32_t authen_nonce = 0x2222;
+};
+
 } // namespace ele
 } // namespace Credentials
 } // namespace chip
