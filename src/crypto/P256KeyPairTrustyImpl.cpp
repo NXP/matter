@@ -142,7 +142,8 @@ CHIP_ERROR P256Keypair::Serialize(P256SerializedKeypair & output) const
         ClearSecretData(privkey, sizeof(privkey));
     }
     VerifyOrExit(bbuf.Fit(), error = CHIP_ERROR_NO_MEMORY);
-    output.SetLength(bbuf.Needed());
+    error = output.SetLength(bbuf.Needed());
+    VerifyOrExit(error == CHIP_NO_ERROR, /* error already set */);
 
 exit:
     return error;
