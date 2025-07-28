@@ -171,15 +171,16 @@ CHIP_ERROR SignWithStoredOpKey(FabricIndex fabricIndex, PersistentStorageDelegat
 
 PersistentStorageOperationalKeystore::PersistentStorageOperationalKeystore() = default;
 
-/**
- * @brief Finalize the keystore, so that subsequent operations fail
- */
-void PersistentStorageOperationalKeystore::Finish()
+void PersistentStorageOperationalKeystore::ResetPendingKey()
 {
-    VerifyOrReturn(mStorage != nullptr);
-
-    ResetPendingKey();
-    mStorage = nullptr;
+    if (!mIsExternallyOwnedKeypair && (mPendingKeypair != nullptr))
+    {
+        Platform::Delete(mPendingKeypair);
+    }
+    mPendingKeypair           = nullptr;
+    mIsExternallyOwnedKeypair = false;
+    mIsPendingKeypairActive   = false;
+    mPendingFabricIndex       = kUndefinedFabricIndex;
 }
 
 bool PersistentStorageOperationalKeystore::HasOpKeypairForFabric(FabricIndex fabricIndex) const
