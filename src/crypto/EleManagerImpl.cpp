@@ -48,6 +48,7 @@ static void add_tlv(uint8_t * buf, size_t buf_index, uint8_t tag, size_t len, ui
 }
 
 std::weak_ptr<EleManagerKeystore>    EleManagerKeystore::mWeakInstance;
+std::weak_ptr<EleManagerAttestation> EleManagerAttestation::mWeakInstance;
 
 EleManagerKeystore::EleManagerKeystore()
 {
@@ -122,6 +123,70 @@ std::shared_ptr<EleManagerKeystore> EleManagerKeystore::getInstance() {
             mWeakInstance = shared_EleManager;
         } catch (...) {
                 shared_EleManager = nullptr;
+        }
+    }
+    return shared_EleManager;
+}
+
+EleManagerAttestation::EleManagerAttestation()
+{
+    hsm_err_t err;
+
+    // open the session
+    open_session_args_t open_session_args = {0};
+    open_session_args.mu_type = HSM1;
+    err = hsm_open_session(&open_session_args, &hsm_session_hdl);
+    if (err != HSM_NO_ERROR) {
+        throw std::runtime_error("ELE device attestation session open failed.");
+    } else {
+        ChipLogDetail(Crypto, "ELE device attestation session open successfully.\n");
+    }
+
+    // open the keystore
+    open_svc_key_store_args_t open_svc_key_store_args = {0};
+    open_svc_key_store_args.key_store_identifier = key_store_id;
+    open_svc_key_store_args.authentication_nonce = authen_nonce;
+    // try to create a new keystore, if it already exist, open it
+    open_svc_key_store_args.flags = (HSM_SVC_KEY_STORE_FLAGS_CREATE | HSM_SVC_KEY_STORE_FLAGS_STRICT_OPERATION);
+    err = hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl);
+    if (err == HSM_KEY_STORE_CONFLICT) {
+        ChipLogDetail(Crypto, "device attestation keystore already existed, open it...\n");
+        open_svc_key_store_args.flags = HSM_SVC_KEY_STORE_FLAGS_LOAD;
+        err = hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl);
+        if (err != HSM_NO_ERROR) {
+            ChipLogDetail(Crypto, "device attestation keystore open failed. ret:0x%x\n", err);
+            return;
+        } else
+            ChipLogDetail(Crypto, "device attestation keystore open successfully.\n");
+    } else {
+        ChipLogDetail(Crypto, "device attestation keystore created successfully.\n");
+    }
+}
+
+EleManagerAttestation::~EleManagerAttestation()
+{
+    hsm_err_t err;
+
+    ChipLogDetail(Crypto, "close all ELE device attestation services.\n");
+
+    err = hsm_close_key_store_service(key_store_hdl);
+    key_store_hdl = 0;
+    ChipLogDetail(Crypto, "close device attestation key store service returns:0x%x\n", err);
+
+    err = hsm_close_session(hsm_session_hdl);
+    hsm_session_hdl = 0;
+    ChipLogDetail(Crypto, "close ELE device attestation session returns:0x%x\n", err);
+}
+
+std::shared_ptr<EleManagerAttestation> EleManagerAttestation::getInstance() {
+    auto shared_EleManager = mWeakInstance.lock();
+    if (!shared_EleManager) {
+        try {
+            struct make_shared_enabler:public EleManagerAttestation {};
+            shared_EleManager = std::make_shared<make_shared_enabler>();
+            mWeakInstance = shared_EleManager;
+        } catch (...) {
+            shared_EleManager = nullptr;
         }
     }
     return shared_EleManager;
