@@ -25,12 +25,8 @@
 #include <lib/support/CHIPMem.h>
 #include <lib/support/CodeUtils.h>
 
-#if CHIP_OP_KEYSTORE_TRUSTY_OS
-#include <trusty_matter.h>
-#endif
-
 #if CHIP_OP_KEYSTORE_ELE
-#include "hsm_api.h"
+#include "EleManagerImpl.h"
 #endif
 
 namespace chip {
@@ -73,7 +69,16 @@ public:
         return CHIP_NO_ERROR;
     }
 
-    void Finish();
+    /**
+     * @brief Finalize the keystore, so that subsequent operations fail
+     */
+    void Finish()
+    {
+        VerifyOrReturn(mStorage != nullptr);
+
+        ResetPendingKey();
+        mStorage = nullptr;
+    }
 
     bool HasPendingOpKeypair() const override { return (mPendingKeypair != nullptr); }
 
@@ -91,17 +96,7 @@ public:
     CHIP_ERROR MigrateOpKeypairForFabric(FabricIndex fabricIndex, OperationalKeystore & operationalKeystore) const override;
 
 protected:
-    void ResetPendingKey()
-    {
-        if (!mIsExternallyOwnedKeypair && (mPendingKeypair != nullptr))
-        {
-            Platform::Delete(mPendingKeypair);
-        }
-        mPendingKeypair           = nullptr;
-        mIsExternallyOwnedKeypair = false;
-        mIsPendingKeypairActive   = false;
-        mPendingFabricIndex       = kUndefinedFabricIndex;
-    }
+    void ResetPendingKey();
 
     PersistentStorageDelegate * mStorage = nullptr;
 
@@ -116,16 +111,7 @@ protected:
 
 #if CHIP_OP_KEYSTORE_ELE
 private:
-    void ResetPendingKey(bool delete_key);
-    hsm_err_t EleDeleteKey(uint32_t keyId);
-    CHIP_ERROR EleGenerateCSR(uint32_t keyId, uint8_t * csr, size_t &csrLength);
-    hsm_err_t EleSignMessage(uint32_t keyId,
-            const uint8_t *msg, size_t msgSize,
-            uint8_t *sig, size_t sigSize) const;
-
-    hsm_hdl_t hsm_session_hdl = 0;
-    hsm_hdl_t key_store_hdl = 0;
-    hsm_hdl_t key_mgmt_hdl = 0;
+    std::shared_ptr<Credentials::ele::EleManagerKeystore> EleManager = Credentials::ele::EleManagerKeystore::getInstance();
 #endif
 };
 

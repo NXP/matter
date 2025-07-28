@@ -1,6 +1,5 @@
 /*
- *    Copyright (c) 2022 Project CHIP Authors
- *    Copyright 2023 NXP
+ *    Copyright (c) 2025 Project CHIP Authors
  *
  *    All rights reserved.
  *
@@ -26,21 +25,27 @@
 #include <lib/support/DefaultStorageKeyAllocator.h>
 #include <lib/support/SafeInt.h>
 
+#include <trusty_matter.h>
 #include "PersistentStorageOperationalKeystore.h"
+
+matter::TrustyMatter trusty_matter_keystore;
 
 namespace chip {
 
 using namespace chip::Crypto;
 
 PersistentStorageOperationalKeystore::PersistentStorageOperationalKeystore() = default;
-matter::TrustyMatter trusty_matter_keystore;
 
-void PersistentStorageOperationalKeystore::Finish()
+void PersistentStorageOperationalKeystore::ResetPendingKey()
 {
-    VerifyOrReturn(mStorage != nullptr);
-
-    ResetPendingKey();
-    mStorage = nullptr;
+    if (!mIsExternallyOwnedKeypair && (mPendingKeypair != nullptr))
+    {
+        Platform::Delete(mPendingKeypair);
+    }
+    mPendingKeypair           = nullptr;
+    mIsExternallyOwnedKeypair = false;
+    mIsPendingKeypairActive   = false;
+    mPendingFabricIndex       = kUndefinedFabricIndex;
 }
 
 bool PersistentStorageOperationalKeystore::HasOpKeypairForFabric(FabricIndex fabricIndex) const
