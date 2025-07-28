@@ -90,11 +90,11 @@ CHIP_ERROR PersistentStorageOperationalKeystore::NewOpKeypairForFabric(FabricInd
     memcpy((uint8_t *) &p256_handle + sizeof(kTrustyMagicNumberFabricIndex), &fabricIndex, sizeof(FabricIndex));
 
     memcpy(serializedKeypair.Bytes() + kP256_PublicKey_Length, &p256_handle, sizeof(uint64_t));
-    serializedKeypair.SetLength(kP256_PublicKey_Length + sizeof(uint64_t));
+    VerifyOrReturnError(serializedKeypair.SetLength(kP256_PublicKey_Length + sizeof(uint64_t)) == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     ReturnErrorOnFailure(mPendingKeypair->Deserialize(serializedKeypair));
 
-    mPendingKeypair->Initialize(Crypto::ECPKeyTarget::ECDSA);
+    ReturnErrorOnFailure(mPendingKeypair->Initialize(Crypto::ECPKeyTarget::ECDSA));
 
     size_t csrLength = outCertificateSigningRequest.size();
     CHIP_ERROR err   = mPendingKeypair->NewCertificateSigningRequest(outCertificateSigningRequest.data(), csrLength);

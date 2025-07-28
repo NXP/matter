@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Project CHIP Authors
+# Copyright (c) 2023, 2026 Project CHIP Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -166,6 +166,7 @@ source_set("libelematter") {
     "repo/${ELE_PLAT_COMMON_PATH}/sab_msg/sab_storage_open.c",
     "repo/${ELE_PLAT_COMMON_PATH}/sab_msg/sab_verify_sign.c",
     "repo/${ELE_PLAT_COMMON_PATH}/se_global_info.c",
+    "repo/${ELE_PLAT_COMMON_PATH}/se_lib_service.c",
     "repo/${ELE_PLAT_PATH}/ele_os_abs_linux.c",
     "repo/${ELE_PLAT_PATH}/ele_utils.c",
     "repo/${ELE_PLAT_PATH}/plat_err.c",
