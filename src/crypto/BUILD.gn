@@ -223,6 +223,8 @@ static_library("crypto") {
     ]
   } else if (chip_with_imx_ele) {
     sources += [
+      "EleManagerImpl.h",
+      "EleManagerImpl.cpp",
       "PersistentStorageOperationalKeystoreEle.cpp",
     ]
   } else {
