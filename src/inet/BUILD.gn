@@ -66,9 +66,19 @@ buildconfig_header("inet_buildconfig") {
   }
 
   if (chip_system_config_inet == "Ncp") {
-    defines += [ "INET_TCP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/TCPEndPointImplNcp.h>" ]
-    defines += [ "INET_UDP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/UDPEndPointImplNcp.h>" ]
-  } else {
+    if(chip_enable_wifi)
+    {
+      defines += [ "INET_UDP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/UDPEndPointImplNcp.h>" ]
+      defines += [ "INET_TCP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/TCPEndPointImplNcp.h>" ]
+    }
+    else
+    {
+      defines += [ "INET_UDP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/ot/UDPEndPointImplOpenThread.h>" ]
+      defines += [ "INET_TCP_END_POINT_IMPL_CONFIG_FILE=<platform/nxp/linux_ncp/inet/ot/TCPEndPointImplOpenThread.h>" ]
+    }
+  } 
+
+  else {
     defines += [ "INET_TCP_END_POINT_IMPL_CONFIG_FILE=<inet/TCPEndPointImpl${chip_system_config_inet}.h>" ]
     defines += [ "INET_UDP_END_POINT_IMPL_CONFIG_FILE=<inet/UDPEndPointImpl${chip_system_config_inet}.h>" ]
   }

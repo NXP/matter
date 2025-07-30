@@ -187,7 +187,7 @@ lwip_ip_addr_type IPAddress::ToLwIPAddrType(IPAddressType typ)
 
     return ret;
 }
-
+#if !(CHIP_SYSTEM_CONFIG_USE_NCP && !CHIP_DEVICE_CONFIG_ENABLE_WIFI)
 ip6_addr_t IPAddress::ToIPv6() const
 {
     ip6_addr_t ipAddr = {};
@@ -195,6 +195,7 @@ ip6_addr_t IPAddress::ToIPv6() const
     memcpy(&ipAddr.addr, Addr, sizeof(ipAddr.addr));
     return ipAddr;
 }
+#endif //!(CHIP_SYSTEM_CONFIG_USE_NCP && !CHIP_DEVICE_CONFIG_ENABLE_WIFI)
 
 #endif // CHIP_SYSTEM_CONFIG_USE_LWIP
 
@@ -225,6 +226,7 @@ struct in_addr IPAddress::ToIPv4() const
 }
 #endif // INET_CONFIG_ENABLE_IPV4
 
+#if !(CHIP_SYSTEM_CONFIG_USE_NCP && !CHIP_DEVICE_CONFIG_ENABLE_WIFI)
 struct in6_addr IPAddress::ToIPv6() const
 {
     in6_addr ipAddr;
@@ -232,6 +234,7 @@ struct in6_addr IPAddress::ToIPv6() const
     memcpy(&ipAddr, Addr, sizeof(ipAddr));
     return ipAddr;
 }
+#endif //!(CHIP_SYSTEM_CONFIG_USE_NCP && !CHIP_DEVICE_CONFIG_ENABLE_WIFI)
 
 CHIP_ERROR IPAddress::GetIPAddressFromSockAddr(const SockAddrWithoutStorage & sockaddr, IPAddress & outIPAddress)
 {
@@ -252,12 +255,13 @@ CHIP_ERROR IPAddress::GetIPAddressFromSockAddr(const SockAddrWithoutStorage & so
 
 #endif // CHIP_SYSTEM_CONFIG_USE_SOCKETS || CHIP_SYSTEM_CONFIG_USE_NETWORK_FRAMEWORK
 
-#if CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT
+#if CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT || (CHIP_SYSTEM_CONFIG_USE_NCP && !CHIP_DEVICE_CONFIG_ENABLE_WIFI)
 IPAddress::IPAddress(const otIp6Address & ipv6Addr)
 {
     static_assert(sizeof(ipv6Addr.mFields.m32) == sizeof(Addr), "otIp6Address size mismatch");
     memcpy(Addr, ipv6Addr.mFields.m32, sizeof(Addr));
 }
+
 otIp6Address IPAddress::ToIPv6() const
 {
     otIp6Address otAddr;
@@ -273,7 +277,7 @@ IPAddress IPAddress::FromOtAddr(const otIp6Address & address)
     memcpy(addr.Addr, address.mFields.m32, sizeof(addr.Addr));
     return addr;
 }
-#endif // CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT
+#endif // CHIP_SYSTEM_CONFIG_USE_OPEN_THREAD_ENDPOINT || (CHIP_SYSTEM_CONFIG_USE_NCP && !CHIP_DEVICE_CONFIG_ENABLE_WIFI)
 
 // Is address an IPv4 address encoded in IPv6 format?
 bool IPAddress::IsIPv4() const

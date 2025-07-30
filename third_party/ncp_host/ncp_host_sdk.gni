@@ -48,7 +48,9 @@ template("ncp_host_sdk") {
       "${ncp_host_sdk_root}/src/third_party/mbedtls/include/",
       "${ncp_host_sdk_root}/src/third_party/mbedtls/include/mbedtls/",
       "${ncp_host_sdk_root}/src/third_party/mbedtls/include/psa/",
-      "${ncp_host_sdk_root}/src/third_party/mbedtls/library/"
+      "${ncp_host_sdk_root}/src/third_party/mbedtls/library/",
+      "${ncp_host_sdk_root}/src/ot/include/",
+      "${ncp_host_sdk_root}/src/ot/"
     ]
   }
 
@@ -57,6 +59,7 @@ template("ncp_host_sdk") {
       #"-DCONFIG_NCP_USB  = 1",
       "-DCONFIG_NCP_WIFI = 1",
       "-DCONFIG_NCP_BLE  = 1",
+      "-DCONFIG_NCP_MATTER_OT  = 1",
       "-DCONFIG_MATTER_NCP",
       "-DCONFIG_NCP_USE_ENCRYPT = 1",
       #"-DCONFIG_NCP_HOST_AUTO_TRIG_ENCRYPT = 1"
@@ -216,7 +219,8 @@ template("ncp_host_sdk") {
       "${ncp_host_sdk_root}/src/third_party/mbedtls/library/psa_crypto_hash.c",
       "${ncp_host_sdk_root}/src/third_party/mbedtls/library/psa_crypto_mac.c",
       "${ncp_host_sdk_root}/src/third_party/mbedtls/library/psa_crypto_rsa.c",
-      "${ncp_host_sdk_root}/src/third_party/mbedtls/library/psa_crypto_aead.c"
+      "${ncp_host_sdk_root}/src/third_party/mbedtls/library/psa_crypto_aead.c",
+      "${ncp_host_sdk_root}/src/ot/ncp_ot_api.c",
     ]
 
     if (!defined(public_configs)) {

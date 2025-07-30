@@ -116,7 +116,7 @@ CHIP_ERROR TCPEndPointImplNcp::BindImpl(IPAddressType addrType, const IPAddress 
             sa.in6.sin6_flowinfo = 0;
             sa.in6.sin6_addr     = addr.ToIPv6();
             sa.in6.sin6_scope_id = 0;
-
+            
             sockaddrsize = sizeof(sa.in6);
         }
 #if INET_CONFIG_ENABLE_IPV4
@@ -239,7 +239,7 @@ CHIP_ERROR TCPEndPointImplNcp::ConnectImpl(const IPAddress & addr, uint16_t port
         sa.in6.sin6_family   = AF_INET6;
         sa.in6.sin6_port     = htons(port);
         sa.in6.sin6_flowinfo = 0;
-        sa.in6.sin6_addr     = addr.ToIPv6();
+        sa.in6.sin6_addr     = addr.ToIPv6();	
         sa.in6.sin6_scope_id = ncp_netif_list.num;
         sockaddrsize         = sizeof(sockaddr_in6);
     }

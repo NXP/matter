@@ -88,10 +88,11 @@ namespace chip {
 
 namespace DeviceLayer {
 
+#if CHIP_DEVICE_CONFIG_ENABLE_WIFI
 // Configured SSID
 uint8_t ConnectivityManagerImpl::sCfgSSID[Internal::kMaxWiFiSSIDLength];
 uint8_t ConnectivityManagerImpl::sCfgSSIDLen;
-
+#endif
 ConnectivityManagerImpl ConnectivityManagerImpl::sInstance;
 
 CHIP_ERROR ConnectivityManagerImpl::_Init()
@@ -430,17 +431,21 @@ void ConnectivityManagerImpl::PostNetworkConnect()
     struct in_addr ip_in_addr;
     ip_in_addr.s_addr = ncp_addr.ipv4.address;
 
+#if CHIP_DEVICE_CONFIG_ENABLE_WIFI
     chip::Inet::IPAddress addr = chip::Inet::IPAddress(ip_in_addr);
+#endif
 
     ChipDeviceEvent event;
     event.Type                                 = DeviceEventType::kInternetConnectivityChange;
     event.InternetConnectivityChange.IPv4      = kConnectivity_Established;
     event.InternetConnectivityChange.IPv6      = kConnectivity_NoChange;
+#if CHIP_DEVICE_CONFIG_ENABLE_WIFI
     event.InternetConnectivityChange.ipAddress = addr;
-
+#endif
     char ipStrBuf[chip::Inet::IPAddress::kMaxStringLength] = { 0 };
+#if CHIP_DEVICE_CONFIG_ENABLE_WIFI
     addr.ToString(ipStrBuf);
-
+#endif
     ChipLogDetail(DeviceLayer, "Got IP address on interface: %s IP: %s", "ncp_wlan", ipStrBuf);
 
     PlatformMgr().PostEventOrDie(&event);

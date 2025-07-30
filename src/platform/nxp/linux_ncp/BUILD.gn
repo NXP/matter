@@ -34,12 +34,6 @@ if (chip_enable_openthread) {
   import("//build_overrides/ot_br_posix.gni")
 }
 
-if (chip_mdns == "platform") {
-  pkg_config("avahi_client_config") {
-    packages = [ "avahi-client" ]
-  }
-}
-
 static_library("linux_ncp") {
   sources = [
     "../../DeviceSafeQueue.cpp",
@@ -102,6 +96,8 @@ static_library("linux_ncp") {
     ]
   }
 
+if(chip_enable_wifi)
+{
   sources += [
     "inet/EndPointStateNcp.h",
     "inet/UDPEndPointImplNcp.cpp",
@@ -110,6 +106,20 @@ static_library("linux_ncp") {
     "inet/SystemLayerImplSelectNcp.cpp",
     "inet/UDPEndPointImplNcp.h",
   ]
+}
+else
+{
+sources += [
+    "inet/SystemLayerImplSelectNcp.cpp",
+    "inet/EndPointStateNcp.h",
+    "inet/ot/EndPointStateOpenThread.h",
+    "inet/ot/UDPEndPointImplOpenThread.cpp",
+    "inet/ot/UDPEndPointImplOpenThread.h",
+    "inet/ot/TCPEndPointImplOpenThread.cpp",
+    "inet/ot/TCPEndPointImplOpenThread.h",
+  ]
+}
+  
 
   public_deps = [
     "${chip_root}/src/app/common:cluster-objects",
@@ -119,16 +129,17 @@ static_library("linux_ncp") {
   ]
 
   public_configs = []
-
-  if (chip_mdns == "platform") {
+  
+ if (chip_mdns == "platform") {
     sources += [
-      "../../Linux/DnssdImpl.cpp",
-      "../../Linux/DnssdImpl.h",
+      "OpenThreadDnssdImpl.cpp",
+      "DnssdImpl.cpp",
+      "OpenThreadDnssdImpl.h",
     ]
 
     deps += [ "${chip_root}/src/lib/dnssd:platform_header" ]
 
-    public_configs += [ ":avahi_client_config" ]
+    #public_configs += [ ":avahi_client_config" ]
   }
 
   if (chip_enable_ota_requestor) {
@@ -142,6 +153,9 @@ static_library("linux_ncp") {
     sources += [
       "ThreadStackManagerImpl.cpp",
       "ThreadStackManagerImpl.h",
+      "OpenThreadUtils.cpp",
+      "../../OpenThread/GenericNetworkCommissioningThreadDriver.cpp",
+      "../../OpenThread/GenericNetworkCommissioningThreadDriver.h",
     ]
 
     public_deps += [ "dbus/openthread" ]

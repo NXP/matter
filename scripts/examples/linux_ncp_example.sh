@@ -36,7 +36,7 @@ ncp_host=1
 ncp_host_interface=0
 release_build=true
 CURRENT_FOLDER=$(pwd)
-PARSED_OPTIONS="$(getopt -o s:o:tdmnphi: --long src:,out:,trusty,imx_ele,debug,no-init,use-pregen,ncp_host,ncp_host_interface: -- "$@")"
+PARSED_OPTIONS="$(getopt -o s:o:tdmnphi: --long src:,out:,trusty,imx_ele,debug,no-init,use-pregen,ncp_host,ncp_host_interface:,chip_enable_wifi: -- "$@")"
 
 if [ $? -ne 0 ];
 then
@@ -51,6 +51,7 @@ while true; do
         -m|--imx_ele) imx_ele=1; shift ;;
         -h|--ncp_host) ncp_host=1; shift ;;
         -i|--ncp_host_interface) ncp_host_interface="$2"; shift 2;;
+        --chip_enable_wifi)chip_enable_wifi="$2"; shift 2 ;;
         -d|--debug) release_build=false; shift ;;
         -n|--no-init) no_init=1; shift ;;
         -p|--use-pregen) use_pregen=1; shift ;;
@@ -72,6 +73,15 @@ case "$ncp_host_interface" in
     "sdio")  interface_value="4" ;;
     *)
         echo "error invalid interface '$ncp_host_interface',please choose usb, uart, spi, sdio"
+        exit 1
+        ;;
+esac
+
+case "$chip_enable_wifi" in
+    "true")   wifi_value="true" ;;
+    "false")  wifi_value="false" ;;
+    *)
+        echo "error invalid chip_enable_wifi '$chip_enable_wifi',please choose true or false"
         exit 1
         ;;
 esac
@@ -187,11 +197,20 @@ if [ "$chip_with_web" = 1 ] || [ "$chip_with_web2" = 1 ]; then
         additional_gn_args+=" chip_with_web2=$chip_with_web2"
     fi
 fi
+chip_enable_wifi=$wifi_value
+if [ "$chip_enable_wifi" = "true" ]; then
+    chip_inet_config_enable_ipv4=true
+else
+    chip_inet_config_enable_ipv4=false
+fi
+
 gn gen $executable_python --check --fail-on-unused-args --root="$src" "$out" --args="target_os=\"linux\" target_cpu=\"$target_cpu\" arm_arch=\"$arm_arch\"
 $pregen_arg chip_with_trusty_os=$trusty
 chip_with_imx_ele=$imx_ele
 chip_with_linux_ncp_host=$ncp_host
 ncp_host_interface=$interface_value
+chip_enable_wifi=$chip_enable_wifi
+chip_inet_config_enable_ipv4=$chip_inet_config_enable_ipv4
 #build_without_pw=$without_pw
 enable_exceptions=true
 treat_warnings_as_errors=false

@@ -17,7 +17,9 @@
  */
 
 #pragma once
-
+#if CHIP_DEVICE_CONFIG_ENABLE_WIFI
+ #include <platform/GLibTypeDeleter.h>
+ #endif
 #include <platform/ConnectivityManager.h>
 #include <platform/internal/GenericConnectivityManagerImpl.h>
 #include <platform/internal/GenericConnectivityManagerImpl_UDP.h>
