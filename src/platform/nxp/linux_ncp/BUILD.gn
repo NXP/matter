@@ -132,9 +132,9 @@ sources += [
   
  if (chip_mdns == "platform") {
     sources += [
-      "OpenThreadDnssdImpl.cpp",
-      "DnssdImpl.cpp",
-      "OpenThreadDnssdImpl.h",
+      "../../OpenThread/OpenThreadDnssdImpl.cpp",
+      "../../OpenThread/DnssdImpl.cpp",
+      "../../OpenThread/OpenThreadDnssdImpl.h",
     ]
 
     deps += [ "${chip_root}/src/lib/dnssd:platform_header" ]
@@ -153,7 +153,7 @@ sources += [
     sources += [
       "ThreadStackManagerImpl.cpp",
       "ThreadStackManagerImpl.h",
-      "OpenThreadUtils.cpp",
+      "../../OpenThread/OpenThreadUtils.cpp",
       "../../OpenThread/GenericNetworkCommissioningThreadDriver.cpp",
       "../../OpenThread/GenericNetworkCommissioningThreadDriver.h",
     ]
