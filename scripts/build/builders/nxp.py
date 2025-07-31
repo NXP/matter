@@ -175,6 +175,7 @@ class NxpBuilder(GnBuilder):
                  iw416_transceiver: bool = False,
                  w8801_transceiver: bool = False,
                  iwx12_transceiver: bool = False,
+                 se05x_enable: bool = False,
                  log_level: NxpLogLevel = NxpLogLevel.DEFAULT,
                  ):
         super(NxpBuilder, self).__init__(
@@ -208,6 +209,7 @@ class NxpBuilder(GnBuilder):
         self.iw416_transceiver = iw416_transceiver
         self.w8801_transceiver = w8801_transceiver
         self.iwx12_transceiver = iwx12_transceiver
+        self.se05x_enable = se05x_enable
         if self.low_power and log_level != NxpLogLevel.NONE:
             logging.warning("Switching log level to 'NONE' for low power build")
             log_level = NxpLogLevel.NONE
@@ -361,6 +363,9 @@ class NxpBuilder(GnBuilder):
 
         if self.board == NxpBoard.RT1170:
             flags.append('-Dcore_id=cm7')
+
+        if self.se05x_enable:
+            flags.append('-DCONFIG_CHIP_SE05X=y')
 
         build_flags = " ".join(flags)
 
