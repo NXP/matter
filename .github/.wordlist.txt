@@ -80,6 +80,10 @@ armeabi
 armino
 ARMmbed
 armv
+ARD
+SCL
+SDA
+VCC
 ASAN
 asdk
 ASR
@@ -587,6 +591,7 @@ formatters
 FOTA
 FreeRTOS
 FreeRTOSConfig
+FRDM
 FS
 fsl
 fstab
