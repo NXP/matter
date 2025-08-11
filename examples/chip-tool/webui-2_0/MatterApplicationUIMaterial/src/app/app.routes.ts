@@ -8,8 +8,9 @@ import { SubscriptionsapplicationComponent } from './sidebarroutes/subscriptions
 import { MultiadminapplicationComponent } from './sidebarroutes/multiadminapplication/multiadminapplication.component';
 import { BindingapplicationComponent } from './sidebarroutes/bindingapplication/bindingapplication.component';
 import { EasyevseapplicationComponent } from './sidebarroutes/easyevseapplication/easyevseapplication.component';
-import {TbrmappcomponentComponent} from './sidebarroutes/tbrmappcomponent/tbrmappcomponent.component';
+import { TbrmappcomponentComponent } from './sidebarroutes/tbrmappcomponent/tbrmappcomponent.component';
 import { OtaapplicationComponent } from './sidebarroutes/otaapplication/otaapplication.component';
+import { NetworkgraphComponent } from './sidebarroutes/networkgraph/networkgraph.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -23,5 +24,6 @@ export const routes: Routes = [
   {path: 'binding', component: BindingapplicationComponent},
   {path: 'energy_evse', component: EasyevseapplicationComponent},
   {path: 'tbrm', component: TbrmappcomponentComponent},
-  {path: 'ota', component: OtaapplicationComponent}
+  {path: 'ota', component: OtaapplicationComponent},
+  {path: 'network_graph', component: NetworkgraphComponent},
 ];
