@@ -111,6 +111,11 @@ export class ApplicationsidebarComponent {
       name: 'OTA Updates',
       icon: 'download',
       linkRoute: 'ota'
+    },
+    {
+      name: 'Network Graph',
+      icon: 'device_hub',
+      linkRoute: 'network_graph'
     }
   ];
 

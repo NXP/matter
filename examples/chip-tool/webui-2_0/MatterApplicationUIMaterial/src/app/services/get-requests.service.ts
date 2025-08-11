@@ -41,14 +41,15 @@ export class GetRequestsService {
       }
     ));
   }
-
-  getDevicesList() : Observable<string> {
+  
+  getNetwork() : Observable<string> {
     return this.httpClient.get<string>(
-      `${this.serverUrl}/get_devices`).pipe(
+      `${this.serverUrl}/get_network`).pipe(
       catchError((error: any) => {
         console.error('Error getting dataset: ', error);
         return throwError(error);
       }
     ));
   }
+
 }
