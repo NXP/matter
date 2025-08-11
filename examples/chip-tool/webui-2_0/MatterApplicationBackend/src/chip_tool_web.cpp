@@ -136,6 +136,29 @@ string exec_cmd(string cmd) {
     return result;
 }
 
+string extractMachineName(const string& input) {
+    size_t start = input.find("i.MX");
+    if (start == string::npos) {
+        return "Unknown";
+    }
+
+    string lowerInput = input;
+    transform(lowerInput.begin(), lowerInput.end(), lowerInput.begin(), ::tolower);
+
+    size_t end = lowerInput.find("board", start);
+    if (end == string::npos) {
+        end = input.size();
+    }
+
+    string machine = input.substr(start, end - start);
+
+    while (!machine.empty() && std::isspace(machine.back())) {
+        machine.pop_back();
+    }
+
+    return machine;
+}
+
 void enableChipServer()
 {
     while (true)
@@ -1067,15 +1090,10 @@ int main()
         try
         {
             Json::Value root;
-            ChipLogError(NotSpecified, "Received GET request for get status");
+            ChipLogError(NotSpecified, "Received GET request for get network");
             try{
                 string output = exec_cmd("cat /sys/devices/soc0/machine");
-                size_t pos = output.find(' ');
-                string machine;
-                if (pos != string::npos) {
-                    machine = output.substr(pos + 1);
-                }
-                machine.erase(machine.find_last_not_of("\n") + 1);
+                string machine = extractMachineName(output);
                 root["machine"] = machine;
                 Json::Value storageNodes = getStorageKeyNodeID();
                 Json::Value nodeList;
@@ -1088,25 +1106,21 @@ int main()
                     nodeInfo["nodeAlias"] = storageNodeAlias;
                     nodeInfo["nodeId"]    = storageNodeId;
                     wsClient.sendMessage(command);
-                    ChipLogError(NotSpecified, "Send read device-type-list command to chip-tool WS server");
+                    ChipLogError(NotSpecified, "Send networkcommissioning read feature-map command to chip-tool WS server");
                     int sleepTime = 0;
-                    while (reportQueue.empty() && sleepTime < 20)
+                    while (reportQueue.empty() && sleepTime < 50)
                     {
                         this_thread::sleep_for(chrono::seconds(1));
                         sleepTime++;
                     }
-                    if (sleepTime == 20) {
-                        continue;
-                        ChipLogError(NotSpecified, "Execute read device-type-list command overtime!");
-                    } else
-                    {
+                    if (!reportQueue.empty()) {
                         Json::Value resultsReport = wsClient.dequeueReport();
                         Json::Value resultsValue = resultsReport[0];
                         std::string value;
                         if (resultsValue.isMember("error"))
                         {
-                            value = "Unsupport";
-                            ChipLogError(NotSpecified, "Unsupport networkcommissioning feature-map attribute!");
+                            value = "Offline";
+                            ChipLogError(NotSpecified, "Execute networkcommissioning read feature-map command failed!");
                         } else
                         {
                             switch (resultsValue["value"].asInt())
@@ -1125,7 +1139,11 @@ int main()
                             }
                         }
                         nodeInfo["networkType"] = value;
-                        ChipLogError(NotSpecified, "Execute networkcommissioning command successfully");
+                        ChipLogError(NotSpecified, "Execute networkcommissioning read feature-map command successfully!");
+                    } else
+                    {
+                        continue;
+                        ChipLogError(NotSpecified, "Execute networkcommissioning read feature-map command overtime!");
                     }
                     nodeList.append(nodeInfo);
                 }
@@ -1133,7 +1151,7 @@ int main()
                 root["result"] = RESPONSE_SUCCESS;
             } catch (const exception & e)
             {
-                ChipLogError(NotSpecified, "GET request for get status failed");
+                ChipLogError(NotSpecified, "GET request for get network failed!");
                 root["result"] = RESPONSE_FAILURE;
             }
             std::string strContent = root.toStyledString();
