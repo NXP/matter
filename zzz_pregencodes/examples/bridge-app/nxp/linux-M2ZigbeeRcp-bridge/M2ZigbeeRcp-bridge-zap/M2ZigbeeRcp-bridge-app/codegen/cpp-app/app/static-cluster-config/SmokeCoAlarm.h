@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for SmokeCoAlarm based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -26,7 +26,6 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::COState::Id,
     Attributes::DeviceMuted::Id,
     Attributes::EndOfServiceAlert::Id,
-    Attributes::EventList::Id,
     Attributes::ExpiryDate::Id,
     Attributes::ExpressedState::Id,
     Attributes::FeatureMap::Id,
@@ -64,7 +63,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ContaminationState::Id:
     case Attributes::DeviceMuted::Id:
     case Attributes::EndOfServiceAlert::Id:
-    case Attributes::EventList::Id:
     case Attributes::ExpiryDate::Id:
     case Attributes::ExpressedState::Id:
     case Attributes::FeatureMap::Id:

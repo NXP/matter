@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for FanControl based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -22,7 +22,6 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::AirflowDirection::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
-    Attributes::EventList::Id,
     Attributes::FanMode::Id,
     Attributes::FanModeSequence::Id,
     Attributes::FeatureMap::Id,
@@ -63,7 +62,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::AirflowDirection::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
-    case Attributes::EventList::Id:
     case Attributes::FanMode::Id:
     case Attributes::FanModeSequence::Id:
     case Attributes::FeatureMap::Id:
