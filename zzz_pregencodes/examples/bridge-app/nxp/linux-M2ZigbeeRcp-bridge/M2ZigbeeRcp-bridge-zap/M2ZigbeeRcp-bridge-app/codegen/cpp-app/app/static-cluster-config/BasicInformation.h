@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for BasicInformation based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -22,6 +22,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AttributeList::Id,
     Attributes::CapabilityMinima::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::ConfigurationVersion::Id,
     Attributes::DataModelRevision::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -33,6 +34,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::MaxPathsPerInvoke::Id,
     Attributes::NodeLabel::Id,
     Attributes::PartNumber::Id,
+    Attributes::ProductAppearance::Id,
     Attributes::ProductID::Id,
     Attributes::ProductLabel::Id,
     Attributes::ProductName::Id,
@@ -51,8 +53,8 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::AttributeList::Id,
     Attributes::CapabilityMinima::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::ConfigurationVersion::Id,
     Attributes::DataModelRevision::Id,
-    Attributes::EventList::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::HardwareVersion::Id,
@@ -105,8 +107,8 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::AttributeList::Id:
     case Attributes::CapabilityMinima::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::ConfigurationVersion::Id:
     case Attributes::DataModelRevision::Id:
-    case Attributes::EventList::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::HardwareVersion::Id:
