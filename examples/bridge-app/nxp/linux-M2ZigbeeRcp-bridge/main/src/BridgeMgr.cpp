@@ -132,8 +132,8 @@ public:
             TLVError = aCommandElement.GetPath(&cmdPath);
             TLVError = cmdPath.GetConcreteCommandPath(concretePath);
             TLVError = aCommandElement.GetFields(&DataReader);
+            chip::FabricIndex fabricIndex = subjectDescriptor.fabricIndex;
 
-            
             switch (commandPath.mClusterId)
             {
                 case chip::app::Clusters::LevelControl::Id:
@@ -153,6 +153,7 @@ public:
                             break;
                         }
                     }
+                    break;
                 }
                 case chip::app::Clusters::Groups::Id:
                 {
@@ -161,15 +162,16 @@ public:
                         case chip::app::Clusters::Groups::Commands::AddGroup::Id:
                         {
                             chip::app::Clusters::Groups::Commands::AddGroup::DecodableType commandData;
-                            DataModel::Decode(DataReader, commandData);
+                            commandData.Decode(DataReader, fabricIndex);
                             dev->cmdData[dev->cmdSize++] = (uint8_t)(commandData.groupID >> 0) & 0xff;
                             dev->cmdData[dev->cmdSize++] = (uint8_t)(commandData.groupID >> 8) & 0xff;
                             memcpy(&(dev->cmdData[dev->cmdSize]), commandData.groupName.data(), commandData.groupName.size());
                             dev->cmdSize += commandData.groupName.size();
-                            
+
                             break;
                         }
                     }
+                    break;
                 }
             }
             if (dev->IsReachable())

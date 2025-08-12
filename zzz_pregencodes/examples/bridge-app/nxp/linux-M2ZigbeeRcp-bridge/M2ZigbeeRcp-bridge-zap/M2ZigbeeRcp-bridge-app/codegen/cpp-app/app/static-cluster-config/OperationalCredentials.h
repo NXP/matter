@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for OperationalCredentials based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -42,6 +42,9 @@ inline constexpr CommandId kEndpoint0EnabledCommands[] = {
     Commands::CSRResponse::Id,
     Commands::NOCResponse::Id,
     Commands::RemoveFabric::Id,
+    Commands::SetVIDVerificationStatement::Id,
+    Commands::SignVIDVerificationRequest::Id,
+    Commands::SignVIDVerificationResponse::Id,
     Commands::UpdateFabricLabel::Id,
     Commands::UpdateNOC::Id,
 };
@@ -52,7 +55,6 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::ClusterRevision::Id,
     Attributes::CommissionedFabrics::Id,
     Attributes::CurrentFabricIndex::Id,
-    Attributes::EventList::Id,
     Attributes::Fabrics::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -72,6 +74,9 @@ inline constexpr CommandId kEndpoint2EnabledCommands[] = {
     Commands::CSRResponse::Id,
     Commands::NOCResponse::Id,
     Commands::RemoveFabric::Id,
+    Commands::SetVIDVerificationStatement::Id,
+    Commands::SignVIDVerificationRequest::Id,
+    Commands::SignVIDVerificationResponse::Id,
     Commands::UpdateFabricLabel::Id,
     Commands::UpdateNOC::Id,
 };
@@ -106,7 +111,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ClusterRevision::Id:
     case Attributes::CommissionedFabrics::Id:
     case Attributes::CurrentFabricIndex::Id:
-    case Attributes::EventList::Id:
     case Attributes::Fabrics::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
@@ -131,6 +135,9 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::CertificateChainResponse::Id:
     case Commands::NOCResponse::Id:
     case Commands::RemoveFabric::Id:
+    case Commands::SetVIDVerificationStatement::Id:
+    case Commands::SignVIDVerificationRequest::Id:
+    case Commands::SignVIDVerificationResponse::Id:
     case Commands::UpdateFabricLabel::Id:
     case Commands::UpdateNOC::Id:
       return true;

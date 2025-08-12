@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for DoorLock based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -32,7 +32,6 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::EnableLocalProgramming::Id,
     Attributes::EnableOneTouchLocking::Id,
     Attributes::EnablePrivacyModeButton::Id,
-    Attributes::EventList::Id,
     Attributes::ExpiringUserTimeout::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -110,7 +109,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::EnableLocalProgramming::Id:
     case Attributes::EnableOneTouchLocking::Id:
     case Attributes::EnablePrivacyModeButton::Id:
-    case Attributes::EventList::Id:
     case Attributes::ExpiringUserTimeout::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:

@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for ThreadNetworkDiagnostics based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -29,6 +29,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::DataVersion::Id,
     Attributes::Delay::Id,
     Attributes::DetachedRoleCount::Id,
+    Attributes::ExtAddress::Id,
     Attributes::ExtendedPanId::Id,
     Attributes::FeatureMap::Id,
     Attributes::LeaderRoleCount::Id,
@@ -43,6 +44,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::PartitionId::Id,
     Attributes::PartitionIdChangeCount::Id,
     Attributes::PendingTimestamp::Id,
+    Attributes::Rloc16::Id,
     Attributes::RouterRoleCount::Id,
     Attributes::RouteTable::Id,
     Attributes::RoutingRole::Id,
@@ -84,6 +86,11 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::TxUnicastCount::Id,
     Attributes::Weighting::Id,
 };
+
+inline constexpr CommandId kEndpoint0EnabledCommands[] = {
+    Commands::ResetCounts::Id,
+};
+
 } // namespace detail
 
 using FeatureBitmapType = Feature;
@@ -98,7 +105,7 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
             FeatureBitmapType::kMACCounts// feature bit 0x8
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
@@ -116,6 +123,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::DataVersion::Id:
     case Attributes::Delay::Id:
     case Attributes::DetachedRoleCount::Id:
+    case Attributes::ExtAddress::Id:
     case Attributes::ExtendedPanId::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::LeaderRoleCount::Id:
@@ -130,6 +138,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::PartitionId::Id:
     case Attributes::PartitionIdChangeCount::Id:
     case Attributes::PendingTimestamp::Id:
+    case Attributes::Rloc16::Id:
     case Attributes::RouteTable::Id:
     case Attributes::RouterRoleCount::Id:
     case Attributes::RoutingRole::Id:
@@ -179,6 +188,8 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
 // If a specific command is supported at all across all endpoint static instantiations
 inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
   switch (commandId) {
+    case Commands::ResetCounts::Id:
+      return true;
     default:
       return false;
   }
