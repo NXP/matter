@@ -139,7 +139,7 @@ app::Clusters::NetworkCommissioning::Instance
 #endif
 
 #if CHIP_DEVICE_CONFIG_ENABLE_TBR
-extern char baseServiceInstanceName[];
+extern const char sBaseServiceInstanceName[];
 #endif
 
 #if CHIP_CONFIG_ENABLE_ICD_SERVER || (CONFIG_CHIP_TEST_EVENT && CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR)
@@ -508,7 +508,7 @@ void chip::NXP::App::AppTaskBase::EnableTbrManagementCluster()
                                                                                   Server::GetInstance().GetFailSafeContext());
 
         // Initialize TBR name
-        CharSpan brName(baseServiceInstanceName, strlen(baseServiceInstanceName));
+        CharSpan brName(sBaseServiceInstanceName, strlen(sBaseServiceInstanceName));
         sThreadBRDelegate.SetThreadBorderRouterName(brName);
         // Initialize TBR cluster
         sThreadBRMgmtInstance.Init();
