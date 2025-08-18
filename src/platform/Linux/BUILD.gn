@@ -121,8 +121,8 @@ static_library("Linux") {
 
   if (chip_with_imx_ele) {
     sources += [
-      "DeviceAttestationCredsEle.cpp",
-      "DeviceAttestationCredsEle.h",
+#     "DeviceAttestationCredsEle.cpp",
+#     "DeviceAttestationCredsEle.h",
     ]
   }
 
