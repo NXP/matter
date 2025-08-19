@@ -401,6 +401,16 @@ void __attribute__((weak)) emberAfPm25ConcentrationMeasurementClusterShutdownCal
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfPowerSourceClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfPowerSourceClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfPowerSourceConfigurationClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning

@@ -79,29 +79,3 @@ std::vector<Action *> GetActionListInfo(chip::EndpointId parentId)
 {
     return Bridge::gActions->ActionList;
 }
-
-bool emberAfActionsClusterInstantActionCallback(app::CommandHandler * commandObj, const app::ConcreteCommandPath & commandPath,
-                                                const Actions::Commands::InstantAction::DecodableType & commandData)
-{
-    bool hasInvokeID      = false;
-    uint32_t invokeID     = 0;
-    EndpointId endpointID = commandPath.mEndpointId;
-    auto & actionID       = commandData.actionID;
-
-    syslog(LOG_INFO, "%s: ep=%d action=0%x", __FUNCTION__, endpointID,actionID);
-    if (commandData.invokeID.HasValue())
-    {
-        hasInvokeID = true;
-        invokeID    = commandData.invokeID.Value();
-    }
-
-    if ( Bridge::gActions->handle(actionID, endpointID, invokeID, hasInvokeID, Bridge::gDevMgr) == 1) {
-        commandObj->AddStatus(commandPath, Protocols::InteractionModel::Status::Success);
-        return true;
-    }
-
-    commandObj->AddStatus(commandPath, Protocols::InteractionModel::Status::NotFound);
-    return true;
-}
-
-
