@@ -54,8 +54,8 @@ public:
     /* Matter Bridge callback */
     friend std::vector<EndpointListInfo> GetEndpointListInfo(chip::EndpointId parentId);
     friend std::vector<Action *> GetActionListInfo(chip::EndpointId parentId);
-    friend bool emberAfActionsClusterInstantActionCallback(app::CommandHandler * commandObj, const app::ConcreteCommandPath & commandPath,
-                                                const Actions::Commands::InstantAction::DecodableType & commandData);
+    static BridgeActions *gActions;
+    static BridgeDevMgr  *gDevMgr;
 
 private:
     int AddDevice();
@@ -64,6 +64,4 @@ private:
     Bridge &operator=(const Bridge&) = delete;
 
 protected:
-    static BridgeDevMgr  *gDevMgr;
-    static BridgeActions *gActions;
 };

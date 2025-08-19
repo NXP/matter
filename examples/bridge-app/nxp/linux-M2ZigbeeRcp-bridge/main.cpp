@@ -31,6 +31,7 @@
 #include <app/util/util.h>
 #include <credentials/DeviceAttestationCredsProvider.h>
 #include <credentials/examples/DeviceAttestationCredsExample.h>
+#include <data-model-providers/codegen/Instance.h>
 #include <lib/core/CHIPError.h>
 #include <lib/support/CHIPMem.h>
 #include <lib/support/ZclString.h>
@@ -153,6 +154,7 @@ int main(int argc, char * argv[])
     // Init Data Model and CHIP App Server
     static chip::CommonCaseDeviceServerInitParams initParams;
     (void) initParams.InitializeStaticResourcesBeforeServerInit();
+    initParams.dataModelProvider = CodegenDataModelProviderInstance(initParams.persistentStorageDelegate);
 
 #if CHIP_DEVICE_ENABLE_PORT_PARAMS
     // use a different service port to make testing possible with other sample devices running on same host

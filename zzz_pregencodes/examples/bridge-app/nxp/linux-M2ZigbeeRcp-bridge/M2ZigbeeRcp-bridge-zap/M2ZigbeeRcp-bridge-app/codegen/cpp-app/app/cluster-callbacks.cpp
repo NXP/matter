@@ -130,6 +130,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Pm25ConcentrationMeasurement::Id:
         emberAfPm25ConcentrationMeasurementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterInitCallback(endpoint);
+        break;
     case app::Clusters::PowerSourceConfiguration::Id:
         emberAfPowerSourceConfigurationClusterInitCallback(endpoint);
         break;
@@ -320,6 +323,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::Pm25ConcentrationMeasurement::Id:
         emberAfPm25ConcentrationMeasurementClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::PowerSourceConfiguration::Id:
         emberAfPowerSourceConfigurationClusterShutdownCallback(endpoint);

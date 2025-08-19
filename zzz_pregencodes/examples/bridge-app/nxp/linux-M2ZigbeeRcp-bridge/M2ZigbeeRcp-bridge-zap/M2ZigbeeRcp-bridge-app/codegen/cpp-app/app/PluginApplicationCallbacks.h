@@ -39,6 +39,7 @@ void MatterOzoneConcentrationMeasurementPluginServerInitCallback();
 void MatterPm10ConcentrationMeasurementPluginServerInitCallback();
 void MatterPm1ConcentrationMeasurementPluginServerInitCallback();
 void MatterPm25ConcentrationMeasurementPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
 void MatterPowerSourceConfigurationPluginServerInitCallback();
 void MatterPressureMeasurementPluginServerInitCallback();
 void MatterPumpConfigurationAndControlPluginServerInitCallback();
@@ -99,6 +100,7 @@ void MatterOzoneConcentrationMeasurementPluginServerShutdownCallback();
 void MatterPm10ConcentrationMeasurementPluginServerShutdownCallback();
 void MatterPm1ConcentrationMeasurementPluginServerShutdownCallback();
 void MatterPm25ConcentrationMeasurementPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
 void MatterPowerSourceConfigurationPluginServerShutdownCallback();
 void MatterPressureMeasurementPluginServerShutdownCallback();
 void MatterPumpConfigurationAndControlPluginServerShutdownCallback();
@@ -161,6 +163,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterPm10ConcentrationMeasurementPluginServerInitCallback(); \
     MatterPm1ConcentrationMeasurementPluginServerInitCallback(); \
     MatterPm25ConcentrationMeasurementPluginServerInitCallback(); \
+    MatterPowerSourcePluginServerInitCallback(); \
     MatterPowerSourceConfigurationPluginServerInitCallback(); \
     MatterPressureMeasurementPluginServerInitCallback(); \
     MatterPumpConfigurationAndControlPluginServerInitCallback(); \
@@ -223,6 +226,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterPm10ConcentrationMeasurementPluginServerShutdownCallback(); \
     MatterPm1ConcentrationMeasurementPluginServerShutdownCallback(); \
     MatterPm25ConcentrationMeasurementPluginServerShutdownCallback(); \
+    MatterPowerSourcePluginServerShutdownCallback(); \
     MatterPowerSourceConfigurationPluginServerShutdownCallback(); \
     MatterPressureMeasurementPluginServerShutdownCallback(); \
     MatterPumpConfigurationAndControlPluginServerShutdownCallback(); \

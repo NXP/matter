@@ -159,7 +159,7 @@
   /* Endpoint: 2, Cluster: Ballast Configuration (server) */ \
   { (uint16_t)0x0, (uint16_t)0x1, (uint16_t)0xFE }, /* MinLevel */ \
   { (uint16_t)0x0, (uint16_t)0x1, (uint16_t)0xFE }, /* MaxLevel */ \
-  { (uint16_t)0x0, (uint16_t)0x64, (uint16_t)0xFF }, /* BallastFactorAdjustment */ \
+  { (uint16_t)0x0, (uint16_t)0x64, (uint16_t)0xFFFF }, /* BallastFactorAdjustment */ \
   { (uint16_t)0x0, (uint16_t)0x0, (uint16_t)0x1 }, /* LampAlarmMode */ \
 \
   /* Endpoint: 2, Cluster: Occupancy Sensing (server) */ \
@@ -176,7 +176,7 @@
 
 
 // This is an array of EmberAfAttributeMetadata structures.
-#define GENERATED_ATTRIBUTE_COUNT 804
+#define GENERATED_ATTRIBUTE_COUNT 811
 #define GENERATED_ATTRIBUTES { \
 \
   /* Endpoint: 0, Cluster: Descriptor (server) */ \
@@ -240,6 +240,15 @@
   /* Endpoint: 0, Cluster: Unit Localization (server) */ \
   { ZAP_MIN_MAX_DEFAULTS_INDEX(0), 0x00000000, 1, ZAP_TYPE(ENUM8), ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) }, /* TemperatureUnit */  \
   { ZAP_SIMPLE_DEFAULT(0x1), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), 0 }, /* FeatureMap */  \
+  { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), 0 }, /* ClusterRevision */  \
+\
+  /* Endpoint: 0, Cluster: Power Source (server) */ \
+  { ZAP_EMPTY_DEFAULT(), 0x00000000, 1, ZAP_TYPE(ENUM8), 0 }, /* Status */  \
+  { ZAP_EMPTY_DEFAULT(), 0x00000001, 1, ZAP_TYPE(INT8U), 0 }, /* Order */  \
+  { ZAP_EMPTY_DEFAULT(), 0x00000002, 61, ZAP_TYPE(CHAR_STRING), 0 }, /* Description */  \
+  { ZAP_EMPTY_DEFAULT(), 0x00000005, 1, ZAP_TYPE(ENUM8), 0 }, /* WiredCurrentType */  \
+  { ZAP_EMPTY_DEFAULT(), 0x0000001F, 0, ZAP_TYPE(ARRAY), ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) }, /* EndpointList */  \
+  { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), 0 }, /* FeatureMap */  \
   { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), 0 }, /* ClusterRevision */  \
 \
   /* Endpoint: 0, Cluster: General Commissioning (server) */ \
@@ -1598,7 +1607,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
 // clang-format on
 
 // This is an array of EmberAfCluster structures.
-#define GENERATED_CLUSTER_COUNT 81
+#define GENERATED_CLUSTER_COUNT 82
 // clang-format off
 #define GENERATED_CLUSTERS { \
   { \
@@ -1693,9 +1702,22 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
       .eventCount = 0, \
     },\
   { \
+      /* Endpoint: 0, Cluster: Power Source (server) */ \
+      .clusterId = 0x0000002F, \
+      .attributes = ZAP_ATTRIBUTE_INDEX(51), \
+      .attributeCount = 7, \
+      .clusterSize = 70, \
+      .mask = ZAP_CLUSTER_MASK(SERVER), \
+      .functions = NULL, \
+      .acceptedCommandList = nullptr, \
+      .generatedCommandList = nullptr, \
+      .eventList = nullptr, \
+      .eventCount = 0, \
+    },\
+  { \
       /* Endpoint: 0, Cluster: General Commissioning (server) */ \
       .clusterId = 0x00000030, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(51), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(58), \
       .attributeCount = 7, \
       .clusterSize = 14, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1708,7 +1730,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Network Commissioning (server) */ \
       .clusterId = 0x00000031, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(58), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(65), \
       .attributeCount = 10, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1721,7 +1743,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Diagnostic Logs (server) */ \
       .clusterId = 0x00000032, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(68), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(75), \
       .attributeCount = 2, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1734,7 +1756,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: General Diagnostics (server) */ \
       .clusterId = 0x00000033, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(70), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(77), \
       .attributeCount = 11, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1747,7 +1769,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Software Diagnostics (server) */ \
       .clusterId = 0x00000034, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(81), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(88), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1760,7 +1782,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Thread Network Diagnostics (server) */ \
       .clusterId = 0x00000035, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(87), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(94), \
       .attributeCount = 67, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1773,7 +1795,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Wi-Fi Network Diagnostics (server) */ \
       .clusterId = 0x00000036, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(154), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(161), \
       .attributeCount = 15, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1786,7 +1808,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Ethernet Network Diagnostics (server) */ \
       .clusterId = 0x00000037, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(169), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(176), \
       .attributeCount = 11, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1799,7 +1821,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Administrator Commissioning (server) */ \
       .clusterId = 0x0000003C, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(180), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(187), \
       .attributeCount = 5, \
       .clusterSize = 4, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1812,7 +1834,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Operational Credentials (server) */ \
       .clusterId = 0x0000003E, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(185), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(192), \
       .attributeCount = 8, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1825,7 +1847,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: Group Key Management (server) */ \
       .clusterId = 0x0000003F, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(193), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(200), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1838,7 +1860,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 0, Cluster: User Label (server) */ \
       .clusterId = 0x00000041, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(199), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(206), \
       .attributeCount = 3, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1851,7 +1873,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 1, Cluster: Identify (server) */ \
       .clusterId = 0x00000003, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(202), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(209), \
       .attributeCount = 4, \
       .clusterSize = 9, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION), \
@@ -1864,7 +1886,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 1, Cluster: Descriptor (server) */ \
       .clusterId = 0x0000001D, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(206), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(213), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1877,7 +1899,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 1, Cluster: Binding (client) */ \
       .clusterId = 0x0000001E, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(212), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(219), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -1890,7 +1912,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 1, Cluster: Actions (server) */ \
       .clusterId = 0x00000025, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(212), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(219), \
       .attributeCount = 5, \
       .clusterSize = 520, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1903,7 +1925,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Identify (server) */ \
       .clusterId = 0x00000003, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(217), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(224), \
       .attributeCount = 4, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION), \
@@ -1916,7 +1938,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Groups (server) */ \
       .clusterId = 0x00000004, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(221), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(228), \
       .attributeCount = 3, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), \
@@ -1929,7 +1951,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: On/Off (server) */ \
       .clusterId = 0x00000006, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(224), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(231), \
       .attributeCount = 7, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(SHUTDOWN_FUNCTION), \
@@ -1942,7 +1964,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Level Control (server) */ \
       .clusterId = 0x00000008, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(231), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(238), \
       .attributeCount = 16, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(SHUTDOWN_FUNCTION), \
@@ -1955,7 +1977,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Descriptor (server) */ \
       .clusterId = 0x0000001D, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(247), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(254), \
       .attributeCount = 7, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1968,7 +1990,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Binding (server) */ \
       .clusterId = 0x0000001E, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(254), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(261), \
       .attributeCount = 3, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1981,7 +2003,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Access Control (server) */ \
       .clusterId = 0x0000001F, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(257), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(264), \
       .attributeCount = 7, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1994,7 +2016,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Basic Information (client) */ \
       .clusterId = 0x00000028, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(264), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(271), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -2007,7 +2029,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Basic Information (server) */ \
       .clusterId = 0x00000028, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(264), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(271), \
       .attributeCount = 26, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2020,7 +2042,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: OTA Software Update Provider (client) */ \
       .clusterId = 0x00000029, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(290), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(297), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -2033,7 +2055,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: OTA Software Update Requestor (server) */ \
       .clusterId = 0x0000002A, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(290), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(297), \
       .attributeCount = 6, \
       .clusterSize = 3, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2046,7 +2068,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Localization Configuration (server) */ \
       .clusterId = 0x0000002B, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(296), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(303), \
       .attributeCount = 4, \
       .clusterSize = 42, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2059,7 +2081,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Time Format Localization (server) */ \
       .clusterId = 0x0000002C, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(300), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(307), \
       .attributeCount = 5, \
       .clusterSize = 8, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2072,7 +2094,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Unit Localization (server) */ \
       .clusterId = 0x0000002D, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(305), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(312), \
       .attributeCount = 3, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2085,7 +2107,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Power Source Configuration (server) */ \
       .clusterId = 0x0000002E, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(308), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(315), \
       .attributeCount = 3, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2098,7 +2120,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: General Commissioning (server) */ \
       .clusterId = 0x00000030, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(311), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(318), \
       .attributeCount = 7, \
       .clusterSize = 14, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2111,7 +2133,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Network Commissioning (server) */ \
       .clusterId = 0x00000031, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(318), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(325), \
       .attributeCount = 10, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2124,7 +2146,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: General Diagnostics (server) */ \
       .clusterId = 0x00000033, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(328), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(335), \
       .attributeCount = 11, \
       .clusterSize = 1, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2137,7 +2159,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Bridged Device Basic Information (server) */ \
       .clusterId = 0x00000039, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(339), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(346), \
       .attributeCount = 18, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2150,7 +2172,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Operational Credentials (server) */ \
       .clusterId = 0x0000003E, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(357), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(364), \
       .attributeCount = 8, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2163,7 +2185,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Group Key Management (server) */ \
       .clusterId = 0x0000003F, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(365), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(372), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2176,7 +2198,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Laundry Washer Mode (client) */ \
       .clusterId = 0x00000051, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(371), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(378), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -2189,7 +2211,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Refrigerator And Temperature Controlled Cabinet Mode (client) */ \
       .clusterId = 0x00000052, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(371), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(378), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -2202,7 +2224,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Laundry Washer Controls (server) */ \
       .clusterId = 0x00000053, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(371), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(378), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2215,7 +2237,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Temperature Control (server) */ \
       .clusterId = 0x00000056, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(377), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(384), \
       .attributeCount = 8, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2228,7 +2250,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Refrigerator Alarm (server) */ \
       .clusterId = 0x00000057, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(385), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(392), \
       .attributeCount = 5, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2241,7 +2263,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Dishwasher Mode (client) */ \
       .clusterId = 0x00000059, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(390), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(397), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -2254,7 +2276,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Air Quality (server) */ \
       .clusterId = 0x0000005B, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(390), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(397), \
       .attributeCount = 3, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2267,7 +2289,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Smoke CO Alarm (server) */ \
       .clusterId = 0x0000005C, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(393), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(400), \
       .attributeCount = 15, \
       .clusterSize = 22, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2280,7 +2302,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Dishwasher Alarm (server) */ \
       .clusterId = 0x0000005D, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(408), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(415), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2293,7 +2315,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Scenes Management (server) */ \
       .clusterId = 0x00000062, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(414), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(421), \
       .attributeCount = 4, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(SHUTDOWN_FUNCTION), \
@@ -2306,7 +2328,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: HEPA Filter Monitoring (server) */ \
       .clusterId = 0x00000071, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(418), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(425), \
       .attributeCount = 8, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2319,7 +2341,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Activated Carbon Filter Monitoring (server) */ \
       .clusterId = 0x00000072, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(426), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(433), \
       .attributeCount = 8, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2332,7 +2354,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Door Lock (client) */ \
       .clusterId = 0x00000101, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(434), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(441), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -2345,7 +2367,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Door Lock (server) */ \
       .clusterId = 0x00000101, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(434), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(441), \
       .attributeCount = 38, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION) | ZAP_CLUSTER_MASK(SHUTDOWN_FUNCTION) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2358,7 +2380,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Window Covering (server) */ \
       .clusterId = 0x00000102, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(472), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(479), \
       .attributeCount = 24, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2371,7 +2393,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Pump Configuration and Control (server) */ \
       .clusterId = 0x00000200, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(496), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(503), \
       .attributeCount = 25, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2384,7 +2406,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Thermostat (server) */ \
       .clusterId = 0x00000201, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(521), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(528), \
       .attributeCount = 14, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION) | ZAP_CLUSTER_MASK(SHUTDOWN_FUNCTION) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2397,7 +2419,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Fan Control (server) */ \
       .clusterId = 0x00000202, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(535), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(542), \
       .attributeCount = 14, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2410,7 +2432,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Thermostat User Interface Configuration (server) */ \
       .clusterId = 0x00000204, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(549), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(556), \
       .attributeCount = 5, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
@@ -2423,7 +2445,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Color Control (server) */ \
       .clusterId = 0x00000300, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(554), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(561), \
       .attributeCount = 54, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(SHUTDOWN_FUNCTION), \
@@ -2436,7 +2458,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Ballast Configuration (server) */ \
       .clusterId = 0x00000301, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(608), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(615), \
       .attributeCount = 16, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2449,7 +2471,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Illuminance Measurement (server) */ \
       .clusterId = 0x00000400, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(624), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(631), \
       .attributeCount = 7, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2462,7 +2484,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Temperature Measurement (server) */ \
       .clusterId = 0x00000402, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(631), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(638), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2475,7 +2497,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Pressure Measurement (server) */ \
       .clusterId = 0x00000403, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(637), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(644), \
       .attributeCount = 11, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2488,7 +2510,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Flow Measurement (server) */ \
       .clusterId = 0x00000404, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(648), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(655), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2501,7 +2523,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Relative Humidity Measurement (server) */ \
       .clusterId = 0x00000405, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(654), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(661), \
       .attributeCount = 6, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2514,7 +2536,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Occupancy Sensing (server) */ \
       .clusterId = 0x00000406, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(660), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(667), \
       .attributeCount = 14, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), \
@@ -2527,7 +2549,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Carbon Monoxide Concentration Measurement (server) */ \
       .clusterId = 0x0000040C, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(674), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(681), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2540,7 +2562,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Carbon Dioxide Concentration Measurement (server) */ \
       .clusterId = 0x0000040D, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(687), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(694), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2553,7 +2575,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Nitrogen Dioxide Concentration Measurement (server) */ \
       .clusterId = 0x00000413, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(700), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(707), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2566,7 +2588,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Ozone Concentration Measurement (server) */ \
       .clusterId = 0x00000415, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(713), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(720), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2579,7 +2601,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: PM2.5 Concentration Measurement (server) */ \
       .clusterId = 0x0000042A, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(726), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(733), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2592,7 +2614,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Formaldehyde Concentration Measurement (server) */ \
       .clusterId = 0x0000042B, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(739), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(746), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2605,7 +2627,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: PM1 Concentration Measurement (server) */ \
       .clusterId = 0x0000042C, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(752), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(759), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2618,7 +2640,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: PM10 Concentration Measurement (server) */ \
       .clusterId = 0x0000042D, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(765), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(772), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2631,7 +2653,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Total Volatile Organic Compounds Concentration Measurement (server) */ \
       .clusterId = 0x0000042E, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(778), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(785), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2644,7 +2666,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
   { \
       /* Endpoint: 2, Cluster: Radon Concentration Measurement (server) */ \
       .clusterId = 0x0000042F, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(791), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(798), \
       .attributeCount = 13, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -2658,13 +2680,13 @@ const EmberAfGenericClusterFunction chipFuncArrayOccupancySensingServer[] = {\
 
 // clang-format on
 
-#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 73
+#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 74
 
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES { \
-  { ZAP_CLUSTER_INDEX(0), 19, 150 }, \
-  { ZAP_CLUSTER_INDEX(19), 4, 529 }, \
-  { ZAP_CLUSTER_INDEX(23), 58, 114 }, \
+  { ZAP_CLUSTER_INDEX(0), 20, 220 }, \
+  { ZAP_CLUSTER_INDEX(20), 4, 529 }, \
+  { ZAP_CLUSTER_INDEX(24), 58, 114 }, \
 }
 
 
@@ -2679,7 +2701,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (0)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (793)
+#define ATTRIBUTE_MAX_SIZE (863)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (3)
