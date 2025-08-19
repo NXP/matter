@@ -47,8 +47,8 @@ void BridgeActions::regist()
 
     actions[0] = new Action(0x1001, "Start Network", Actions::ActionTypeEnum::kAutomation, 0xE001, 0x1, Actions::ActionStateEnum::kInactive, true);
     actions[1] = new Action(0x1002, "Permit Join Start", Actions::ActionTypeEnum::kAutomation, 0xE002, 0x1, Actions::ActionStateEnum::kInactive, true);
-    actions[2] = new Action(0x1003, "Permit Join Stop", Actions::ActionTypeEnum::kAutomation, 0xE002, 0x1, Actions::ActionStateEnum::kInactive, true);
-    actions[3] = new Action(0x1004, "Factory Reset", Actions::ActionTypeEnum::kAutomation, 0xE003, 0x1, Actions::ActionStateEnum::kInactive, true);
+    actions[2] = new Action(0x1003, "Permit Join Stop", Actions::ActionTypeEnum::kAutomation, 0xE003, 0x1, Actions::ActionStateEnum::kInactive, true);
+    actions[3] = new Action(0x1004, "Factory Reset", Actions::ActionTypeEnum::kAutomation, 0xE004, 0x1, Actions::ActionStateEnum::kInactive, true);
 
     for(int i = 0; i < ACTION_NUM; i++ ) {
         ActionList.push_back(actions[i]);
