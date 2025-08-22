@@ -59,7 +59,7 @@ template("ncp_host_sdk") {
       "-DCONFIG_NCP_BLE  = 1",
       "-DCONFIG_MATTER_NCP",
       "-DCONFIG_NCP_USE_ENCRYPT = 1",
-      "-DCONFIG_NCP_HOST_AUTO_TRIG_ENCRYPT = 1"
+      #"-DCONFIG_NCP_HOST_AUTO_TRIG_ENCRYPT = 1"
     ]
 
     if (ncp_host_interface == 1) {
