@@ -54,17 +54,17 @@ EleManagerKeystore::EleManagerKeystore()
 {
     hsm_err_t err;
 
-    // open the session
+    // Step 1: open session
     open_session_args_t open_session_args = {0};
     open_session_args.mu_type = HSM1;
     err = hsm_open_session(&open_session_args, &hsm_session_hdl);
     if (err != HSM_NO_ERROR) {
-        throw std::runtime_error("ELE keystore session open failed.\n");
-    } else {
-        ChipLogDetail(Crypto, "ELE session open successfully.\n");
+        ChipLogDetail(Crypto, "ELE keystore session open failed: 0x%d\n", err);
+        throw std::runtime_error("Session open failed.\n");
     }
+    ChipLogDetail(Crypto, "ELE keystore session open successfully.\n");
 
-    // open the keystore
+    // Step 2: open keystore
     open_svc_key_store_args_t open_svc_key_store_args = {0};
     open_svc_key_store_args.key_store_identifier = key_store_id;
     open_svc_key_store_args.authentication_nonce = authen_nonce;
@@ -72,46 +72,51 @@ EleManagerKeystore::EleManagerKeystore()
     open_svc_key_store_args.flags = (HSM_SVC_KEY_STORE_FLAGS_CREATE | HSM_SVC_KEY_STORE_FLAGS_STRICT_OPERATION);
     err = hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl);
     if (err == HSM_KEY_STORE_CONFLICT) {
-        ChipLogDetail(Crypto, "ELE keystore already existed, open it...\n");
+        ChipLogDetail(Crypto, "ELE keystore service already existed, open it...\n");
         open_svc_key_store_args.flags = HSM_SVC_KEY_STORE_FLAGS_LOAD;
         err = hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl);
         if (err != HSM_NO_ERROR) {
-            ChipLogDetail(Crypto, "ELE keystore session open failed. ret:0x%x\n", err);
-            return;
-        } else
-            ChipLogDetail(Crypto, "ELE keystore open successfully.\n");
-    } else {
-        ChipLogDetail(Crypto, "ELE keystore created successfully.\n");
-    }
+            ChipLogDetail(Crypto, "ELE keystore service open failed. ret:0x%x\n", err);
+            hsm_close_session(hsm_session_hdl);
+            hsm_session_hdl = 0;
+            throw std::runtime_error("Keystore service open failed");
+        }
+        ChipLogDetail(Crypto, "ELE keystore service open successfully.\n");
+    } else
+        ChipLogDetail(Crypto, "ELE keystore service created successfully.\n");
 
-    // open key managerment service
+    // Step 3: open key managerment service
     open_svc_key_management_args_t key_mgmt_args = {0};
     memset(&key_mgmt_args, 0, sizeof(key_mgmt_args));
     err = hsm_open_key_management_service(key_store_hdl, &key_mgmt_args, &key_mgmt_hdl);
     if (err != HSM_NO_ERROR) {
         ChipLogDetail(Crypto, "ELE key management service open failed. ret:0x%x\n", err);
-        return;
-    } else
-        ChipLogDetail(Crypto, "ELE key management service open successfully.\n");
+        hsm_close_key_store_service(key_store_hdl);
+        hsm_close_session(hsm_session_hdl);
+        key_store_hdl = 0;
+        hsm_session_hdl = 0;
+        throw std::runtime_error("key management service open failed");
+    }
+    ChipLogDetail(Crypto, "ELE key management service open successfully.\n");
+
+    ele_service_ready = true;
 }
 
 EleManagerKeystore::~EleManagerKeystore()
 {
-    hsm_err_t err;
-
-    ChipLogDetail(Crypto, "close all ELE services.\n");
-
-    err = hsm_close_key_management_service(key_mgmt_hdl);
+    hsm_close_key_management_service(key_mgmt_hdl);
+    ChipLogDetail(Crypto, "Close key management service.\n");
     key_mgmt_hdl = 0;
-    ChipLogDetail(Crypto, "close key management service returns:0x%x\n", err);
 
-    err = hsm_close_key_store_service(key_store_hdl);
+    hsm_close_key_store_service(key_store_hdl);
+    ChipLogDetail(Crypto, "Close keystore service.\n");
     key_store_hdl = 0;
-    ChipLogDetail(Crypto, "close key store service returns:0x%x\n", err);
 
-    err = hsm_close_session(hsm_session_hdl);
+    hsm_close_session(hsm_session_hdl);
+    ChipLogDetail(Crypto, "Close keystore session.\n");
     hsm_session_hdl = 0;
-    ChipLogDetail(Crypto, "close ELE session returns:0x%x\n", err);
+
+    ele_service_ready = false;
 }
 
 std::shared_ptr<EleManagerKeystore> EleManagerKeystore::getInstance() {
@@ -122,9 +127,13 @@ std::shared_ptr<EleManagerKeystore> EleManagerKeystore::getInstance() {
             shared_EleManager = std::make_shared<make_shared_enabler>();
             mWeakInstance = shared_EleManager;
         } catch (...) {
-                shared_EleManager = nullptr;
+            ChipLogDetail(Crypto, "Ele keystore service open failed, continue...\n");
         }
     }
+
+    /* Return constructed object whatever construction was successful or not,
+     * aims to avoid process crash caused by access null pointer.
+     */
     return shared_EleManager;
 }
 
@@ -132,17 +141,17 @@ EleManagerAttestation::EleManagerAttestation()
 {
     hsm_err_t err;
 
-    // open the session
+    // Step 1: Open session
     open_session_args_t open_session_args = {0};
     open_session_args.mu_type = HSM1;
     err = hsm_open_session(&open_session_args, &hsm_session_hdl);
     if (err != HSM_NO_ERROR) {
-        throw std::runtime_error("ELE device attestation session open failed.");
-    } else {
-        ChipLogDetail(Crypto, "ELE device attestation session open successfully.\n");
+        ChipLogDetail(Crypto, "ELE device attestation session open failed: 0x%d\n", err);
+        throw std::runtime_error("session open failed.\n");
     }
+    ChipLogDetail(Crypto, "ELE device attestation session open successfully.\n");
 
-    // open the keystore
+    // Step 2: open keystore
     open_svc_key_store_args_t open_svc_key_store_args = {0};
     open_svc_key_store_args.key_store_identifier = key_store_id;
     open_svc_key_store_args.authentication_nonce = authen_nonce;
@@ -150,32 +159,33 @@ EleManagerAttestation::EleManagerAttestation()
     open_svc_key_store_args.flags = (HSM_SVC_KEY_STORE_FLAGS_CREATE | HSM_SVC_KEY_STORE_FLAGS_STRICT_OPERATION);
     err = hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl);
     if (err == HSM_KEY_STORE_CONFLICT) {
-        ChipLogDetail(Crypto, "device attestation keystore already existed, open it...\n");
+        ChipLogDetail(Crypto, "ELE device attestation service already existed, open it...\n");
         open_svc_key_store_args.flags = HSM_SVC_KEY_STORE_FLAGS_LOAD;
         err = hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl);
         if (err != HSM_NO_ERROR) {
-            ChipLogDetail(Crypto, "device attestation keystore open failed. ret:0x%x\n", err);
-            return;
-        } else
-            ChipLogDetail(Crypto, "device attestation keystore open successfully.\n");
-    } else {
-        ChipLogDetail(Crypto, "device attestation keystore created successfully.\n");
-    }
+            ChipLogDetail(Crypto, "ELE device attestation service open failed. ret:0x%x\n", err);
+            hsm_close_session(hsm_session_hdl);
+            hsm_session_hdl = 0;
+            throw std::runtime_error("Device attestation service open failed");
+        }
+        ChipLogDetail(Crypto, "ELE device attestation keystore open successfully.\n");
+    } else
+        ChipLogDetail(Crypto, "ELE device attestation keystore created successfully.\n");
+
+    ele_service_ready = true;
 }
 
 EleManagerAttestation::~EleManagerAttestation()
 {
-    hsm_err_t err;
-
-    ChipLogDetail(Crypto, "close all ELE device attestation services.\n");
-
-    err = hsm_close_key_store_service(key_store_hdl);
+    ChipLogDetail(Crypto, "Close device attestation service.\n");
+    hsm_close_key_store_service(key_store_hdl);
     key_store_hdl = 0;
-    ChipLogDetail(Crypto, "close device attestation key store service returns:0x%x\n", err);
 
-    err = hsm_close_session(hsm_session_hdl);
+    ChipLogDetail(Crypto, "Close device attestation session.\n");
+    hsm_close_session(hsm_session_hdl);
     hsm_session_hdl = 0;
-    ChipLogDetail(Crypto, "close ELE device attestation session returns:0x%x\n", err);
+
+    ele_service_ready = false;
 }
 
 std::shared_ptr<EleManagerAttestation> EleManagerAttestation::getInstance() {
@@ -186,14 +196,23 @@ std::shared_ptr<EleManagerAttestation> EleManagerAttestation::getInstance() {
             shared_EleManager = std::make_shared<make_shared_enabler>();
             mWeakInstance = shared_EleManager;
         } catch (...) {
-            shared_EleManager = nullptr;
+            ChipLogDetail(Crypto, "Ele device attestation service open failed, continue...\n");
         }
     }
+
+    /* Return constructed object whatever construction was successful or not,
+     * aims to avoid process crash caused by access null pointer.
+     */
     return shared_EleManager;
 }
 
 hsm_err_t EleManagerImpl::EleDeleteKey(uint32_t keyId)
 {
+    if (!ele_service_ready) {
+        ChipLogDetail(Crypto, "Ele service has not been instantiated yet.\n");
+        return HSM_GENERAL_ERROR;
+    }
+
     hsm_err_t err;
     op_delete_key_args_t del_args;
 
@@ -213,6 +232,11 @@ hsm_err_t EleManagerImpl::EleDeleteKey(uint32_t keyId)
 
 CHIP_ERROR EleManagerImpl::EleGenerateCSR(uint32_t keyId, uint8_t * csr, size_t &csrLength)
 {
+    if (!ele_service_ready) {
+        ChipLogDetail(Crypto, "Ele service has not been instantiated yet.\n");
+        return CHIP_ERROR_INTERNAL;
+    }
+
     CHIP_ERROR error = CHIP_ERROR_INTERNAL;
     hsm_err_t hsmret = HSM_NO_ERROR;
 
@@ -374,6 +398,11 @@ exit:
 hsm_err_t EleManagerImpl::EleSignMessage(uint32_t keyId, const uint8_t *msg, size_t msgSize,
                                uint8_t *sig, size_t sigSize)
 {
+    if (!ele_service_ready) {
+        ChipLogDetail(Crypto, "Ele service has not been instantiated yet.\n");
+        return HSM_GENERAL_ERROR;
+    }
+
     open_svc_sign_gen_args_t open_sig_gen_args;
     op_generate_sign_args_t sig_gen_args;
     hsm_hdl_t  sig_gen_hdl;

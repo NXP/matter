@@ -41,7 +41,7 @@ public:
     hsm_hdl_t hsm_session_hdl = 0;
     hsm_hdl_t key_store_hdl = 0;
     hsm_hdl_t key_mgmt_hdl = 0;
-
+    bool ele_service_ready = false;
 };
 
 class EleManagerKeystore : public EleManagerImpl
