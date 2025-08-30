@@ -17,7 +17,10 @@
 
 #pragma once
 
-#include "Device.h"
+#include "BridgeDev.h"
+
+using namespace chip;
+using namespace chip::app;
 
 class BridgeDevMgr
 {
@@ -42,8 +45,8 @@ private:
     void AddOnOffNode(ZigbeeDev_t *ZigbeeDev);
     void AddTempSensorNode(ZigbeeDev_t *ZigbeeDev);
 
-    void RemoveOnOffNode(DeviceOnOff* dev);
-    void RemoveTempMeasurementNode(DeviceTempSensor* dev);
+    void RemoveOnOffNode(BridgeOnOff* dev);
+    void RemoveTempMeasurementNode(BridgeTempSensor* dev);
 
     void MapZcbNodes();
     void AddNewZcbNode(newdb_zcb_t zcb);
@@ -52,8 +55,16 @@ private:
     void RemoveDevice(Device *dev);
     int  start_threads();
 
-    int AddDeviceEndpoint(Device * dev, EmberAfEndpointType * ep, const Span<const EmberAfDeviceType> & deviceTypeList,
-                      const Span<DataVersion> & dataVersionStorage, chip::EndpointId parentEndpointId);
+    int AddDeviceEndpoint(
+        Device* dev,
+        EmberAfEndpointType* ep,
+        const Span<const EmberAfDeviceType> & deviceTypeList,
+        const Span<DataVersion> & dataVersionStorage,
+#if CHIP_CONFIG_USE_ENDPOINT_UNIQUE_ID
+        chip::CharSpan epUniqueId,
+#endif
+        chip::EndpointId parentEndpointId = chip::kInvalidEndpointId
+    );
 
     int RemoveDeviceEndpoint(Device * dev);
 
@@ -63,10 +74,10 @@ private:
     BridgeDevMgr &operator=(const BridgeDevMgr&) = delete;
 
 protected:
-    static Device* gDevices[CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT];
-
-    EndpointId mCurrentEndpointId;
-    EndpointId mFirstDynamicEndpointId;
     pthread_t ZcbMonitor_thread;
 
+
+    static Device* gDevices[CHIP_DEVICE_CONFIG_DYNAMIC_ENDPOINT_COUNT + 1];
+    EndpointId gCurrentEndpointId;
+    EndpointId gFirstDynamicEndpointId;
 };

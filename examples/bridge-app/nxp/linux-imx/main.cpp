@@ -22,12 +22,13 @@
 
 #include <app-common/zap-generated/ids/Attributes.h>
 #include <app-common/zap-generated/ids/Clusters.h>
+#include <app/AttributeAccessInterfaceRegistry.h>
 #include <app/ConcreteAttributePath.h>
 #include <app/EventLogging.h>
-#include <app/clusters/network-commissioning/network-commissioning.h>
 #include <app/reporting/reporting.h>
 #include <app/util/af-types.h>
 #include <app/util/attribute-storage.h>
+#include <app/util/endpoint-config-api.h>
 #include <app/util/util.h>
 #include <credentials/DeviceAttestationCredsProvider.h>
 #include <credentials/examples/DeviceAttestationCredsExample.h>
@@ -37,7 +38,7 @@
 #include <platform/CommissionableDataProvider.h>
 #include <setup_payload/QRCodeSetupPayloadGenerator.h>
 #include <setup_payload/SetupPayload.h>
-#include <platform/Linux/NetworkCommissioningDriver.h>
+
 #include <pthread.h>
 #include <sys/ioctl.h>
 
@@ -48,6 +49,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "zcb.h"
@@ -62,27 +64,16 @@ using namespace chip::Transport;
 using namespace chip::DeviceLayer;
 using namespace chip::app::Clusters;
 
-
-int verbosity = 11;       // zcb log level
-
 #define SERIAL_PORT       "/dev/ttyUSB0"
 #define SERIAL_BAUDRATE   1000000
-
-#if CHIP_DEVICE_CONFIG_ENABLE_WPA
-DeviceLayer::NetworkCommissioning::LinuxWiFiDriver sLinuxWiFiDriver;
-Clusters::NetworkCommissioning::Instance sWiFiNetworkCommissioningInstance(0, &sLinuxWiFiDriver);
-#endif
-
-void ApplicationInit()
-{
-#if CHIP_DEVICE_CONFIG_ENABLE_WPA
-    sWiFiNetworkCommissioningInstance.Init();
-#endif
-}
-
-
 #define POLL_INTERVAL_MS (100)
+
+int verbosity = 11;        // zcb log level
 uint8_t poll_prescale = 0;
+
+// NamedPipeCommands sChipNamedPipeCommands;
+// BridgeCommandDelegate sBridgeCommandDelegate;
+// BridgedPowerSourceAttrAccess gPowerAttrAccess;
 
 bool kbhit()
 {
@@ -140,35 +131,22 @@ void * bridge_polling_thread(void * context)
     return NULL;
 }
 
-int main(int argc, char * argv[])
+void ApplicationInit()
 {
+    // std::string path = std::string(LinuxDeviceOptions::GetInstance().app_pipe);
+
+    // if ((!path.empty()) and (sChipNamedPipeCommands.Start(path, &sBridgeCommandDelegate) != CHIP_NO_ERROR))
+    // {
+    //     ChipLogError(NotSpecified, "Failed to start CHIP NamedPipeCommands");
+    //     sChipNamedPipeCommands.Stop();
+    // }
+
+    // AttributeAccessInterfaceRegistry::Instance().Register(&gPowerAttrAccess);
+
     Bridge* bridge = new Bridge(SERIAL_PORT, SERIAL_BAUDRATE);
     if ( bridge->Init() != 0)
-        return -1;
+        return;
 
-    if (ChipLinuxAppInit(argc, argv) != 0)
-    {
-        return -1;
-    }
-
-    // Init Data Model and CHIP App Server
-    static chip::CommonCaseDeviceServerInitParams initParams;
-    (void) initParams.InitializeStaticResourcesBeforeServerInit();
-
-#if CHIP_DEVICE_ENABLE_PORT_PARAMS
-    // use a different service port to make testing possible with other sample devices running on same host
-    initParams.operationalServicePort = LinuxDeviceOptions::GetInstance().securedDevicePort;
-#endif
-
-    initParams.interfaceId = LinuxDeviceOptions::GetInstance().interfaceId;
-    chip::Server::GetInstance().Init(initParams);
-
-    // Initialize device attestation config
-    SetDeviceAttestationCredentialsProvider(Examples::GetExampleDACProvider());
-
-    // Disable last fixed endpoint, which is used as a placeholder for all of the
-    // supported clusters so that ZAP will generated the requisite code.
-    emberAfEndpointEnableDisable(emberAfEndpointFromIndex(static_cast<uint16_t>(emberAfFixedEndpointCount() - 1)), false);
     bridge->ServiceStart();
 
     {
@@ -180,10 +158,17 @@ int main(int argc, char * argv[])
             exit(1);
         }
     }
+}
 
-    // Run CHIP
-    ApplicationInit();
-    chip::DeviceLayer::PlatformMgr().RunEventLoop();
+void ApplicationShutdown() {}
 
+int main(int argc, char * argv[])
+{
+    if (ChipLinuxAppInit(argc, argv) != 0)
+    {
+        return -1;
+    }
+
+    ChipLinuxAppMainLoop();
     return 0;
 }
