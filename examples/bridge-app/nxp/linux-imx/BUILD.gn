@@ -22,6 +22,7 @@ executable("imx-chip-bridge-app") {
   sources = [
     "${chip_root}/examples/tv-app/tv-common/include/CHIPProjectAppConfig.h",
     "main/src/Device.cpp",
+    "main/src/BridgeDev.cpp",
 
     # Matter Bridge
     "main/src/Bridge.cpp",

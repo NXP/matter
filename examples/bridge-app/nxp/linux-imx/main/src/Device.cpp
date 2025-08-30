@@ -19,23 +19,24 @@
 
 #include "Device.h"
 
+#include <crypto/RandUtils.h>
 #include <cstdio>
-#include <time.h>
 #include <platform/CHIPDeviceLayer.h>
 
-#include "zcb.h"
+#include <string>
+#include <sys/types.h>
 
+using namespace chip;
 using namespace chip::app::Clusters::Actions;
 
 Device::Device(const char * szDeviceName, std::string szLocation)
 {
     chip::Platform::CopyString(mName, szDeviceName);
-    mLocation   = szLocation;
-    mReachable  = false;
-    mEndpointId = 0;
-
-    device_mutex = PTHREAD_MUTEX_INITIALIZER;
-    device_cond =  PTHREAD_COND_INITIALIZER;
+    chip::Platform::CopyString(mUniqueId, "");
+    mLocation             = szLocation;
+    mReachable            = false;
+    mConfigurationVersion = 1;
+    mEndpointId           = 0;
 }
 
 bool Device::IsReachable()
@@ -78,6 +79,12 @@ void Device::SetName(const char * szName)
     }
 }
 
+void Device::SetUniqueId(const char * szDeviceUniqueId)
+{
+    chip::Platform::CopyString(mUniqueId, szDeviceUniqueId);
+    ChipLogProgress(DeviceLayer, "Device[%s]: New UniqueId=\"%s\"", mName, mUniqueId);
+}
+
 void Device::SetLocation(std::string szLocation)
 {
     bool changed = (mLocation.compare(szLocation) != 0);
@@ -92,9 +99,46 @@ void Device::SetLocation(std::string szLocation)
     }
 }
 
+void Device::GenerateUniqueId()
+{
+    // Ensure the buffer is zeroed out
+    memset(mUniqueId, 0, kDeviceUniqueIdSize + 1);
+
+    static const char kRandCharChoices[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    // Prefix the generated value with "GEN-"
+    memcpy(mUniqueId, "GEN-", 4);
+    for (unsigned idx = 4; idx < kDeviceUniqueIdSize; idx++)
+    {
+        mUniqueId[idx] = kRandCharChoices[Crypto::GetRandU8() % (sizeof(kRandCharChoices) - 1)];
+    }
+
+    mUniqueId[kDeviceUniqueIdSize] = '\0'; // Ensure null-termination
+}
+
+uint32_t Device::GetConfigurationVersion()
+{
+    return mConfigurationVersion;
+}
+
+void Device::SetConfigurationVersion(uint32_t configurationVersion)
+{
+    bool changed = (mConfigurationVersion != configurationVersion);
+
+    mConfigurationVersion = configurationVersion;
+
+    ChipLogProgress(DeviceLayer, "Device[%s]: New Configuration Version=\"%d\"", mName, mConfigurationVersion);
+
+    if (changed)
+    {
+        HandleDeviceChange(this, kChanged_ConfigurationVersion);
+    }
+}
+
 DeviceOnOff::DeviceOnOff(const char * szDeviceName, std::string szLocation) : Device(szDeviceName, szLocation)
 {
-    mOn = true;
+    ChipLogProgress(DeviceLayer, "Device[%s]: %s", mName, " initialized");
+    mOn = false;
 }
 
 bool DeviceOnOff::IsOn()
@@ -104,68 +148,15 @@ bool DeviceOnOff::IsOn()
 
 void DeviceOnOff::SetOnOff(bool aOn)
 {
-    int result;
     bool changed;
-    struct timespec ts;
-    clock_gettime(CLOCK_REALTIME, &ts);
-    // timeout time is 2s
-    ts.tv_sec += 2;
 
     changed = aOn ^ mOn;
+    mOn     = aOn;
+    ChipLogProgress(DeviceLayer, "Device[%s]: %s", mName, aOn ? "ON" : "OFF");
 
     if ((changed) && (mChanged_CB))
     {
         mChanged_CB(this, kChanged_OnOff);
-        if(eOnOff(uint16_t(this->GetZigbeeSaddr()), aOn) != 0)
-        {
-            ChipLogProgress(DeviceLayer, "Send Device[%s]: %s cmd Failed", mName, aOn ? "ON" : "OFF");
-            mOn = !mOn;
-            goto done;
-        }
-
-        pthread_mutex_lock(&device_mutex);
-        while(mOn != aOn) {
-            result = pthread_cond_timedwait(&device_cond, &device_mutex, &ts);
-            if(result == ETIMEDOUT) {
-                ChipLogProgress(DeviceLayer, "Timeout waiting for response from Device[%s]", mName);
-                SetReachable(false);
-                break;
-            } else {
-                ChipLogProgress(DeviceLayer, "Set Device[%s]: Success", mName);
-                mOn = aOn;
-            }
-        }
-        pthread_mutex_unlock(&device_mutex);
-    }
-
-done:
-    ChipLogProgress(DeviceLayer, "Device[%s]: %s", mName, mOn ? "ON" : "OFF");
-}
-
-void DeviceOnOff::SyncOnOff(bool aOn)
-{
-    pthread_mutex_lock(&device_mutex);
-    mOn     = aOn;
-    pthread_cond_signal(&device_cond);
-    pthread_mutex_unlock(&device_mutex);
-
-}
-
-void DeviceOnOff::GetOnOff()
-{
-    newdb_zcb_t zcb;
-    newDbGetZcbSaddr(this->GetZigbeeSaddr(), &zcb);
-
-    if( eReadOnoff( uint16_t(zcb.saddr)) == 0)
-    {
-        this->SetReachable(true);
-        if ( strcmp(zcb.info, "off") == 0) {
-            mOn = false;
-        } else {
-            mOn = true;
-        }
-    } else {
-        this->SetReachable(false);
     }
 }
 
@@ -249,70 +240,11 @@ void DeviceSwitch::HandleDeviceChange(Device * device, Device::Changed_t changeM
     }
 }
 
-void* DeviceTempSensor::Monitor(void *context)
-{
-    DeviceTempSensor *Dev = (DeviceTempSensor*)context;
-
-    int result;
-    struct timespec ts;
-    clock_gettime(CLOCK_REALTIME, &ts);
-    ts.tv_sec += Dev->timeout;
-
-    while( 1 ) {
-        pthread_mutex_lock(&Dev->device_mutex);
-        while(Dev->mReachable == true) {
-            result = pthread_cond_timedwait(&Dev->device_cond, &Dev->device_mutex, &ts);
-            if(result == ETIMEDOUT) {
-                Dev->SetReachable(false);
-            } else {
-                clock_gettime(CLOCK_REALTIME, &ts);
-                ts.tv_sec += Dev->timeout;
-            }
-        }
-
-        while(Dev->mReachable == false) {
-            result = pthread_cond_wait(&Dev->device_cond, &Dev->device_mutex);
-            if(result == 0) {
-                Dev->SetReachable(true);
-                clock_gettime(CLOCK_REALTIME, &ts);
-                ts.tv_sec += Dev->timeout;
-            }
-        }
-        pthread_mutex_unlock(&Dev->device_mutex);
-    }
-
-}
-
 DeviceTempSensor::DeviceTempSensor(const char * szDeviceName, std::string szLocation, int16_t min, int16_t max,
                                    int16_t measuredValue) :
     Device(szDeviceName, szLocation),
     mMin(min), mMax(max), mMeasurement(measuredValue)
-{
-    timeout = 10; // second
-}
-
-int DeviceTempSensor::StartMonitor()
-{
-    int res = pthread_create(&Monitor_thread, nullptr, Monitor, (void*)this);
-    if (res)
-    {
-        printf("Error creating TempSensorDevice[%s] Monitor: %d\n", mName, res);
-        return -1;
-    }
-
-    return 0;
-}
-
-int DeviceTempSensor::DestoryMonitor()
-{
-    pthread_cancel(Monitor_thread);
-    if(pthread_join(Monitor_thread, NULL) == 0)
-    {
-        printf("[%s] Monitor exit !\n", mName);
-    }
-
-    return 0;
-}
+{}
 
 void DeviceTempSensor::SetMeasuredValue(int16_t measurement)
 {
@@ -393,6 +325,17 @@ void DevicePowerSource::SetDescription(std::string aDescription)
     }
 }
 
+void DevicePowerSource::SetEndpointList(std::vector<chip::EndpointId> aEndpointList)
+{
+    bool changed  = aEndpointList != mEndpointList;
+    mEndpointList = aEndpointList;
+
+    if (changed && mChanged_CB)
+    {
+        mChanged_CB(this, kChanged_EndpointList);
+    }
+}
+
 EndpointListInfo::EndpointListInfo(uint16_t endpointListId, std::string name, EndpointListTypeEnum type)
 {
     mEndpointListId = endpointListId;
@@ -421,8 +364,6 @@ Room::Room(std::string name, uint16_t endpointListId, EndpointListTypeEnum type,
     mType           = type;
     mIsVisible      = isVisible;
 }
-
-Action::Action() {}
 
 Action::Action(uint16_t actionId, std::string name, ActionTypeEnum type, uint16_t endpointListId, uint16_t supportedCommands,
                ActionStateEnum status, bool isVisible)

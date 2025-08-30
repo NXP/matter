@@ -20,25 +20,30 @@
 
 #include <app/util/attribute-storage.h>
 
+#include <cstdint>
 #include <stdbool.h>
 #include <stdint.h>
+
 #include <functional>
+#include <string>
+#include <sys/types.h>
 #include <vector>
 
-#include "BridgeConfig.h"
-#include "newDb.h"
+#include "zcb.h"
 
 class Device
 {
 public:
-    static const int kDeviceNameSize = 32;
+    static const int kDeviceNameSize     = 32;
+    static const int kDeviceUniqueIdSize = 32;
 
     enum Changed_t
     {
-        kChanged_Reachable = 1u << 0,
-        kChanged_Location  = 1u << 1,
-        kChanged_Name      = 1u << 2,
-        kChanged_Last      = kChanged_Name,
+        kChanged_Reachable            = 1u << 0,
+        kChanged_Location             = 1u << 1,
+        kChanged_Name                 = 1u << 2,
+        kChanged_ConfigurationVersion = 1u << 3,
+        kChanged_Last                 = kChanged_ConfigurationVersion,
     } Changed;
 
     Device(const char * szDeviceName, std::string szLocation);
@@ -47,17 +52,22 @@ public:
     bool IsReachable();
     void SetReachable(bool aReachable);
     void SetName(const char * szDeviceName);
+    void SetUniqueId(const char * szDeviceUniqueId);
     void SetLocation(std::string szLocation);
+    void GenerateUniqueId();
+    uint32_t GetConfigurationVersion();
+    void SetConfigurationVersion(uint32_t configurationVersion);
     inline void SetEndpointId(chip::EndpointId id) { mEndpointId = id; };
     inline chip::EndpointId GetEndpointId() { return mEndpointId; };
     inline void SetParentEndpointId(chip::EndpointId id) { mParentEndpointId = id; };
     inline chip::EndpointId GetParentEndpointId() { return mParentEndpointId; };
     inline char * GetName() { return mName; };
+    inline char * GetUniqueId() { return mUniqueId; };
     inline std::string GetLocation() { return mLocation; };
     inline std::string GetZone() { return mZone; };
     inline void SetZone(std::string zone) { mZone = zone; };
 
-    /* Zigbee devices info */
+    // Zigbee
     inline void SetZigbee(ZigbeeDev_t dev) { mBridgeNode = std::move(dev); };
     inline int GetZigbeeSaddr() { return mBridgeNode.zcb.saddr; };
     inline ZigbeeDev_t* GetZigbee() { return &mBridgeNode; };
@@ -66,16 +76,17 @@ private:
     virtual void HandleDeviceChange(Device * device, Device::Changed_t changeMask) = 0;
 
 protected:
-    bool mReachable;
-    char mName[kDeviceNameSize];
+    bool mReachable                         = false;
+    char mName[kDeviceNameSize + 1]         = { 0 };
+    char mUniqueId[kDeviceUniqueIdSize + 1] = { 0 };
+    uint32_t mConfigurationVersion;
     std::string mLocation;
     chip::EndpointId mEndpointId;
     chip::EndpointId mParentEndpointId;
     std::string mZone;
-    ZigbeeDev_t mBridgeNode;
 
-    // Monitor Device reachable
-    pthread_t Monitor_thread;
+    // Zigbee
+    ZigbeeDev_t     mBridgeNode;
     pthread_mutex_t device_mutex;
     pthread_cond_t  device_cond;
 };
@@ -91,22 +102,20 @@ public:
     DeviceOnOff(const char * szDeviceName, std::string szLocation);
 
     bool IsOn();
-    void GetOnOff();
     void SetOnOff(bool aOn);
-    void SyncOnOff(bool aOn);
     void Toggle();
 
     using DeviceCallback_fn = std::function<void(DeviceOnOff *, DeviceOnOff::Changed_t)>;
     void SetChangeCallback(DeviceCallback_fn aChanged_CB);
 
-    DataVersion DataVersions[ArraySize(LIGHT_CLUSTER_LIST)];
-
 private:
     void HandleDeviceChange(Device * device, Device::Changed_t changeMask);
 
 private:
-    bool mOn;
     DeviceCallback_fn mChanged_CB;
+
+protected:
+    bool mOn;
 };
 
 class DeviceSwitch : public Device
@@ -156,19 +165,14 @@ public:
 
     inline int16_t GetMeasuredValue() { return mMeasurement; };
     void SetMeasuredValue(int16_t measurement);
-    int StartMonitor(void);
-    int DestoryMonitor(void);
 
     using DeviceCallback_fn = std::function<void(DeviceTempSensor *, DeviceTempSensor::Changed_t)>;
     void SetChangeCallback(DeviceCallback_fn aChanged_CB);
 
-    int16_t mMin;
-    int16_t mMax;
-    int timeout;
-    DataVersion DataVersions[ArraySize(TEMPSENSOR_CLUSTER_LIST)];
+    const int16_t mMin;
+    const int16_t mMax;
 
 private:
-    static void* Monitor(void *context);
     void HandleDeviceChange(Device * device, Device::Changed_t changeMask);
 
 private:
@@ -197,24 +201,29 @@ class DevicePowerSource : public Device
 public:
     enum Changed_t
     {
-        kChanged_BatLevel    = kChanged_Last << 1,
-        kChanged_Description = kChanged_Last << 2,
+        kChanged_BatLevel     = kChanged_Last << 1,
+        kChanged_Description  = kChanged_Last << 2,
+        kChanged_EndpointList = kChanged_Last << 3,
     } Changed;
 
-    DevicePowerSource(const char * szDeviceName, std::string szLocation, uint32_t aFeatureMap) :
-        Device(szDeviceName, szLocation), mFeatureMap(aFeatureMap){};
+    DevicePowerSource(const char * szDeviceName, std::string szLocation,
+                      chip::BitFlags<chip::app::Clusters::PowerSource::Feature> aFeatureMap) :
+        Device(szDeviceName, szLocation),
+        mFeatureMap(aFeatureMap){};
 
     using DeviceCallback_fn = std::function<void(DevicePowerSource *, DevicePowerSource::Changed_t)>;
     void SetChangeCallback(DeviceCallback_fn aChanged_CB) { mChanged_CB = aChanged_CB; }
 
     void SetBatChargeLevel(uint8_t aBatChargeLevel);
     void SetDescription(std::string aDescription);
+    void SetEndpointList(std::vector<chip::EndpointId> mEndpointList);
 
-    inline uint32_t GetFeatureMap() { return mFeatureMap; };
+    inline uint32_t GetFeatureMap() { return mFeatureMap.Raw(); };
     inline uint8_t GetBatChargeLevel() { return mBatChargeLevel; };
     inline uint8_t GetOrder() { return mOrder; };
     inline uint8_t GetStatus() { return mStatus; };
     inline std::string GetDescription() { return mDescription; };
+    std::vector<chip::EndpointId> & GetEndpointList() { return mEndpointList; }
 
 private:
     void HandleDeviceChange(Device * device, Device::Changed_t changeMask);
@@ -224,8 +233,10 @@ private:
     uint8_t mOrder           = 0;
     uint8_t mStatus          = 0;
     std::string mDescription = "Primary Battery";
-    uint32_t mFeatureMap;
+    chip::BitFlags<chip::app::Clusters::PowerSource::Feature> mFeatureMap;
     DeviceCallback_fn mChanged_CB;
+    // This is linux, vector is not going to kill us here and it's easier. Plus, post c++11, storage is contiguous with .data()
+    std::vector<chip::EndpointId> mEndpointList;
 };
 
 class EndpointListInfo
@@ -269,7 +280,6 @@ private:
 class Action
 {
 public:
-    Action();
     Action(uint16_t actionId, std::string name, chip::app::Clusters::Actions::ActionTypeEnum type, uint16_t endpointListId,
            uint16_t supportedCommands, chip::app::Clusters::Actions::ActionStateEnum status, bool isVisible);
     inline void setName(std::string name) { mName = name; };
