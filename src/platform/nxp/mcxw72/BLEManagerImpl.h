@@ -31,7 +31,7 @@
 #include "controller_api.h"
 #include "controller_interface.h"
 
-#include <platform/nxp/common/ble/BLEManagerCommon.h>
+#include <src/platform/nxp/common/ble/BLEManagerCommon.h>
 
 /* host task configuration */
 #define HOST_TASK_PRIORITY (4U)
