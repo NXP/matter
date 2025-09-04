@@ -52,7 +52,5 @@
 #define CHIP_IM_MAX_NUM_WRITE_HANDLER 2
 #endif // CHIP_IM_MAX_NUM_WRITE_HANDLER
 
-#define CHIP_CONFIG_MAX_FABRICS 5
-
 // Include default nxp platform configurations
 #include "platform/nxp/common/CHIPNXPPlatformDefaultConfig.h"
