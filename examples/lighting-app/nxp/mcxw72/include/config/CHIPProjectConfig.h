@@ -190,7 +190,7 @@
 /**
  * CONFIG_CHIP_NFC_COMMISSIONING, CHIP_DEVICE_CONFIG_ENABLE_NFC
  *
- * NFC commissioning is not supported
+ * NFC commissioning is not supported on K32W1
  */
 #define CONFIG_CHIP_NFC_COMMISSIONING 0
 #define CHIP_DEVICE_CONFIG_ENABLE_NFC 0
