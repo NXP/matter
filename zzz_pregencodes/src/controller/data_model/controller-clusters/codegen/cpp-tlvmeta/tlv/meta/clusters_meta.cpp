@@ -359,13 +359,13 @@ const Entry<ItemInfo> _Binding_TargetStruct_list_[] = {
 };
 
 const Entry<ItemInfo> _AccessControl[] = {
-  { { AttributeTag(0), "acl", ItemType::kList }, 70 }, // AccessControl::AccessControlEntryStruct[]
-  { { AttributeTag(1), "extension", ItemType::kList }, 69 }, // AccessControl::AccessControlExtensionStruct[]
+  { { AttributeTag(0), "acl", ItemType::kList }, 66 }, // AccessControl::AccessControlEntryStruct[]
+  { { AttributeTag(1), "extension", ItemType::kList }, 65 }, // AccessControl::AccessControlExtensionStruct[]
   { { AttributeTag(2), "subjectsPerAccessControlEntry", ItemType::kDefault }, kInvalidNodeIndex }, // AccessControl::int16u
   { { AttributeTag(3), "targetsPerAccessControlEntry", ItemType::kDefault }, kInvalidNodeIndex }, // AccessControl::int16u
   { { AttributeTag(4), "accessControlEntriesPerFabric", ItemType::kDefault }, kInvalidNodeIndex }, // AccessControl::int16u
-  { { AttributeTag(5), "commissioningARL", ItemType::kList }, 65 }, // AccessControl::CommissioningAccessRestrictionEntryStruct[]
-  { { AttributeTag(6), "arl", ItemType::kList }, 66 }, // AccessControl::AccessRestrictionEntryStruct[]
+  { { AttributeTag(5), "commissioningARL", ItemType::kList }, 67 }, // AccessControl::CommissioningAccessRestrictionEntryStruct[]
+  { { AttributeTag(6), "arl", ItemType::kList }, 69 }, // AccessControl::AccessRestrictionEntryStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // AccessControl::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // AccessControl::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // AccessControl::attrib_id[]
@@ -406,7 +406,7 @@ const Entry<ItemInfo> _AccessControl_AccessControlEntryStruct[] = {
   { { ContextTag(1), "privilege", ItemType::kEnum }, 72 }, // AccessControl::AccessControlEntryPrivilegeEnum
   { { ContextTag(2), "authMode", ItemType::kEnum }, 71 }, // AccessControl::AccessControlEntryAuthModeEnum
   { { ContextTag(3), "subjects", ItemType::kList }, 1 }, // AccessControl::int64u[]
-  { { ContextTag(4), "targets", ItemType::kList }, 67 }, // AccessControl::AccessControlTargetStruct[]
+  { { ContextTag(4), "targets", ItemType::kList }, 70 }, // AccessControl::AccessControlTargetStruct[]
   { { ContextTag(254), "fabricIndex", ItemType::kDefault }, kInvalidNodeIndex }, // AccessControl::fabric_idx
 };
 
@@ -416,7 +416,7 @@ const Entry<ItemInfo> _AccessControl_AccessControlExtensionStruct[] = {
 };
 
 const Entry<ItemInfo> _AccessControl_ReviewFabricRestrictionsRequest[] = {
-  { { ContextTag(0), "arl", ItemType::kList }, 65 }, // AccessControl::CommissioningAccessRestrictionEntryStruct[]
+  { { ContextTag(0), "arl", ItemType::kList }, 67 }, // AccessControl::CommissioningAccessRestrictionEntryStruct[]
 };
 
 const Entry<ItemInfo> _AccessControl_ReviewFabricRestrictionsResponse[] = {
@@ -446,8 +446,20 @@ const Entry<ItemInfo> _AccessControl_FabricRestrictionReviewUpdate[] = {
   { { ContextTag(254), "fabricIndex", ItemType::kDefault }, kInvalidNodeIndex }, // AccessControl::fabric_idx
 };
 
+const Entry<ItemInfo> _AccessControl_AccessControlExtensionStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 59 }, // AccessControl_AccessControlExtensionStruct[]
+};
+
+const Entry<ItemInfo> _AccessControl_AccessControlEntryStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 58 }, // AccessControl_AccessControlEntryStruct[]
+};
+
 const Entry<ItemInfo> _AccessControl_CommissioningAccessRestrictionEntryStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 55 }, // AccessControl_CommissioningAccessRestrictionEntryStruct[]
+};
+
+const Entry<ItemInfo> _AccessControl_AccessRestrictionStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 54 }, // AccessControl_AccessRestrictionStruct[]
 };
 
 const Entry<ItemInfo> _AccessControl_AccessRestrictionEntryStruct_list_[] = {
@@ -456,18 +468,6 @@ const Entry<ItemInfo> _AccessControl_AccessRestrictionEntryStruct_list_[] = {
 
 const Entry<ItemInfo> _AccessControl_AccessControlTargetStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 57 }, // AccessControl_AccessControlTargetStruct[]
-};
-
-const Entry<ItemInfo> _AccessControl_AccessRestrictionStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 54 }, // AccessControl_AccessRestrictionStruct[]
-};
-
-const Entry<ItemInfo> _AccessControl_AccessControlExtensionStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 59 }, // AccessControl_AccessControlExtensionStruct[]
-};
-
-const Entry<ItemInfo> _AccessControl_AccessControlEntryStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 58 }, // AccessControl_AccessControlEntryStruct[]
 };
 
 const Entry<ItemInfo> _AccessControl_AccessControlEntryAuthModeEnum[] = {
@@ -1011,7 +1011,7 @@ const Entry<ItemInfo> _PowerSource[] = {
   { { AttributeTag(7), "wiredNominalVoltage", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::int32u
   { { AttributeTag(8), "wiredMaximumCurrent", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::int32u
   { { AttributeTag(9), "wiredPresent", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::boolean
-  { { AttributeTag(10), "activeWiredFaults", ItemType::kList }, 147 }, // PowerSource::WiredFaultEnum[]
+  { { AttributeTag(10), "activeWiredFaults", ItemType::kList }, 146 }, // PowerSource::WiredFaultEnum[]
   { { AttributeTag(11), "batVoltage", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::int32u
   { { AttributeTag(12), "batPercentRemaining", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::int8u
   { { AttributeTag(13), "batTimeRemaining", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::int32u
@@ -1019,7 +1019,7 @@ const Entry<ItemInfo> _PowerSource[] = {
   { { AttributeTag(15), "batReplacementNeeded", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::boolean
   { { AttributeTag(16), "batReplaceability", ItemType::kEnum }, 155 }, // PowerSource::BatReplaceabilityEnum
   { { AttributeTag(17), "batPresent", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::boolean
-  { { AttributeTag(18), "activeBatFaults", ItemType::kList }, 146 }, // PowerSource::BatFaultEnum[]
+  { { AttributeTag(18), "activeBatFaults", ItemType::kList }, 147 }, // PowerSource::BatFaultEnum[]
   { { AttributeTag(19), "batReplacementDescription", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::char_string
   { { AttributeTag(20), "batCommonDesignation", ItemType::kEnum }, 153 }, // PowerSource::BatCommonDesignationEnum
   { { AttributeTag(21), "batANSIDesignation", ItemType::kDefault }, kInvalidNodeIndex }, // PowerSource::char_string
@@ -1049,23 +1049,23 @@ const Entry<ItemInfo> _PowerSource_BatChargeFaultChangeType[] = {
 };
 
 const Entry<ItemInfo> _PowerSource_BatFaultChangeType[] = {
-  { { ContextTag(0), "current", ItemType::kList }, 146 }, // PowerSource::BatFaultEnum[]
-  { { ContextTag(1), "previous", ItemType::kList }, 146 }, // PowerSource::BatFaultEnum[]
+  { { ContextTag(0), "current", ItemType::kList }, 147 }, // PowerSource::BatFaultEnum[]
+  { { ContextTag(1), "previous", ItemType::kList }, 147 }, // PowerSource::BatFaultEnum[]
 };
 
 const Entry<ItemInfo> _PowerSource_WiredFaultChangeType[] = {
-  { { ContextTag(0), "current", ItemType::kList }, 147 }, // PowerSource::WiredFaultEnum[]
-  { { ContextTag(1), "previous", ItemType::kList }, 147 }, // PowerSource::WiredFaultEnum[]
+  { { ContextTag(0), "current", ItemType::kList }, 146 }, // PowerSource::WiredFaultEnum[]
+  { { ContextTag(1), "previous", ItemType::kList }, 146 }, // PowerSource::WiredFaultEnum[]
 };
 
 const Entry<ItemInfo> _PowerSource_WiredFaultChange[] = {
-  { { ContextTag(0), "current", ItemType::kList }, 147 }, // PowerSource::WiredFaultEnum[]
-  { { ContextTag(1), "previous", ItemType::kList }, 147 }, // PowerSource::WiredFaultEnum[]
+  { { ContextTag(0), "current", ItemType::kList }, 146 }, // PowerSource::WiredFaultEnum[]
+  { { ContextTag(1), "previous", ItemType::kList }, 146 }, // PowerSource::WiredFaultEnum[]
 };
 
 const Entry<ItemInfo> _PowerSource_BatFaultChange[] = {
-  { { ContextTag(0), "current", ItemType::kList }, 146 }, // PowerSource::BatFaultEnum[]
-  { { ContextTag(1), "previous", ItemType::kList }, 146 }, // PowerSource::BatFaultEnum[]
+  { { ContextTag(0), "current", ItemType::kList }, 147 }, // PowerSource::BatFaultEnum[]
+  { { ContextTag(1), "previous", ItemType::kList }, 147 }, // PowerSource::BatFaultEnum[]
 };
 
 const Entry<ItemInfo> _PowerSource_BatChargeFaultChange[] = {
@@ -1073,12 +1073,12 @@ const Entry<ItemInfo> _PowerSource_BatChargeFaultChange[] = {
   { { ContextTag(1), "previous", ItemType::kList }, 148 }, // PowerSource::BatChargeFaultEnum[]
 };
 
-const Entry<ItemInfo> _PowerSource_BatFaultEnum_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 154 }, // PowerSource_BatFaultEnum[]
-};
-
 const Entry<ItemInfo> _PowerSource_WiredFaultEnum_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 158 }, // PowerSource_WiredFaultEnum[]
+};
+
+const Entry<ItemInfo> _PowerSource_BatFaultEnum_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 154 }, // PowerSource_BatFaultEnum[]
 };
 
 const Entry<ItemInfo> _PowerSource_BatChargeFaultEnum_list_[] = {
@@ -1431,8 +1431,8 @@ const Entry<ItemInfo> _NetworkCommissioning_ScanNetworksRequest[] = {
 const Entry<ItemInfo> _NetworkCommissioning_ScanNetworksResponse[] = {
   { { ContextTag(0), "networkingStatus", ItemType::kEnum }, 192 }, // NetworkCommissioning::NetworkCommissioningStatusEnum
   { { ContextTag(1), "debugText", ItemType::kDefault }, kInvalidNodeIndex }, // NetworkCommissioning::char_string
-  { { ContextTag(2), "wiFiScanResults", ItemType::kList }, 189 }, // NetworkCommissioning::WiFiInterfaceScanResultStruct[]
-  { { ContextTag(3), "threadScanResults", ItemType::kList }, 190 }, // NetworkCommissioning::ThreadInterfaceScanResultStruct[]
+  { { ContextTag(2), "wiFiScanResults", ItemType::kList }, 190 }, // NetworkCommissioning::WiFiInterfaceScanResultStruct[]
+  { { ContextTag(3), "threadScanResults", ItemType::kList }, 189 }, // NetworkCommissioning::ThreadInterfaceScanResultStruct[]
 };
 
 const Entry<ItemInfo> _NetworkCommissioning_AddOrUpdateWiFiNetworkRequest[] = {
@@ -1493,12 +1493,12 @@ const Entry<ItemInfo> _NetworkCommissioning_WiFiBandEnum_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 193 }, // NetworkCommissioning_WiFiBandEnum[]
 };
 
-const Entry<ItemInfo> _NetworkCommissioning_WiFiInterfaceScanResultStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 176 }, // NetworkCommissioning_WiFiInterfaceScanResultStruct[]
-};
-
 const Entry<ItemInfo> _NetworkCommissioning_ThreadInterfaceScanResultStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 175 }, // NetworkCommissioning_ThreadInterfaceScanResultStruct[]
+};
+
+const Entry<ItemInfo> _NetworkCommissioning_WiFiInterfaceScanResultStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 176 }, // NetworkCommissioning_WiFiInterfaceScanResultStruct[]
 };
 
 const Entry<ItemInfo> _NetworkCommissioning_NetworkInfoStruct_list_[] = {
@@ -1597,12 +1597,12 @@ const Entry<ItemInfo> _DiagnosticLogs_TransferProtocolEnum[] = {
 };
 
 const Entry<ItemInfo> _GeneralDiagnostics[] = {
-  { { AttributeTag(0), "networkInterfaces", ItemType::kList }, 213 }, // GeneralDiagnostics::NetworkInterface[]
+  { { AttributeTag(0), "networkInterfaces", ItemType::kList }, 214 }, // GeneralDiagnostics::NetworkInterface[]
   { { AttributeTag(1), "rebootCount", ItemType::kDefault }, kInvalidNodeIndex }, // GeneralDiagnostics::int16u
   { { AttributeTag(2), "upTime", ItemType::kDefault }, kInvalidNodeIndex }, // GeneralDiagnostics::int64u
   { { AttributeTag(3), "totalOperationalHours", ItemType::kDefault }, kInvalidNodeIndex }, // GeneralDiagnostics::int32u
   { { AttributeTag(4), "bootReason", ItemType::kEnum }, 217 }, // GeneralDiagnostics::BootReasonEnum
-  { { AttributeTag(5), "activeHardwareFaults", ItemType::kList }, 214 }, // GeneralDiagnostics::HardwareFaultEnum[]
+  { { AttributeTag(5), "activeHardwareFaults", ItemType::kList }, 213 }, // GeneralDiagnostics::HardwareFaultEnum[]
   { { AttributeTag(6), "activeRadioFaults", ItemType::kList }, 216 }, // GeneralDiagnostics::RadioFaultEnum[]
   { { AttributeTag(7), "activeNetworkFaults", ItemType::kList }, 215 }, // GeneralDiagnostics::NetworkFaultEnum[]
   { { AttributeTag(8), "testEventTriggersEnabled", ItemType::kDefault }, kInvalidNodeIndex }, // GeneralDiagnostics::boolean
@@ -1654,8 +1654,8 @@ const Entry<ItemInfo> _GeneralDiagnostics_PayloadTestResponse[] = {
 };
 
 const Entry<ItemInfo> _GeneralDiagnostics_HardwareFaultChange[] = {
-  { { ContextTag(0), "current", ItemType::kList }, 214 }, // GeneralDiagnostics::HardwareFaultEnum[]
-  { { ContextTag(1), "previous", ItemType::kList }, 214 }, // GeneralDiagnostics::HardwareFaultEnum[]
+  { { ContextTag(0), "current", ItemType::kList }, 213 }, // GeneralDiagnostics::HardwareFaultEnum[]
+  { { ContextTag(1), "previous", ItemType::kList }, 213 }, // GeneralDiagnostics::HardwareFaultEnum[]
 };
 
 const Entry<ItemInfo> _GeneralDiagnostics_RadioFaultChange[] = {
@@ -1672,12 +1672,12 @@ const Entry<ItemInfo> _GeneralDiagnostics_BootReason[] = {
   { { ContextTag(0), "bootReason", ItemType::kEnum }, 217 }, // GeneralDiagnostics::BootReasonEnum
 };
 
-const Entry<ItemInfo> _GeneralDiagnostics_NetworkInterface_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 204 }, // GeneralDiagnostics_NetworkInterface[]
-};
-
 const Entry<ItemInfo> _GeneralDiagnostics_HardwareFaultEnum_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 218 }, // GeneralDiagnostics_HardwareFaultEnum[]
+};
+
+const Entry<ItemInfo> _GeneralDiagnostics_NetworkInterface_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 204 }, // GeneralDiagnostics_NetworkInterface[]
 };
 
 const Entry<ItemInfo> _GeneralDiagnostics_NetworkFaultEnum_list_[] = {
@@ -2392,8 +2392,8 @@ const Entry<ItemInfo> _AdministratorCommissioning_Feature[] = {
 };
 
 const Entry<ItemInfo> _OperationalCredentials[] = {
-  { { AttributeTag(0), "NOCs", ItemType::kList }, 316 }, // OperationalCredentials::NOCStruct[]
-  { { AttributeTag(1), "fabrics", ItemType::kList }, 317 }, // OperationalCredentials::FabricDescriptorStruct[]
+  { { AttributeTag(0), "NOCs", ItemType::kList }, 317 }, // OperationalCredentials::NOCStruct[]
+  { { AttributeTag(1), "fabrics", ItemType::kList }, 316 }, // OperationalCredentials::FabricDescriptorStruct[]
   { { AttributeTag(2), "supportedFabrics", ItemType::kDefault }, kInvalidNodeIndex }, // OperationalCredentials::int8u
   { { AttributeTag(3), "commissionedFabrics", ItemType::kDefault }, kInvalidNodeIndex }, // OperationalCredentials::int8u
   { { AttributeTag(4), "trustedRootCertificates", ItemType::kList }, 1 }, // OperationalCredentials::octet_string[]
@@ -2512,12 +2512,12 @@ const Entry<ItemInfo> _OperationalCredentials_SignVIDVerificationResponse[] = {
   { { ContextTag(2), "signature", ItemType::kDefault }, kInvalidNodeIndex }, // OperationalCredentials::octet_string
 };
 
-const Entry<ItemInfo> _OperationalCredentials_NOCStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 300 }, // OperationalCredentials_NOCStruct[]
-};
-
 const Entry<ItemInfo> _OperationalCredentials_FabricDescriptorStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 299 }, // OperationalCredentials_FabricDescriptorStruct[]
+};
+
+const Entry<ItemInfo> _OperationalCredentials_NOCStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 300 }, // OperationalCredentials_NOCStruct[]
 };
 
 const Entry<ItemInfo> _OperationalCredentials_CertificateChainTypeEnum[] = {
@@ -3017,7 +3017,7 @@ const Entry<ItemInfo> _ModeSelect_Feature[] = {
 };
 
 const Entry<ItemInfo> _LaundryWasherMode[] = {
-  { { AttributeTag(0), "supportedModes", ItemType::kList }, 395 }, // LaundryWasherMode::ModeOptionStruct[]
+  { { AttributeTag(0), "supportedModes", ItemType::kList }, 396 }, // LaundryWasherMode::ModeOptionStruct[]
   { { AttributeTag(1), "currentMode", ItemType::kDefault }, kInvalidNodeIndex }, // LaundryWasherMode::int8u
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // LaundryWasherMode::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // LaundryWasherMode::command_id[]
@@ -3036,7 +3036,7 @@ const Entry<ItemInfo> _LaundryWasherMode_ModeTagStruct[] = {
 const Entry<ItemInfo> _LaundryWasherMode_ModeOptionStruct[] = {
   { { ContextTag(0), "label", ItemType::kDefault }, kInvalidNodeIndex }, // LaundryWasherMode::char_string
   { { ContextTag(1), "mode", ItemType::kDefault }, kInvalidNodeIndex }, // LaundryWasherMode::int8u
-  { { ContextTag(2), "modeTags", ItemType::kList }, 396 }, // LaundryWasherMode::ModeTagStruct[]
+  { { ContextTag(2), "modeTags", ItemType::kList }, 395 }, // LaundryWasherMode::ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _LaundryWasherMode_ChangeToModeRequest[] = {
@@ -3048,12 +3048,12 @@ const Entry<ItemInfo> _LaundryWasherMode_ChangeToModeResponse[] = {
   { { ContextTag(1), "statusText", ItemType::kDefault }, kInvalidNodeIndex }, // LaundryWasherMode::char_string
 };
 
-const Entry<ItemInfo> _LaundryWasherMode_ModeOptionStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 392 }, // LaundryWasherMode_ModeOptionStruct[]
-};
-
 const Entry<ItemInfo> _LaundryWasherMode_ModeTagStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 391 }, // LaundryWasherMode_ModeTagStruct[]
+};
+
+const Entry<ItemInfo> _LaundryWasherMode_ModeOptionStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 392 }, // LaundryWasherMode_ModeOptionStruct[]
 };
 
 const Entry<ItemInfo> _LaundryWasherMode_ModeTag[] = {
@@ -3074,7 +3074,7 @@ const Entry<ItemInfo> _LaundryWasherMode_ModeTag[] = {
 };
 
 const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode[] = {
-  { { AttributeTag(0), "supportedModes", ItemType::kList }, 404 }, // RefrigeratorAndTemperatureControlledCabinetMode::ModeOptionStruct[]
+  { { AttributeTag(0), "supportedModes", ItemType::kList }, 403 }, // RefrigeratorAndTemperatureControlledCabinetMode::ModeOptionStruct[]
   { { AttributeTag(1), "currentMode", ItemType::kDefault }, kInvalidNodeIndex }, // RefrigeratorAndTemperatureControlledCabinetMode::int8u
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // RefrigeratorAndTemperatureControlledCabinetMode::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // RefrigeratorAndTemperatureControlledCabinetMode::command_id[]
@@ -3093,7 +3093,7 @@ const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ModeTagSt
 const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ModeOptionStruct[] = {
   { { ContextTag(0), "label", ItemType::kDefault }, kInvalidNodeIndex }, // RefrigeratorAndTemperatureControlledCabinetMode::char_string
   { { ContextTag(1), "mode", ItemType::kDefault }, kInvalidNodeIndex }, // RefrigeratorAndTemperatureControlledCabinetMode::int8u
-  { { ContextTag(2), "modeTags", ItemType::kList }, 403 }, // RefrigeratorAndTemperatureControlledCabinetMode::ModeTagStruct[]
+  { { ContextTag(2), "modeTags", ItemType::kList }, 404 }, // RefrigeratorAndTemperatureControlledCabinetMode::ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ChangeToModeRequest[] = {
@@ -3105,12 +3105,12 @@ const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ChangeToM
   { { ContextTag(1), "statusText", ItemType::kDefault }, kInvalidNodeIndex }, // RefrigeratorAndTemperatureControlledCabinetMode::char_string
 };
 
-const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ModeTagStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 399 }, // RefrigeratorAndTemperatureControlledCabinetMode_ModeTagStruct[]
-};
-
 const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ModeOptionStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 400 }, // RefrigeratorAndTemperatureControlledCabinetMode_ModeOptionStruct[]
+};
+
+const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ModeTagStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 399 }, // RefrigeratorAndTemperatureControlledCabinetMode_ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _RefrigeratorAndTemperatureControlledCabinetMode_ModeTag[] = {
@@ -3228,7 +3228,7 @@ const Entry<ItemInfo> _RvcRunMode_Feature[] = {
 };
 
 const Entry<ItemInfo> _RvcCleanMode[] = {
-  { { AttributeTag(0), "supportedModes", ItemType::kList }, 426 }, // RvcCleanMode::ModeOptionStruct[]
+  { { AttributeTag(0), "supportedModes", ItemType::kList }, 425 }, // RvcCleanMode::ModeOptionStruct[]
   { { AttributeTag(1), "currentMode", ItemType::kDefault }, kInvalidNodeIndex }, // RvcCleanMode::int8u
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // RvcCleanMode::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // RvcCleanMode::command_id[]
@@ -3247,7 +3247,7 @@ const Entry<ItemInfo> _RvcCleanMode_ModeTagStruct[] = {
 const Entry<ItemInfo> _RvcCleanMode_ModeOptionStruct[] = {
   { { ContextTag(0), "label", ItemType::kDefault }, kInvalidNodeIndex }, // RvcCleanMode::char_string
   { { ContextTag(1), "mode", ItemType::kDefault }, kInvalidNodeIndex }, // RvcCleanMode::int8u
-  { { ContextTag(2), "modeTags", ItemType::kList }, 425 }, // RvcCleanMode::ModeTagStruct[]
+  { { ContextTag(2), "modeTags", ItemType::kList }, 426 }, // RvcCleanMode::ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _RvcCleanMode_ChangeToModeRequest[] = {
@@ -3259,12 +3259,12 @@ const Entry<ItemInfo> _RvcCleanMode_ChangeToModeResponse[] = {
   { { ContextTag(1), "statusText", ItemType::kDefault }, kInvalidNodeIndex }, // RvcCleanMode::char_string
 };
 
-const Entry<ItemInfo> _RvcCleanMode_ModeTagStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 421 }, // RvcCleanMode_ModeTagStruct[]
-};
-
 const Entry<ItemInfo> _RvcCleanMode_ModeOptionStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 422 }, // RvcCleanMode_ModeOptionStruct[]
+};
+
+const Entry<ItemInfo> _RvcCleanMode_ModeTagStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 421 }, // RvcCleanMode_ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _RvcCleanMode_ModeTag[] = {
@@ -3342,7 +3342,7 @@ const Entry<ItemInfo> _RefrigeratorAlarm_AlarmBitmap[] = {
 };
 
 const Entry<ItemInfo> _DishwasherMode[] = {
-  { { AttributeTag(0), "supportedModes", ItemType::kList }, 442 }, // DishwasherMode::ModeOptionStruct[]
+  { { AttributeTag(0), "supportedModes", ItemType::kList }, 441 }, // DishwasherMode::ModeOptionStruct[]
   { { AttributeTag(1), "currentMode", ItemType::kDefault }, kInvalidNodeIndex }, // DishwasherMode::int8u
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // DishwasherMode::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // DishwasherMode::command_id[]
@@ -3361,7 +3361,7 @@ const Entry<ItemInfo> _DishwasherMode_ModeTagStruct[] = {
 const Entry<ItemInfo> _DishwasherMode_ModeOptionStruct[] = {
   { { ContextTag(0), "label", ItemType::kDefault }, kInvalidNodeIndex }, // DishwasherMode::char_string
   { { ContextTag(1), "mode", ItemType::kDefault }, kInvalidNodeIndex }, // DishwasherMode::int8u
-  { { ContextTag(2), "modeTags", ItemType::kList }, 441 }, // DishwasherMode::ModeTagStruct[]
+  { { ContextTag(2), "modeTags", ItemType::kList }, 442 }, // DishwasherMode::ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _DishwasherMode_ChangeToModeRequest[] = {
@@ -3373,12 +3373,12 @@ const Entry<ItemInfo> _DishwasherMode_ChangeToModeResponse[] = {
   { { ContextTag(1), "statusText", ItemType::kDefault }, kInvalidNodeIndex }, // DishwasherMode::char_string
 };
 
-const Entry<ItemInfo> _DishwasherMode_ModeTagStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 437 }, // DishwasherMode_ModeTagStruct[]
-};
-
 const Entry<ItemInfo> _DishwasherMode_ModeOptionStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 438 }, // DishwasherMode_ModeOptionStruct[]
+};
+
+const Entry<ItemInfo> _DishwasherMode_ModeTagStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 437 }, // DishwasherMode_ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _DishwasherMode_ModeTag[] = {
@@ -3791,7 +3791,7 @@ const Entry<ItemInfo> _RvcOperationalState_OperationalStateEnum[] = {
 
 const Entry<ItemInfo> _ScenesManagement[] = {
   { { AttributeTag(1), "sceneTableSize", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::int16u
-  { { AttributeTag(2), "fabricSceneInfo", ItemType::kList }, 513 }, // ScenesManagement::SceneInfoStruct[]
+  { { AttributeTag(2), "fabricSceneInfo", ItemType::kList }, 514 }, // ScenesManagement::SceneInfoStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // ScenesManagement::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // ScenesManagement::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // ScenesManagement::attrib_id[]
@@ -3845,7 +3845,7 @@ const Entry<ItemInfo> _ScenesManagement_AddSceneRequest[] = {
   { { ContextTag(1), "sceneID", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::int8u
   { { ContextTag(2), "transitionTime", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::int32u
   { { ContextTag(3), "sceneName", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::char_string
-  { { ContextTag(4), "extensionFieldSetStructs", ItemType::kList }, 514 }, // ScenesManagement::ExtensionFieldSetStruct[]
+  { { ContextTag(4), "extensionFieldSetStructs", ItemType::kList }, 513 }, // ScenesManagement::ExtensionFieldSetStruct[]
 };
 
 const Entry<ItemInfo> _ScenesManagement_AddSceneResponse[] = {
@@ -3865,7 +3865,7 @@ const Entry<ItemInfo> _ScenesManagement_ViewSceneResponse[] = {
   { { ContextTag(2), "sceneID", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::int8u
   { { ContextTag(3), "transitionTime", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::int32u
   { { ContextTag(4), "sceneName", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::char_string
-  { { ContextTag(5), "extensionFieldSetStructs", ItemType::kList }, 514 }, // ScenesManagement::ExtensionFieldSetStruct[]
+  { { ContextTag(5), "extensionFieldSetStructs", ItemType::kList }, 513 }, // ScenesManagement::ExtensionFieldSetStruct[]
 };
 
 const Entry<ItemInfo> _ScenesManagement_RemoveSceneRequest[] = {
@@ -3930,12 +3930,12 @@ const Entry<ItemInfo> _ScenesManagement_CopySceneResponse[] = {
   { { ContextTag(2), "sceneIdentifierFrom", ItemType::kDefault }, kInvalidNodeIndex }, // ScenesManagement::int8u
 };
 
-const Entry<ItemInfo> _ScenesManagement_SceneInfoStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 497 }, // ScenesManagement_SceneInfoStruct[]
-};
-
 const Entry<ItemInfo> _ScenesManagement_ExtensionFieldSetStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 496 }, // ScenesManagement_ExtensionFieldSetStruct[]
+};
+
+const Entry<ItemInfo> _ScenesManagement_SceneInfoStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 497 }, // ScenesManagement_SceneInfoStruct[]
 };
 
 const Entry<ItemInfo> _ScenesManagement_AttributeValuePairStruct_list_[] = {
@@ -4165,8 +4165,8 @@ const Entry<ItemInfo> _ValveConfigurationAndControl_ValveFaultBitmap[] = {
 const Entry<ItemInfo> _ElectricalPowerMeasurement[] = {
   { { AttributeTag(0), "powerMode", ItemType::kEnum }, 559 }, // ElectricalPowerMeasurement::PowerModeEnum
   { { AttributeTag(1), "numberOfMeasurementTypes", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::int8u
-  { { AttributeTag(2), "accuracy", ItemType::kList }, 555 }, // ElectricalPowerMeasurement::MeasurementAccuracyStruct[]
-  { { AttributeTag(3), "ranges", ItemType::kList }, 557 }, // ElectricalPowerMeasurement::MeasurementRangeStruct[]
+  { { AttributeTag(2), "accuracy", ItemType::kList }, 554 }, // ElectricalPowerMeasurement::MeasurementAccuracyStruct[]
+  { { AttributeTag(3), "ranges", ItemType::kList }, 556 }, // ElectricalPowerMeasurement::MeasurementRangeStruct[]
   { { AttributeTag(4), "voltage", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::voltage_mv
   { { AttributeTag(5), "activeCurrent", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::amperage_ma
   { { AttributeTag(6), "reactiveCurrent", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::amperage_ma
@@ -4178,8 +4178,8 @@ const Entry<ItemInfo> _ElectricalPowerMeasurement[] = {
   { { AttributeTag(12), "RMSCurrent", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::amperage_ma
   { { AttributeTag(13), "RMSPower", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::power_mw
   { { AttributeTag(14), "frequency", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::int64s
-  { { AttributeTag(15), "harmonicCurrents", ItemType::kList }, 554 }, // ElectricalPowerMeasurement::HarmonicMeasurementStruct[]
-  { { AttributeTag(16), "harmonicPhases", ItemType::kList }, 554 }, // ElectricalPowerMeasurement::HarmonicMeasurementStruct[]
+  { { AttributeTag(15), "harmonicCurrents", ItemType::kList }, 555 }, // ElectricalPowerMeasurement::HarmonicMeasurementStruct[]
+  { { AttributeTag(16), "harmonicPhases", ItemType::kList }, 555 }, // ElectricalPowerMeasurement::HarmonicMeasurementStruct[]
   { { AttributeTag(17), "powerFactor", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::int64s
   { { AttributeTag(18), "neutralCurrent", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::amperage_ma
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // ElectricalPowerMeasurement::command_id[]
@@ -4206,7 +4206,7 @@ const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementAccuracyStruct[] = 
   { { ContextTag(1), "measured", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::boolean
   { { ContextTag(2), "minMeasuredValue", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::int64s
   { { ContextTag(3), "maxMeasuredValue", ItemType::kDefault }, kInvalidNodeIndex }, // ElectricalPowerMeasurement::int64s
-  { { ContextTag(4), "accuracyRanges", ItemType::kList }, 556 }, // ElectricalPowerMeasurement::MeasurementAccuracyRangeStruct[]
+  { { ContextTag(4), "accuracyRanges", ItemType::kList }, 557 }, // ElectricalPowerMeasurement::MeasurementAccuracyRangeStruct[]
 };
 
 const Entry<ItemInfo> _ElectricalPowerMeasurement_HarmonicMeasurementStruct[] = {
@@ -4229,23 +4229,23 @@ const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementRangeStruct[] = {
 };
 
 const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementPeriodRanges[] = {
-  { { ContextTag(0), "ranges", ItemType::kList }, 557 }, // ElectricalPowerMeasurement::MeasurementRangeStruct[]
-};
-
-const Entry<ItemInfo> _ElectricalPowerMeasurement_HarmonicMeasurementStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 551 }, // ElectricalPowerMeasurement_HarmonicMeasurementStruct[]
+  { { ContextTag(0), "ranges", ItemType::kList }, 556 }, // ElectricalPowerMeasurement::MeasurementRangeStruct[]
 };
 
 const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementAccuracyStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 550 }, // ElectricalPowerMeasurement_MeasurementAccuracyStruct[]
 };
 
-const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementAccuracyRangeStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 549 }, // ElectricalPowerMeasurement_MeasurementAccuracyRangeStruct[]
+const Entry<ItemInfo> _ElectricalPowerMeasurement_HarmonicMeasurementStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 551 }, // ElectricalPowerMeasurement_HarmonicMeasurementStruct[]
 };
 
 const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementRangeStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 552 }, // ElectricalPowerMeasurement_MeasurementRangeStruct[]
+};
+
+const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementAccuracyRangeStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 549 }, // ElectricalPowerMeasurement_MeasurementAccuracyRangeStruct[]
 };
 
 const Entry<ItemInfo> _ElectricalPowerMeasurement_MeasurementTypeEnum[] = {
@@ -4655,7 +4655,7 @@ const Entry<ItemInfo> _DeviceEnergyManagement_PowerAdjustStruct[] = {
 };
 
 const Entry<ItemInfo> _DeviceEnergyManagement_PowerAdjustCapabilityStruct[] = {
-  { { ContextTag(0), "powerAdjustCapability", ItemType::kList }, 625 }, // DeviceEnergyManagement::PowerAdjustStruct[]
+  { { ContextTag(0), "powerAdjustCapability", ItemType::kList }, 624 }, // DeviceEnergyManagement::PowerAdjustStruct[]
   { { ContextTag(1), "cause", ItemType::kEnum }, 634 }, // DeviceEnergyManagement::PowerAdjustReasonEnum
 };
 
@@ -4673,7 +4673,7 @@ const Entry<ItemInfo> _DeviceEnergyManagement_SlotStruct[] = {
   { { ContextTag(10), "minPower", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::power_mw
   { { ContextTag(11), "maxPower", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::power_mw
   { { ContextTag(12), "nominalEnergy", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::energy_mwh
-  { { ContextTag(13), "costs", ItemType::kList }, 626 }, // DeviceEnergyManagement::CostStruct[]
+  { { ContextTag(13), "costs", ItemType::kList }, 622 }, // DeviceEnergyManagement::CostStruct[]
   { { ContextTag(14), "minPowerAdjustment", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::power_mw
   { { ContextTag(15), "maxPowerAdjustment", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::power_mw
   { { ContextTag(16), "minDurationAdjustment", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::elapsed_s
@@ -4688,7 +4688,7 @@ const Entry<ItemInfo> _DeviceEnergyManagement_ForecastStruct[] = {
   { { ContextTag(4), "earliestStartTime", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::epoch_s
   { { ContextTag(5), "latestEndTime", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::epoch_s
   { { ContextTag(6), "isPausable", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::boolean
-  { { ContextTag(7), "slots", ItemType::kList }, 622 }, // DeviceEnergyManagement::SlotStruct[]
+  { { ContextTag(7), "slots", ItemType::kList }, 623 }, // DeviceEnergyManagement::SlotStruct[]
   { { ContextTag(8), "forecastUpdateReason", ItemType::kEnum }, 632 }, // DeviceEnergyManagement::ForecastUpdateReasonEnum
 };
 
@@ -4724,12 +4724,12 @@ const Entry<ItemInfo> _DeviceEnergyManagement_PauseRequestRequest[] = {
 
 const Entry<ItemInfo> _DeviceEnergyManagement_ModifyForecastRequestRequest[] = {
   { { ContextTag(0), "forecastID", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagement::int32u
-  { { ContextTag(1), "slotAdjustments", ItemType::kList }, 623 }, // DeviceEnergyManagement::SlotAdjustmentStruct[]
+  { { ContextTag(1), "slotAdjustments", ItemType::kList }, 625 }, // DeviceEnergyManagement::SlotAdjustmentStruct[]
   { { ContextTag(2), "cause", ItemType::kEnum }, 627 }, // DeviceEnergyManagement::AdjustmentCauseEnum
 };
 
 const Entry<ItemInfo> _DeviceEnergyManagement_RequestConstraintBasedForecastRequest[] = {
-  { { ContextTag(0), "constraints", ItemType::kList }, 624 }, // DeviceEnergyManagement::ConstraintsStruct[]
+  { { ContextTag(0), "constraints", ItemType::kList }, 626 }, // DeviceEnergyManagement::ConstraintsStruct[]
   { { ContextTag(1), "cause", ItemType::kEnum }, 627 }, // DeviceEnergyManagement::AdjustmentCauseEnum
 };
 
@@ -4743,8 +4743,16 @@ const Entry<ItemInfo> _DeviceEnergyManagement_Resumed[] = {
   { { ContextTag(0), "cause", ItemType::kEnum }, 628 }, // DeviceEnergyManagement::CauseEnum
 };
 
+const Entry<ItemInfo> _DeviceEnergyManagement_CostStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 608 }, // DeviceEnergyManagement_CostStruct[]
+};
+
 const Entry<ItemInfo> _DeviceEnergyManagement_SlotStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 611 }, // DeviceEnergyManagement_SlotStruct[]
+};
+
+const Entry<ItemInfo> _DeviceEnergyManagement_PowerAdjustStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 609 }, // DeviceEnergyManagement_PowerAdjustStruct[]
 };
 
 const Entry<ItemInfo> _DeviceEnergyManagement_SlotAdjustmentStruct_list_[] = {
@@ -4753,14 +4761,6 @@ const Entry<ItemInfo> _DeviceEnergyManagement_SlotAdjustmentStruct_list_[] = {
 
 const Entry<ItemInfo> _DeviceEnergyManagement_ConstraintsStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 613 }, // DeviceEnergyManagement_ConstraintsStruct[]
-};
-
-const Entry<ItemInfo> _DeviceEnergyManagement_PowerAdjustStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 609 }, // DeviceEnergyManagement_PowerAdjustStruct[]
-};
-
-const Entry<ItemInfo> _DeviceEnergyManagement_CostStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 608 }, // DeviceEnergyManagement_CostStruct[]
 };
 
 const Entry<ItemInfo> _DeviceEnergyManagement_AdjustmentCauseEnum[] = {
@@ -5199,7 +5199,7 @@ const Entry<ItemInfo> _WaterHeaterMode_Feature[] = {
 };
 
 const Entry<ItemInfo> _DeviceEnergyManagementMode[] = {
-  { { AttributeTag(0), "supportedModes", ItemType::kList }, 688 }, // DeviceEnergyManagementMode::ModeOptionStruct[]
+  { { AttributeTag(0), "supportedModes", ItemType::kList }, 689 }, // DeviceEnergyManagementMode::ModeOptionStruct[]
   { { AttributeTag(1), "currentMode", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagementMode::int8u
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // DeviceEnergyManagementMode::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // DeviceEnergyManagementMode::command_id[]
@@ -5218,7 +5218,7 @@ const Entry<ItemInfo> _DeviceEnergyManagementMode_ModeTagStruct[] = {
 const Entry<ItemInfo> _DeviceEnergyManagementMode_ModeOptionStruct[] = {
   { { ContextTag(0), "label", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagementMode::char_string
   { { ContextTag(1), "mode", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagementMode::int8u
-  { { ContextTag(2), "modeTags", ItemType::kList }, 689 }, // DeviceEnergyManagementMode::ModeTagStruct[]
+  { { ContextTag(2), "modeTags", ItemType::kList }, 688 }, // DeviceEnergyManagementMode::ModeTagStruct[]
 };
 
 const Entry<ItemInfo> _DeviceEnergyManagementMode_ChangeToModeRequest[] = {
@@ -5230,12 +5230,12 @@ const Entry<ItemInfo> _DeviceEnergyManagementMode_ChangeToModeResponse[] = {
   { { ContextTag(1), "statusText", ItemType::kDefault }, kInvalidNodeIndex }, // DeviceEnergyManagementMode::char_string
 };
 
-const Entry<ItemInfo> _DeviceEnergyManagementMode_ModeOptionStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 685 }, // DeviceEnergyManagementMode_ModeOptionStruct[]
-};
-
 const Entry<ItemInfo> _DeviceEnergyManagementMode_ModeTagStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 684 }, // DeviceEnergyManagementMode_ModeTagStruct[]
+};
+
+const Entry<ItemInfo> _DeviceEnergyManagementMode_ModeOptionStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 685 }, // DeviceEnergyManagementMode_ModeOptionStruct[]
 };
 
 const Entry<ItemInfo> _DeviceEnergyManagementMode_ModeTag[] = {
@@ -6330,12 +6330,12 @@ const Entry<ItemInfo> _ClosureDimension_LatchControlModesBitmap[] = {
 };
 
 const Entry<ItemInfo> _ServiceArea[] = {
-  { { AttributeTag(0), "supportedAreas", ItemType::kList }, 820 }, // ServiceArea::AreaStruct[]
-  { { AttributeTag(1), "supportedMaps", ItemType::kList }, 822 }, // ServiceArea::MapStruct[]
+  { { AttributeTag(0), "supportedAreas", ItemType::kList }, 821 }, // ServiceArea::AreaStruct[]
+  { { AttributeTag(1), "supportedMaps", ItemType::kList }, 820 }, // ServiceArea::MapStruct[]
   { { AttributeTag(2), "selectedAreas", ItemType::kList }, 1 }, // ServiceArea::int32u[]
   { { AttributeTag(3), "currentArea", ItemType::kDefault }, kInvalidNodeIndex }, // ServiceArea::int32u
   { { AttributeTag(4), "estimatedEndTime", ItemType::kDefault }, kInvalidNodeIndex }, // ServiceArea::epoch_s
-  { { AttributeTag(5), "progress", ItemType::kList }, 821 }, // ServiceArea::ProgressStruct[]
+  { { AttributeTag(5), "progress", ItemType::kList }, 822 }, // ServiceArea::ProgressStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // ServiceArea::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // ServiceArea::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // ServiceArea::attrib_id[]
@@ -6399,16 +6399,16 @@ const Entry<ItemInfo> _ServiceArea_LocationDescriptorStruct[] = {
   { { ContextTag(2), "areaType", ItemType::kEnum }, 828 }, // ServiceArea::AreaTypeTag
 };
 
+const Entry<ItemInfo> _ServiceArea_MapStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 813 }, // ServiceArea_MapStruct[]
+};
+
 const Entry<ItemInfo> _ServiceArea_AreaStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 812 }, // ServiceArea_AreaStruct[]
 };
 
 const Entry<ItemInfo> _ServiceArea_ProgressStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 814 }, // ServiceArea_ProgressStruct[]
-};
-
-const Entry<ItemInfo> _ServiceArea_MapStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 813 }, // ServiceArea_MapStruct[]
 };
 
 const Entry<ItemInfo> _ServiceArea_OperationalStatusEnum[] = {
@@ -6717,7 +6717,7 @@ const Entry<ItemInfo> _Thermostat[] = {
   { { AttributeTag(69), "ACLouverPosition", ItemType::kEnum }, 873 }, // Thermostat::ACLouverPositionEnum
   { { AttributeTag(70), "ACCoilTemperature", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::temperature
   { { AttributeTag(71), "ACCapacityformat", ItemType::kEnum }, 871 }, // Thermostat::ACCapacityFormatEnum
-  { { AttributeTag(72), "presetTypes", ItemType::kList }, 863 }, // Thermostat::PresetTypeStruct[]
+  { { AttributeTag(72), "presetTypes", ItemType::kList }, 870 }, // Thermostat::PresetTypeStruct[]
   { { AttributeTag(73), "scheduleTypes", ItemType::kList }, 867 }, // Thermostat::ScheduleTypeStruct[]
   { { AttributeTag(74), "numberOfPresets", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::int8u
   { { AttributeTag(75), "numberOfSchedules", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::int8u
@@ -6726,10 +6726,10 @@ const Entry<ItemInfo> _Thermostat[] = {
   { { AttributeTag(78), "activePresetHandle", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::octet_string
   { { AttributeTag(79), "activeScheduleHandle", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::octet_string
   { { AttributeTag(80), "presets", ItemType::kList }, 868 }, // Thermostat::PresetStruct[]
-  { { AttributeTag(81), "schedules", ItemType::kList }, 865 }, // Thermostat::ScheduleStruct[]
+  { { AttributeTag(81), "schedules", ItemType::kList }, 869 }, // Thermostat::ScheduleStruct[]
   { { AttributeTag(82), "setpointHoldExpiryTimestamp", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::epoch_s
   { { AttributeTag(83), "maxThermostatSuggestions", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::int8u
-  { { AttributeTag(84), "thermostatSuggestions", ItemType::kList }, 869 }, // Thermostat::ThermostatSuggestionStruct[]
+  { { AttributeTag(84), "thermostatSuggestions", ItemType::kList }, 866 }, // Thermostat::ThermostatSuggestionStruct[]
   { { AttributeTag(85), "currentThermostatSuggestion", ItemType::kDefault }, 841 }, // Thermostat::ThermostatSuggestionStruct
   { { AttributeTag(86), "thermostatSuggestionNotFollowingReason", ItemType::kBitmap }, 896 }, // Thermostat::ThermostatSuggestionNotFollowingReasonBitmap
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // Thermostat::command_id[]
@@ -6773,7 +6773,7 @@ const Entry<ItemInfo> _Thermostat_ScheduleStruct[] = {
   { { ContextTag(1), "systemMode", ItemType::kEnum }, 881 }, // Thermostat::SystemModeEnum
   { { ContextTag(2), "name", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::char_string
   { { ContextTag(3), "presetHandle", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::octet_string
-  { { ContextTag(4), "transitions", ItemType::kList }, 866 }, // Thermostat::ScheduleTransitionStruct[]
+  { { ContextTag(4), "transitions", ItemType::kList }, 865 }, // Thermostat::ScheduleTransitionStruct[]
   { { ContextTag(5), "builtIn", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::boolean
 };
 
@@ -6820,14 +6820,14 @@ const Entry<ItemInfo> _Thermostat_GetWeeklyScheduleResponse[] = {
   { { ContextTag(0), "numberOfTransitionsForSequence", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::int8u
   { { ContextTag(1), "dayOfWeekForSequence", ItemType::kBitmap }, 893 }, // Thermostat::ScheduleDayOfWeekBitmap
   { { ContextTag(2), "modeForSequence", ItemType::kBitmap }, 894 }, // Thermostat::ScheduleModeBitmap
-  { { ContextTag(3), "transitions", ItemType::kList }, 870 }, // Thermostat::WeeklyScheduleTransitionStruct[]
+  { { ContextTag(3), "transitions", ItemType::kList }, 863 }, // Thermostat::WeeklyScheduleTransitionStruct[]
 };
 
 const Entry<ItemInfo> _Thermostat_SetWeeklyScheduleRequest[] = {
   { { ContextTag(0), "numberOfTransitionsForSequence", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::int8u
   { { ContextTag(1), "dayOfWeekForSequence", ItemType::kBitmap }, 893 }, // Thermostat::ScheduleDayOfWeekBitmap
   { { ContextTag(2), "modeForSequence", ItemType::kBitmap }, 894 }, // Thermostat::ScheduleModeBitmap
-  { { ContextTag(3), "transitions", ItemType::kList }, 870 }, // Thermostat::WeeklyScheduleTransitionStruct[]
+  { { ContextTag(3), "transitions", ItemType::kList }, 863 }, // Thermostat::WeeklyScheduleTransitionStruct[]
 };
 
 const Entry<ItemInfo> _Thermostat_GetWeeklyScheduleRequest[] = {
@@ -6915,20 +6915,20 @@ const Entry<ItemInfo> _Thermostat_ActivePresetChange[] = {
   { { ContextTag(1), "currentPresetHandle", ItemType::kDefault }, kInvalidNodeIndex }, // Thermostat::octet_string
 };
 
-const Entry<ItemInfo> _Thermostat_PresetTypeStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 839 }, // Thermostat_PresetTypeStruct[]
+const Entry<ItemInfo> _Thermostat_WeeklyScheduleTransitionStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 842 }, // Thermostat_WeeklyScheduleTransitionStruct[]
 };
 
 const Entry<ItemInfo> _Thermostat_AtomicAttributeStatusStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 854 }, // Thermostat_AtomicAttributeStatusStruct[]
 };
 
-const Entry<ItemInfo> _Thermostat_ScheduleStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 837 }, // Thermostat_ScheduleStruct[]
-};
-
 const Entry<ItemInfo> _Thermostat_ScheduleTransitionStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 836 }, // Thermostat_ScheduleTransitionStruct[]
+};
+
+const Entry<ItemInfo> _Thermostat_ThermostatSuggestionStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 841 }, // Thermostat_ThermostatSuggestionStruct[]
 };
 
 const Entry<ItemInfo> _Thermostat_ScheduleTypeStruct_list_[] = {
@@ -6939,12 +6939,12 @@ const Entry<ItemInfo> _Thermostat_PresetStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 838 }, // Thermostat_PresetStruct[]
 };
 
-const Entry<ItemInfo> _Thermostat_ThermostatSuggestionStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 841 }, // Thermostat_ThermostatSuggestionStruct[]
+const Entry<ItemInfo> _Thermostat_ScheduleStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 837 }, // Thermostat_ScheduleStruct[]
 };
 
-const Entry<ItemInfo> _Thermostat_WeeklyScheduleTransitionStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 842 }, // Thermostat_WeeklyScheduleTransitionStruct[]
+const Entry<ItemInfo> _Thermostat_PresetTypeStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 839 }, // Thermostat_PresetTypeStruct[]
 };
 
 const Entry<ItemInfo> _Thermostat_ACCapacityFormatEnum[] = {
@@ -8409,7 +8409,7 @@ const Entry<ItemInfo> _WakeOnLan[] = {
 };
 
 const Entry<ItemInfo> _Channel[] = {
-  { { AttributeTag(0), "channelList", ItemType::kList }, 1049 }, // Channel::ChannelInfoStruct[]
+  { { AttributeTag(0), "channelList", ItemType::kList }, 1051 }, // Channel::ChannelInfoStruct[]
   { { AttributeTag(1), "lineup", ItemType::kDefault }, 1038 }, // Channel::LineupInfoStruct
   { { AttributeTag(2), "currentChannel", ItemType::kDefault }, 1033 }, // Channel::ChannelInfoStruct
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // Channel::command_id[]
@@ -8470,8 +8470,8 @@ const Entry<ItemInfo> _Channel_ProgramStruct[] = {
   { { ContextTag(14), "recordingFlag", ItemType::kBitmap }, 1056 }, // Channel::RecordingFlagBitmap
   { { ContextTag(15), "seriesInfo", ItemType::kDefault }, 1032 }, // Channel::SeriesInfoStruct
   { { ContextTag(16), "categoryList", ItemType::kList }, 1048 }, // Channel::ProgramCategoryStruct[]
-  { { ContextTag(17), "castList", ItemType::kList }, 1051 }, // Channel::ProgramCastStruct[]
-  { { ContextTag(18), "externalIDList", ItemType::kList }, 1051 }, // Channel::ProgramCastStruct[]
+  { { ContextTag(17), "castList", ItemType::kList }, 1047 }, // Channel::ProgramCastStruct[]
+  { { ContextTag(18), "externalIDList", ItemType::kList }, 1047 }, // Channel::ProgramCastStruct[]
 };
 
 const Entry<ItemInfo> _Channel_PageTokenStruct[] = {
@@ -8518,10 +8518,10 @@ const Entry<ItemInfo> _Channel_SkipChannelRequest[] = {
 const Entry<ItemInfo> _Channel_GetProgramGuideRequest[] = {
   { { ContextTag(0), "startTime", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::epoch_s
   { { ContextTag(1), "endTime", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::epoch_s
-  { { ContextTag(2), "channelList", ItemType::kList }, 1049 }, // Channel::ChannelInfoStruct[]
+  { { ContextTag(2), "channelList", ItemType::kList }, 1051 }, // Channel::ChannelInfoStruct[]
   { { ContextTag(3), "pageToken", ItemType::kDefault }, 1035 }, // Channel::PageTokenStruct
   { { ContextTag(4), "recordingFlag", ItemType::kBitmap }, 1056 }, // Channel::RecordingFlagBitmap
-  { { ContextTag(5), "externalIDList", ItemType::kList }, 1047 }, // Channel::AdditionalInfoStruct[]
+  { { ContextTag(5), "externalIDList", ItemType::kList }, 1049 }, // Channel::AdditionalInfoStruct[]
   { { ContextTag(6), "data", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::octet_string
 };
 
@@ -8533,35 +8533,35 @@ const Entry<ItemInfo> _Channel_ProgramGuideResponse[] = {
 const Entry<ItemInfo> _Channel_RecordProgramRequest[] = {
   { { ContextTag(0), "programIdentifier", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::char_string
   { { ContextTag(1), "shouldRecordSeries", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::boolean
-  { { ContextTag(2), "externalIDList", ItemType::kList }, 1047 }, // Channel::AdditionalInfoStruct[]
+  { { ContextTag(2), "externalIDList", ItemType::kList }, 1049 }, // Channel::AdditionalInfoStruct[]
   { { ContextTag(3), "data", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::octet_string
 };
 
 const Entry<ItemInfo> _Channel_CancelRecordProgramRequest[] = {
   { { ContextTag(0), "programIdentifier", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::char_string
   { { ContextTag(1), "shouldRecordSeries", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::boolean
-  { { ContextTag(2), "externalIDList", ItemType::kList }, 1047 }, // Channel::AdditionalInfoStruct[]
+  { { ContextTag(2), "externalIDList", ItemType::kList }, 1049 }, // Channel::AdditionalInfoStruct[]
   { { ContextTag(3), "data", ItemType::kDefault }, kInvalidNodeIndex }, // Channel::octet_string
 };
 
-const Entry<ItemInfo> _Channel_AdditionalInfoStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1037 }, // Channel_AdditionalInfoStruct[]
+const Entry<ItemInfo> _Channel_ProgramCastStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1030 }, // Channel_ProgramCastStruct[]
 };
 
 const Entry<ItemInfo> _Channel_ProgramCategoryStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1031 }, // Channel_ProgramCategoryStruct[]
 };
 
-const Entry<ItemInfo> _Channel_ChannelInfoStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1033 }, // Channel_ChannelInfoStruct[]
+const Entry<ItemInfo> _Channel_AdditionalInfoStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1037 }, // Channel_AdditionalInfoStruct[]
 };
 
 const Entry<ItemInfo> _Channel_ProgramStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1034 }, // Channel_ProgramStruct[]
 };
 
-const Entry<ItemInfo> _Channel_ProgramCastStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1030 }, // Channel_ProgramCastStruct[]
+const Entry<ItemInfo> _Channel_ChannelInfoStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1033 }, // Channel_ChannelInfoStruct[]
 };
 
 const Entry<ItemInfo> _Channel_ChannelTypeEnum[] = {
@@ -9389,8 +9389,8 @@ const Entry<ItemInfo> _ContentAppObserver_StatusEnum[] = {
 const Entry<ItemInfo> _ZoneManagement[] = {
   { { AttributeTag(0), "maxUserDefinedZones", ItemType::kDefault }, kInvalidNodeIndex }, // ZoneManagement::int8u
   { { AttributeTag(1), "maxZones", ItemType::kDefault }, kInvalidNodeIndex }, // ZoneManagement::int8u
-  { { AttributeTag(2), "zones", ItemType::kList }, 1172 }, // ZoneManagement::ZoneInformationStruct[]
-  { { AttributeTag(3), "triggers", ItemType::kList }, 1171 }, // ZoneManagement::ZoneTriggerControlStruct[]
+  { { AttributeTag(2), "zones", ItemType::kList }, 1171 }, // ZoneManagement::ZoneInformationStruct[]
+  { { AttributeTag(3), "triggers", ItemType::kList }, 1172 }, // ZoneManagement::ZoneTriggerControlStruct[]
   { { AttributeTag(4), "sensitivityMax", ItemType::kDefault }, kInvalidNodeIndex }, // ZoneManagement::int8u
   { { AttributeTag(5), "sensitivity", ItemType::kDefault }, kInvalidNodeIndex }, // ZoneManagement::int8u
   { { AttributeTag(6), "twoDCartesianMax", ItemType::kDefault }, 1158 }, // ZoneManagement::TwoDCartesianVertexStruct
@@ -9476,12 +9476,12 @@ const Entry<ItemInfo> _ZoneManagement_TwoDCartesianVertexStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1158 }, // ZoneManagement_TwoDCartesianVertexStruct[]
 };
 
-const Entry<ItemInfo> _ZoneManagement_ZoneTriggerControlStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1161 }, // ZoneManagement_ZoneTriggerControlStruct[]
-};
-
 const Entry<ItemInfo> _ZoneManagement_ZoneInformationStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1160 }, // ZoneManagement_ZoneInformationStruct[]
+};
+
+const Entry<ItemInfo> _ZoneManagement_ZoneTriggerControlStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1161 }, // ZoneManagement_ZoneTriggerControlStruct[]
 };
 
 const Entry<ItemInfo> _ZoneManagement_ZoneEventStoppedReasonEnum[] = {
@@ -9521,20 +9521,20 @@ const Entry<ItemInfo> _CameraAvStreamManagement[] = {
   { { AttributeTag(2), "videoSensorParams", ItemType::kDefault }, 1187 }, // CameraAvStreamManagement::VideoSensorParamsStruct
   { { AttributeTag(3), "nightVisionUsesInfrared", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::boolean
   { { AttributeTag(4), "minViewport", ItemType::kDefault }, 1180 }, // CameraAvStreamManagement::VideoResolutionStruct
-  { { AttributeTag(5), "rateDistortionTradeOffPoints", ItemType::kList }, 1203 }, // CameraAvStreamManagement::RateDistortionTradeOffPointsStruct[]
+  { { AttributeTag(5), "rateDistortionTradeOffPoints", ItemType::kList }, 1208 }, // CameraAvStreamManagement::RateDistortionTradeOffPointsStruct[]
   { { AttributeTag(6), "maxContentBufferSize", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::int32u
   { { AttributeTag(7), "microphoneCapabilities", ItemType::kDefault }, 1185 }, // CameraAvStreamManagement::AudioCapabilitiesStruct
   { { AttributeTag(8), "speakerCapabilities", ItemType::kDefault }, 1185 }, // CameraAvStreamManagement::AudioCapabilitiesStruct
   { { AttributeTag(9), "twoWayTalkSupport", ItemType::kEnum }, 1213 }, // CameraAvStreamManagement::TwoWayTalkSupportTypeEnum
-  { { AttributeTag(10), "snapshotCapabilities", ItemType::kList }, 1208 }, // CameraAvStreamManagement::SnapshotCapabilitiesStruct[]
+  { { AttributeTag(10), "snapshotCapabilities", ItemType::kList }, 1205 }, // CameraAvStreamManagement::SnapshotCapabilitiesStruct[]
   { { AttributeTag(11), "maxNetworkBandwidth", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::int32u
   { { AttributeTag(12), "currentFrameRate", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::int16u
   { { AttributeTag(13), "HDRModeEnabled", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::boolean
-  { { AttributeTag(14), "supportedStreamUsages", ItemType::kList }, 1206 }, // CameraAvStreamManagement::StreamUsageEnum[]
-  { { AttributeTag(15), "allocatedVideoStreams", ItemType::kList }, 1207 }, // CameraAvStreamManagement::VideoStreamStruct[]
-  { { AttributeTag(16), "allocatedAudioStreams", ItemType::kList }, 1204 }, // CameraAvStreamManagement::AudioStreamStruct[]
-  { { AttributeTag(17), "allocatedSnapshotStreams", ItemType::kList }, 1209 }, // CameraAvStreamManagement::SnapshotStreamStruct[]
-  { { AttributeTag(18), "streamUsagePriorities", ItemType::kList }, 1206 }, // CameraAvStreamManagement::StreamUsageEnum[]
+  { { AttributeTag(14), "supportedStreamUsages", ItemType::kList }, 1203 }, // CameraAvStreamManagement::StreamUsageEnum[]
+  { { AttributeTag(15), "allocatedVideoStreams", ItemType::kList }, 1204 }, // CameraAvStreamManagement::VideoStreamStruct[]
+  { { AttributeTag(16), "allocatedAudioStreams", ItemType::kList }, 1209 }, // CameraAvStreamManagement::AudioStreamStruct[]
+  { { AttributeTag(17), "allocatedSnapshotStreams", ItemType::kList }, 1206 }, // CameraAvStreamManagement::SnapshotStreamStruct[]
+  { { AttributeTag(18), "streamUsagePriorities", ItemType::kList }, 1203 }, // CameraAvStreamManagement::StreamUsageEnum[]
   { { AttributeTag(19), "softRecordingPrivacyModeEnabled", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::boolean
   { { AttributeTag(20), "softLivestreamPrivacyModeEnabled", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::boolean
   { { AttributeTag(21), "hardPrivacyModeOn", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::boolean
@@ -9630,7 +9630,7 @@ const Entry<ItemInfo> _CameraAvStreamManagement_RateDistortionTradeOffPointsStru
 
 const Entry<ItemInfo> _CameraAvStreamManagement_AudioCapabilitiesStruct[] = {
   { { ContextTag(0), "maxNumberOfChannels", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::int8u
-  { { ContextTag(1), "supportedCodecs", ItemType::kList }, 1205 }, // CameraAvStreamManagement::AudioCodecEnum[]
+  { { ContextTag(1), "supportedCodecs", ItemType::kList }, 1207 }, // CameraAvStreamManagement::AudioCodecEnum[]
   { { ContextTag(2), "supportedSampleRates", ItemType::kList }, 1 }, // CameraAvStreamManagement::int32u[]
   { { ContextTag(3), "supportedBitDepths", ItemType::kList }, 1 }, // CameraAvStreamManagement::int8u[]
 };
@@ -9724,7 +9724,7 @@ const Entry<ItemInfo> _CameraAvStreamManagement_SnapshotStreamDeallocateRequest[
 };
 
 const Entry<ItemInfo> _CameraAvStreamManagement_SetStreamPrioritiesRequest[] = {
-  { { ContextTag(0), "streamPriorities", ItemType::kList }, 1206 }, // CameraAvStreamManagement::StreamUsageEnum[]
+  { { ContextTag(0), "streamPriorities", ItemType::kList }, 1203 }, // CameraAvStreamManagement::StreamUsageEnum[]
 };
 
 const Entry<ItemInfo> _CameraAvStreamManagement_CaptureSnapshotRequest[] = {
@@ -9745,18 +9745,6 @@ const Entry<ItemInfo> _CameraAvStreamManagement_ViewportStruct[] = {
   { { ContextTag(3), "y2", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvStreamManagement::int16u
 };
 
-const Entry<ItemInfo> _CameraAvStreamManagement_RateDistortionTradeOffPointsStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1184 }, // CameraAvStreamManagement_RateDistortionTradeOffPointsStruct[]
-};
-
-const Entry<ItemInfo> _CameraAvStreamManagement_AudioStreamStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1186 }, // CameraAvStreamManagement_AudioStreamStruct[]
-};
-
-const Entry<ItemInfo> _CameraAvStreamManagement_AudioCodecEnum_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1210 }, // CameraAvStreamManagement_AudioCodecEnum[]
-};
-
 const Entry<ItemInfo> _CameraAvStreamManagement_StreamUsageEnum_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1215 }, // CameraAvStreamManagement_StreamUsageEnum[]
 };
@@ -9771,6 +9759,18 @@ const Entry<ItemInfo> _CameraAvStreamManagement_SnapshotCapabilitiesStruct_list_
 
 const Entry<ItemInfo> _CameraAvStreamManagement_SnapshotStreamStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1182 }, // CameraAvStreamManagement_SnapshotStreamStruct[]
+};
+
+const Entry<ItemInfo> _CameraAvStreamManagement_AudioCodecEnum_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1210 }, // CameraAvStreamManagement_AudioCodecEnum[]
+};
+
+const Entry<ItemInfo> _CameraAvStreamManagement_RateDistortionTradeOffPointsStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1184 }, // CameraAvStreamManagement_RateDistortionTradeOffPointsStruct[]
+};
+
+const Entry<ItemInfo> _CameraAvStreamManagement_AudioStreamStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1186 }, // CameraAvStreamManagement_AudioStreamStruct[]
 };
 
 const Entry<ItemInfo> _CameraAvStreamManagement_AudioCodecEnum[] = {
@@ -9832,8 +9832,8 @@ const Entry<ItemInfo> _CameraAvStreamManagement_Feature[] = {
 const Entry<ItemInfo> _CameraAvSettingsUserLevelManagement[] = {
   { { AttributeTag(0), "MPTZPosition", ItemType::kDefault }, 1219 }, // CameraAvSettingsUserLevelManagement::MPTZStruct
   { { AttributeTag(1), "maxPresets", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvSettingsUserLevelManagement::int8u
-  { { AttributeTag(2), "MPTZPresets", ItemType::kList }, 1231 }, // CameraAvSettingsUserLevelManagement::MPTZPresetStruct[]
-  { { AttributeTag(3), "DPTZStreams", ItemType::kList }, 1230 }, // CameraAvSettingsUserLevelManagement::DPTZStruct[]
+  { { AttributeTag(2), "MPTZPresets", ItemType::kList }, 1230 }, // CameraAvSettingsUserLevelManagement::MPTZPresetStruct[]
+  { { AttributeTag(3), "DPTZStreams", ItemType::kList }, 1231 }, // CameraAvSettingsUserLevelManagement::DPTZStruct[]
   { { AttributeTag(4), "zoomMax", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvSettingsUserLevelManagement::int8u
   { { AttributeTag(5), "tiltMin", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvSettingsUserLevelManagement::int16s
   { { AttributeTag(6), "tiltMax", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvSettingsUserLevelManagement::int16s
@@ -9914,12 +9914,12 @@ const Entry<ItemInfo> _CameraAvSettingsUserLevelManagement_ViewportStruct[] = {
   { { ContextTag(3), "y2", ItemType::kDefault }, kInvalidNodeIndex }, // CameraAvSettingsUserLevelManagement::int16u
 };
 
-const Entry<ItemInfo> _CameraAvSettingsUserLevelManagement_DPTZStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1221 }, // CameraAvSettingsUserLevelManagement_DPTZStruct[]
-};
-
 const Entry<ItemInfo> _CameraAvSettingsUserLevelManagement_MPTZPresetStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1220 }, // CameraAvSettingsUserLevelManagement_MPTZPresetStruct[]
+};
+
+const Entry<ItemInfo> _CameraAvSettingsUserLevelManagement_DPTZStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1221 }, // CameraAvSettingsUserLevelManagement_DPTZStruct[]
 };
 
 const Entry<ItemInfo> _CameraAvSettingsUserLevelManagement_Feature[] = {
@@ -9931,7 +9931,7 @@ const Entry<ItemInfo> _CameraAvSettingsUserLevelManagement_Feature[] = {
 };
 
 const Entry<ItemInfo> _WebRTCTransportProvider[] = {
-  { { AttributeTag(0), "currentSessions", ItemType::kList }, 1245 }, // WebRTCTransportProvider::WebRTCSessionStruct[]
+  { { AttributeTag(0), "currentSessions", ItemType::kList }, 1246 }, // WebRTCTransportProvider::WebRTCSessionStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // WebRTCTransportProvider::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // WebRTCTransportProvider::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // WebRTCTransportProvider::attrib_id[]
@@ -9951,7 +9951,7 @@ const Entry<ItemInfo> _WebRTCTransportProvider_SolicitOfferRequest[] = {
   { { ContextTag(1), "originatingEndpointID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::endpoint_no
   { { ContextTag(2), "videoStreamID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::int16u
   { { ContextTag(3), "audioStreamID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::int16u
-  { { ContextTag(4), "ICEServers", ItemType::kList }, 1244 }, // WebRTCTransportProvider::ICEServerStruct[]
+  { { ContextTag(4), "ICEServers", ItemType::kList }, 1245 }, // WebRTCTransportProvider::ICEServerStruct[]
   { { ContextTag(5), "ICETransportPolicy", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::char_string
   { { ContextTag(6), "metadataEnabled", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::boolean
 };
@@ -9970,7 +9970,7 @@ const Entry<ItemInfo> _WebRTCTransportProvider_ProvideOfferRequest[] = {
   { { ContextTag(3), "originatingEndpointID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::endpoint_no
   { { ContextTag(4), "videoStreamID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::int16u
   { { ContextTag(5), "audioStreamID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::int16u
-  { { ContextTag(6), "ICEServers", ItemType::kList }, 1244 }, // WebRTCTransportProvider::ICEServerStruct[]
+  { { ContextTag(6), "ICEServers", ItemType::kList }, 1245 }, // WebRTCTransportProvider::ICEServerStruct[]
   { { ContextTag(7), "ICETransportPolicy", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::char_string
   { { ContextTag(8), "metadataEnabled", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::boolean
 };
@@ -9988,7 +9988,7 @@ const Entry<ItemInfo> _WebRTCTransportProvider_ProvideAnswerRequest[] = {
 
 const Entry<ItemInfo> _WebRTCTransportProvider_ProvideICECandidatesRequest[] = {
   { { ContextTag(0), "webRTCSessionID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::int16u
-  { { ContextTag(1), "ICECandidates", ItemType::kList }, 1246 }, // WebRTCTransportProvider::ICECandidateStruct[]
+  { { ContextTag(1), "ICECandidates", ItemType::kList }, 1244 }, // WebRTCTransportProvider::ICECandidateStruct[]
 };
 
 const Entry<ItemInfo> _WebRTCTransportProvider_EndSessionRequest[] = {
@@ -10020,16 +10020,16 @@ const Entry<ItemInfo> _WebRTCTransportProvider_WebRTCSessionStruct[] = {
   { { ContextTag(254), "fabricIndex", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportProvider::fabric_idx
 };
 
+const Entry<ItemInfo> _WebRTCTransportProvider_ICECandidateStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1241 }, // WebRTCTransportProvider_ICECandidateStruct[]
+};
+
 const Entry<ItemInfo> _WebRTCTransportProvider_ICEServerStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1242 }, // WebRTCTransportProvider_ICEServerStruct[]
 };
 
 const Entry<ItemInfo> _WebRTCTransportProvider_WebRTCSessionStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1243 }, // WebRTCTransportProvider_WebRTCSessionStruct[]
-};
-
-const Entry<ItemInfo> _WebRTCTransportProvider_ICECandidateStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1241 }, // WebRTCTransportProvider_ICECandidateStruct[]
 };
 
 const Entry<ItemInfo> _WebRTCTransportProvider_StreamUsageEnum[] = {
@@ -10059,7 +10059,7 @@ const Entry<ItemInfo> _WebRTCTransportProvider_Feature[] = {
 };
 
 const Entry<ItemInfo> _WebRTCTransportRequestor[] = {
-  { { AttributeTag(0), "currentSessions", ItemType::kList }, 1260 }, // WebRTCTransportRequestor::WebRTCSessionStruct[]
+  { { AttributeTag(0), "currentSessions", ItemType::kList }, 1259 }, // WebRTCTransportRequestor::WebRTCSessionStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // WebRTCTransportRequestor::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // WebRTCTransportRequestor::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // WebRTCTransportRequestor::attrib_id[]
@@ -10074,7 +10074,7 @@ const Entry<ItemInfo> _WebRTCTransportRequestor[] = {
 const Entry<ItemInfo> _WebRTCTransportRequestor_OfferRequest[] = {
   { { ContextTag(0), "webRTCSessionID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportRequestor::int16u
   { { ContextTag(1), "sdp", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportRequestor::char_string
-  { { ContextTag(2), "ICEServers", ItemType::kList }, 1259 }, // WebRTCTransportRequestor::ICEServerStruct[]
+  { { ContextTag(2), "ICEServers", ItemType::kList }, 1258 }, // WebRTCTransportRequestor::ICEServerStruct[]
   { { ContextTag(3), "ICETransportPolicy", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportRequestor::char_string
 };
 
@@ -10085,7 +10085,7 @@ const Entry<ItemInfo> _WebRTCTransportRequestor_AnswerRequest[] = {
 
 const Entry<ItemInfo> _WebRTCTransportRequestor_ICECandidatesRequest[] = {
   { { ContextTag(0), "webRTCSessionID", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportRequestor::int16u
-  { { ContextTag(1), "ICECandidates", ItemType::kList }, 1258 }, // WebRTCTransportRequestor::ICECandidateStruct[]
+  { { ContextTag(1), "ICECandidates", ItemType::kList }, 1260 }, // WebRTCTransportRequestor::ICECandidateStruct[]
 };
 
 const Entry<ItemInfo> _WebRTCTransportRequestor_EndRequest[] = {
@@ -10117,16 +10117,16 @@ const Entry<ItemInfo> _WebRTCTransportRequestor_WebRTCSessionStruct[] = {
   { { ContextTag(254), "fabricIndex", ItemType::kDefault }, kInvalidNodeIndex }, // WebRTCTransportRequestor::fabric_idx
 };
 
-const Entry<ItemInfo> _WebRTCTransportRequestor_ICECandidateStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1255 }, // WebRTCTransportRequestor_ICECandidateStruct[]
-};
-
 const Entry<ItemInfo> _WebRTCTransportRequestor_ICEServerStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1256 }, // WebRTCTransportRequestor_ICEServerStruct[]
 };
 
 const Entry<ItemInfo> _WebRTCTransportRequestor_WebRTCSessionStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1257 }, // WebRTCTransportRequestor_WebRTCSessionStruct[]
+};
+
+const Entry<ItemInfo> _WebRTCTransportRequestor_ICECandidateStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1255 }, // WebRTCTransportRequestor_ICECandidateStruct[]
 };
 
 const Entry<ItemInfo> _WebRTCTransportRequestor_WebRTCEndReasonEnum[] = {
@@ -10152,8 +10152,8 @@ const Entry<ItemInfo> _WebRTCTransportRequestor_StreamUsageEnum[] = {
 };
 
 const Entry<ItemInfo> _PushAvStreamTransport[] = {
-  { { AttributeTag(0), "supportedFormats", ItemType::kList }, 1283 }, // PushAvStreamTransport::SupportedFormatStruct[]
-  { { AttributeTag(1), "currentConnections", ItemType::kList }, 1282 }, // PushAvStreamTransport::TransportConfigurationStruct[]
+  { { AttributeTag(0), "supportedFormats", ItemType::kList }, 1282 }, // PushAvStreamTransport::SupportedFormatStruct[]
+  { { AttributeTag(1), "currentConnections", ItemType::kList }, 1284 }, // PushAvStreamTransport::TransportConfigurationStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // PushAvStreamTransport::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // PushAvStreamTransport::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // PushAvStreamTransport::attrib_id[]
@@ -10185,7 +10185,7 @@ const Entry<ItemInfo> _PushAvStreamTransport_TransportZoneOptionsStruct[] = {
 
 const Entry<ItemInfo> _PushAvStreamTransport_TransportTriggerOptionsStruct[] = {
   { { ContextTag(0), "triggerType", ItemType::kEnum }, 1289 }, // PushAvStreamTransport::TransportTriggerTypeEnum
-  { { ContextTag(1), "motionZones", ItemType::kList }, 1284 }, // PushAvStreamTransport::TransportZoneOptionsStruct[]
+  { { ContextTag(1), "motionZones", ItemType::kList }, 1283 }, // PushAvStreamTransport::TransportZoneOptionsStruct[]
   { { ContextTag(2), "motionSensitivity", ItemType::kDefault }, kInvalidNodeIndex }, // PushAvStreamTransport::int8u
   { { ContextTag(3), "motionTimeControl", ItemType::kDefault }, 1264 }, // PushAvStreamTransport::TransportMotionTriggerTimeControlStruct
   { { ContextTag(4), "maxPreRollLen", ItemType::kDefault }, kInvalidNodeIndex }, // PushAvStreamTransport::int16u
@@ -10260,7 +10260,7 @@ const Entry<ItemInfo> _PushAvStreamTransport_FindTransportRequest[] = {
 };
 
 const Entry<ItemInfo> _PushAvStreamTransport_FindTransportResponse[] = {
-  { { ContextTag(0), "transportConfigurations", ItemType::kList }, 1282 }, // PushAvStreamTransport::TransportConfigurationStruct[]
+  { { ContextTag(0), "transportConfigurations", ItemType::kList }, 1284 }, // PushAvStreamTransport::TransportConfigurationStruct[]
 };
 
 const Entry<ItemInfo> _PushAvStreamTransport_PushTransportBegin[] = {
@@ -10275,16 +10275,16 @@ const Entry<ItemInfo> _PushAvStreamTransport_PushTransportEnd[] = {
   { { ContextTag(2), "activationReason", ItemType::kEnum }, 1290 }, // PushAvStreamTransport::TriggerActivationReasonEnum
 };
 
-const Entry<ItemInfo> _PushAvStreamTransport_TransportConfigurationStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1270 }, // PushAvStreamTransport_TransportConfigurationStruct[]
-};
-
 const Entry<ItemInfo> _PushAvStreamTransport_SupportedFormatStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1271 }, // PushAvStreamTransport_SupportedFormatStruct[]
 };
 
 const Entry<ItemInfo> _PushAvStreamTransport_TransportZoneOptionsStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1265 }, // PushAvStreamTransport_TransportZoneOptionsStruct[]
+};
+
+const Entry<ItemInfo> _PushAvStreamTransport_TransportConfigurationStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1270 }, // PushAvStreamTransport_TransportConfigurationStruct[]
 };
 
 const Entry<ItemInfo> _PushAvStreamTransport_ContainerFormatEnum[] = {
@@ -10360,19 +10360,19 @@ const Entry<ItemInfo> _CommodityTariff[] = {
   { { AttributeTag(1), "tariffUnit", ItemType::kEnum }, 1325 }, // CommodityTariff::TariffUnitEnum
   { { AttributeTag(2), "startDate", ItemType::kDefault }, kInvalidNodeIndex }, // CommodityTariff::epoch_s
   { { AttributeTag(3), "dayEntries", ItemType::kList }, 1313 }, // CommodityTariff::DayEntryStruct[]
-  { { AttributeTag(4), "dayPatterns", ItemType::kList }, 1315 }, // CommodityTariff::DayPatternStruct[]
-  { { AttributeTag(5), "calendarPeriods", ItemType::kList }, 1314 }, // CommodityTariff::CalendarPeriodStruct[]
-  { { AttributeTag(6), "individualDays", ItemType::kList }, 1317 }, // CommodityTariff::DayStruct[]
+  { { AttributeTag(4), "dayPatterns", ItemType::kList }, 1317 }, // CommodityTariff::DayPatternStruct[]
+  { { AttributeTag(5), "calendarPeriods", ItemType::kList }, 1315 }, // CommodityTariff::CalendarPeriodStruct[]
+  { { AttributeTag(6), "individualDays", ItemType::kList }, 1316 }, // CommodityTariff::DayStruct[]
   { { AttributeTag(7), "currentDay", ItemType::kDefault }, 1304 }, // CommodityTariff::DayStruct
   { { AttributeTag(8), "nextDay", ItemType::kDefault }, 1304 }, // CommodityTariff::DayStruct
   { { AttributeTag(9), "currentDayEntry", ItemType::kDefault }, 1302 }, // CommodityTariff::DayEntryStruct
   { { AttributeTag(10), "currentDayEntryDate", ItemType::kDefault }, kInvalidNodeIndex }, // CommodityTariff::epoch_s
   { { AttributeTag(11), "nextDayEntry", ItemType::kDefault }, 1302 }, // CommodityTariff::DayEntryStruct
   { { AttributeTag(12), "nextDayEntryDate", ItemType::kDefault }, kInvalidNodeIndex }, // CommodityTariff::epoch_s
-  { { AttributeTag(13), "tariffComponents", ItemType::kList }, 1318 }, // CommodityTariff::TariffComponentStruct[]
-  { { AttributeTag(14), "tariffPeriods", ItemType::kList }, 1316 }, // CommodityTariff::TariffPeriodStruct[]
-  { { AttributeTag(15), "currentTariffComponents", ItemType::kList }, 1318 }, // CommodityTariff::TariffComponentStruct[]
-  { { AttributeTag(16), "nextTariffComponents", ItemType::kList }, 1318 }, // CommodityTariff::TariffComponentStruct[]
+  { { AttributeTag(13), "tariffComponents", ItemType::kList }, 1314 }, // CommodityTariff::TariffComponentStruct[]
+  { { AttributeTag(14), "tariffPeriods", ItemType::kList }, 1318 }, // CommodityTariff::TariffPeriodStruct[]
+  { { AttributeTag(15), "currentTariffComponents", ItemType::kList }, 1314 }, // CommodityTariff::TariffComponentStruct[]
+  { { AttributeTag(16), "nextTariffComponents", ItemType::kList }, 1314 }, // CommodityTariff::TariffComponentStruct[]
   { { AttributeTag(17), "defaultRandomizationOffset", ItemType::kDefault }, kInvalidNodeIndex }, // CommodityTariff::int16s
   { { AttributeTag(18), "defaultRandomizationType", ItemType::kEnum }, 1321 }, // CommodityTariff::DayEntryRandomizationTypeEnum
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // CommodityTariff::command_id[]
@@ -10485,8 +10485,16 @@ const Entry<ItemInfo> _CommodityTariff_DayEntryStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1302 }, // CommodityTariff_DayEntryStruct[]
 };
 
+const Entry<ItemInfo> _CommodityTariff_TariffComponentStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1300 }, // CommodityTariff_TariffComponentStruct[]
+};
+
 const Entry<ItemInfo> _CommodityTariff_CalendarPeriodStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1301 }, // CommodityTariff_CalendarPeriodStruct[]
+};
+
+const Entry<ItemInfo> _CommodityTariff_DayStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1304 }, // CommodityTariff_DayStruct[]
 };
 
 const Entry<ItemInfo> _CommodityTariff_DayPatternStruct_list_[] = {
@@ -10495,14 +10503,6 @@ const Entry<ItemInfo> _CommodityTariff_DayPatternStruct_list_[] = {
 
 const Entry<ItemInfo> _CommodityTariff_TariffPeriodStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1306 }, // CommodityTariff_TariffPeriodStruct[]
-};
-
-const Entry<ItemInfo> _CommodityTariff_DayStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1304 }, // CommodityTariff_DayStruct[]
-};
-
-const Entry<ItemInfo> _CommodityTariff_TariffComponentStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1300 }, // CommodityTariff_TariffComponentStruct[]
 };
 
 const Entry<ItemInfo> _CommodityTariff_AuxiliaryLoadSettingEnum[] = {
@@ -10579,7 +10579,7 @@ const Entry<ItemInfo> _CommodityTariff_Feature[] = {
 
 const Entry<ItemInfo> _EcosystemInformation[] = {
   { { AttributeTag(0), "deviceDirectory", ItemType::kList }, 1334 }, // EcosystemInformation::EcosystemDeviceStruct[]
-  { { AttributeTag(1), "locationDirectory", ItemType::kList }, 1335 }, // EcosystemInformation::EcosystemLocationStruct[]
+  { { AttributeTag(1), "locationDirectory", ItemType::kList }, 1336 }, // EcosystemInformation::EcosystemLocationStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // EcosystemInformation::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // EcosystemInformation::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // EcosystemInformation::attrib_id[]
@@ -10597,7 +10597,7 @@ const Entry<ItemInfo> _EcosystemInformation_EcosystemDeviceStruct[] = {
   { { ContextTag(1), "deviceNameLastEdit", ItemType::kDefault }, kInvalidNodeIndex }, // EcosystemInformation::epoch_us
   { { ContextTag(2), "bridgedEndpoint", ItemType::kDefault }, kInvalidNodeIndex }, // EcosystemInformation::endpoint_no
   { { ContextTag(3), "originalEndpoint", ItemType::kDefault }, kInvalidNodeIndex }, // EcosystemInformation::endpoint_no
-  { { ContextTag(4), "deviceTypes", ItemType::kList }, 1336 }, // EcosystemInformation::DeviceTypeStruct[]
+  { { ContextTag(4), "deviceTypes", ItemType::kList }, 1335 }, // EcosystemInformation::DeviceTypeStruct[]
   { { ContextTag(5), "uniqueLocationIDs", ItemType::kList }, 1 }, // EcosystemInformation::char_string[]
   { { ContextTag(6), "uniqueLocationIDsLastEdit", ItemType::kDefault }, kInvalidNodeIndex }, // EcosystemInformation::epoch_us
   { { ContextTag(254), "fabricIndex", ItemType::kDefault }, kInvalidNodeIndex }, // EcosystemInformation::fabric_idx
@@ -10620,12 +10620,12 @@ const Entry<ItemInfo> _EcosystemInformation_EcosystemDeviceStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1331 }, // EcosystemInformation_EcosystemDeviceStruct[]
 };
 
-const Entry<ItemInfo> _EcosystemInformation_EcosystemLocationStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1332 }, // EcosystemInformation_EcosystemLocationStruct[]
-};
-
 const Entry<ItemInfo> _EcosystemInformation_DeviceTypeStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1330 }, // EcosystemInformation_DeviceTypeStruct[]
+};
+
+const Entry<ItemInfo> _EcosystemInformation_EcosystemLocationStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1332 }, // EcosystemInformation_EcosystemLocationStruct[]
 };
 
 const Entry<ItemInfo> _EcosystemInformation_AreaTypeTag[] = {
@@ -10773,16 +10773,16 @@ const Entry<ItemInfo> _JointFabricDatastore[] = {
   { { AttributeTag(1), "anchorNodeID", ItemType::kDefault }, kInvalidNodeIndex }, // JointFabricDatastore::node_id
   { { AttributeTag(2), "anchorVendorID", ItemType::kDefault }, kInvalidNodeIndex }, // JointFabricDatastore::vendor_id
   { { AttributeTag(3), "friendlyName", ItemType::kDefault }, kInvalidNodeIndex }, // JointFabricDatastore::char_string
-  { { AttributeTag(4), "groupKeySetList", ItemType::kList }, 1385 }, // JointFabricDatastore::DatastoreGroupKeySetStruct[]
-  { { AttributeTag(5), "groupList", ItemType::kList }, 1381 }, // JointFabricDatastore::DatastoreGroupInformationEntryStruct[]
-  { { AttributeTag(6), "nodeList", ItemType::kList }, 1387 }, // JointFabricDatastore::DatastoreNodeInformationEntryStruct[]
-  { { AttributeTag(7), "adminList", ItemType::kList }, 1379 }, // JointFabricDatastore::DatastoreAdministratorInformationEntryStruct[]
+  { { AttributeTag(4), "groupKeySetList", ItemType::kList }, 1384 }, // JointFabricDatastore::DatastoreGroupKeySetStruct[]
+  { { AttributeTag(5), "groupList", ItemType::kList }, 1382 }, // JointFabricDatastore::DatastoreGroupInformationEntryStruct[]
+  { { AttributeTag(6), "nodeList", ItemType::kList }, 1381 }, // JointFabricDatastore::DatastoreNodeInformationEntryStruct[]
+  { { AttributeTag(7), "adminList", ItemType::kList }, 1380 }, // JointFabricDatastore::DatastoreAdministratorInformationEntryStruct[]
   { { AttributeTag(8), "status", ItemType::kDefault }, 1345 }, // JointFabricDatastore::DatastoreStatusEntryStruct
-  { { AttributeTag(9), "endpointGroupIDList", ItemType::kList }, 1380 }, // JointFabricDatastore::DatastoreEndpointGroupIDEntryStruct[]
-  { { AttributeTag(10), "endpointBindingList", ItemType::kList }, 1378 }, // JointFabricDatastore::DatastoreEndpointBindingEntryStruct[]
-  { { AttributeTag(11), "nodeKeySetList", ItemType::kList }, 1386 }, // JointFabricDatastore::DatastoreNodeKeySetEntryStruct[]
-  { { AttributeTag(12), "nodeACLList", ItemType::kList }, 1382 }, // JointFabricDatastore::DatastoreACLEntryStruct[]
-  { { AttributeTag(13), "nodeEndpointList", ItemType::kList }, 1384 }, // JointFabricDatastore::DatastoreEndpointEntryStruct[]
+  { { AttributeTag(9), "endpointGroupIDList", ItemType::kList }, 1386 }, // JointFabricDatastore::DatastoreEndpointGroupIDEntryStruct[]
+  { { AttributeTag(10), "endpointBindingList", ItemType::kList }, 1387 }, // JointFabricDatastore::DatastoreEndpointBindingEntryStruct[]
+  { { AttributeTag(11), "nodeKeySetList", ItemType::kList }, 1385 }, // JointFabricDatastore::DatastoreNodeKeySetEntryStruct[]
+  { { AttributeTag(12), "nodeACLList", ItemType::kList }, 1379 }, // JointFabricDatastore::DatastoreACLEntryStruct[]
+  { { AttributeTag(13), "nodeEndpointList", ItemType::kList }, 1378 }, // JointFabricDatastore::DatastoreEndpointEntryStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // JointFabricDatastore::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // JointFabricDatastore::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // JointFabricDatastore::attrib_id[]
@@ -11014,32 +11014,28 @@ const Entry<ItemInfo> _JointFabricDatastore_RemoveACLFromNodeRequest[] = {
   { { ContextTag(1), "nodeID", ItemType::kDefault }, kInvalidNodeIndex }, // JointFabricDatastore::node_id
 };
 
-const Entry<ItemInfo> _JointFabricDatastore_DatastoreEndpointBindingEntryStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1351 }, // JointFabricDatastore_DatastoreEndpointBindingEntryStruct[]
-};
-
-const Entry<ItemInfo> _JointFabricDatastore_DatastoreAdministratorInformationEntryStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1355 }, // JointFabricDatastore_DatastoreAdministratorInformationEntryStruct[]
-};
-
-const Entry<ItemInfo> _JointFabricDatastore_DatastoreEndpointGroupIDEntryStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1348 }, // JointFabricDatastore_DatastoreEndpointGroupIDEntryStruct[]
-};
-
-const Entry<ItemInfo> _JointFabricDatastore_DatastoreGroupInformationEntryStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1356 }, // JointFabricDatastore_DatastoreGroupInformationEntryStruct[]
+const Entry<ItemInfo> _JointFabricDatastore_DatastoreEndpointEntryStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1349 }, // JointFabricDatastore_DatastoreEndpointEntryStruct[]
 };
 
 const Entry<ItemInfo> _JointFabricDatastore_DatastoreACLEntryStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1354 }, // JointFabricDatastore_DatastoreACLEntryStruct[]
 };
 
-const Entry<ItemInfo> _JointFabricDatastore_DatastoreAccessControlTargetStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1352 }, // JointFabricDatastore_DatastoreAccessControlTargetStruct[]
+const Entry<ItemInfo> _JointFabricDatastore_DatastoreAdministratorInformationEntryStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1355 }, // JointFabricDatastore_DatastoreAdministratorInformationEntryStruct[]
 };
 
-const Entry<ItemInfo> _JointFabricDatastore_DatastoreEndpointEntryStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1349 }, // JointFabricDatastore_DatastoreEndpointEntryStruct[]
+const Entry<ItemInfo> _JointFabricDatastore_DatastoreNodeInformationEntryStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1347 }, // JointFabricDatastore_DatastoreNodeInformationEntryStruct[]
+};
+
+const Entry<ItemInfo> _JointFabricDatastore_DatastoreGroupInformationEntryStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1356 }, // JointFabricDatastore_DatastoreGroupInformationEntryStruct[]
+};
+
+const Entry<ItemInfo> _JointFabricDatastore_DatastoreAccessControlTargetStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1352 }, // JointFabricDatastore_DatastoreAccessControlTargetStruct[]
 };
 
 const Entry<ItemInfo> _JointFabricDatastore_DatastoreGroupKeySetStruct_list_[] = {
@@ -11050,8 +11046,12 @@ const Entry<ItemInfo> _JointFabricDatastore_DatastoreNodeKeySetEntryStruct_list_
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1346 }, // JointFabricDatastore_DatastoreNodeKeySetEntryStruct[]
 };
 
-const Entry<ItemInfo> _JointFabricDatastore_DatastoreNodeInformationEntryStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1347 }, // JointFabricDatastore_DatastoreNodeInformationEntryStruct[]
+const Entry<ItemInfo> _JointFabricDatastore_DatastoreEndpointGroupIDEntryStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1348 }, // JointFabricDatastore_DatastoreEndpointGroupIDEntryStruct[]
+};
+
+const Entry<ItemInfo> _JointFabricDatastore_DatastoreEndpointBindingEntryStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1351 }, // JointFabricDatastore_DatastoreEndpointBindingEntryStruct[]
 };
 
 const Entry<ItemInfo> _JointFabricDatastore_DatastoreAccessControlEntryAuthModeEnum[] = {
@@ -11149,9 +11149,9 @@ const Entry<ItemInfo> _JointFabricAdministrator_TransferAnchorResponseStatusEnum
 
 const Entry<ItemInfo> _TlsCertificateManagement[] = {
   { { AttributeTag(0), "maxRootCertificates", ItemType::kDefault }, kInvalidNodeIndex }, // TlsCertificateManagement::int8u
-  { { AttributeTag(1), "provisionedRootCertificates", ItemType::kList }, 1422 }, // TlsCertificateManagement::TLSCertStruct[]
+  { { AttributeTag(1), "provisionedRootCertificates", ItemType::kList }, 1421 }, // TlsCertificateManagement::TLSCertStruct[]
   { { AttributeTag(2), "maxClientCertificates", ItemType::kDefault }, kInvalidNodeIndex }, // TlsCertificateManagement::int8u
-  { { AttributeTag(3), "provisionedClientCertificates", ItemType::kList }, 1421 }, // TlsCertificateManagement::TLSClientCertificateDetailStruct[]
+  { { AttributeTag(3), "provisionedClientCertificates", ItemType::kList }, 1422 }, // TlsCertificateManagement::TLSClientCertificateDetailStruct[]
   { { AttributeTag(65528), "generatedCommandList", ItemType::kList }, 1 }, // TlsCertificateManagement::command_id[]
   { { AttributeTag(65529), "acceptedCommandList", ItemType::kList }, 1 }, // TlsCertificateManagement::command_id[]
   { { AttributeTag(65531), "attributeList", ItemType::kList }, 1 }, // TlsCertificateManagement::attrib_id[]
@@ -11201,7 +11201,7 @@ const Entry<ItemInfo> _TlsCertificateManagement_FindRootCertificateRequest[] = {
 };
 
 const Entry<ItemInfo> _TlsCertificateManagement_FindRootCertificateResponse[] = {
-  { { ContextTag(0), "certificateDetails", ItemType::kList }, 1422 }, // TlsCertificateManagement::TLSCertStruct[]
+  { { ContextTag(0), "certificateDetails", ItemType::kList }, 1421 }, // TlsCertificateManagement::TLSCertStruct[]
 };
 
 const Entry<ItemInfo> _TlsCertificateManagement_LookupRootCertificateRequest[] = {
@@ -11236,7 +11236,7 @@ const Entry<ItemInfo> _TlsCertificateManagement_FindClientCertificateRequest[] =
 };
 
 const Entry<ItemInfo> _TlsCertificateManagement_FindClientCertificateResponse[] = {
-  { { ContextTag(0), "certificateDetails", ItemType::kList }, 1421 }, // TlsCertificateManagement::TLSClientCertificateDetailStruct[]
+  { { ContextTag(0), "certificateDetails", ItemType::kList }, 1422 }, // TlsCertificateManagement::TLSClientCertificateDetailStruct[]
 };
 
 const Entry<ItemInfo> _TlsCertificateManagement_LookupClientCertificateRequest[] = {
@@ -11251,12 +11251,12 @@ const Entry<ItemInfo> _TlsCertificateManagement_RemoveClientCertificateRequest[]
   { { ContextTag(0), "ccdid", ItemType::kDefault }, kInvalidNodeIndex }, // TlsCertificateManagement::int16u
 };
 
-const Entry<ItemInfo> _TlsCertificateManagement_TLSClientCertificateDetailStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1405 }, // TlsCertificateManagement_TLSClientCertificateDetailStruct[]
-};
-
 const Entry<ItemInfo> _TlsCertificateManagement_TLSCertStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1404 }, // TlsCertificateManagement_TLSCertStruct[]
+};
+
+const Entry<ItemInfo> _TlsCertificateManagement_TLSClientCertificateDetailStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1405 }, // TlsCertificateManagement_TLSClientCertificateDetailStruct[]
 };
 
 const Entry<ItemInfo> _TlsCertificateManagement_StatusCodeEnum[] = {
@@ -11441,7 +11441,7 @@ const Entry<ItemInfo> _UnitTesting[] = {
   { { AttributeTag(32), "epochUs", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::epoch_us
   { { AttributeTag(33), "epochS", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::epoch_s
   { { AttributeTag(34), "vendorId", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::vendor_id
-  { { AttributeTag(35), "listNullablesAndOptionalsStruct", ItemType::kList }, 1496 }, // UnitTesting::NullablesAndOptionalsStruct[]
+  { { AttributeTag(35), "listNullablesAndOptionalsStruct", ItemType::kList }, 1498 }, // UnitTesting::NullablesAndOptionalsStruct[]
   { { AttributeTag(36), "enumAttr", ItemType::kEnum }, 1499 }, // UnitTesting::SimpleEnum
   { { AttributeTag(37), "structAttr", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
   { { AttributeTag(38), "rangeRestrictedInt8u", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::int8u
@@ -11449,7 +11449,7 @@ const Entry<ItemInfo> _UnitTesting[] = {
   { { AttributeTag(40), "rangeRestrictedInt16u", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::int16u
   { { AttributeTag(41), "rangeRestrictedInt16s", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::int16s
   { { AttributeTag(42), "listLongOctetString", ItemType::kList }, 1 }, // UnitTesting::long_octet_string[]
-  { { AttributeTag(43), "listFabricScoped", ItemType::kList }, 1498 }, // UnitTesting::TestFabricScoped[]
+  { { AttributeTag(43), "listFabricScoped", ItemType::kList }, 1495 }, // UnitTesting::TestFabricScoped[]
   { { AttributeTag(48), "timedWriteBoolean", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
   { { AttributeTag(49), "generalErrorBoolean", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
   { { AttributeTag(50), "clusterErrorBoolean", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
@@ -11583,9 +11583,9 @@ const Entry<ItemInfo> _UnitTesting_NullablesAndOptionalsStruct[] = {
   { { ContextTag(6), "nullableStruct", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
   { { ContextTag(7), "optionalStruct", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
   { { ContextTag(8), "nullableOptionalStruct", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
-  { { ContextTag(9), "nullableList", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
-  { { ContextTag(10), "optionalList", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
-  { { ContextTag(11), "nullableOptionalList", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(9), "nullableList", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(10), "optionalList", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(11), "nullableOptionalList", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
 };
 
 const Entry<ItemInfo> _UnitTesting_NestedStruct[] = {
@@ -11629,7 +11629,7 @@ const Entry<ItemInfo> _UnitTesting_TestSimpleArgumentResponse[] = {
 const Entry<ItemInfo> _UnitTesting_TestStructArrayArgumentResponse[] = {
   { { ContextTag(0), "arg1", ItemType::kList }, 1497 }, // UnitTesting::NestedStructList[]
   { { ContextTag(1), "arg2", ItemType::kList }, 1494 }, // UnitTesting::SimpleStruct[]
-  { { ContextTag(2), "arg3", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(2), "arg3", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
   { { ContextTag(3), "arg4", ItemType::kList }, 1 }, // UnitTesting::boolean[]
   { { ContextTag(4), "arg5", ItemType::kEnum }, 1499 }, // UnitTesting::SimpleEnum
   { { ContextTag(5), "arg6", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
@@ -11656,7 +11656,7 @@ const Entry<ItemInfo> _UnitTesting_TestEnumsResponse[] = {
 const Entry<ItemInfo> _UnitTesting_TestStructArrayArgumentRequestRequest[] = {
   { { ContextTag(0), "arg1", ItemType::kList }, 1497 }, // UnitTesting::NestedStructList[]
   { { ContextTag(1), "arg2", ItemType::kList }, 1494 }, // UnitTesting::SimpleStruct[]
-  { { ContextTag(2), "arg3", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(2), "arg3", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
   { { ContextTag(3), "arg4", ItemType::kList }, 1 }, // UnitTesting::boolean[]
   { { ContextTag(4), "arg5", ItemType::kEnum }, 1499 }, // UnitTesting::SimpleEnum
   { { ContextTag(5), "arg6", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
@@ -11696,12 +11696,12 @@ const Entry<ItemInfo> _UnitTesting_TestComplexNullableOptionalResponse[] = {
   { { ContextTag(19), "nullableOptionalStructWasNull", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
   { { ContextTag(20), "nullableOptionalStructValue", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
   { { ContextTag(21), "nullableListWasNull", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
-  { { ContextTag(22), "nullableListValue", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(22), "nullableListValue", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
   { { ContextTag(23), "optionalListWasPresent", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
-  { { ContextTag(24), "optionalListValue", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(24), "optionalListValue", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
   { { ContextTag(25), "nullableOptionalListWasPresent", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
   { { ContextTag(26), "nullableOptionalListWasNull", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
-  { { ContextTag(27), "nullableOptionalListValue", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(27), "nullableOptionalListValue", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
 };
 
 const Entry<ItemInfo> _UnitTesting_TestNestedStructArgumentRequestRequest[] = {
@@ -11776,9 +11776,9 @@ const Entry<ItemInfo> _UnitTesting_TestComplexNullableOptionalRequestRequest[] =
   { { ContextTag(6), "nullableStruct", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
   { { ContextTag(7), "optionalStruct", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
   { { ContextTag(8), "nullableOptionalStruct", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
-  { { ContextTag(9), "nullableList", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
-  { { ContextTag(10), "optionalList", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
-  { { ContextTag(11), "nullableOptionalList", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(9), "nullableList", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(10), "optionalList", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(11), "nullableOptionalList", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
 };
 
 const Entry<ItemInfo> _UnitTesting_SimpleStructEchoRequestRequest[] = {
@@ -11841,7 +11841,7 @@ const Entry<ItemInfo> _UnitTesting_TestEvent[] = {
   { { ContextTag(3), "arg3", ItemType::kDefault }, kInvalidNodeIndex }, // UnitTesting::boolean
   { { ContextTag(4), "arg4", ItemType::kDefault }, 1444 }, // UnitTesting::SimpleStruct
   { { ContextTag(5), "arg5", ItemType::kList }, 1494 }, // UnitTesting::SimpleStruct[]
-  { { ContextTag(6), "arg6", ItemType::kList }, 1495 }, // UnitTesting::SimpleEnum[]
+  { { ContextTag(6), "arg6", ItemType::kList }, 1496 }, // UnitTesting::SimpleEnum[]
 };
 
 const Entry<ItemInfo> _UnitTesting_TestFabricScopedEvent[] = {
@@ -11860,20 +11860,20 @@ const Entry<ItemInfo> _UnitTesting_SimpleStruct_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1444 }, // UnitTesting_SimpleStruct[]
 };
 
-const Entry<ItemInfo> _UnitTesting_SimpleEnum_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1499 }, // UnitTesting_SimpleEnum[]
+const Entry<ItemInfo> _UnitTesting_TestFabricScoped_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1445 }, // UnitTesting_TestFabricScoped[]
 };
 
-const Entry<ItemInfo> _UnitTesting_NullablesAndOptionalsStruct_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1446 }, // UnitTesting_NullablesAndOptionalsStruct[]
+const Entry<ItemInfo> _UnitTesting_SimpleEnum_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1499 }, // UnitTesting_SimpleEnum[]
 };
 
 const Entry<ItemInfo> _UnitTesting_NestedStructList_list_[] = {
   { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1448 }, // UnitTesting_NestedStructList[]
 };
 
-const Entry<ItemInfo> _UnitTesting_TestFabricScoped_list_[] = {
-  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1445 }, // UnitTesting_TestFabricScoped[]
+const Entry<ItemInfo> _UnitTesting_NullablesAndOptionalsStruct_list_[] = {
+  { { AnonymousTag(), "Anonymous<>", ItemType::kDefault }, 1446 }, // UnitTesting_NullablesAndOptionalsStruct[]
 };
 
 const Entry<ItemInfo> _UnitTesting_SimpleEnum[] = {
@@ -12206,12 +12206,12 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_AccessControl_AccessControlEntryChanged), // 62
   _ENTRY(_AccessControl_AccessControlExtensionChanged), // 63
   _ENTRY(_AccessControl_FabricRestrictionReviewUpdate), // 64
-  _ENTRY(_AccessControl_CommissioningAccessRestrictionEntryStruct_list_), // 65
-  _ENTRY(_AccessControl_AccessRestrictionEntryStruct_list_), // 66
-  _ENTRY(_AccessControl_AccessControlTargetStruct_list_), // 67
+  _ENTRY(_AccessControl_AccessControlExtensionStruct_list_), // 65
+  _ENTRY(_AccessControl_AccessControlEntryStruct_list_), // 66
+  _ENTRY(_AccessControl_CommissioningAccessRestrictionEntryStruct_list_), // 67
   _ENTRY(_AccessControl_AccessRestrictionStruct_list_), // 68
-  _ENTRY(_AccessControl_AccessControlExtensionStruct_list_), // 69
-  _ENTRY(_AccessControl_AccessControlEntryStruct_list_), // 70
+  _ENTRY(_AccessControl_AccessRestrictionEntryStruct_list_), // 69
+  _ENTRY(_AccessControl_AccessControlTargetStruct_list_), // 70
   _ENTRY(_AccessControl_AccessControlEntryAuthModeEnum), // 71
   _ENTRY(_AccessControl_AccessControlEntryPrivilegeEnum), // 72
   _ENTRY(_AccessControl_AccessRestrictionTypeEnum), // 73
@@ -12287,8 +12287,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_PowerSource_WiredFaultChange), // 143
   _ENTRY(_PowerSource_BatFaultChange), // 144
   _ENTRY(_PowerSource_BatChargeFaultChange), // 145
-  _ENTRY(_PowerSource_BatFaultEnum_list_), // 146
-  _ENTRY(_PowerSource_WiredFaultEnum_list_), // 147
+  _ENTRY(_PowerSource_WiredFaultEnum_list_), // 146
+  _ENTRY(_PowerSource_BatFaultEnum_list_), // 147
   _ENTRY(_PowerSource_BatChargeFaultEnum_list_), // 148
   _ENTRY(_PowerSource_BatApprovedChemistryEnum), // 149
   _ENTRY(_PowerSource_BatChargeFaultEnum), // 150
@@ -12330,8 +12330,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_NetworkCommissioning_QueryIdentityRequest), // 186
   _ENTRY(_NetworkCommissioning_QueryIdentityResponse), // 187
   _ENTRY(_NetworkCommissioning_WiFiBandEnum_list_), // 188
-  _ENTRY(_NetworkCommissioning_WiFiInterfaceScanResultStruct_list_), // 189
-  _ENTRY(_NetworkCommissioning_ThreadInterfaceScanResultStruct_list_), // 190
+  _ENTRY(_NetworkCommissioning_ThreadInterfaceScanResultStruct_list_), // 189
+  _ENTRY(_NetworkCommissioning_WiFiInterfaceScanResultStruct_list_), // 190
   _ENTRY(_NetworkCommissioning_NetworkInfoStruct_list_), // 191
   _ENTRY(_NetworkCommissioning_NetworkCommissioningStatusEnum), // 192
   _ENTRY(_NetworkCommissioning_WiFiBandEnum), // 193
@@ -12354,8 +12354,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_GeneralDiagnostics_RadioFaultChange), // 210
   _ENTRY(_GeneralDiagnostics_NetworkFaultChange), // 211
   _ENTRY(_GeneralDiagnostics_BootReason), // 212
-  _ENTRY(_GeneralDiagnostics_NetworkInterface_list_), // 213
-  _ENTRY(_GeneralDiagnostics_HardwareFaultEnum_list_), // 214
+  _ENTRY(_GeneralDiagnostics_HardwareFaultEnum_list_), // 213
+  _ENTRY(_GeneralDiagnostics_NetworkInterface_list_), // 214
   _ENTRY(_GeneralDiagnostics_NetworkFaultEnum_list_), // 215
   _ENTRY(_GeneralDiagnostics_RadioFaultEnum_list_), // 216
   _ENTRY(_GeneralDiagnostics_BootReasonEnum), // 217
@@ -12457,8 +12457,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_OperationalCredentials_SetVIDVerificationStatementRequest), // 313
   _ENTRY(_OperationalCredentials_SignVIDVerificationRequestRequest), // 314
   _ENTRY(_OperationalCredentials_SignVIDVerificationResponse), // 315
-  _ENTRY(_OperationalCredentials_NOCStruct_list_), // 316
-  _ENTRY(_OperationalCredentials_FabricDescriptorStruct_list_), // 317
+  _ENTRY(_OperationalCredentials_FabricDescriptorStruct_list_), // 316
+  _ENTRY(_OperationalCredentials_NOCStruct_list_), // 317
   _ENTRY(_OperationalCredentials_CertificateChainTypeEnum), // 318
   _ENTRY(_OperationalCredentials_NodeOperationalCertStatusEnum), // 319
   _ENTRY(_GroupKeyManagement), // 320
@@ -12536,16 +12536,16 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_LaundryWasherMode_ModeOptionStruct), // 392
   _ENTRY(_LaundryWasherMode_ChangeToModeRequest), // 393
   _ENTRY(_LaundryWasherMode_ChangeToModeResponse), // 394
-  _ENTRY(_LaundryWasherMode_ModeOptionStruct_list_), // 395
-  _ENTRY(_LaundryWasherMode_ModeTagStruct_list_), // 396
+  _ENTRY(_LaundryWasherMode_ModeTagStruct_list_), // 395
+  _ENTRY(_LaundryWasherMode_ModeOptionStruct_list_), // 396
   _ENTRY(_LaundryWasherMode_ModeTag), // 397
   _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode), // 398
   _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ModeTagStruct), // 399
   _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ModeOptionStruct), // 400
   _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ChangeToModeRequest), // 401
   _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ChangeToModeResponse), // 402
-  _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ModeTagStruct_list_), // 403
-  _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ModeOptionStruct_list_), // 404
+  _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ModeOptionStruct_list_), // 403
+  _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ModeTagStruct_list_), // 404
   _ENTRY(_RefrigeratorAndTemperatureControlledCabinetMode_ModeTag), // 405
   _ENTRY(_LaundryWasherControls), // 406
   _ENTRY(_LaundryWasherControls_NumberOfRinsesEnum_list_), // 407
@@ -12566,8 +12566,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_RvcCleanMode_ModeOptionStruct), // 422
   _ENTRY(_RvcCleanMode_ChangeToModeRequest), // 423
   _ENTRY(_RvcCleanMode_ChangeToModeResponse), // 424
-  _ENTRY(_RvcCleanMode_ModeTagStruct_list_), // 425
-  _ENTRY(_RvcCleanMode_ModeOptionStruct_list_), // 426
+  _ENTRY(_RvcCleanMode_ModeOptionStruct_list_), // 425
+  _ENTRY(_RvcCleanMode_ModeTagStruct_list_), // 426
   _ENTRY(_RvcCleanMode_ModeTag), // 427
   _ENTRY(_RvcCleanMode_StatusCode), // 428
   _ENTRY(_RvcCleanMode_Feature), // 429
@@ -12582,8 +12582,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_DishwasherMode_ModeOptionStruct), // 438
   _ENTRY(_DishwasherMode_ChangeToModeRequest), // 439
   _ENTRY(_DishwasherMode_ChangeToModeResponse), // 440
-  _ENTRY(_DishwasherMode_ModeTagStruct_list_), // 441
-  _ENTRY(_DishwasherMode_ModeOptionStruct_list_), // 442
+  _ENTRY(_DishwasherMode_ModeOptionStruct_list_), // 441
+  _ENTRY(_DishwasherMode_ModeTagStruct_list_), // 442
   _ENTRY(_DishwasherMode_ModeTag), // 443
   _ENTRY(_AirQuality), // 444
   _ENTRY(_AirQuality_AirQualityEnum), // 445
@@ -12654,8 +12654,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_ScenesManagement_GetSceneMembershipResponse), // 510
   _ENTRY(_ScenesManagement_CopySceneRequest), // 511
   _ENTRY(_ScenesManagement_CopySceneResponse), // 512
-  _ENTRY(_ScenesManagement_SceneInfoStruct_list_), // 513
-  _ENTRY(_ScenesManagement_ExtensionFieldSetStruct_list_), // 514
+  _ENTRY(_ScenesManagement_ExtensionFieldSetStruct_list_), // 513
+  _ENTRY(_ScenesManagement_SceneInfoStruct_list_), // 514
   _ENTRY(_ScenesManagement_AttributeValuePairStruct_list_), // 515
   _ENTRY(_ScenesManagement_CopyModeBitmap), // 516
   _ENTRY(_ScenesManagement_Feature), // 517
@@ -12695,10 +12695,10 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_ElectricalPowerMeasurement_HarmonicMeasurementStruct), // 551
   _ENTRY(_ElectricalPowerMeasurement_MeasurementRangeStruct), // 552
   _ENTRY(_ElectricalPowerMeasurement_MeasurementPeriodRanges), // 553
-  _ENTRY(_ElectricalPowerMeasurement_HarmonicMeasurementStruct_list_), // 554
-  _ENTRY(_ElectricalPowerMeasurement_MeasurementAccuracyStruct_list_), // 555
-  _ENTRY(_ElectricalPowerMeasurement_MeasurementAccuracyRangeStruct_list_), // 556
-  _ENTRY(_ElectricalPowerMeasurement_MeasurementRangeStruct_list_), // 557
+  _ENTRY(_ElectricalPowerMeasurement_MeasurementAccuracyStruct_list_), // 554
+  _ENTRY(_ElectricalPowerMeasurement_HarmonicMeasurementStruct_list_), // 555
+  _ENTRY(_ElectricalPowerMeasurement_MeasurementRangeStruct_list_), // 556
+  _ENTRY(_ElectricalPowerMeasurement_MeasurementAccuracyRangeStruct_list_), // 557
   _ENTRY(_ElectricalPowerMeasurement_MeasurementTypeEnum), // 558
   _ENTRY(_ElectricalPowerMeasurement_PowerModeEnum), // 559
   _ENTRY(_ElectricalPowerMeasurement_Feature), // 560
@@ -12763,11 +12763,11 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_DeviceEnergyManagement_RequestConstraintBasedForecastRequest), // 619
   _ENTRY(_DeviceEnergyManagement_PowerAdjustEnd), // 620
   _ENTRY(_DeviceEnergyManagement_Resumed), // 621
-  _ENTRY(_DeviceEnergyManagement_SlotStruct_list_), // 622
-  _ENTRY(_DeviceEnergyManagement_SlotAdjustmentStruct_list_), // 623
-  _ENTRY(_DeviceEnergyManagement_ConstraintsStruct_list_), // 624
-  _ENTRY(_DeviceEnergyManagement_PowerAdjustStruct_list_), // 625
-  _ENTRY(_DeviceEnergyManagement_CostStruct_list_), // 626
+  _ENTRY(_DeviceEnergyManagement_CostStruct_list_), // 622
+  _ENTRY(_DeviceEnergyManagement_SlotStruct_list_), // 623
+  _ENTRY(_DeviceEnergyManagement_PowerAdjustStruct_list_), // 624
+  _ENTRY(_DeviceEnergyManagement_SlotAdjustmentStruct_list_), // 625
+  _ENTRY(_DeviceEnergyManagement_ConstraintsStruct_list_), // 626
   _ENTRY(_DeviceEnergyManagement_AdjustmentCauseEnum), // 627
   _ENTRY(_DeviceEnergyManagement_CauseEnum), // 628
   _ENTRY(_DeviceEnergyManagement_CostTypeEnum), // 629
@@ -12829,8 +12829,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_DeviceEnergyManagementMode_ModeOptionStruct), // 685
   _ENTRY(_DeviceEnergyManagementMode_ChangeToModeRequest), // 686
   _ENTRY(_DeviceEnergyManagementMode_ChangeToModeResponse), // 687
-  _ENTRY(_DeviceEnergyManagementMode_ModeOptionStruct_list_), // 688
-  _ENTRY(_DeviceEnergyManagementMode_ModeTagStruct_list_), // 689
+  _ENTRY(_DeviceEnergyManagementMode_ModeTagStruct_list_), // 688
+  _ENTRY(_DeviceEnergyManagementMode_ModeOptionStruct_list_), // 689
   _ENTRY(_DeviceEnergyManagementMode_ModeTag), // 690
   _ENTRY(_DeviceEnergyManagementMode_Feature), // 691
   _ENTRY(_ElectricalGridConditions), // 692
@@ -12961,9 +12961,9 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_ServiceArea_SkipAreaRequest), // 817
   _ENTRY(_ServiceArea_SkipAreaResponse), // 818
   _ENTRY(_ServiceArea_LocationDescriptorStruct), // 819
-  _ENTRY(_ServiceArea_AreaStruct_list_), // 820
-  _ENTRY(_ServiceArea_ProgressStruct_list_), // 821
-  _ENTRY(_ServiceArea_MapStruct_list_), // 822
+  _ENTRY(_ServiceArea_MapStruct_list_), // 820
+  _ENTRY(_ServiceArea_AreaStruct_list_), // 821
+  _ENTRY(_ServiceArea_ProgressStruct_list_), // 822
   _ENTRY(_ServiceArea_OperationalStatusEnum), // 823
   _ENTRY(_ServiceArea_SelectAreasStatus), // 824
   _ENTRY(_ServiceArea_SkipAreaStatus), // 825
@@ -13004,14 +13004,14 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_Thermostat_RunningModeChange), // 860
   _ENTRY(_Thermostat_ActiveScheduleChange), // 861
   _ENTRY(_Thermostat_ActivePresetChange), // 862
-  _ENTRY(_Thermostat_PresetTypeStruct_list_), // 863
+  _ENTRY(_Thermostat_WeeklyScheduleTransitionStruct_list_), // 863
   _ENTRY(_Thermostat_AtomicAttributeStatusStruct_list_), // 864
-  _ENTRY(_Thermostat_ScheduleStruct_list_), // 865
-  _ENTRY(_Thermostat_ScheduleTransitionStruct_list_), // 866
+  _ENTRY(_Thermostat_ScheduleTransitionStruct_list_), // 865
+  _ENTRY(_Thermostat_ThermostatSuggestionStruct_list_), // 866
   _ENTRY(_Thermostat_ScheduleTypeStruct_list_), // 867
   _ENTRY(_Thermostat_PresetStruct_list_), // 868
-  _ENTRY(_Thermostat_ThermostatSuggestionStruct_list_), // 869
-  _ENTRY(_Thermostat_WeeklyScheduleTransitionStruct_list_), // 870
+  _ENTRY(_Thermostat_ScheduleStruct_list_), // 869
+  _ENTRY(_Thermostat_PresetTypeStruct_list_), // 870
   _ENTRY(_Thermostat_ACCapacityFormatEnum), // 871
   _ENTRY(_Thermostat_ACCompressorTypeEnum), // 872
   _ENTRY(_Thermostat_ACLouverPositionEnum), // 873
@@ -13188,11 +13188,11 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_Channel_ProgramGuideResponse), // 1044
   _ENTRY(_Channel_RecordProgramRequest), // 1045
   _ENTRY(_Channel_CancelRecordProgramRequest), // 1046
-  _ENTRY(_Channel_AdditionalInfoStruct_list_), // 1047
+  _ENTRY(_Channel_ProgramCastStruct_list_), // 1047
   _ENTRY(_Channel_ProgramCategoryStruct_list_), // 1048
-  _ENTRY(_Channel_ChannelInfoStruct_list_), // 1049
+  _ENTRY(_Channel_AdditionalInfoStruct_list_), // 1049
   _ENTRY(_Channel_ProgramStruct_list_), // 1050
-  _ENTRY(_Channel_ProgramCastStruct_list_), // 1051
+  _ENTRY(_Channel_ChannelInfoStruct_list_), // 1051
   _ENTRY(_Channel_ChannelTypeEnum), // 1052
   _ENTRY(_Channel_LineupInfoTypeEnum), // 1053
   _ENTRY(_Channel_StatusEnum), // 1054
@@ -13312,8 +13312,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_ZoneManagement_ZoneTriggered), // 1168
   _ENTRY(_ZoneManagement_ZoneStopped), // 1169
   _ENTRY(_ZoneManagement_TwoDCartesianVertexStruct_list_), // 1170
-  _ENTRY(_ZoneManagement_ZoneTriggerControlStruct_list_), // 1171
-  _ENTRY(_ZoneManagement_ZoneInformationStruct_list_), // 1172
+  _ENTRY(_ZoneManagement_ZoneInformationStruct_list_), // 1171
+  _ENTRY(_ZoneManagement_ZoneTriggerControlStruct_list_), // 1172
   _ENTRY(_ZoneManagement_ZoneEventStoppedReasonEnum), // 1173
   _ENTRY(_ZoneManagement_ZoneEventTriggeredReasonEnum), // 1174
   _ENTRY(_ZoneManagement_ZoneSourceEnum), // 1175
@@ -13344,13 +13344,13 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_CameraAvStreamManagement_CaptureSnapshotRequest), // 1200
   _ENTRY(_CameraAvStreamManagement_CaptureSnapshotResponse), // 1201
   _ENTRY(_CameraAvStreamManagement_ViewportStruct), // 1202
-  _ENTRY(_CameraAvStreamManagement_RateDistortionTradeOffPointsStruct_list_), // 1203
-  _ENTRY(_CameraAvStreamManagement_AudioStreamStruct_list_), // 1204
-  _ENTRY(_CameraAvStreamManagement_AudioCodecEnum_list_), // 1205
-  _ENTRY(_CameraAvStreamManagement_StreamUsageEnum_list_), // 1206
-  _ENTRY(_CameraAvStreamManagement_VideoStreamStruct_list_), // 1207
-  _ENTRY(_CameraAvStreamManagement_SnapshotCapabilitiesStruct_list_), // 1208
-  _ENTRY(_CameraAvStreamManagement_SnapshotStreamStruct_list_), // 1209
+  _ENTRY(_CameraAvStreamManagement_StreamUsageEnum_list_), // 1203
+  _ENTRY(_CameraAvStreamManagement_VideoStreamStruct_list_), // 1204
+  _ENTRY(_CameraAvStreamManagement_SnapshotCapabilitiesStruct_list_), // 1205
+  _ENTRY(_CameraAvStreamManagement_SnapshotStreamStruct_list_), // 1206
+  _ENTRY(_CameraAvStreamManagement_AudioCodecEnum_list_), // 1207
+  _ENTRY(_CameraAvStreamManagement_RateDistortionTradeOffPointsStruct_list_), // 1208
+  _ENTRY(_CameraAvStreamManagement_AudioStreamStruct_list_), // 1209
   _ENTRY(_CameraAvStreamManagement_AudioCodecEnum), // 1210
   _ENTRY(_CameraAvStreamManagement_ImageCodecEnum), // 1211
   _ENTRY(_CameraAvStreamManagement_TriStateAutoEnum), // 1212
@@ -13371,8 +13371,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_CameraAvSettingsUserLevelManagement_DPTZSetViewportRequest), // 1227
   _ENTRY(_CameraAvSettingsUserLevelManagement_DPTZRelativeMoveRequest), // 1228
   _ENTRY(_CameraAvSettingsUserLevelManagement_ViewportStruct), // 1229
-  _ENTRY(_CameraAvSettingsUserLevelManagement_DPTZStruct_list_), // 1230
-  _ENTRY(_CameraAvSettingsUserLevelManagement_MPTZPresetStruct_list_), // 1231
+  _ENTRY(_CameraAvSettingsUserLevelManagement_MPTZPresetStruct_list_), // 1230
+  _ENTRY(_CameraAvSettingsUserLevelManagement_DPTZStruct_list_), // 1231
   _ENTRY(_CameraAvSettingsUserLevelManagement_Feature), // 1232
   _ENTRY(_WebRTCTransportProvider), // 1233
   _ENTRY(_WebRTCTransportProvider_SolicitOfferRequest), // 1234
@@ -13385,9 +13385,9 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_WebRTCTransportProvider_ICECandidateStruct), // 1241
   _ENTRY(_WebRTCTransportProvider_ICEServerStruct), // 1242
   _ENTRY(_WebRTCTransportProvider_WebRTCSessionStruct), // 1243
-  _ENTRY(_WebRTCTransportProvider_ICEServerStruct_list_), // 1244
-  _ENTRY(_WebRTCTransportProvider_WebRTCSessionStruct_list_), // 1245
-  _ENTRY(_WebRTCTransportProvider_ICECandidateStruct_list_), // 1246
+  _ENTRY(_WebRTCTransportProvider_ICECandidateStruct_list_), // 1244
+  _ENTRY(_WebRTCTransportProvider_ICEServerStruct_list_), // 1245
+  _ENTRY(_WebRTCTransportProvider_WebRTCSessionStruct_list_), // 1246
   _ENTRY(_WebRTCTransportProvider_StreamUsageEnum), // 1247
   _ENTRY(_WebRTCTransportProvider_WebRTCEndReasonEnum), // 1248
   _ENTRY(_WebRTCTransportProvider_Feature), // 1249
@@ -13399,9 +13399,9 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_WebRTCTransportRequestor_ICECandidateStruct), // 1255
   _ENTRY(_WebRTCTransportRequestor_ICEServerStruct), // 1256
   _ENTRY(_WebRTCTransportRequestor_WebRTCSessionStruct), // 1257
-  _ENTRY(_WebRTCTransportRequestor_ICECandidateStruct_list_), // 1258
-  _ENTRY(_WebRTCTransportRequestor_ICEServerStruct_list_), // 1259
-  _ENTRY(_WebRTCTransportRequestor_WebRTCSessionStruct_list_), // 1260
+  _ENTRY(_WebRTCTransportRequestor_ICEServerStruct_list_), // 1258
+  _ENTRY(_WebRTCTransportRequestor_WebRTCSessionStruct_list_), // 1259
+  _ENTRY(_WebRTCTransportRequestor_ICECandidateStruct_list_), // 1260
   _ENTRY(_WebRTCTransportRequestor_WebRTCEndReasonEnum), // 1261
   _ENTRY(_WebRTCTransportRequestor_StreamUsageEnum), // 1262
   _ENTRY(_PushAvStreamTransport), // 1263
@@ -13423,9 +13423,9 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_PushAvStreamTransport_FindTransportResponse), // 1279
   _ENTRY(_PushAvStreamTransport_PushTransportBegin), // 1280
   _ENTRY(_PushAvStreamTransport_PushTransportEnd), // 1281
-  _ENTRY(_PushAvStreamTransport_TransportConfigurationStruct_list_), // 1282
-  _ENTRY(_PushAvStreamTransport_SupportedFormatStruct_list_), // 1283
-  _ENTRY(_PushAvStreamTransport_TransportZoneOptionsStruct_list_), // 1284
+  _ENTRY(_PushAvStreamTransport_SupportedFormatStruct_list_), // 1282
+  _ENTRY(_PushAvStreamTransport_TransportZoneOptionsStruct_list_), // 1283
+  _ENTRY(_PushAvStreamTransport_TransportConfigurationStruct_list_), // 1284
   _ENTRY(_PushAvStreamTransport_ContainerFormatEnum), // 1285
   _ENTRY(_PushAvStreamTransport_IngestMethodsEnum), // 1286
   _ENTRY(_PushAvStreamTransport_StatusCodeEnum), // 1287
@@ -13455,11 +13455,11 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_CommodityTariff_CurrencyStruct), // 1311
   _ENTRY(_CommodityTariff_PowerThresholdStruct), // 1312
   _ENTRY(_CommodityTariff_DayEntryStruct_list_), // 1313
-  _ENTRY(_CommodityTariff_CalendarPeriodStruct_list_), // 1314
-  _ENTRY(_CommodityTariff_DayPatternStruct_list_), // 1315
-  _ENTRY(_CommodityTariff_TariffPeriodStruct_list_), // 1316
-  _ENTRY(_CommodityTariff_DayStruct_list_), // 1317
-  _ENTRY(_CommodityTariff_TariffComponentStruct_list_), // 1318
+  _ENTRY(_CommodityTariff_TariffComponentStruct_list_), // 1314
+  _ENTRY(_CommodityTariff_CalendarPeriodStruct_list_), // 1315
+  _ENTRY(_CommodityTariff_DayStruct_list_), // 1316
+  _ENTRY(_CommodityTariff_DayPatternStruct_list_), // 1317
+  _ENTRY(_CommodityTariff_TariffPeriodStruct_list_), // 1318
   _ENTRY(_CommodityTariff_AuxiliaryLoadSettingEnum), // 1319
   _ENTRY(_CommodityTariff_BlockModeEnum), // 1320
   _ENTRY(_CommodityTariff_DayEntryRandomizationTypeEnum), // 1321
@@ -13476,8 +13476,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_EcosystemInformation_EcosystemLocationStruct), // 1332
   _ENTRY(_EcosystemInformation_LocationDescriptorStruct), // 1333
   _ENTRY(_EcosystemInformation_EcosystemDeviceStruct_list_), // 1334
-  _ENTRY(_EcosystemInformation_EcosystemLocationStruct_list_), // 1335
-  _ENTRY(_EcosystemInformation_DeviceTypeStruct_list_), // 1336
+  _ENTRY(_EcosystemInformation_DeviceTypeStruct_list_), // 1335
+  _ENTRY(_EcosystemInformation_EcosystemLocationStruct_list_), // 1336
   _ENTRY(_EcosystemInformation_AreaTypeTag), // 1337
   _ENTRY(_CommissionerControl), // 1338
   _ENTRY(_CommissionerControl_RequestCommissioningApprovalRequest), // 1339
@@ -13519,16 +13519,16 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_JointFabricDatastore_RemoveBindingFromEndpointForNodeRequest), // 1375
   _ENTRY(_JointFabricDatastore_AddACLToNodeRequest), // 1376
   _ENTRY(_JointFabricDatastore_RemoveACLFromNodeRequest), // 1377
-  _ENTRY(_JointFabricDatastore_DatastoreEndpointBindingEntryStruct_list_), // 1378
-  _ENTRY(_JointFabricDatastore_DatastoreAdministratorInformationEntryStruct_list_), // 1379
-  _ENTRY(_JointFabricDatastore_DatastoreEndpointGroupIDEntryStruct_list_), // 1380
-  _ENTRY(_JointFabricDatastore_DatastoreGroupInformationEntryStruct_list_), // 1381
-  _ENTRY(_JointFabricDatastore_DatastoreACLEntryStruct_list_), // 1382
+  _ENTRY(_JointFabricDatastore_DatastoreEndpointEntryStruct_list_), // 1378
+  _ENTRY(_JointFabricDatastore_DatastoreACLEntryStruct_list_), // 1379
+  _ENTRY(_JointFabricDatastore_DatastoreAdministratorInformationEntryStruct_list_), // 1380
+  _ENTRY(_JointFabricDatastore_DatastoreNodeInformationEntryStruct_list_), // 1381
+  _ENTRY(_JointFabricDatastore_DatastoreGroupInformationEntryStruct_list_), // 1382
   _ENTRY(_JointFabricDatastore_DatastoreAccessControlTargetStruct_list_), // 1383
-  _ENTRY(_JointFabricDatastore_DatastoreEndpointEntryStruct_list_), // 1384
-  _ENTRY(_JointFabricDatastore_DatastoreGroupKeySetStruct_list_), // 1385
-  _ENTRY(_JointFabricDatastore_DatastoreNodeKeySetEntryStruct_list_), // 1386
-  _ENTRY(_JointFabricDatastore_DatastoreNodeInformationEntryStruct_list_), // 1387
+  _ENTRY(_JointFabricDatastore_DatastoreGroupKeySetStruct_list_), // 1384
+  _ENTRY(_JointFabricDatastore_DatastoreNodeKeySetEntryStruct_list_), // 1385
+  _ENTRY(_JointFabricDatastore_DatastoreEndpointGroupIDEntryStruct_list_), // 1386
+  _ENTRY(_JointFabricDatastore_DatastoreEndpointBindingEntryStruct_list_), // 1387
   _ENTRY(_JointFabricDatastore_DatastoreAccessControlEntryAuthModeEnum), // 1388
   _ENTRY(_JointFabricDatastore_DatastoreAccessControlEntryPrivilegeEnum), // 1389
   _ENTRY(_JointFabricDatastore_DatastoreGroupKeyMulticastPolicyEnum), // 1390
@@ -13562,8 +13562,8 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_TlsCertificateManagement_LookupClientCertificateRequest), // 1418
   _ENTRY(_TlsCertificateManagement_LookupClientCertificateResponse), // 1419
   _ENTRY(_TlsCertificateManagement_RemoveClientCertificateRequest), // 1420
-  _ENTRY(_TlsCertificateManagement_TLSClientCertificateDetailStruct_list_), // 1421
-  _ENTRY(_TlsCertificateManagement_TLSCertStruct_list_), // 1422
+  _ENTRY(_TlsCertificateManagement_TLSCertStruct_list_), // 1421
+  _ENTRY(_TlsCertificateManagement_TLSClientCertificateDetailStruct_list_), // 1422
   _ENTRY(_TlsCertificateManagement_StatusCodeEnum), // 1423
   _ENTRY(_TlsClientManagement), // 1424
   _ENTRY(_TlsClientManagement_TLSEndpointStruct), // 1425
@@ -13636,10 +13636,10 @@ const std::array<const Node<ItemInfo>, 1513 + 2> clusters_meta = { {
   _ENTRY(_UnitTesting_TestDifferentVendorMeiEvent), // 1492
   _ENTRY(_UnitTesting_TestListStructOctet_list_), // 1493
   _ENTRY(_UnitTesting_SimpleStruct_list_), // 1494
-  _ENTRY(_UnitTesting_SimpleEnum_list_), // 1495
-  _ENTRY(_UnitTesting_NullablesAndOptionalsStruct_list_), // 1496
+  _ENTRY(_UnitTesting_TestFabricScoped_list_), // 1495
+  _ENTRY(_UnitTesting_SimpleEnum_list_), // 1496
   _ENTRY(_UnitTesting_NestedStructList_list_), // 1497
-  _ENTRY(_UnitTesting_TestFabricScoped_list_), // 1498
+  _ENTRY(_UnitTesting_NullablesAndOptionalsStruct_list_), // 1498
   _ENTRY(_UnitTesting_SimpleEnum), // 1499
   _ENTRY(_UnitTesting_TestGlobalEnum), // 1500
   _ENTRY(_UnitTesting_Bitmap16MaskMap), // 1501
