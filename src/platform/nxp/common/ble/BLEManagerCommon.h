@@ -260,8 +260,6 @@ public:
 
     service_mode_t GetBLEServiceMode(void) { return mServiceMode; }
     void SetBLEServiceMode(service_mode_t mode) { mServiceMode = mode; };
-
-    CHIP_ERROR DisconnectAndUnbond(void);
 };
 
 } // namespace Internal

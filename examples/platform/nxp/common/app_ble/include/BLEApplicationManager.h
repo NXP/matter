@@ -33,7 +33,6 @@ class BLEApplicationManager
 public:
     void Init();
     void EnableMultipleConnectionsHandler();
-    void FactoryReset();
 
 private:
     static void EnableMultipleConnections(intptr_t arg);
