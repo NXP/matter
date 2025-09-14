@@ -22,7 +22,6 @@ The example is based on:
 ## Supported devices
 
 -   [mcxw71](mcxw71/README.md)
--   [mcxw72](mcxw72/README.md)
 
 ## Introduction
 
