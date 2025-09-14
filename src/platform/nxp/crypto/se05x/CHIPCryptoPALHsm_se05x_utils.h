@@ -38,7 +38,7 @@
 
 extern ex_sss_boot_ctx_t gex_sss_chip_ctx;
 
-/* SE predefined keyid values. */
+/* SE predefined keyid values. Let kKeyId_node_op_keyid_start be the last entry */
 enum keyid_values
 {
     kKeyId_NotInitialized           = 0,
@@ -47,9 +47,10 @@ enum keyid_values
     kKeyId_hmac_sha256_keyid,
     kKeyId_sha256_ecc_pub_keyid, // Used for ECDSA verify
     kKeyId_case_ephemeral_keyid, // Used for ECDH
+    kKeyId_node_op_keyid_start,  // Node operational key pair
 };
 
-// Enable the below macro to make spake HSM implementation re-entrant.
+// Enable the below macro to make spake HSM imlementation reentrant.
 #define ENABLE_REENTRANCY 0
 
 #if ENABLE_REENTRANCY
