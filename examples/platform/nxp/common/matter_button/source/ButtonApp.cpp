@@ -27,21 +27,20 @@ extern "C" {
 /**
  * @brief Flag to describe if the button handles are predefined in SDK.
  *
- * By default assuming button handles are predefined in the SDK
- * If not, flag CHIP_APP_BUTTON_HANDLE_SDK_NOT_PREDEFINED should be defined
- * or set to 1
+ * Set to true by default. Platforms that do not have this support should
+ * disable the flag, which will enable handle definition in this file.
  */
-#ifndef CONFIG_CHIP_APP_BUTTON_HANDLE_SDK_NOT_PREDEFINED
-#define CONFIG_CHIP_APP_BUTTON_HANDLE_SDK_NOT_PREDEFINED 0
+#ifndef CONFIG_APP_BUTTON_HANDLE_SDK_PREDEFINED
+#define CONFIG_APP_BUTTON_HANDLE_SDK_PREDEFINED 1
 #endif
 
-#if CONFIG_CHIP_APP_BUTTON_HANDLE_SDK_NOT_PREDEFINED
+#if !CONFIG_APP_BUTTON_HANDLE_SDK_PREDEFINED
 BUTTON_HANDLE_ARRAY_DEFINE(g_buttonHandle, gAppButtonCnt_c);
 #endif
 
 CHIP_ERROR chip::NXP::App::ButtonApp::Init()
 {
-#if !CONFIG_CHIP_APP_BUTTON_HANDLE_SDK_NOT_PREDEFINED
+#if CONFIG_APP_BUTTON_HANDLE_SDK_PREDEFINED
     // Button is defined in the SDK and initialized in otSysInit, when APP_InitServices is called.
     handle = &g_buttonHandle[1];
 #else
