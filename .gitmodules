@@ -201,6 +201,11 @@
 	url = https://github.com/TexasInstruments/ot-ti.git
 	branch = main
 	platforms = cc13xx_26xx
+[submodule "third_party/nxp/mw320_sdk/repo"]
+	path = third_party/nxp/mw320_sdk/repo
+	url = https://github.com/nxptest/mw320_sdk
+	branch = SDK_2.9.11
+	platforms = mw320
 [submodule "third_party/silabs/matter_support"]
 	path = third_party/silabs/matter_support
 	url = https://github.com/SiliconLabsSoftware/matter_support.git
