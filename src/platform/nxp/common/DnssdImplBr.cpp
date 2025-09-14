@@ -167,16 +167,9 @@ CHIP_ERROR NxpChipDnssdInit(DnssdAsyncReturnCallback initCallback, DnssdAsyncRet
         LIST_Init(&mBrowseList, 0);
     }
 
-    // The mDNS module is ready once the WIFI connectivity has been established
-    if (ConnectivityMgr().IsWiFiStationConnected())
-    {
-        initCallback(context, CHIP_NO_ERROR);
-        return CHIP_NO_ERROR;
-    }
-    else
-    {
-        return CHIP_ERROR_INCORRECT_STATE;
-    }
+    initCallback(context, CHIP_NO_ERROR);
+
+    return CHIP_NO_ERROR;
 }
 
 void NxpChipDnssdShutdown()
