@@ -30,6 +30,7 @@
 #include <lib/dnssd/Resolver.h>
 #include <lib/support/CodeUtils.h>
 #include <memory>
+#include <platform/internal/NFCCommissioningManager.h>
 #include <system/SystemClock.h>
 #include <tracing/metric_event.h>
 #include <vector>
@@ -104,28 +105,43 @@ CHIP_ERROR SetUpCodePairer::Connect()
         if (ShouldDiscoverUsing(RendezvousInformationFlag::kBLE))
         {
             CHIP_ERROR err = StartDiscoveryOverBLE();
-            if (err != CHIP_NO_ERROR)
+            if ((CHIP_ERROR_NOT_IMPLEMENTED == err) || (CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE == err))
             {
-                ChipLogError(Controller, "Failed to start discovery over BLE: %" CHIP_ERROR_FORMAT, err.Format());
+                ChipLogProgress(Controller,
+                                "Skipping commissionable node discovery over BLE since not supported by the controller!");
             }
-        }
-
-        if (ShouldDiscoverUsing(RendezvousInformationFlag::kSoftAP))
-        {
-            CHIP_ERROR err = StartDiscoveryOverSoftAP();
-            if (err != CHIP_NO_ERROR)
+            else if (err != CHIP_NO_ERROR)
             {
-                ChipLogError(Controller, "Failed to start discovery over SoftAP: %" CHIP_ERROR_FORMAT, err.Format());
+                ChipLogError(Controller, "Failed to start commissionable node discovery over BLE: %" CHIP_ERROR_FORMAT,
+                             err.Format());
             }
         }
         if (ShouldDiscoverUsing(RendezvousInformationFlag::kWiFiPAF))
         {
-            ChipLogProgress(Controller,
-                            "WiFi-PAF: has RendezvousInformationFlag::kWiFiPAF or has no discovery capabilities bitmask");
             CHIP_ERROR err = StartDiscoveryOverWiFiPAF();
-            if (err != CHIP_NO_ERROR)
+            if ((CHIP_ERROR_NOT_IMPLEMENTED == err) || (CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE == err))
             {
-                ChipLogError(Controller, "Failed to start discovery over WiFiPAF: %" CHIP_ERROR_FORMAT, err.Format());
+                ChipLogProgress(Controller,
+                                "Skipping commissionable node discovery over Wi-Fi PAF since not supported by the controller!");
+            }
+            else if (err != CHIP_NO_ERROR)
+            {
+                ChipLogError(Controller, "Failed to start commissionable node discovery over Wi-Fi PAF: %" CHIP_ERROR_FORMAT,
+                             err.Format());
+            }
+        }
+        if (ShouldDiscoverUsing(RendezvousInformationFlag::kNFC))
+        {
+            CHIP_ERROR err = StartDiscoveryOverNFC();
+            if ((CHIP_ERROR_NOT_IMPLEMENTED == err) || (CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE == err))
+            {
+                ChipLogProgress(Controller,
+                                "Skipping commissionable node discovery over NFC since not supported by the controller!");
+            }
+            else if (err != CHIP_NO_ERROR)
+            {
+                ChipLogError(Controller, "Failed to start commissionable node discovery over NFC: %" CHIP_ERROR_FORMAT,
+                             err.Format());
             }
         }
     }
@@ -135,7 +151,7 @@ CHIP_ERROR SetUpCodePairer::Connect()
     CHIP_ERROR err = StartDiscoveryOverDNSSD();
     if (err != CHIP_NO_ERROR)
     {
-        ChipLogError(Controller, "Failed to start discovery over DNS-SD: %" CHIP_ERROR_FORMAT, err.Format());
+        ChipLogError(Controller, "Failed to start commissionable node discovery over DNS-SD: %" CHIP_ERROR_FORMAT, err.Format());
     }
     return err;
 }
@@ -149,7 +165,7 @@ CHIP_ERROR SetUpCodePairer::StartDiscoveryOverBLE()
 #endif // CHIP_DEVICE_CONFIG_ENABLE_BOTH_COMMISSIONER_AND_COMMISSIONEE
     VerifyOrReturnError(mBleLayer != nullptr, CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE);
 
-    ChipLogProgress(Controller, "Starting commissioning discovery over BLE");
+    ChipLogProgress(Controller, "Starting commissionable node discovery over BLE");
 
     // Handle possibly-sync callbacks.
     mWaitingForDiscovery[kBLETransport] = true;
@@ -201,7 +217,7 @@ CHIP_ERROR SetUpCodePairer::StopDiscoveryOverBLE()
     mWaitingForDiscovery[kBLETransport] = false;
 #if CONFIG_NETWORK_LAYER_BLE
     VerifyOrReturnError(mBleLayer != nullptr, CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE);
-    ChipLogDetail(Controller, "Stopping commissioning discovery over BLE");
+    ChipLogProgress(Controller, "Stopping commissionable node discovery over BLE");
     return mBleLayer->CancelBleIncompleteConnection();
 #else
     return CHIP_NO_ERROR;
@@ -210,7 +226,7 @@ CHIP_ERROR SetUpCodePairer::StopDiscoveryOverBLE()
 
 CHIP_ERROR SetUpCodePairer::StartDiscoveryOverDNSSD()
 {
-    ChipLogProgress(Controller, "Starting commissioning discovery over DNS-SD");
+    ChipLogProgress(Controller, "Starting commissionable node discovery over DNS-SD");
 
     Dnssd::DiscoveryFilter filter(Dnssd::DiscoveryFilterType::kNone);
     if (mSetupPayloads.size() == 1)
@@ -244,22 +260,11 @@ CHIP_ERROR SetUpCodePairer::StartDiscoveryOverDNSSD()
 
 CHIP_ERROR SetUpCodePairer::StopDiscoveryOverDNSSD()
 {
-    ChipLogDetail(Controller, "Stopping commissioning discovery over DNS-SD");
+    ChipLogProgress(Controller, "Stopping commissionable node discovery over DNS-SD");
 
     mWaitingForDiscovery[kIPTransport] = false;
 
     mCommissioner->StopCommissionableDiscovery();
-    return CHIP_NO_ERROR;
-}
-
-CHIP_ERROR SetUpCodePairer::StartDiscoveryOverSoftAP()
-{
-    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
-}
-
-CHIP_ERROR SetUpCodePairer::StopDiscoveryOverSoftAP()
-{
-    mWaitingForDiscovery[kSoftAPTransport] = false;
     return CHIP_NO_ERROR;
 }
 
@@ -268,13 +273,13 @@ CHIP_ERROR SetUpCodePairer::StartDiscoveryOverWiFiPAF()
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFIPAF
     if (mSetupPayloads.size() != 1)
     {
-        ChipLogError(Controller, "WiFiPAF commissioning does not support concatenated QR codes yet.");
+        ChipLogError(Controller, "Wi-Fi PAF commissioning does not support concatenated QR codes yet.");
         return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
     }
 
     auto & payload = mSetupPayloads[0];
 
-    ChipLogProgress(Controller, "Starting commissioning discovery over WiFiPAF");
+    ChipLogProgress(Controller, "Starting commissionable node discovery over Wi-Fi PAF");
     VerifyOrReturnError(mCommissioner != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
     const SetupDiscriminator connDiscriminator(payload.discriminator);
@@ -292,13 +297,13 @@ CHIP_ERROR SetUpCodePairer::StartDiscoveryOverWiFiPAF()
                                                                      OnWiFiPAFSubscribeError);
     if (err != CHIP_NO_ERROR)
     {
-        ChipLogError(Controller, "Commissioning discovery over WiFiPAF failed, err = %" CHIP_ERROR_FORMAT, err.Format());
+        ChipLogError(Controller, "Commissionable node discovery over Wi-Fi PAF failed, err = %" CHIP_ERROR_FORMAT, err.Format());
         mWaitingForDiscovery[kWiFiPAFTransport] = false;
     }
     return err;
 #else
     return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
-#endif // CONFIG_NETWORK_LAYER_BLE
+#endif // CHIP_DEVICE_CONFIG_ENABLE_WIFIPAF
 }
 
 CHIP_ERROR SetUpCodePairer::StopDiscoveryOverWiFiPAF()
@@ -306,6 +311,66 @@ CHIP_ERROR SetUpCodePairer::StopDiscoveryOverWiFiPAF()
     mWaitingForDiscovery[kWiFiPAFTransport] = false;
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFIPAF
     DeviceLayer::ConnectivityMgr().WiFiPAFCancelIncompleteSubscribe();
+#endif
+    return CHIP_NO_ERROR;
+}
+
+CHIP_ERROR SetUpCodePairer::StartDiscoveryOverNFC()
+{
+#if CHIP_DEVICE_CONFIG_ENABLE_NFC_BASED_COMMISSIONING
+    if (mSetupPayloads.size() != 1)
+    {
+        ChipLogError(Controller, "NFC commissioning does not support concatenated QR codes yet.");
+        return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+    }
+
+    auto & payload = mSetupPayloads[0];
+
+    ChipLogProgress(Controller, "Starting commissionable node discovery over NFC");
+    VerifyOrReturnError(mCommissioner != nullptr, CHIP_ERROR_INCORRECT_STATE);
+
+    const SetupDiscriminator connDiscriminator(payload.discriminator);
+    VerifyOrReturnValue(!connDiscriminator.IsShortDiscriminator(), CHIP_ERROR_INVALID_ARGUMENT,
+                        ChipLogError(Controller, "Error, Long discriminator is required"));
+    chip::Nfc::NFCTag::Identifier identifier  = { .discriminator = payload.discriminator.GetLongValue() };
+    Nfc::NFCReaderTransport * readerTransport = DeviceLayer::Internal::NFCCommissioningMgr().GetNFCReaderTransport();
+    if (!readerTransport)
+    {
+        ChipLogError(Controller, "Commissionable node discovery over NFC since there is no valid NFC reader transport");
+        return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+    }
+
+    readerTransport->SetDelegate(this);
+    CHIP_ERROR err = readerTransport->StartDiscoveringTagMatchingAddress(identifier);
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(Controller, "Commissionable node discovery over NFC failed, err = %" CHIP_ERROR_FORMAT, err.Format());
+    }
+    else
+    {
+        mWaitingForDiscovery[kNFCTransport] = true;
+    }
+    return err;
+#else
+    return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+#endif // CHIP_DEVICE_CONFIG_ENABLE_NFC_BASED_COMMISSIONING
+}
+
+CHIP_ERROR SetUpCodePairer::StopDiscoveryOverNFC()
+{
+#if CHIP_DEVICE_CONFIG_ENABLE_NFC_BASED_COMMISSIONING
+    mWaitingForDiscovery[kNFCTransport] = false;
+
+    Nfc::NFCReaderTransport * readerTransport = DeviceLayer::Internal::NFCCommissioningMgr().GetNFCReaderTransport();
+    if (!readerTransport)
+    {
+        ChipLogError(Controller,
+                     "Failed to stop commissionable node discovery over NFC since there is no valid NFC reader transport");
+        return CHIP_ERROR_UNSUPPORTED_CHIP_FEATURE;
+    }
+
+    ChipLogProgress(Controller, "Stopping commissionable node discovery over NFC by removing delegate");
+    readerTransport->SetDelegate(nullptr);
 #endif
     return CHIP_NO_ERROR;
 }
@@ -447,7 +512,7 @@ void SetUpCodePairer::OnDiscoveredDeviceOverBleError(void * appState, CHIP_ERROR
 
 void SetUpCodePairer::OnBLEDiscoveryError(CHIP_ERROR err)
 {
-    ChipLogError(Controller, "Commissioning discovery over BLE failed: %" CHIP_ERROR_FORMAT, err.Format());
+    ChipLogError(Controller, "Commissionable node discovery over BLE failed: %" CHIP_ERROR_FORMAT, err.Format());
     mWaitingForDiscovery[kBLETransport] = false;
     LogErrorOnFailure(err);
 }
@@ -456,7 +521,7 @@ void SetUpCodePairer::OnBLEDiscoveryError(CHIP_ERROR err)
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFIPAF
 void SetUpCodePairer::OnDiscoveredDeviceOverWifiPAF()
 {
-    ChipLogProgress(Controller, "Discovered device to be commissioned over WiFiPAF, RemoteId: %lu", mRemoteId);
+    ChipLogProgress(Controller, "Discovered device to be commissioned over Wi-Fi PAF, RemoteId: %lu", mRemoteId);
 
     mWaitingForDiscovery[kWiFiPAFTransport] = false;
     auto param                              = SetUpCodePairerParameters();
@@ -471,7 +536,7 @@ void SetUpCodePairer::OnDiscoveredDeviceOverWifiPAF()
 
 void SetUpCodePairer::OnWifiPAFDiscoveryError(CHIP_ERROR err)
 {
-    ChipLogError(Controller, "Commissioning discovery over WiFiPAF failed: %" CHIP_ERROR_FORMAT, err.Format());
+    ChipLogError(Controller, "Commissionable node discovery over Wi-Fi PAF failed: %" CHIP_ERROR_FORMAT, err.Format());
     mWaitingForDiscovery[kWiFiPAFTransport] = false;
 }
 
@@ -488,6 +553,29 @@ void SetUpCodePairer::OnWiFiPAFSubscribeError(void * appState, CHIP_ERROR err)
 }
 #endif
 
+#if CHIP_DEVICE_CONFIG_ENABLE_NFC_BASED_COMMISSIONING
+void SetUpCodePairer::OnTagDiscovered(const chip::Nfc::NFCTag::Identifier & identifier)
+{
+    ChipLogProgress(Controller, "Discovered device to be commissioned over NFC, Identifier: %u", identifier.discriminator);
+
+    mWaitingForDiscovery[kNFCTransport] = false;
+    auto param                          = SetUpCodePairerParameters();
+    param.SetPeerAddress(Transport::PeerAddress(Transport::PeerAddress::NFC(identifier.discriminator)));
+    // TODO: This needs to support concatenated QR codes and set the relevant
+    // long discriminator on param.
+    //
+    // See https://github.com/project-chip/connectedhomeip/issues/39134
+    mDiscoveredParameters.emplace_back(param);
+    ConnectToDiscoveredDevice();
+}
+
+void SetUpCodePairer::OnTagDiscoveryFailed(CHIP_ERROR error)
+{
+    ChipLogError(Controller, "Commissionable node discovery over NFC failed: %" CHIP_ERROR_FORMAT, error.Format());
+    mWaitingForDiscovery[kNFCTransport] = false;
+}
+#endif
+
 bool SetUpCodePairer::IdIsPresent(uint16_t vendorOrProductID)
 {
     return vendorOrProductID != kNotAvailable;
@@ -501,11 +589,9 @@ bool SetUpCodePairer::NodeMatchesCurrentFilter(const Dnssd::DiscoveredNodeData &
     }
 
     const Dnssd::CommissionNodeData & nodeData = discNodeData.Get<Dnssd::CommissionNodeData>();
-    if (nodeData.commissioningMode == 0)
-    {
-        ChipLogProgress(Controller, "Discovered device does not have an open commissioning window.");
-        return false;
-    }
+
+    VerifyOrReturnError(mCommissioner != nullptr, false);
+    VerifyOrReturnError(mCommissioner->HasValidCommissioningMode(nodeData), false);
 
     // Check whether this matches one of our setup payloads.
     for (auto & payload : mSetupPayloads)
@@ -625,8 +711,8 @@ void SetUpCodePairer::StopAllDiscoveryAttempts()
 {
     LogErrorOnFailure(StopDiscoveryOverBLE());
     LogErrorOnFailure(StopDiscoveryOverDNSSD());
-    LogErrorOnFailure(StopDiscoveryOverSoftAP());
     LogErrorOnFailure(StopDiscoveryOverWiFiPAF());
+    LogErrorOnFailure(StopDiscoveryOverNFC());
 
     // Just in case any of those failed to reset the waiting state properly.
     for (auto & waiting : mWaitingForDiscovery)
