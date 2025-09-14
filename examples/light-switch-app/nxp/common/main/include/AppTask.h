@@ -39,7 +39,6 @@ public:
     ~AppTask() override{};
     void PostInitMatterStack(void) override;
     void PreInitMatterStack(void) override;
-    CHIP_ERROR ProcessSetStateClusterHandler(void) override;
     // This returns an instance of this class.
     static AppTask & GetDefaultInstance();
 	void AppMatter_RegisterCustomCliCommands(void) override;
