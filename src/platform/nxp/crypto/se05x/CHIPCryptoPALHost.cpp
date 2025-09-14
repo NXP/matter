@@ -1,6 +1,6 @@
 /*
  *
- *    Copyright (c) 2020-2022, 2025 Project CHIP Authors
+ *    Copyright (c) 2020-2022 Project CHIP Authors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  *      mbedTLS based implementation of CHIP crypto primitives
  */
 
-#include <crypto/CHIPCryptoPAL.h>
+#include "CHIPCryptoPAL.h"
 
 #include <type_traits>
 
@@ -41,7 +41,6 @@
 #include <mbedtls/x509_crt.h>
 #endif // defined(MBEDTLS_X509_CRT_PARSE_C)
 #include <mbedtls/oid.h>
-#include <mbedtls/version.h>
 #include <mbedtls/x509.h>
 #include <mbedtls/x509_csr.h>
 
@@ -911,9 +910,9 @@ CHIP_ERROR VerifyAttestationCertificateFormat(const ByteSpan & cert, Attestation
 
         if (OID_CMP(sOID_Extension_BasicConstraints, extOID))
         {
-            int isCA    = 0;
-            int pathLen = -1;
-            unsigned char * seqStart;
+            int isCA                 = 0;
+            int pathLen              = -1;
+            unsigned char * seqStart = p;
 
             VerifyOrExit(extCritical, error = CHIP_ERROR_INTERNAL);
             extBasicPresent = true;
@@ -922,8 +921,7 @@ CHIP_ERROR VerifyAttestationCertificateFormat(const ByteSpan & cert, Attestation
             VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
             if (len > 0)
             {
-                seqStart = p;
-                result   = mbedtls_asn1_get_bool(&p, end, &isCA);
+                result = mbedtls_asn1_get_bool(&p, end, &isCA);
                 VerifyOrExit(result == 0 || result == MBEDTLS_ERR_ASN1_UNEXPECTED_TAG, error = CHIP_ERROR_INTERNAL);
 
                 if (p != seqStart + len)
