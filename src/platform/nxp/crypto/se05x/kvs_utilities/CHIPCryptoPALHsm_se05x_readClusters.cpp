@@ -135,22 +135,11 @@ CHIP_ERROR se05x_read_node_operational_keypair(uint8_t * op_key_ref_key, size_t 
     VerifyOrReturnError(op_key_ref_key != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(op_key_ref_key_len != NULL, CHIP_ERROR_INTERNAL);
 
-#if 1
     std::vector<uint8_t> pubKeyBuf(256);
     size_t pubKeyBufLen = pubKeyBuf.size();
-#else
-    std::vector<uint8_t> pubKeyBuf = { 0x04, 0x70, 0x69, 0x74, 0x23, 0x2C, 0x12, 0x32, 0x09, 0x31, 0x9B, 0x18, 0xBF,
-                                       0x63, 0x2A, 0x1C, 0xF5, 0xF2, 0x92, 0x08, 0x03, 0x0B, 0xCB, 0x3A, 0x76, 0x63,
-                                       0xAF, 0x15, 0x55, 0x88, 0x67, 0xD7, 0xB0, 0x72, 0x3F, 0xE4, 0x68, 0x80, 0x3C,
-                                       0xF8, 0x7E, 0x33, 0x6E, 0x2F, 0x94, 0xAA, 0xDF, 0xC3, 0xF3, 0xEE, 0x27, 0xA5,
-                                       0x6B, 0x00, 0xAB, 0x59, 0xB3, 0x9A, 0x95, 0xE1, 0x28, 0x3A, 0x95, 0xDC, 0x39 };
-    size_t pubKeyBufLen            = pubKeyBuf.size();
-#endif
 
-#if 1
     status = se05x_get_certificate(SE05X_NODE_OPERATIONAL_KEY_PAIR, pubKeyBuf.data(), &pubKeyBufLen);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-#endif
 
     status =
         se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE05X_NODE_OPERATIONAL_KEY_PAIR, op_key_ref_key, op_key_ref_key_len);

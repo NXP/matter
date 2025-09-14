@@ -73,7 +73,6 @@ control the enable pin as required.
 
 ```
     cd connectedhomeip
-    export IMX_SDK_ROOT= <path of the Yocto SDK>
     ./scripts/examples/imxlinux_example.sh -s examples/thermostat/nxp/linux-se05x/ -o out/thermostat -d
 ```
 
@@ -209,7 +208,7 @@ ninja -C out se05x_dev_attest_key_prov
 > commands accordingly.
 
 Refer
-[SE05x Device attestation Example](https://bitbucket.sw.nxp.com/projects/SIMW/repos/simw-github-mini-pub/browse/demos/se05x_dev_attest_key_prov/readme.md?at=refs%2Fheads%2Fint%2FCHIPSE_Release_NFC_Comm)
+[SE05x Device attestation Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se05x_dev_attest_key_prov/readme.md)
 for more details.
 
 <a name="scp03"></a>
@@ -244,7 +243,7 @@ devices. Refer the below steps to to set up the NFC commissioning demo.
 
 For the commissioning to work, SE051H needs to be provisioned to necessary
 crypto objects. Use the SE051H provision example to do this. Refer
-[SE051H Provision Example](https://bitbucket.sw.nxp.com/projects/SIMW/repos/simw-github-mini-pub/browse/demos/se051h_nfc_comm_prov/readme.md?at=refs%2Fheads%2Fint%2FCHIPSE_Release_NFC_Comm)
+[SE051H Provision Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se051h_nfc_comm_prov/readme.md)
 for more details.
 
 ### Step 2: SE051H Read Pass-code
@@ -252,7 +251,7 @@ for more details.
 SE051H has a binary file containing pass-code and salt which is used for NFC
 commissioning. The pass-code is required to be provided on the commissionee
 side. Use the SE051H get pass-code example to do this. Refer
-[SE051H Get Pass-code Example](https://bitbucket.sw.nxp.com/projects/SIMW/repos/simw-github-mini-pub/browse/demos/se05x_get_passcode/readme.md?at=refs%2Fheads%2Fint%2FCHIPSE_Release_NFC_Comm)
+[SE051H Get Pass-code Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se05x_get_passcode/readme.md)
 for more details.
 
 ### Step 3: NFC Commissioning
@@ -276,7 +275,7 @@ of OM-SE051ARD board
 Build the thermostat example with SE05x support enabled. Refer
 [SE05x Supported Platforms](#supported_platforms) sections. The example will be
 built with the SE05x KVS implementation.
-(`src\platform\nxp\crypto\se05x\linux_kvs\KeyValueStoreManagerImpl.h`). During
+(`src/platform/nxp/crypto/se05x/linux_kvs/KeyValueStoreManagerImpl.h`). During
 KVS initialization, the required contents from SE05x is read and is put in to
 the KVS file / file system for CASE operation to work.
 
