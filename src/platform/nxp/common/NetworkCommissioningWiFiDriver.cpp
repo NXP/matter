@@ -480,10 +480,7 @@ bool NXPWiFiDriver::WiFiNetworkIterator::Next(Network & item)
         if (connectedNetwork.networkIDLen == item.networkIDLen &&
             memcmp(connectedNetwork.networkID, item.networkID, item.networkIDLen) == 0)
         {
-            if (ConnectivityMgr().IsWiFiStationConnected())
-            {
-                item.connected = true;
-            }
+            item.connected = true;
         }
     }
 
