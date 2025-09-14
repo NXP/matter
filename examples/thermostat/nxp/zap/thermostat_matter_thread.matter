@@ -2466,7 +2466,7 @@ endpoint 0 {
   }
 }
 endpoint 1 {
-  device type ma_thermostat = 769, version 4;
+  device type ma_thermostat = 769, version 1;
 
 
   server cluster Identify {
@@ -2538,7 +2538,7 @@ endpoint 1 {
     callback attribute acceptedCommandList;
     callback attribute attributeList;
     ram      attribute featureMap default = 0x3;
-    ram      attribute clusterRevision default = 9;
+    ram      attribute clusterRevision default = 8;
 
     handle command SetpointRaiseLower;
   }
