@@ -32,7 +32,7 @@ public:
     class EthernetNetworkIterator final : public NetworkIterator
     {
     public:
-        EthernetNetworkIterator() = default;
+        EthernetNetworkIterator(NxpEthDriver * aDriver) : mDriver(aDriver) {}
         size_t Count() { return 1; }
         bool Next(Network & item) override
         {
@@ -60,8 +60,7 @@ public:
     netif * GetEthInetIf() { return &netif_app; };
 
     // BaseDriver
-    /* current network ID is a concatenation of the prefix "eth_" and the ethernet interface number */
-    NetworkIterator * GetNetworks() override;
+    NetworkIterator * GetNetworks() override { return new EthernetNetworkIterator(this); };
     uint8_t GetMaxNetworks() { return 1; }
     CHIP_ERROR Init(NetworkStatusChangeCallback * networkStatusChangeCallback) override;
     void Shutdown()
