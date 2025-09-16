@@ -267,7 +267,7 @@ using chip tool. Ensure to connect Jumper J6 to 2-3 pins to use onboard antenna
 of OM-SE051ARD board
 
 ```
-./out/linux-x64-chip-tool-nfc-commission/chip-tool pairing nfc-thread 1 1 <passcode (Noted in previous step)> 3840
+./out/linux-x64-chip-tool-nfc-commission/chip-tool pairing nfc-wifi 1 <ssid> <password> <passcode (Noted in previous step)> 3840
 ```
 
 ### Step 4: Run Thermostat example
@@ -279,8 +279,8 @@ built with the SE05x KVS implementation.
 KVS initialization, the required contents from SE05x is read and is put in to
 the KVS file / file system for CASE operation to work.
 
--   As of current implementation, only the following details are read (fabric id
-    = 1 is assumed in the below table) :
+-   As of current implementation, only the following details are read from
+    secure element clusters data (fabric id = 1 is assumed in the below table) :
 
     | Content                            | Key id                                  | Key Name   |
     | ---------------------------------- | --------------------------------------- | ---------- |
@@ -293,6 +293,8 @@ the KVS file / file system for CASE operation to work.
     | Fabric Group Info                  | -                                       | f/1/g      |
     | Meta Data                          | Vendor id read from 0x7FFE0028          | f/1/m      |
     | Fabric index info                  | -                                       | g/fidx     |
+    | Wi-Fi ssid                         | 0x7FFF3401 (5)                          | wifi-ssid  |
+    | Wi-Fi password                     | 0x7FFF3401 (5)                          | wifi-pass  |
 
 *   (1) : Id of the binary file containing the node operational certificate is
     embedded in the TLV of operational credential cluster file.
@@ -307,6 +309,8 @@ the KVS file / file system for CASE operation to work.
     public key is read out. The private key bytes are filled with the
     information of the Node operational key id. This is called reference key.
     Reference key is used to refer SE05x for ECDSA Sign operation.
+
+*   (5) : It is recommended to protect the key id using authenticated session.
 
 ### Step 5: Run Chip-tool example
 
