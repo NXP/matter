@@ -341,11 +341,11 @@ void generateOtaMessage(WsServer* s, websocketpp::connection_hdl hdl, message_pt
         }
     }
 
-    const std::string initReceived     = "CHIP:BDX: OutputEvent type: InitReceived";
-    const std::string AckEofReceived   = "CHIP:BDX: OutputEvent type: AckEOFReceived";
-    const std::string internalError    = "CHIP:BDX: OutputEvent type: InternalError";
-    const std::string transferTimeout  = "CHIP:BDX: OutputEvent type: TransferTimeout";
-    const std::string unknown          = "CHIP:BDX: OutputEvent type: Unknown";
+    const std::string initReceived     = "OutputEvent type: InitReceived";
+    const std::string AckEofReceived   = "OutputEvent type: AckEOFReceived";
+    const std::string internalError    = "OutputEvent type: InternalError";
+    const std::string transferTimeout  = "OutputEvent type: TransferTimeout";
+    const std::string unknown          = "OutputEvent type: Unknown";
 
     while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
     {
