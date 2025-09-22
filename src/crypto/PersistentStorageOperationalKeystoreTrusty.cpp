@@ -36,6 +36,11 @@ using namespace chip::Crypto;
 
 PersistentStorageOperationalKeystore::PersistentStorageOperationalKeystore() = default;
 
+bool PersistentStorageOperationalKeystore::HasPendingOpKeypair() const
+{
+    return (mPendingKeypair != nullptr);
+}
+
 void PersistentStorageOperationalKeystore::ResetPendingKey()
 {
     if (!mIsExternallyOwnedKeypair && (mPendingKeypair != nullptr))

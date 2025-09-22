@@ -80,7 +80,7 @@ public:
         mStorage = nullptr;
     }
 
-    bool HasPendingOpKeypair() const override { return (mPendingKeypair != nullptr); }
+    bool HasPendingOpKeypair() const override;
 
     bool HasOpKeypairForFabric(FabricIndex fabricIndex) const override;
     CHIP_ERROR NewOpKeypairForFabric(FabricIndex fabricIndex, MutableByteSpan & outCertificateSigningRequest) override;

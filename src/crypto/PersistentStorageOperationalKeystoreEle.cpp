@@ -48,6 +48,11 @@ void PersistentStorageOperationalKeystore::ResetPendingKey()
 
 PersistentStorageOperationalKeystore::PersistentStorageOperationalKeystore() = default;
 
+bool PersistentStorageOperationalKeystore::HasPendingOpKeypair() const
+{
+    return (mPendingFabricIndex != kUndefinedFabricIndex);
+}
+
 bool PersistentStorageOperationalKeystore::HasOpKeypairForFabric(FabricIndex fabricIndex) const
 {
     op_get_key_attr_args_t keyattr_args;
