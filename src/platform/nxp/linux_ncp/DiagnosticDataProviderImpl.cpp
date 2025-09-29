@@ -434,8 +434,10 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastRxCount(uint32_t & pa
     {
         ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
     }
+    /*Fix me after ncp_device fixed*/
+    //packetUnicastRxCount = stats.rx_unicast_cnt;
+    packetUnicastRxCount = 0;
 
-    packetUnicastRxCount = stats.rx_unicast_cnt;
     ChipLogProgress(DeviceLayer, "GetWiFiPacketUnicastRxCount: %lu (ToDo)", packetUnicastRxCount);
     return CHIP_NO_ERROR;
 }
@@ -469,7 +471,9 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiOverrunCount(uint64_t & overrunCou
         ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
     }
 
-    overrunCount = (stats.tx_overrun_cnt + stats.rx_overrun_cnt) - mOverrunCount;
+    /*Fix it after ncp-device code fixed*/
+    //overrunCount = (stats.tx_overrun_cnt + stats.rx_overrun_cnt) - mOverrunCount;
+    overrunCount = 0;
 
     ChipLogProgress(DeviceLayer, "GetWiFiOverrunCount: %lu", overrunCount);
     return CHIP_NO_ERROR;
