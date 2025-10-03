@@ -115,9 +115,23 @@ namespace {
 
 /* advertising configuration */
 #define BLEKW_ADV_MAX_NO (2)
+#define BLEKW_ADV_HANDLE_LEGACY (0)
 #define BLEKW_SCAN_RSP_MAX_NO (2)
 #define BLEKW_MAX_ADV_DATA_LEN (31)
 #define CHIP_ADV_SHORT_UUID_LEN (2)
+
+/* OPT (used for BLE CS use-case) vs non-OPT (standard) BLE Host libs API */
+#ifdef CONFIG_CHIP_SDK_DEPENDENCIES_BLE_HOST_CS
+    #define HostSetAdvertisingParameters(x)     Gap_SetExtAdvertisingParameters((x))
+    #define HostSetAdvertisingData(x, y)        Gap_SetExtAdvertisingData(BLEKW_ADV_HANDLE_LEGACY, (x), (y))
+    #define HostStartAdvertising(x, y)          Gap_StartExtAdvertising((x),(y), BLEKW_ADV_HANDLE_LEGACY, gBleExtAdvNoDuration_c, gBleExtAdvNoMaxEvents_c)
+    #define HostStopAdvertising()               Gap_StopExtAdvertising(BLEKW_ADV_HANDLE_LEGACY)
+#else
+    #define HostSetAdvertisingParameters(x)     Gap_SetAdvertisingParameters((x))
+    #define HostSetAdvertisingData(x, y)        Gap_SetAdvertisingData((x), (y))
+    #define HostStartAdvertising(x, y)          Gap_StartAdvertising((x),(y))
+    #define HostStopAdvertising()               Gap_StopAdvertising()
+#endif
 
 /* FreeRTOS sw timer */
 TimerHandle_t sbleAdvTimeoutTimer;
@@ -463,8 +477,14 @@ BLEManagerCommon::ble_err_t BLEManagerCommon::blekw_send_event(int8_t connection
  * Private functions
  *******************************************************************************/
 
-BLEManagerCommon::ble_err_t BLEManagerCommon::blekw_start_advertising(gapAdvertisingParameters_t * adv_params,
-                                                                      gapAdvertisingData_t * adv, gapScanResponseData_t * scnrsp)
+BLEManagerCommon::ble_err_t BLEManagerCommon::blekw_start_advertising(
+#ifdef CONFIG_CHIP_SDK_DEPENDENCIES_BLE_HOST_CS
+    gapExtAdvertisingParameters_t * adv_params,
+#else
+    gapAdvertisingParameters_t * adv_params,
+#endif
+    gapAdvertisingData_t * adv,
+    gapScanResponseData_t * scnrsp)
 {
     EventBits_t eventBits;
 
@@ -489,12 +509,12 @@ BLEManagerCommon::ble_err_t BLEManagerCommon::blekw_start_advertising(gapAdverti
     xEventGroupClearBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_SETUP_FAILED | CHIP_BLE_KW_EVNT_ADV_PAR_SETUP_COMPLETE);
 
     /* Set the advertising parameters */
-    if (Gap_SetAdvertisingParameters(adv_params) != gBleSuccess_c)
+    if (HostSetAdvertisingParameters(adv_params) != gBleSuccess_c)
     {
         vTaskDelay(1);
 
         /* Retry, just to make sure before giving up and sending an error. */
-        if (Gap_SetAdvertisingParameters(adv_params) != gBleSuccess_c)
+        if (HostSetAdvertisingParameters(adv_params) != gBleSuccess_c)
         {
             return BLE_E_SET_ADV_PARAMS;
         }
@@ -512,7 +532,7 @@ BLEManagerCommon::ble_err_t BLEManagerCommon::blekw_start_advertising(gapAdverti
     xEventGroupClearBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_SETUP_FAILED | CHIP_BLE_KW_EVNT_ADV_DAT_SETUP_COMPLETE);
 
     /* Set the advertising data */
-    if (Gap_SetAdvertisingData(adv, scnrsp) != gBleSuccess_c)
+    if (HostSetAdvertisingData(adv, scnrsp) != gBleSuccess_c)
     {
         return BLE_E_SET_ADV_DATA;
     }
@@ -529,7 +549,7 @@ BLEManagerCommon::ble_err_t BLEManagerCommon::blekw_start_advertising(gapAdverti
     xEventGroupClearBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_CHANGED | CHIP_BLE_KW_EVNT_ADV_FAILED);
 
     /* Start the advertising */
-    if (Gap_StartAdvertising(blekw_gap_advertising_cb, blekw_gap_connection_cb) != gBleSuccess_c)
+    if (HostStartAdvertising(blekw_gap_advertising_cb, blekw_gap_connection_cb) != gBleSuccess_c)
     {
         return BLE_E_START_ADV;
     }
@@ -563,7 +583,7 @@ BLEManagerCommon::ble_err_t BLEManagerCommon::blekw_stop_advertising(void)
     xEventGroupClearBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_CHANGED | CHIP_BLE_KW_EVNT_ADV_FAILED);
 
     /* Stop the advertising data */
-    res = Gap_StopAdvertising();
+    res = HostStopAdvertising();
     if (res != gBleSuccess_c)
     {
         ChipLogProgress(DeviceLayer, "Failed to stop advertising %d", res);
@@ -596,7 +616,11 @@ CHIP_ERROR BLEManagerCommon::ConfigureAdvertisingData(void)
     gapAdvertisingData_t adv                              = { 0 };
     gapAdStructure_t scan_rsp_data[BLEKW_SCAN_RSP_MAX_NO] = { { 0 } };
     gapScanResponseData_t scanRsp                         = { 0 };
+#ifdef CONFIG_CHIP_SDK_DEPENDENCIES_BLE_HOST_CS
+    gapExtAdvertisingParameters_t adv_params              = { 0 };
+#else
     gapAdvertisingParameters_t adv_params                 = { 0 };
+#endif
     uint8_t chipOverBleService[2];
 
     ReturnErrorOnFailure(GetCommissionableDataProvider()->GetSetupDiscriminator(discriminator));
@@ -643,8 +667,17 @@ CHIP_ERROR BLEManagerCommon::ConfigureAdvertisingData(void)
     }
     advInterval = (uint16_t) (advInterval * 0.625F);
 
+#ifdef CONFIG_CHIP_SDK_DEPENDENCIES_BLE_HOST_CS
+    adv_params.handle           = BLEKW_ADV_HANDLE_LEGACY;
+    adv_params.extAdvProperties = (bleAdvRequestProperties_t) (gAdvReqConnectable_c | gAdvReqScannable_c | gAdvReqLegacy_c);
+    memset(adv_params.ownRandomAddr, 0, gcBleDeviceAddressSize_c);
+    adv_params.txPower          = gBleAdvTxPowerNoPreference_c;
+    adv_params.primaryPHY       = (gapLePhyMode_t) gLePhy1M_c;
+    adv_params.secondaryPHY     = (gapLePhyMode_t) gLePhy1M_c;
+#else
+    adv_params.advertisingType  = gAdvConnectableUndirected_c;
+#endif
     adv_params.minInterval = adv_params.maxInterval = advInterval;
-    adv_params.advertisingType                      = gAdvConnectableUndirected_c;
     adv_params.ownAddressType  = ConfigurationMgr().IsFullyProvisioned() ? gBleAddrTypePublic_c : gBleAddrTypeRandom_c;
     adv_params.peerAddressType = gBleAddrTypePublic_c;
     memset(adv_params.peerAddress, 0, gcBleDeviceAddressSize_c);
@@ -1149,10 +1182,12 @@ void BLEManagerCommon::blekw_generic_cb(gapGenericEvent_t * pGenericEvent)
         break;
 
     case gAdvertisingParametersSetupComplete_c:
+    case gExtAdvertisingParametersSetupComplete_c:
         xEventGroupSetBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_PAR_SETUP_COMPLETE);
         break;
 
     case gAdvertisingDataSetupComplete_c:
+    case gExtAdvertisingDataSetupComplete_c:
         xEventGroupSetBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_DAT_SETUP_COMPLETE);
         break;
 
@@ -1187,23 +1222,26 @@ void BLEManagerCommon::blekw_generic_cb(gapGenericEvent_t * pGenericEvent)
 
 void BLEManagerCommon::blekw_gap_advertising_cb(gapAdvertisingEvent_t * pAdvertisingEvent)
 {
-    if (pAdvertisingEvent->eventType == gAdvertisingStateChanged_c)
+    switch(pAdvertisingEvent->eventType)
     {
-        /* Set the local synchronization event */
-        xEventGroupSetBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_CHANGED);
-    }
-    else if (pAdvertisingEvent->eventType == gAdvertisingCommandFailed_c)
-    {
-        /* The advertisement start failed */
-        ChipLogProgress(DeviceLayer, "Advertising failed: event = %d reason = 0x%04X", pAdvertisingEvent->eventType,
+        case gAdvertisingStateChanged_c:
+        case gExtAdvertisingStateChanged_c:
+            /* Set the local synchronization event */
+            xEventGroupSetBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_CHANGED);
+            break;
+
+        case gAdvertisingCommandFailed_c:
+            /* The advertisement start failed */
+            ChipLogProgress(DeviceLayer, "Advertising failed: event = %d reason = 0x%04X", pAdvertisingEvent->eventType,
                         pAdvertisingEvent->eventData.failReason);
 
-        /* Set the local synchronization event */
-        xEventGroupSetBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_FAILED);
-    }
-    else
-    {
-        ChipLogProgress(DeviceLayer, "Advertising event = %d", pAdvertisingEvent->eventType);
+            /* Set the local synchronization event */
+            xEventGroupSetBits(sEventGroup, CHIP_BLE_KW_EVNT_ADV_FAILED);
+            break;
+
+        default:
+            ChipLogProgress(DeviceLayer, "Advertising event = %d", pAdvertisingEvent->eventType);
+            break;
     }
 }
 
