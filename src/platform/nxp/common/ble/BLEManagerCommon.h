@@ -249,8 +249,14 @@ protected:
     static CHIP_ERROR blekw_msg_add_att_written(blekw_msg_type_t type, uint8_t device_id, uint16_t handle, uint8_t * data,
                                                 uint16_t length);
     static CHIP_ERROR blekw_msg_add_att_read(blekw_msg_type_t type, uint8_t device_id, uint16_t handle);
-    static BLEManagerCommon::ble_err_t blekw_start_advertising(gapAdvertisingParameters_t * adv_params, gapAdvertisingData_t * adv,
-                                                               gapScanResponseData_t * scnrsp);
+    static BLEManagerCommon::ble_err_t blekw_start_advertising(
+    #ifdef CONFIG_CHIP_SDK_DEPENDENCIES_BLE_HOST_CS
+        gapExtAdvertisingParameters_t * adv_params,
+    #else
+        gapAdvertisingParameters_t * adv_params,
+    #endif
+        gapAdvertisingData_t * adv,
+        gapScanResponseData_t * scnrsp);
     static BLEManagerCommon::ble_err_t blekw_stop_advertising(void);
     static void blekw_gap_advertising_cb(gapAdvertisingEvent_t * pAdvertisingEvent);
     static void blekw_gap_connection_cb(deviceId_t deviceId, gapConnectionEvent_t * pConnectionEvent);
