@@ -18,43 +18,39 @@
 
 /**
  *    @file
- *          Platform-specific implementation of KVS for SE05x + Linux.
+ *          Platform-specific key value storage implementation for SE05x with NXP platforms
  */
 
 #pragma once
 
-#include "CHIPCryptoPALHsm_se05x_readClusters.h"
-#include "CHIPCryptoPALHsm_se05x_utils.h"
-#include <lib/core/TLV.h>
-#include <lib/core/TLVUtilities.h>
-#include <lib/support/Base64.h>
-#include <platform/Linux/CHIPLinuxStorage.h>
-#include <unistd.h>
-#include <vector>
+#include <string>
+
+#include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_utils.h>
+#include <platform/nxp/crypto/se05x/kvs_utilities/CHIPCryptoPALHsm_se05x_readClusters.h>
 
 namespace chip {
 namespace DeviceLayer {
 namespace PersistedStorage {
 
-class KeyValueStoreManagerImpl : public KeyValueStoreManager
+class KeyValueStoreManagerImpl final : public KeyValueStoreManager
 {
-public:
-    /**
-     * @brief
-     * Initialize the KVS, must be called before using.
-     */
+    // Allow the KeyValueStoreManager interface class to delegate method calls to
+    // the implementation methods provided by this class.
+    friend class KeyValueStoreManager;
 
-    CHIP_ERROR Init(const char * file)
+public:
+    /* To read the provisioning data from se05x and write to the MCU flash */
+    CHIP_ERROR Init(void)
     {
         CHIP_ERROR status = CHIP_NO_ERROR;
         // tmp_buffer - Need larger buffer to read node operational certificate chain
         uint8_t tmp_buffer[(2 * chip::Credentials::kMaxCHIPCertLength) + 32];
-        size_t tmp_buffer_len = sizeof(tmp_buffer);
-        char kvs_key_name[32] = { 0 };
+        size_t tmp_buffer_len                                   = sizeof(tmp_buffer);
+        char kvs_key_name[32]                                   = { 0 };
         char ssid[DeviceLayer::Internal::kMaxWiFiSSIDLength]    = { 0 };
         char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
-        size_t ssid_len     = sizeof(ssid);
-        size_t password_len = sizeof(password);
+        size_t ssid_len                                         = sizeof(ssid);
+        size_t password_len                                     = sizeof(password);
 
         ChipLogDetail(Crypto, "SE05x :: KVS Initialization ");
 
@@ -62,7 +58,7 @@ public:
         {
             ChipLogDetail(Crypto, "SE05x :: No NFC commissioned data found ");
             VerifyOrReturnError(se05x_close_session() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-            return mStorage.Init(file);
+            return CHIP_NO_ERROR;
         }
 
         ChipLogDetail(Crypto, "SE05x :: NFC commissioned data found. Reading the contents from SE05x");
@@ -70,20 +66,6 @@ public:
         /*  NFC commissioning is done, read the credentials from SE and
             write to chip kvs file.
         */
-
-#if 0
-        if (access(file, F_OK) == 0) {
-            if (remove(file) != 0) {
-                return CHIP_ERROR_INTERNAL;
-            }
-        }
-#endif
-
-        CHIP_ERROR fCreate = mStorage.Init(file);
-        if (fCreate != CHIP_NO_ERROR)
-        {
-            return fCreate;
-        }
 
         status = se05x_read_node_oper_cert(tmp_buffer, &tmp_buffer_len);
         VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
@@ -190,16 +172,23 @@ public:
         return CHIP_NO_ERROR;
     }
 
-    CHIP_ERROR _Get(const char * key, void * value, size_t value_size, size_t * read_bytes_size = nullptr, size_t offset = 0);
+    // NOTE: Currently this platform does not support partial and offset reads
+    //       these will return CHIP_ERROR_NOT_IMPLEMENTED.
+    CHIP_ERROR _Get(const char * key, void * value, size_t value_size, size_t * read_bytes_size, size_t offset);
+
     CHIP_ERROR _Delete(const char * key);
+
     CHIP_ERROR _Put(const char * key, const void * value, size_t value_size);
 
 private:
-    DeviceLayer::Internal::ChipLinuxStorage mStorage;
-
     // ===== Members for internal use by the following friends.
     friend KeyValueStoreManager & KeyValueStoreMgr();
     friend KeyValueStoreManagerImpl & KeyValueStoreMgrImpl();
+
+    // Reading config values uses the NXPConfig API, which returns CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND
+    // error if a key was not found. Convert this error to the correct error KeyValueStoreManagerImpl
+    // should return: CHIP_ERROR_PERSISTED_STORAGE_VALUE_NOT_FOUND
+    void ConvertError(CHIP_ERROR & err);
 
     static KeyValueStoreManagerImpl sInstance;
 };
@@ -219,7 +208,7 @@ inline KeyValueStoreManager & KeyValueStoreMgr(void)
  * Returns the platform-specific implementation of the KeyValueStoreManager singleton object.
  *
  * Chip applications can use this to gain access to features of the KeyValueStoreManager
- * that are specific to the ESP32 platform.
+ * that are specific to NXP platforms.
  */
 inline KeyValueStoreManagerImpl & KeyValueStoreMgrImpl(void)
 {

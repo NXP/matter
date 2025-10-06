@@ -19,11 +19,11 @@
 
 #include <string.h>
 
-#include <CHIPCryptoPAL_se05x.h>
+#include <platform/nxp/crypto/se05x/CHIPCryptoPAL_se05x.h>
 #include <crypto/CHIPCryptoPAL.h>
 #include <type_traits>
 
-#include <CHIPCryptoPALHsm_se05x_config.h>
+#include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_config.h>
 #include <lib/core/CHIPSafeCasts.h>
 #include <lib/support/BufferWriter.h>
 #include <lib/support/CodeUtils.h>

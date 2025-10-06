@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "CHIPCryptoPALHsm_se05x_config.h"
+#include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_config.h>
 #include <crypto/CHIPCryptoPAL.h>
 #include <lib/core/DataModelTypes.h>
 

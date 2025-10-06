@@ -141,6 +141,12 @@ if(CONFIG_BT)
     endif()
 endif()
 
+if(CONFIG_CHIP_SE05X)
+        target_compile_definitions(chip INTERFACE
+            EXTERNAL_KEYVALUESTOREMANAGERIMPL_HEADER=\"platform/nxp/crypto/se05x/mcu_kvs/KeyValueStoreManagerImpl.h\"
+        )
+endif()
+
 # Add OT include directories to be visible from the application
 if(CONFIG_NET_L2_OPENTHREAD)
     target_include_directories(chip INTERFACE
