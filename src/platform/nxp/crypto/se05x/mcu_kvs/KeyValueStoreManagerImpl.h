@@ -27,6 +27,7 @@
 
 #include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_utils.h>
 #include <platform/nxp/crypto/se05x/kvs_utilities/CHIPCryptoPALHsm_se05x_readClusters.h>
+#include <credentials/CHIPCert.h>
 
 namespace chip {
 namespace DeviceLayer {
