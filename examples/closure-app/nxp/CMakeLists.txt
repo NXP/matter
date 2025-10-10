@@ -115,7 +115,3 @@ elseif(CONFIG_CHIP_ETHERNET)
         ZAP_FILE ${NXP_EXAMPLE_ZAP_DIR}/closure_matter_eth.zap
     )
 endif()
-
-target_compile_definitions(app PRIVATE
-    CLOSURE_APP
-)
