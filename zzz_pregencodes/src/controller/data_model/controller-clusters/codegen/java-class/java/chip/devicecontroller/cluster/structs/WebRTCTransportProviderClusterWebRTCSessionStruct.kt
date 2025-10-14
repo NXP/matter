@@ -33,7 +33,7 @@ class WebRTCTransportProviderClusterWebRTCSessionStruct (
     val streamUsage: UInt,
     val videoStreamID: UInt?,
     val audioStreamID: UInt?,
-    val metadataEnabled: Optional<Boolean>,
+    val metadataEnabled: Boolean,
     val fabricIndex: UInt) {
   override fun toString(): String  = buildString {
     append("WebRTCTransportProviderClusterWebRTCSessionStruct {\n")
@@ -65,10 +65,7 @@ class WebRTCTransportProviderClusterWebRTCSessionStruct (
     } else {
       putNull(ContextSpecificTag(TAG_AUDIO_STREAM_ID))
     }
-      if (metadataEnabled.isPresent) {
-      val optmetadataEnabled = metadataEnabled.get()
-      put(ContextSpecificTag(TAG_METADATA_ENABLED), optmetadataEnabled)
-    }
+      put(ContextSpecificTag(TAG_METADATA_ENABLED), metadataEnabled)
       put(ContextSpecificTag(TAG_FABRIC_INDEX), fabricIndex)
       endStructure()
     }
@@ -102,11 +99,7 @@ class WebRTCTransportProviderClusterWebRTCSessionStruct (
       tlvReader.getNull(ContextSpecificTag(TAG_AUDIO_STREAM_ID))
       null
     }
-      val metadataEnabled = if (tlvReader.isNextTag(ContextSpecificTag(TAG_METADATA_ENABLED))) {
-      Optional.of(tlvReader.getBoolean(ContextSpecificTag(TAG_METADATA_ENABLED)))
-    } else {
-      Optional.empty()
-    }
+      val metadataEnabled = tlvReader.getBoolean(ContextSpecificTag(TAG_METADATA_ENABLED))
       val fabricIndex = tlvReader.getUInt(ContextSpecificTag(TAG_FABRIC_INDEX))
       
       tlvReader.exitContainer()

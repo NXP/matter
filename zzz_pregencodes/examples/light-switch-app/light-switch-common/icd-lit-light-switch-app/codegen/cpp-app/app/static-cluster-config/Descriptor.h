@@ -18,10 +18,13 @@ namespace Descriptor {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id,
+    Attributes::AttributeList::Id,
     Attributes::ClientList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::DeviceTypeList::Id,
     Attributes::FeatureMap::Id,
+    Attributes::GeneratedCommandList::Id,
     Attributes::PartsList::Id,
     Attributes::ServerList::Id,
 };

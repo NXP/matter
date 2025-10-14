@@ -57,7 +57,8 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
     {
         .endpointNumber = 2,
         .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kTemperatureNumber// feature bit 0x1
+            FeatureBitmapType::kTemperatureNumber, // feature bit 0x1
+            FeatureBitmapType::kTemperatureStep// feature bit 0x4
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
         .enabledCommands = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
@@ -65,7 +66,8 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
     {
         .endpointNumber = 3,
         .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kTemperatureNumber// feature bit 0x1
+            FeatureBitmapType::kTemperatureNumber, // feature bit 0x1
+            FeatureBitmapType::kTemperatureStep// feature bit 0x4
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
         .enabledCommands = Span<const CommandId>(detail::kEndpoint3EnabledCommands),

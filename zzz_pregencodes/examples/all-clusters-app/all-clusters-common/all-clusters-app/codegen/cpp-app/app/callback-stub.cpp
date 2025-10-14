@@ -591,6 +591,16 @@ void __attribute__((weak)) emberAfPumpConfigurationAndControlClusterShutdownCall
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfPushAvStreamTransportClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfPushAvStreamTransportClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfRadonConcentrationMeasurementClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning
@@ -777,6 +787,16 @@ void __attribute__((weak)) emberAfTimeSynchronizationClusterInitCallback(Endpoin
     (void) endpoint;
 }
 void __attribute__((weak)) emberAfTimeSynchronizationClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfTlsCertificateManagementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfTlsCertificateManagementClusterShutdownCallback(EndpointId endpoint)
 {
     // To prevent warning
     (void) endpoint;

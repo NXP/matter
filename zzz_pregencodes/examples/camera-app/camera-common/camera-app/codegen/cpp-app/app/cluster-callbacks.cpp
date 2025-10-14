@@ -73,6 +73,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::PowerSource::Id:
         emberAfPowerSourceClusterInitCallback(endpoint);
         break;
+    case app::Clusters::PushAvStreamTransport::Id:
+        emberAfPushAvStreamTransportClusterInitCallback(endpoint);
+        break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterInitCallback(endpoint);
         break;
@@ -82,6 +85,12 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::TimeSynchronization::Id:
         emberAfTimeSynchronizationClusterInitCallback(endpoint);
         break;
+    case app::Clusters::TlsCertificateManagement::Id:
+        emberAfTlsCertificateManagementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::TlsClientManagement::Id:
+        emberAfTlsClientManagementClusterInitCallback(endpoint);
+        break;
     case app::Clusters::UserLabel::Id:
         emberAfUserLabelClusterInitCallback(endpoint);
         break;
@@ -90,6 +99,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::WiFiNetworkDiagnostics::Id:
         emberAfWiFiNetworkDiagnosticsClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::ZoneManagement::Id:
+        emberAfZoneManagementClusterInitCallback(endpoint);
         break;
     default:
         // Unrecognized cluster ID
@@ -165,6 +177,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::PowerSource::Id:
         emberAfPowerSourceClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::PushAvStreamTransport::Id:
+        emberAfPushAvStreamTransportClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterShutdownCallback(endpoint);
         break;
@@ -174,6 +189,12 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::TimeSynchronization::Id:
         emberAfTimeSynchronizationClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::TlsCertificateManagement::Id:
+        emberAfTlsCertificateManagementClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::TlsClientManagement::Id:
+        emberAfTlsClientManagementClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::UserLabel::Id:
         emberAfUserLabelClusterShutdownCallback(endpoint);
         break;
@@ -182,6 +203,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::WiFiNetworkDiagnostics::Id:
         emberAfWiFiNetworkDiagnosticsClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::ZoneManagement::Id:
+        emberAfZoneManagementClusterShutdownCallback(endpoint);
         break;
     default:
         // Unrecognized cluster ID

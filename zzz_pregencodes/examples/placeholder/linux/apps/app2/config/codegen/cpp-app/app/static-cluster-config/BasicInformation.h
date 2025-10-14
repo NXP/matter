@@ -44,48 +44,16 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::VendorID::Id,
     Attributes::VendorName::Id,
 };
-inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
-    Attributes::CapabilityMinima::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::ConfigurationVersion::Id,
-    Attributes::DataModelRevision::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::HardwareVersion::Id,
-    Attributes::HardwareVersionString::Id,
-    Attributes::LocalConfigDisabled::Id,
-    Attributes::Location::Id,
-    Attributes::ManufacturingDate::Id,
-    Attributes::NodeLabel::Id,
-    Attributes::PartNumber::Id,
-    Attributes::ProductID::Id,
-    Attributes::ProductLabel::Id,
-    Attributes::ProductName::Id,
-    Attributes::ProductURL::Id,
-    Attributes::Reachable::Id,
-    Attributes::SerialNumber::Id,
-    Attributes::SoftwareVersion::Id,
-    Attributes::SoftwareVersionString::Id,
-    Attributes::UniqueID::Id,
-    Attributes::VendorID::Id,
-    Attributes::VendorName::Id,
-};
 } // namespace detail
 
 using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands = Span<const CommandId>(),
     },
 } };
@@ -112,7 +80,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ProductLabel::Id:
     case Attributes::ProductName::Id:
     case Attributes::ProductURL::Id:
-    case Attributes::Reachable::Id:
     case Attributes::SerialNumber::Id:
     case Attributes::SoftwareVersion::Id:
     case Attributes::SoftwareVersionString::Id:

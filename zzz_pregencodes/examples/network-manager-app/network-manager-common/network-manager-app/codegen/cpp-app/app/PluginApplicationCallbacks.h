@@ -3,7 +3,6 @@ void MatterAccessControlPluginServerInitCallback();
 void MatterAdministratorCommissioningPluginServerInitCallback();
 void MatterBasicInformationPluginServerInitCallback();
 void MatterDescriptorPluginServerInitCallback();
-void MatterEthernetNetworkDiagnosticsPluginServerInitCallback();
 void MatterGeneralCommissioningPluginServerInitCallback();
 void MatterGeneralDiagnosticsPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
@@ -12,13 +11,11 @@ void MatterOperationalCredentialsPluginServerInitCallback();
 void MatterThreadBorderRouterManagementPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterThreadNetworkDirectoryPluginServerInitCallback();
-void MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 void MatterWiFiNetworkManagementPluginServerInitCallback();
 void MatterAccessControlPluginServerShutdownCallback();
 void MatterAdministratorCommissioningPluginServerShutdownCallback();
 void MatterBasicInformationPluginServerShutdownCallback();
 void MatterDescriptorPluginServerShutdownCallback();
-void MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterGeneralCommissioningPluginServerShutdownCallback();
 void MatterGeneralDiagnosticsPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
@@ -27,7 +24,6 @@ void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterThreadBorderRouterManagementPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDirectoryPluginServerShutdownCallback();
-void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterWiFiNetworkManagementPluginServerShutdownCallback();
 
 #define MATTER_PLUGINS_INIT \
@@ -35,7 +31,6 @@ void MatterWiFiNetworkManagementPluginServerShutdownCallback();
     MatterAdministratorCommissioningPluginServerInitCallback(); \
     MatterBasicInformationPluginServerInitCallback(); \
     MatterDescriptorPluginServerInitCallback(); \
-    MatterEthernetNetworkDiagnosticsPluginServerInitCallback(); \
     MatterGeneralCommissioningPluginServerInitCallback(); \
     MatterGeneralDiagnosticsPluginServerInitCallback(); \
     MatterGroupKeyManagementPluginServerInitCallback(); \
@@ -44,7 +39,6 @@ void MatterWiFiNetworkManagementPluginServerShutdownCallback();
     MatterThreadBorderRouterManagementPluginServerInitCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterThreadNetworkDirectoryPluginServerInitCallback(); \
-    MatterWiFiNetworkDiagnosticsPluginServerInitCallback(); \
     MatterWiFiNetworkManagementPluginServerInitCallback();
 
 #define MATTER_PLUGINS_SHUTDOWN \
@@ -52,7 +46,6 @@ void MatterWiFiNetworkManagementPluginServerShutdownCallback();
     MatterAdministratorCommissioningPluginServerShutdownCallback(); \
     MatterBasicInformationPluginServerShutdownCallback(); \
     MatterDescriptorPluginServerShutdownCallback(); \
-    MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterGeneralCommissioningPluginServerShutdownCallback(); \
     MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
     MatterGroupKeyManagementPluginServerShutdownCallback(); \
@@ -61,6 +54,5 @@ void MatterWiFiNetworkManagementPluginServerShutdownCallback();
     MatterThreadBorderRouterManagementPluginServerShutdownCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterThreadNetworkDirectoryPluginServerShutdownCallback(); \
-    MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterWiFiNetworkManagementPluginServerShutdownCallback();
 

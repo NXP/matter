@@ -28,7 +28,7 @@ import java.util.Optional
 
 class TlsCertificateManagementClusterTLSClientCertificateDetailStruct (
     val ccdid: UInt,
-    val clientCertificate: Optional<ByteArray>,
+    val clientCertificate: Optional<ByteArray>?,
     val intermediateCertificates: Optional<List<ByteArray>>,
     val fabricIndex: UInt) {
   override fun toString(): String  = buildString {
@@ -44,9 +44,13 @@ class TlsCertificateManagementClusterTLSClientCertificateDetailStruct (
     tlvWriter.apply {
       startStructure(tlvTag)
       put(ContextSpecificTag(TAG_CCDID), ccdid)
+      if (clientCertificate != null) {
       if (clientCertificate.isPresent) {
       val optclientCertificate = clientCertificate.get()
       put(ContextSpecificTag(TAG_CLIENT_CERTIFICATE), optclientCertificate)
+    }
+    } else {
+      putNull(ContextSpecificTag(TAG_CLIENT_CERTIFICATE))
     }
       if (intermediateCertificates.isPresent) {
       val optintermediateCertificates = intermediateCertificates.get()
@@ -70,10 +74,15 @@ class TlsCertificateManagementClusterTLSClientCertificateDetailStruct (
     fun fromTlv(tlvTag: Tag, tlvReader: TlvReader) : TlsCertificateManagementClusterTLSClientCertificateDetailStruct {
       tlvReader.enterStructure(tlvTag)
       val ccdid = tlvReader.getUInt(ContextSpecificTag(TAG_CCDID))
-      val clientCertificate = if (tlvReader.isNextTag(ContextSpecificTag(TAG_CLIENT_CERTIFICATE))) {
+      val clientCertificate = if (!tlvReader.isNull()) {
+      if (tlvReader.isNextTag(ContextSpecificTag(TAG_CLIENT_CERTIFICATE))) {
       Optional.of(tlvReader.getByteArray(ContextSpecificTag(TAG_CLIENT_CERTIFICATE)))
     } else {
       Optional.empty()
+    }
+    } else {
+      tlvReader.getNull(ContextSpecificTag(TAG_CLIENT_CERTIFICATE))
+      null
     }
       val intermediateCertificates = if (tlvReader.isNextTag(ContextSpecificTag(TAG_INTERMEDIATE_CERTIFICATES))) {
       Optional.of(buildList<ByteArray> {

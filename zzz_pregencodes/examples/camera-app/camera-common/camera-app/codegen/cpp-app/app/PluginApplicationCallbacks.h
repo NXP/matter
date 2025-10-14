@@ -20,12 +20,16 @@ void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
 void MatterPowerSourcePluginServerInitCallback();
+void MatterPushAvStreamTransportPluginServerInitCallback();
 void MatterSoftwareDiagnosticsPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterTimeSynchronizationPluginServerInitCallback();
+void MatterTlsCertificateManagementPluginServerInitCallback();
+void MatterTlsClientManagementPluginServerInitCallback();
 void MatterUserLabelPluginServerInitCallback();
 void MatterWebRTCTransportProviderPluginServerInitCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
+void MatterZoneManagementPluginServerInitCallback();
 void MatterAccessControlPluginServerShutdownCallback();
 void MatterAdministratorCommissioningPluginServerShutdownCallback();
 void MatterBasicInformationPluginServerShutdownCallback();
@@ -47,12 +51,16 @@ void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
 void MatterPowerSourcePluginServerShutdownCallback();
+void MatterPushAvStreamTransportPluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterTimeSynchronizationPluginServerShutdownCallback();
+void MatterTlsCertificateManagementPluginServerShutdownCallback();
+void MatterTlsClientManagementPluginServerShutdownCallback();
 void MatterUserLabelPluginServerShutdownCallback();
 void MatterWebRTCTransportProviderPluginServerShutdownCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
+void MatterZoneManagementPluginServerShutdownCallback();
 
 #define MATTER_PLUGINS_INIT \
     MatterAccessControlPluginServerInitCallback(); \
@@ -76,12 +84,16 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterOperationalCredentialsPluginServerInitCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
     MatterPowerSourcePluginServerInitCallback(); \
+    MatterPushAvStreamTransportPluginServerInitCallback(); \
     MatterSoftwareDiagnosticsPluginServerInitCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterTimeSynchronizationPluginServerInitCallback(); \
+    MatterTlsCertificateManagementPluginServerInitCallback(); \
+    MatterTlsClientManagementPluginServerInitCallback(); \
     MatterUserLabelPluginServerInitCallback(); \
     MatterWebRTCTransportProviderPluginServerInitCallback(); \
-    MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
+    MatterWiFiNetworkDiagnosticsPluginServerInitCallback(); \
+    MatterZoneManagementPluginServerInitCallback();
 
 #define MATTER_PLUGINS_SHUTDOWN \
     MatterAccessControlPluginServerShutdownCallback(); \
@@ -105,10 +117,14 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterOperationalCredentialsPluginServerShutdownCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
     MatterPowerSourcePluginServerShutdownCallback(); \
+    MatterPushAvStreamTransportPluginServerShutdownCallback(); \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterTimeSynchronizationPluginServerShutdownCallback(); \
+    MatterTlsCertificateManagementPluginServerShutdownCallback(); \
+    MatterTlsClientManagementPluginServerShutdownCallback(); \
     MatterUserLabelPluginServerShutdownCallback(); \
     MatterWebRTCTransportProviderPluginServerShutdownCallback(); \
-    MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
+    MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback(); \
+    MatterZoneManagementPluginServerShutdownCallback();
 

@@ -17,7 +17,7 @@ namespace Clusters {
 namespace TimeSynchronization {
 namespace StaticApplicationConfig {
 namespace detail {
-inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
+inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
@@ -37,7 +37,7 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::UTCTime::Id,
 };
 
-inline constexpr CommandId kEndpoint1EnabledCommands[] = {
+inline constexpr CommandId kEndpoint0EnabledCommands[] = {
     Commands::SetDefaultNTP::Id,
     Commands::SetDSTOffset::Id,
     Commands::SetTimeZone::Id,
@@ -52,11 +52,11 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 1,
+        .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
+        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 

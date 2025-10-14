@@ -25,6 +25,11 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::FeatureMap::Id,
     Attributes::ThreadMetrics::Id,
 };
+
+inline constexpr CommandId kEndpoint0EnabledCommands[] = {
+    Commands::ResetWatermarks::Id,
+};
+
 } // namespace detail
 
 using FeatureBitmapType = Feature;
@@ -35,7 +40,7 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
@@ -57,6 +62,8 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
 // If a specific command is supported at all across all endpoint static instantiations
 inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
   switch (commandId) {
+    case Commands::ResetWatermarks::Id:
+      return true;
     default:
       return false;
   }

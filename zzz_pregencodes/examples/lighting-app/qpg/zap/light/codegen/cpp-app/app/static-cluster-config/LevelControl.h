@@ -25,7 +25,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::MaxLevel::Id,
-    Attributes::MinLevel::Id,
     Attributes::OnLevel::Id,
     Attributes::Options::Id,
     Attributes::RemainingTime::Id,
@@ -69,7 +68,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::MaxLevel::Id:
-    case Attributes::MinLevel::Id:
     case Attributes::OnLevel::Id:
     case Attributes::Options::Id:
     case Attributes::RemainingTime::Id:

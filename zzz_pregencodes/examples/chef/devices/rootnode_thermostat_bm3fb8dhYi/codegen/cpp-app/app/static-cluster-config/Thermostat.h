@@ -36,8 +36,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::MinCoolSetpointLimit::Id,
     Attributes::MinHeatSetpointLimit::Id,
     Attributes::MinSetpointDeadBand::Id,
-    Attributes::NumberOfDailyTransitions::Id,
-    Attributes::NumberOfWeeklyTransitions::Id,
     Attributes::Occupancy::Id,
     Attributes::OccupiedCoolingSetpoint::Id,
     Attributes::OccupiedHeatingSetpoint::Id,
@@ -45,7 +43,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::PICoolingDemand::Id,
     Attributes::PIHeatingDemand::Id,
     Attributes::RemoteSensing::Id,
-    Attributes::StartOfWeek::Id,
     Attributes::SystemMode::Id,
     Attributes::ThermostatRunningMode::Id,
     Attributes::UnoccupiedCoolingSetpoint::Id,
@@ -67,8 +64,6 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
             FeatureBitmapType::kHeating, // feature bit 0x1
             FeatureBitmapType::kCooling, // feature bit 0x2
             FeatureBitmapType::kOccupancy, // feature bit 0x4
-            FeatureBitmapType::kScheduleConfiguration, // feature bit 0x8
-            FeatureBitmapType::kSetback, // feature bit 0x10
             FeatureBitmapType::kAutoMode// feature bit 0x20
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
@@ -99,14 +94,11 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::MinCoolSetpointLimit::Id:
     case Attributes::MinHeatSetpointLimit::Id:
     case Attributes::MinSetpointDeadBand::Id:
-    case Attributes::NumberOfDailyTransitions::Id:
-    case Attributes::NumberOfWeeklyTransitions::Id:
     case Attributes::Occupancy::Id:
     case Attributes::OccupiedCoolingSetpoint::Id:
     case Attributes::OccupiedHeatingSetpoint::Id:
     case Attributes::OutdoorTemperature::Id:
     case Attributes::RemoteSensing::Id:
-    case Attributes::StartOfWeek::Id:
     case Attributes::SystemMode::Id:
     case Attributes::ThermostatRunningMode::Id:
     case Attributes::UnoccupiedCoolingSetpoint::Id:

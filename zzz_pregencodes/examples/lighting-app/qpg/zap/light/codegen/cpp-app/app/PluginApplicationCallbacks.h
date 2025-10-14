@@ -9,12 +9,15 @@ void MatterGeneralCommissioningPluginServerInitCallback();
 void MatterGeneralDiagnosticsPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
 void MatterGroupsPluginServerInitCallback();
+void MatterIcdManagementPluginServerInitCallback();
 void MatterIdentifyPluginServerInitCallback();
 void MatterLevelControlPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOnOffPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
+void MatterScenesManagementPluginServerInitCallback();
 void MatterSoftwareDiagnosticsPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterUserLabelPluginServerInitCallback();
@@ -28,12 +31,15 @@ void MatterGeneralCommissioningPluginServerShutdownCallback();
 void MatterGeneralDiagnosticsPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
 void MatterGroupsPluginServerShutdownCallback();
+void MatterIcdManagementPluginServerShutdownCallback();
 void MatterIdentifyPluginServerShutdownCallback();
 void MatterLevelControlPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOnOffPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
+void MatterScenesManagementPluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterUserLabelPluginServerShutdownCallback();
@@ -49,12 +55,15 @@ void MatterUserLabelPluginServerShutdownCallback();
     MatterGeneralDiagnosticsPluginServerInitCallback(); \
     MatterGroupKeyManagementPluginServerInitCallback(); \
     MatterGroupsPluginServerInitCallback(); \
+    MatterIcdManagementPluginServerInitCallback(); \
     MatterIdentifyPluginServerInitCallback(); \
     MatterLevelControlPluginServerInitCallback(); \
     MatterNetworkCommissioningPluginServerInitCallback(); \
     MatterOnOffPluginServerInitCallback(); \
     MatterOperationalCredentialsPluginServerInitCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
+    MatterPowerSourcePluginServerInitCallback(); \
+    MatterScenesManagementPluginServerInitCallback(); \
     MatterSoftwareDiagnosticsPluginServerInitCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterUserLabelPluginServerInitCallback();
@@ -70,12 +79,15 @@ void MatterUserLabelPluginServerShutdownCallback();
     MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
     MatterGroupKeyManagementPluginServerShutdownCallback(); \
     MatterGroupsPluginServerShutdownCallback(); \
+    MatterIcdManagementPluginServerShutdownCallback(); \
     MatterIdentifyPluginServerShutdownCallback(); \
     MatterLevelControlPluginServerShutdownCallback(); \
     MatterNetworkCommissioningPluginServerShutdownCallback(); \
     MatterOnOffPluginServerShutdownCallback(); \
     MatterOperationalCredentialsPluginServerShutdownCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
+    MatterPowerSourcePluginServerShutdownCallback(); \
+    MatterScenesManagementPluginServerShutdownCallback(); \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterUserLabelPluginServerShutdownCallback();

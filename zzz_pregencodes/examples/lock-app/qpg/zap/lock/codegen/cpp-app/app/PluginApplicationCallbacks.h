@@ -14,6 +14,7 @@ void MatterIdentifyPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
 void MatterSoftwareDiagnosticsPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterUserLabelPluginServerInitCallback();
@@ -32,6 +33,7 @@ void MatterIdentifyPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterUserLabelPluginServerShutdownCallback();
@@ -52,6 +54,7 @@ void MatterUserLabelPluginServerShutdownCallback();
     MatterNetworkCommissioningPluginServerInitCallback(); \
     MatterOperationalCredentialsPluginServerInitCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
+    MatterPowerSourcePluginServerInitCallback(); \
     MatterSoftwareDiagnosticsPluginServerInitCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterUserLabelPluginServerInitCallback();
@@ -72,6 +75,7 @@ void MatterUserLabelPluginServerShutdownCallback();
     MatterNetworkCommissioningPluginServerShutdownCallback(); \
     MatterOperationalCredentialsPluginServerShutdownCallback(); \
     MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
+    MatterPowerSourcePluginServerShutdownCallback(); \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterUserLabelPluginServerShutdownCallback();

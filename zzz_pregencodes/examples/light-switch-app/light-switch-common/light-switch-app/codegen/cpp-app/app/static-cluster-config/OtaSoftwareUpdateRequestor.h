@@ -18,9 +18,12 @@ namespace OtaSoftwareUpdateRequestor {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id,
+    Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::DefaultOTAProviders::Id,
     Attributes::FeatureMap::Id,
+    Attributes::GeneratedCommandList::Id,
     Attributes::UpdatePossible::Id,
     Attributes::UpdateState::Id,
     Attributes::UpdateStateProgress::Id,
@@ -47,9 +50,12 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
 // If a specific attribute is supported at all across all endpoint static instantiations
 inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
   switch (attributeId) {
+    case Attributes::AcceptedCommandList::Id:
+    case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::DefaultOTAProviders::Id:
     case Attributes::FeatureMap::Id:
+    case Attributes::GeneratedCommandList::Id:
     case Attributes::UpdatePossible::Id:
     case Attributes::UpdateState::Id:
     case Attributes::UpdateStateProgress::Id:
