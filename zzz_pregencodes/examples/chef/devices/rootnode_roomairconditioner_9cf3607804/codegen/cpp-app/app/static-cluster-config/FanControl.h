@@ -30,6 +30,9 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::PercentSetting::Id,
     Attributes::RockSetting::Id,
     Attributes::RockSupport::Id,
+    Attributes::SpeedCurrent::Id,
+    Attributes::SpeedMax::Id,
+    Attributes::SpeedSetting::Id,
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
@@ -46,6 +49,7 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .featureMap = BitFlags<FeatureBitmapType> {
             FeatureBitmapType::kMultiSpeed, // feature bit 0x1
             FeatureBitmapType::kRocking, // feature bit 0x4
+            FeatureBitmapType::kStep, // feature bit 0x10
             FeatureBitmapType::kAirflowDirection// feature bit 0x20
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
@@ -68,6 +72,9 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::PercentSetting::Id:
     case Attributes::RockSetting::Id:
     case Attributes::RockSupport::Id:
+    case Attributes::SpeedCurrent::Id:
+    case Attributes::SpeedMax::Id:
+    case Attributes::SpeedSetting::Id:
       return true;
     default:
       return false;

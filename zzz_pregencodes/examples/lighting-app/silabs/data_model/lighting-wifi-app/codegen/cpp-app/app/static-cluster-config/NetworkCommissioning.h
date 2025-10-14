@@ -18,9 +18,12 @@ namespace NetworkCommissioning {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id,
+    Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::ConnectMaxTimeSeconds::Id,
     Attributes::FeatureMap::Id,
+    Attributes::GeneratedCommandList::Id,
     Attributes::InterfaceEnabled::Id,
     Attributes::LastConnectErrorValue::Id,
     Attributes::LastNetworkID::Id,
@@ -60,9 +63,12 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
 // If a specific attribute is supported at all across all endpoint static instantiations
 inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
   switch (attributeId) {
+    case Attributes::AcceptedCommandList::Id:
+    case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::ConnectMaxTimeSeconds::Id:
     case Attributes::FeatureMap::Id:
+    case Attributes::GeneratedCommandList::Id:
     case Attributes::InterfaceEnabled::Id:
     case Attributes::LastConnectErrorValue::Id:
     case Attributes::LastNetworkID::Id:

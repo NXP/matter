@@ -19,8 +19,14 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         emberAfBasicInformationClusterInitCallback(endpoint);
         break;
+    case app::Clusters::CommodityMetering::Id:
+        emberAfCommodityMeteringClusterInitCallback(endpoint);
+        break;
     case app::Clusters::CommodityPrice::Id:
         emberAfCommodityPriceClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::CommodityTariff::Id:
+        emberAfCommodityTariffClusterInitCallback(endpoint);
         break;
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterInitCallback(endpoint);
@@ -78,8 +84,14 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         emberAfBasicInformationClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::CommodityMetering::Id:
+        emberAfCommodityMeteringClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::CommodityPrice::Id:
         emberAfCommodityPriceClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::CommodityTariff::Id:
+        emberAfCommodityTariffClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterShutdownCallback(endpoint);

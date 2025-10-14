@@ -40,6 +40,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Groups::Id:
         emberAfGroupsClusterInitCallback(endpoint);
         break;
+    case app::Clusters::IcdManagement::Id:
+        emberAfIcdManagementClusterInitCallback(endpoint);
+        break;
     case app::Clusters::Identify::Id:
         emberAfIdentifyClusterInitCallback(endpoint);
         break;
@@ -57,6 +60,12 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::OtaSoftwareUpdateRequestor::Id:
         emberAfOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::ScenesManagement::Id:
+        emberAfScenesManagementClusterInitCallback(endpoint);
         break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterInitCallback(endpoint);
@@ -108,6 +117,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Groups::Id:
         emberAfGroupsClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::IcdManagement::Id:
+        emberAfIcdManagementClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::Identify::Id:
         emberAfIdentifyClusterShutdownCallback(endpoint);
         break;
@@ -125,6 +137,12 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::OtaSoftwareUpdateRequestor::Id:
         emberAfOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::ScenesManagement::Id:
+        emberAfScenesManagementClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterShutdownCallback(endpoint);

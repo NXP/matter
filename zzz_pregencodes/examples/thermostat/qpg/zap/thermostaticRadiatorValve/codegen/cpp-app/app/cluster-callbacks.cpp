@@ -19,9 +19,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         emberAfBasicInformationClusterInitCallback(endpoint);
         break;
-    case app::Clusters::Binding::Id:
-        emberAfBindingClusterInitCallback(endpoint);
-        break;
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterInitCallback(endpoint);
         break;
@@ -40,6 +37,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Groups::Id:
         emberAfGroupsClusterInitCallback(endpoint);
         break;
+    case app::Clusters::IcdManagement::Id:
+        emberAfIcdManagementClusterInitCallback(endpoint);
+        break;
     case app::Clusters::Identify::Id:
         emberAfIdentifyClusterInitCallback(endpoint);
         break;
@@ -52,6 +52,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::OtaSoftwareUpdateRequestor::Id:
         emberAfOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
         break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterInitCallback(endpoint);
+        break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterInitCallback(endpoint);
         break;
@@ -63,9 +66,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::ThreadNetworkDiagnostics::Id:
         emberAfThreadNetworkDiagnosticsClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::UnitLocalization::Id:
-        emberAfUnitLocalizationClusterInitCallback(endpoint);
         break;
     case app::Clusters::UserLabel::Id:
         emberAfUserLabelClusterInitCallback(endpoint);
@@ -90,9 +90,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         emberAfBasicInformationClusterShutdownCallback(endpoint);
         break;
-    case app::Clusters::Binding::Id:
-        emberAfBindingClusterShutdownCallback(endpoint);
-        break;
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterShutdownCallback(endpoint);
         break;
@@ -111,6 +108,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Groups::Id:
         emberAfGroupsClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::IcdManagement::Id:
+        emberAfIcdManagementClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::Identify::Id:
         emberAfIdentifyClusterShutdownCallback(endpoint);
         break;
@@ -123,6 +123,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::OtaSoftwareUpdateRequestor::Id:
         emberAfOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::PowerSource::Id:
+        emberAfPowerSourceClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::SoftwareDiagnostics::Id:
         emberAfSoftwareDiagnosticsClusterShutdownCallback(endpoint);
         break;
@@ -134,9 +137,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::ThreadNetworkDiagnostics::Id:
         emberAfThreadNetworkDiagnosticsClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::UnitLocalization::Id:
-        emberAfUnitLocalizationClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::UserLabel::Id:
         emberAfUserLabelClusterShutdownCallback(endpoint);

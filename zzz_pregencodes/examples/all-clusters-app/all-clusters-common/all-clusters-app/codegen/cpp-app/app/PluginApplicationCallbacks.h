@@ -58,6 +58,7 @@ void MatterPowerSourcePluginServerInitCallback();
 void MatterPowerSourceConfigurationPluginServerInitCallback();
 void MatterPressureMeasurementPluginServerInitCallback();
 void MatterPumpConfigurationAndControlPluginServerInitCallback();
+void MatterPushAvStreamTransportPluginServerInitCallback();
 void MatterRadonConcentrationMeasurementPluginServerInitCallback();
 void MatterRefrigeratorAlarmPluginServerInitCallback();
 void MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerInitCallback();
@@ -77,6 +78,7 @@ void MatterThermostatUserInterfaceConfigurationPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterTimeFormatLocalizationPluginServerInitCallback();
 void MatterTimeSynchronizationPluginServerInitCallback();
+void MatterTlsCertificateManagementPluginServerInitCallback();
 void MatterTlsClientManagementPluginServerInitCallback();
 void MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerInitCallback();
 void MatterUnitLocalizationPluginServerInitCallback();
@@ -145,6 +147,7 @@ void MatterPowerSourcePluginServerShutdownCallback();
 void MatterPowerSourceConfigurationPluginServerShutdownCallback();
 void MatterPressureMeasurementPluginServerShutdownCallback();
 void MatterPumpConfigurationAndControlPluginServerShutdownCallback();
+void MatterPushAvStreamTransportPluginServerShutdownCallback();
 void MatterRadonConcentrationMeasurementPluginServerShutdownCallback();
 void MatterRefrigeratorAlarmPluginServerShutdownCallback();
 void MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerShutdownCallback();
@@ -164,6 +167,7 @@ void MatterThermostatUserInterfaceConfigurationPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterTimeFormatLocalizationPluginServerShutdownCallback();
 void MatterTimeSynchronizationPluginServerShutdownCallback();
+void MatterTlsCertificateManagementPluginServerShutdownCallback();
 void MatterTlsClientManagementPluginServerShutdownCallback();
 void MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerShutdownCallback();
 void MatterUnitLocalizationPluginServerShutdownCallback();
@@ -234,6 +238,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterPowerSourceConfigurationPluginServerInitCallback(); \
     MatterPressureMeasurementPluginServerInitCallback(); \
     MatterPumpConfigurationAndControlPluginServerInitCallback(); \
+    MatterPushAvStreamTransportPluginServerInitCallback(); \
     MatterRadonConcentrationMeasurementPluginServerInitCallback(); \
     MatterRefrigeratorAlarmPluginServerInitCallback(); \
     MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerInitCallback(); \
@@ -253,6 +258,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterTimeFormatLocalizationPluginServerInitCallback(); \
     MatterTimeSynchronizationPluginServerInitCallback(); \
+    MatterTlsCertificateManagementPluginServerInitCallback(); \
     MatterTlsClientManagementPluginServerInitCallback(); \
     MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerInitCallback(); \
     MatterUnitLocalizationPluginServerInitCallback(); \
@@ -323,6 +329,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterPowerSourceConfigurationPluginServerShutdownCallback(); \
     MatterPressureMeasurementPluginServerShutdownCallback(); \
     MatterPumpConfigurationAndControlPluginServerShutdownCallback(); \
+    MatterPushAvStreamTransportPluginServerShutdownCallback(); \
     MatterRadonConcentrationMeasurementPluginServerShutdownCallback(); \
     MatterRefrigeratorAlarmPluginServerShutdownCallback(); \
     MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerShutdownCallback(); \
@@ -342,6 +349,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterTimeFormatLocalizationPluginServerShutdownCallback(); \
     MatterTimeSynchronizationPluginServerShutdownCallback(); \
+    MatterTlsCertificateManagementPluginServerShutdownCallback(); \
     MatterTlsClientManagementPluginServerShutdownCallback(); \
     MatterTotalVolatileOrganicCompoundsConcentrationMeasurementPluginServerShutdownCallback(); \
     MatterUnitLocalizationPluginServerShutdownCallback(); \

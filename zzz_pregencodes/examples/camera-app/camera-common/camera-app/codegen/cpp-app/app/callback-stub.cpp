@@ -211,6 +211,16 @@ void __attribute__((weak)) emberAfPowerSourceClusterShutdownCallback(EndpointId 
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfPushAvStreamTransportClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfPushAvStreamTransportClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfSoftwareDiagnosticsClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning
@@ -241,6 +251,26 @@ void __attribute__((weak)) emberAfTimeSynchronizationClusterShutdownCallback(End
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfTlsCertificateManagementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfTlsCertificateManagementClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfTlsClientManagementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfTlsClientManagementClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfUserLabelClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning
@@ -267,6 +297,16 @@ void __attribute__((weak)) emberAfWiFiNetworkDiagnosticsClusterInitCallback(Endp
     (void) endpoint;
 }
 void __attribute__((weak)) emberAfWiFiNetworkDiagnosticsClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfZoneManagementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfZoneManagementClusterShutdownCallback(EndpointId endpoint)
 {
     // To prevent warning
     (void) endpoint;

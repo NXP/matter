@@ -2,7 +2,9 @@
 void MatterAccessControlPluginServerInitCallback();
 void MatterAdministratorCommissioningPluginServerInitCallback();
 void MatterBasicInformationPluginServerInitCallback();
+void MatterCommodityMeteringPluginServerInitCallback();
 void MatterCommodityPricePluginServerInitCallback();
+void MatterCommodityTariffPluginServerInitCallback();
 void MatterDescriptorPluginServerInitCallback();
 void MatterElectricalGridConditionsPluginServerInitCallback();
 void MatterGeneralCommissioningPluginServerInitCallback();
@@ -18,7 +20,9 @@ void MatterUnitLocalizationPluginServerInitCallback();
 void MatterAccessControlPluginServerShutdownCallback();
 void MatterAdministratorCommissioningPluginServerShutdownCallback();
 void MatterBasicInformationPluginServerShutdownCallback();
+void MatterCommodityMeteringPluginServerShutdownCallback();
 void MatterCommodityPricePluginServerShutdownCallback();
+void MatterCommodityTariffPluginServerShutdownCallback();
 void MatterDescriptorPluginServerShutdownCallback();
 void MatterElectricalGridConditionsPluginServerShutdownCallback();
 void MatterGeneralCommissioningPluginServerShutdownCallback();
@@ -36,7 +40,9 @@ void MatterUnitLocalizationPluginServerShutdownCallback();
     MatterAccessControlPluginServerInitCallback(); \
     MatterAdministratorCommissioningPluginServerInitCallback(); \
     MatterBasicInformationPluginServerInitCallback(); \
+    MatterCommodityMeteringPluginServerInitCallback(); \
     MatterCommodityPricePluginServerInitCallback(); \
+    MatterCommodityTariffPluginServerInitCallback(); \
     MatterDescriptorPluginServerInitCallback(); \
     MatterElectricalGridConditionsPluginServerInitCallback(); \
     MatterGeneralCommissioningPluginServerInitCallback(); \
@@ -54,7 +60,9 @@ void MatterUnitLocalizationPluginServerShutdownCallback();
     MatterAccessControlPluginServerShutdownCallback(); \
     MatterAdministratorCommissioningPluginServerShutdownCallback(); \
     MatterBasicInformationPluginServerShutdownCallback(); \
+    MatterCommodityMeteringPluginServerShutdownCallback(); \
     MatterCommodityPricePluginServerShutdownCallback(); \
+    MatterCommodityTariffPluginServerShutdownCallback(); \
     MatterDescriptorPluginServerShutdownCallback(); \
     MatterElectricalGridConditionsPluginServerShutdownCallback(); \
     MatterGeneralCommissioningPluginServerShutdownCallback(); \

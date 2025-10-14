@@ -187,6 +187,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::PumpConfigurationAndControl::Id:
         emberAfPumpConfigurationAndControlClusterInitCallback(endpoint);
         break;
+    case app::Clusters::PushAvStreamTransport::Id:
+        emberAfPushAvStreamTransportClusterInitCallback(endpoint);
+        break;
     case app::Clusters::RadonConcentrationMeasurement::Id:
         emberAfRadonConcentrationMeasurementClusterInitCallback(endpoint);
         break;
@@ -243,6 +246,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::TimeSynchronization::Id:
         emberAfTimeSynchronizationClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::TlsCertificateManagement::Id:
+        emberAfTlsCertificateManagementClusterInitCallback(endpoint);
         break;
     case app::Clusters::TlsClientManagement::Id:
         emberAfTlsClientManagementClusterInitCallback(endpoint);
@@ -459,6 +465,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::PumpConfigurationAndControl::Id:
         emberAfPumpConfigurationAndControlClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::PushAvStreamTransport::Id:
+        emberAfPushAvStreamTransportClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::RadonConcentrationMeasurement::Id:
         emberAfRadonConcentrationMeasurementClusterShutdownCallback(endpoint);
         break;
@@ -515,6 +524,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::TimeSynchronization::Id:
         emberAfTimeSynchronizationClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::TlsCertificateManagement::Id:
+        emberAfTlsCertificateManagementClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::TlsClientManagement::Id:
         emberAfTlsClientManagementClusterShutdownCallback(endpoint);

@@ -17,7 +17,7 @@ namespace Clusters {
 namespace ThreadNetworkDiagnostics {
 namespace StaticApplicationConfig {
 namespace detail {
-inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
+inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::ActiveNetworkFaultsList::Id,
     Attributes::AttributeList::Id,
@@ -25,6 +25,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::ChannelPage0Mask::Id,
     Attributes::ClusterRevision::Id,
     Attributes::DataVersion::Id,
+    Attributes::ExtAddress::Id,
     Attributes::ExtendedPanId::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -35,6 +36,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::OperationalDatasetComponents::Id,
     Attributes::PanId::Id,
     Attributes::PartitionId::Id,
+    Attributes::Rloc16::Id,
     Attributes::RouteTable::Id,
     Attributes::RoutingRole::Id,
     Attributes::SecurityPolicy::Id,
@@ -47,10 +49,10 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
+        .endpointNumber = 1,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands = Span<const CommandId>(),
     },
 } };
@@ -65,6 +67,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ChannelPage0Mask::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::DataVersion::Id:
+    case Attributes::ExtAddress::Id:
     case Attributes::ExtendedPanId::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
@@ -75,6 +78,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::OperationalDatasetComponents::Id:
     case Attributes::PanId::Id:
     case Attributes::PartitionId::Id:
+    case Attributes::Rloc16::Id:
     case Attributes::RouteTable::Id:
     case Attributes::RoutingRole::Id:
     case Attributes::SecurityPolicy::Id:

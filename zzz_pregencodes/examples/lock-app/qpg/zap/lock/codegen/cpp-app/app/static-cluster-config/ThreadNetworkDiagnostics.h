@@ -29,6 +29,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::ClusterRevision::Id,
     Attributes::DataVersion::Id,
     Attributes::DetachedRoleCount::Id,
+    Attributes::ExtAddress::Id,
     Attributes::ExtendedPanId::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -43,6 +44,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::ParentChangeCount::Id,
     Attributes::PartitionId::Id,
     Attributes::PartitionIdChangeCount::Id,
+    Attributes::Rloc16::Id,
     Attributes::RouterRoleCount::Id,
     Attributes::RouteTable::Id,
     Attributes::RoutingRole::Id,
@@ -121,6 +123,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ClusterRevision::Id:
     case Attributes::DataVersion::Id:
     case Attributes::DetachedRoleCount::Id:
+    case Attributes::ExtAddress::Id:
     case Attributes::ExtendedPanId::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
@@ -135,6 +138,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::ParentChangeCount::Id:
     case Attributes::PartitionId::Id:
     case Attributes::PartitionIdChangeCount::Id:
+    case Attributes::Rloc16::Id:
     case Attributes::RouteTable::Id:
     case Attributes::RouterRoleCount::Id:
     case Attributes::RoutingRole::Id:

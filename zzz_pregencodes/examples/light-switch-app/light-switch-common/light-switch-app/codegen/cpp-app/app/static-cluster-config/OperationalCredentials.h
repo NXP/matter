@@ -18,11 +18,14 @@ namespace OperationalCredentials {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id,
+    Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::CommissionedFabrics::Id,
     Attributes::CurrentFabricIndex::Id,
     Attributes::Fabrics::Id,
     Attributes::FeatureMap::Id,
+    Attributes::GeneratedCommandList::Id,
     Attributes::NOCs::Id,
     Attributes::SupportedFabrics::Id,
     Attributes::TrustedRootCertificates::Id,
@@ -64,11 +67,14 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
 inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
   switch (attributeId) {
     case Attributes::NOCs::Id:
+    case Attributes::AcceptedCommandList::Id:
+    case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::CommissionedFabrics::Id:
     case Attributes::CurrentFabricIndex::Id:
     case Attributes::Fabrics::Id:
     case Attributes::FeatureMap::Id:
+    case Attributes::GeneratedCommandList::Id:
     case Attributes::SupportedFabrics::Id:
     case Attributes::TrustedRootCertificates::Id:
       return true;

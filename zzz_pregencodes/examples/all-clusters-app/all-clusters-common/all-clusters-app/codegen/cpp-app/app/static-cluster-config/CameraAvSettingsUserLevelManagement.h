@@ -25,6 +25,7 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::MaxPresets::Id,
+    Attributes::MovementState::Id,
     Attributes::MPTZPosition::Id,
     Attributes::MPTZPresets::Id,
     Attributes::PanMax::Id,
@@ -70,6 +71,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::MaxPresets::Id:
+    case Attributes::MovementState::Id:
     case Attributes::PanMax::Id:
     case Attributes::PanMin::Id:
     case Attributes::TiltMax::Id:

@@ -37,10 +37,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::ColorLoopSet::Id,
-    Commands::EnhancedMoveHue::Id,
-    Commands::EnhancedMoveToHueAndSaturation::Id,
-    Commands::EnhancedStepHue::Id,
     Commands::MoveColorTemperature::Id,
     Commands::MoveToColorTemperature::Id,
     Commands::StepColorTemperature::Id,
@@ -90,10 +86,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
 // If a specific command is supported at all across all endpoint static instantiations
 inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
   switch (commandId) {
-    case Commands::ColorLoopSet::Id:
-    case Commands::EnhancedMoveHue::Id:
-    case Commands::EnhancedMoveToHueAndSaturation::Id:
-    case Commands::EnhancedStepHue::Id:
     case Commands::MoveColorTemperature::Id:
     case Commands::MoveToColorTemperature::Id:
     case Commands::StepColorTemperature::Id:

@@ -29,8 +29,6 @@
 
 // Parallel array data (*cluster*, attribute, privilege) for read attribute
 #define GENERATED_ACCESS_READ_ATTRIBUTE__CLUSTER { \
-    /* Cluster: On/Off, Attribute: StartUpOnOff, Privilege: view */ \
-    /* Cluster: Level Control, Attribute: StartUpCurrentLevel, Privilege: view */ \
     0x0000001F, /* Cluster: Access Control, Attribute: ACL, Privilege: administer */ \
     0x00000031, /* Cluster: Network Commissioning, Attribute: MaxNetworks, Privilege: administer */ \
     0x00000031, /* Cluster: Network Commissioning, Attribute: Networks, Privilege: administer */ \
@@ -77,8 +75,6 @@
 
 // Parallel array data (cluster, *attribute*, privilege) for read attribute
 #define GENERATED_ACCESS_READ_ATTRIBUTE__ATTRIBUTE { \
-    /* Cluster: On/Off, Attribute: StartUpOnOff, Privilege: view */ \
-    /* Cluster: Level Control, Attribute: StartUpCurrentLevel, Privilege: view */ \
     0x00000000, /* Cluster: Access Control, Attribute: ACL, Privilege: administer */ \
     0x00000000, /* Cluster: Network Commissioning, Attribute: MaxNetworks, Privilege: administer */ \
     0x00000001, /* Cluster: Network Commissioning, Attribute: Networks, Privilege: administer */ \
@@ -125,8 +121,6 @@
 
 // Parallel array data (cluster, attribute, *privilege*) for read attribute
 #define GENERATED_ACCESS_READ_ATTRIBUTE__PRIVILEGE { \
-    /* Cluster: On/Off, Attribute: StartUpOnOff, Privilege: view */ \
-    /* Cluster: Level Control, Attribute: StartUpCurrentLevel, Privilege: view */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Attribute: ACL, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Network Commissioning, Attribute: MaxNetworks, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Network Commissioning, Attribute: Networks, Privilege: administer */ \
@@ -233,17 +227,6 @@
     0x00000201, /* Cluster: Thermostat, Attribute: ACCapacityformat, Privilege: manage */ \
     0x00000204, /* Cluster: Thermostat User Interface Configuration, Attribute: KeypadLockout, Privilege: manage */ \
     0x00000204, /* Cluster: Thermostat User Interface Configuration, Attribute: ScheduleProgrammingVisibility, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: WhitePointX, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: WhitePointY, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointRX, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointRY, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointRIntensity, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointGX, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointGY, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointGIntensity, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointBX, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointBY, Privilege: manage */ \
-    0x00000300, /* Cluster: Color Control, Attribute: ColorPointBIntensity, Privilege: manage */ \
     0x00000300, /* Cluster: Color Control, Attribute: StartUpColorTemperatureMireds, Privilege: manage */ \
     0x00000406, /* Cluster: Occupancy Sensing, Attribute: PIROccupiedToUnoccupiedDelay, Privilege: manage */ \
     0x00000406, /* Cluster: Occupancy Sensing, Attribute: PIRUnoccupiedToOccupiedDelay, Privilege: manage */ \
@@ -316,17 +299,6 @@
     0x00000047, /* Cluster: Thermostat, Attribute: ACCapacityformat, Privilege: manage */ \
     0x00000001, /* Cluster: Thermostat User Interface Configuration, Attribute: KeypadLockout, Privilege: manage */ \
     0x00000002, /* Cluster: Thermostat User Interface Configuration, Attribute: ScheduleProgrammingVisibility, Privilege: manage */ \
-    0x00000030, /* Cluster: Color Control, Attribute: WhitePointX, Privilege: manage */ \
-    0x00000031, /* Cluster: Color Control, Attribute: WhitePointY, Privilege: manage */ \
-    0x00000032, /* Cluster: Color Control, Attribute: ColorPointRX, Privilege: manage */ \
-    0x00000033, /* Cluster: Color Control, Attribute: ColorPointRY, Privilege: manage */ \
-    0x00000034, /* Cluster: Color Control, Attribute: ColorPointRIntensity, Privilege: manage */ \
-    0x00000036, /* Cluster: Color Control, Attribute: ColorPointGX, Privilege: manage */ \
-    0x00000037, /* Cluster: Color Control, Attribute: ColorPointGY, Privilege: manage */ \
-    0x00000038, /* Cluster: Color Control, Attribute: ColorPointGIntensity, Privilege: manage */ \
-    0x0000003A, /* Cluster: Color Control, Attribute: ColorPointBX, Privilege: manage */ \
-    0x0000003B, /* Cluster: Color Control, Attribute: ColorPointBY, Privilege: manage */ \
-    0x0000003C, /* Cluster: Color Control, Attribute: ColorPointBIntensity, Privilege: manage */ \
     0x00004010, /* Cluster: Color Control, Attribute: StartUpColorTemperatureMireds, Privilege: manage */ \
     0x00000010, /* Cluster: Occupancy Sensing, Attribute: PIROccupiedToUnoccupiedDelay, Privilege: manage */ \
     0x00000011, /* Cluster: Occupancy Sensing, Attribute: PIRUnoccupiedToOccupiedDelay, Privilege: manage */ \
@@ -399,17 +371,6 @@
     chip::Access::Privilege::kManage, /* Cluster: Thermostat, Attribute: ACCapacityformat, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Thermostat User Interface Configuration, Attribute: KeypadLockout, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Thermostat User Interface Configuration, Attribute: ScheduleProgrammingVisibility, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: WhitePointX, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: WhitePointY, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointRX, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointRY, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointRIntensity, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointGX, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointGY, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointGIntensity, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointBX, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointBY, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: ColorPointBIntensity, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Color Control, Attribute: StartUpColorTemperatureMireds, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Occupancy Sensing, Attribute: PIROccupiedToUnoccupiedDelay, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Occupancy Sensing, Attribute: PIRUnoccupiedToOccupiedDelay, Privilege: manage */ \

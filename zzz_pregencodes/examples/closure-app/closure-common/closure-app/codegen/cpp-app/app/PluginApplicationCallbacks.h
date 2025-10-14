@@ -13,8 +13,6 @@ void MatterIcdManagementPluginServerInitCallback();
 void MatterIdentifyPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
-void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
-void MatterPowerSourcePluginServerInitCallback();
 void MatterSoftwareDiagnosticsPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterUserLabelPluginServerInitCallback();
@@ -33,8 +31,6 @@ void MatterIcdManagementPluginServerShutdownCallback();
 void MatterIdentifyPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
-void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
-void MatterPowerSourcePluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterUserLabelPluginServerShutdownCallback();
@@ -55,8 +51,6 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterIdentifyPluginServerInitCallback(); \
     MatterNetworkCommissioningPluginServerInitCallback(); \
     MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
-    MatterPowerSourcePluginServerInitCallback(); \
     MatterSoftwareDiagnosticsPluginServerInitCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
     MatterUserLabelPluginServerInitCallback(); \
@@ -77,8 +71,6 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterIdentifyPluginServerShutdownCallback(); \
     MatterNetworkCommissioningPluginServerShutdownCallback(); \
     MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
-    MatterPowerSourcePluginServerShutdownCallback(); \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
     MatterUserLabelPluginServerShutdownCallback(); \

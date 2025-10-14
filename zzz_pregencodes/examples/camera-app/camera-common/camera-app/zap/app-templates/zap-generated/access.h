@@ -240,6 +240,7 @@
     0x00000004, /* Cluster: Groups, Command: RemoveGroup, Privilege: manage */ \
     0x00000004, /* Cluster: Groups, Command: RemoveAllGroups, Privilege: manage */ \
     0x00000004, /* Cluster: Groups, Command: AddGroupIfIdentifying, Privilege: manage */ \
+    0x0000002A, /* Cluster: OTA Software Update Requestor, Command: AnnounceOTAProvider, Privilege: administer */ \
     0x00000030, /* Cluster: General Commissioning, Command: ArmFailSafe, Privilege: administer */ \
     0x00000030, /* Cluster: General Commissioning, Command: SetRegulatoryConfig, Privilege: administer */ \
     0x00000030, /* Cluster: General Commissioning, Command: CommissioningComplete, Privilege: administer */ \
@@ -273,6 +274,11 @@
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    0x00000550, /* Cluster: Zone Management, Command: CreateTwoDCartesianZone, Privilege: manage */ \
+    0x00000550, /* Cluster: Zone Management, Command: UpdateTwoDCartesianZone, Privilege: manage */ \
+    0x00000550, /* Cluster: Zone Management, Command: RemoveZone, Privilege: manage */ \
+    0x00000550, /* Cluster: Zone Management, Command: CreateOrUpdateTrigger, Privilege: manage */ \
+    0x00000550, /* Cluster: Zone Management, Command: RemoveTrigger, Privilege: manage */ \
     0x00000551, /* Cluster: Camera AV Stream Management, Command: AudioStreamAllocate, Privilege: manage */ \
     0x00000551, /* Cluster: Camera AV Stream Management, Command: AudioStreamDeallocate, Privilege: manage */ \
     0x00000551, /* Cluster: Camera AV Stream Management, Command: VideoStreamAllocate, Privilege: manage */ \
@@ -282,6 +288,17 @@
     0x00000551, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamModify, Privilege: manage */ \
     0x00000551, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamDeallocate, Privilege: manage */ \
     0x00000551, /* Cluster: Camera AV Stream Management, Command: SetStreamPriorities, Privilege: administer */ \
+    0x00000555, /* Cluster: Push AV Stream Transport, Command: AllocatePushTransport, Privilege: manage */ \
+    0x00000555, /* Cluster: Push AV Stream Transport, Command: DeallocatePushTransport, Privilege: manage */ \
+    0x00000555, /* Cluster: Push AV Stream Transport, Command: ModifyPushTransport, Privilege: manage */ \
+    0x00000555, /* Cluster: Push AV Stream Transport, Command: SetTransportStatus, Privilege: manage */ \
+    0x00000801, /* Cluster: TLS Certificate Management, Command: ProvisionRootCertificate, Privilege: administer */ \
+    0x00000801, /* Cluster: TLS Certificate Management, Command: RemoveRootCertificate, Privilege: administer */ \
+    0x00000801, /* Cluster: TLS Certificate Management, Command: ClientCSR, Privilege: administer */ \
+    0x00000801, /* Cluster: TLS Certificate Management, Command: ProvisionClientCertificate, Privilege: administer */ \
+    0x00000801, /* Cluster: TLS Certificate Management, Command: RemoveClientCertificate, Privilege: administer */ \
+    0x00000802, /* Cluster: TLS Client Management, Command: ProvisionEndpoint, Privilege: administer */ \
+    0x00000802, /* Cluster: TLS Client Management, Command: RemoveEndpoint, Privilege: administer */ \
     0xFFF1FC06, /* Cluster: Fault Injection, Command: FailAtFault, Privilege: manage */ \
     0xFFF1FC06, /* Cluster: Fault Injection, Command: FailRandomlyAtFault, Privilege: manage */ \
 }
@@ -294,6 +311,7 @@
     0x00000003, /* Cluster: Groups, Command: RemoveGroup, Privilege: manage */ \
     0x00000004, /* Cluster: Groups, Command: RemoveAllGroups, Privilege: manage */ \
     0x00000005, /* Cluster: Groups, Command: AddGroupIfIdentifying, Privilege: manage */ \
+    0x00000000, /* Cluster: OTA Software Update Requestor, Command: AnnounceOTAProvider, Privilege: administer */ \
     0x00000000, /* Cluster: General Commissioning, Command: ArmFailSafe, Privilege: administer */ \
     0x00000002, /* Cluster: General Commissioning, Command: SetRegulatoryConfig, Privilege: administer */ \
     0x00000004, /* Cluster: General Commissioning, Command: CommissioningComplete, Privilege: administer */ \
@@ -327,6 +345,11 @@
     0x00000001, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     0x00000003, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     0x00000004, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    0x00000000, /* Cluster: Zone Management, Command: CreateTwoDCartesianZone, Privilege: manage */ \
+    0x00000002, /* Cluster: Zone Management, Command: UpdateTwoDCartesianZone, Privilege: manage */ \
+    0x00000003, /* Cluster: Zone Management, Command: RemoveZone, Privilege: manage */ \
+    0x00000004, /* Cluster: Zone Management, Command: CreateOrUpdateTrigger, Privilege: manage */ \
+    0x00000005, /* Cluster: Zone Management, Command: RemoveTrigger, Privilege: manage */ \
     0x00000000, /* Cluster: Camera AV Stream Management, Command: AudioStreamAllocate, Privilege: manage */ \
     0x00000002, /* Cluster: Camera AV Stream Management, Command: AudioStreamDeallocate, Privilege: manage */ \
     0x00000003, /* Cluster: Camera AV Stream Management, Command: VideoStreamAllocate, Privilege: manage */ \
@@ -336,6 +359,17 @@
     0x00000009, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamModify, Privilege: manage */ \
     0x0000000A, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamDeallocate, Privilege: manage */ \
     0x0000000B, /* Cluster: Camera AV Stream Management, Command: SetStreamPriorities, Privilege: administer */ \
+    0x00000000, /* Cluster: Push AV Stream Transport, Command: AllocatePushTransport, Privilege: manage */ \
+    0x00000002, /* Cluster: Push AV Stream Transport, Command: DeallocatePushTransport, Privilege: manage */ \
+    0x00000003, /* Cluster: Push AV Stream Transport, Command: ModifyPushTransport, Privilege: manage */ \
+    0x00000004, /* Cluster: Push AV Stream Transport, Command: SetTransportStatus, Privilege: manage */ \
+    0x00000000, /* Cluster: TLS Certificate Management, Command: ProvisionRootCertificate, Privilege: administer */ \
+    0x00000006, /* Cluster: TLS Certificate Management, Command: RemoveRootCertificate, Privilege: administer */ \
+    0x00000007, /* Cluster: TLS Certificate Management, Command: ClientCSR, Privilege: administer */ \
+    0x00000009, /* Cluster: TLS Certificate Management, Command: ProvisionClientCertificate, Privilege: administer */ \
+    0x0000000E, /* Cluster: TLS Certificate Management, Command: RemoveClientCertificate, Privilege: administer */ \
+    0x00000000, /* Cluster: TLS Client Management, Command: ProvisionEndpoint, Privilege: administer */ \
+    0x00000004, /* Cluster: TLS Client Management, Command: RemoveEndpoint, Privilege: administer */ \
     0x00000000, /* Cluster: Fault Injection, Command: FailAtFault, Privilege: manage */ \
     0x00000001, /* Cluster: Fault Injection, Command: FailRandomlyAtFault, Privilege: manage */ \
 }
@@ -348,6 +382,7 @@
     chip::Access::Privilege::kManage, /* Cluster: Groups, Command: RemoveGroup, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Groups, Command: RemoveAllGroups, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Groups, Command: AddGroupIfIdentifying, Privilege: manage */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: OTA Software Update Requestor, Command: AnnounceOTAProvider, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: General Commissioning, Command: ArmFailSafe, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: General Commissioning, Command: SetRegulatoryConfig, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: General Commissioning, Command: CommissioningComplete, Privilege: administer */ \
@@ -381,6 +416,11 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Zone Management, Command: CreateTwoDCartesianZone, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Zone Management, Command: UpdateTwoDCartesianZone, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Zone Management, Command: RemoveZone, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Zone Management, Command: CreateOrUpdateTrigger, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Zone Management, Command: RemoveTrigger, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Command: AudioStreamAllocate, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Command: AudioStreamDeallocate, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Command: VideoStreamAllocate, Privilege: manage */ \
@@ -390,6 +430,17 @@
     chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamModify, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamDeallocate, Privilege: manage */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Camera AV Stream Management, Command: SetStreamPriorities, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: AllocatePushTransport, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: DeallocatePushTransport, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: ModifyPushTransport, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: SetTransportStatus, Privilege: manage */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: ProvisionRootCertificate, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: RemoveRootCertificate, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: ClientCSR, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: ProvisionClientCertificate, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: RemoveClientCertificate, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: TLS Client Management, Command: ProvisionEndpoint, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: TLS Client Management, Command: RemoveEndpoint, Privilege: administer */ \
     chip::Access::Privilege::kManage, /* Cluster: Fault Injection, Command: FailAtFault, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Fault Injection, Command: FailRandomlyAtFault, Privilege: manage */ \
 }

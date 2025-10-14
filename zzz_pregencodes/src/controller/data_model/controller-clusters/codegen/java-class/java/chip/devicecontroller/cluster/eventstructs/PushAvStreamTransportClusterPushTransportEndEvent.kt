@@ -27,14 +27,10 @@ import matter.tlv.TlvWriter
 import java.util.Optional
 
 class PushAvStreamTransportClusterPushTransportEndEvent (
-    val connectionID: UInt,
-    val triggerType: UInt,
-    val activationReason: Optional<UInt>) {
+    val connectionID: UInt) {
   override fun toString(): String  = buildString {
     append("PushAvStreamTransportClusterPushTransportEndEvent {\n")
     append("\tconnectionID : $connectionID\n")
-    append("\ttriggerType : $triggerType\n")
-    append("\tactivationReason : $activationReason\n")
     append("}\n")
   }
 
@@ -42,33 +38,20 @@ class PushAvStreamTransportClusterPushTransportEndEvent (
     tlvWriter.apply {
       startStructure(tlvTag)
       put(ContextSpecificTag(TAG_CONNECTION_ID), connectionID)
-      put(ContextSpecificTag(TAG_TRIGGER_TYPE), triggerType)
-      if (activationReason.isPresent) {
-      val optactivationReason = activationReason.get()
-      put(ContextSpecificTag(TAG_ACTIVATION_REASON), optactivationReason)
-    }
       endStructure()
     }
   }
 
   companion object {
     private const val TAG_CONNECTION_ID = 0
-    private const val TAG_TRIGGER_TYPE = 1
-    private const val TAG_ACTIVATION_REASON = 2
 
     fun fromTlv(tlvTag: Tag, tlvReader: TlvReader) : PushAvStreamTransportClusterPushTransportEndEvent {
       tlvReader.enterStructure(tlvTag)
       val connectionID = tlvReader.getUInt(ContextSpecificTag(TAG_CONNECTION_ID))
-      val triggerType = tlvReader.getUInt(ContextSpecificTag(TAG_TRIGGER_TYPE))
-      val activationReason = if (tlvReader.isNextTag(ContextSpecificTag(TAG_ACTIVATION_REASON))) {
-      Optional.of(tlvReader.getUInt(ContextSpecificTag(TAG_ACTIVATION_REASON)))
-    } else {
-      Optional.empty()
-    }
       
       tlvReader.exitContainer()
 
-      return PushAvStreamTransportClusterPushTransportEndEvent(connectionID, triggerType, activationReason)
+      return PushAvStreamTransportClusterPushTransportEndEvent(connectionID)
     }
   }
 }

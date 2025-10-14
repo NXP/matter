@@ -22,9 +22,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterInitCallback(endpoint);
         break;
-    case app::Clusters::EthernetNetworkDiagnostics::Id:
-        emberAfEthernetNetworkDiagnosticsClusterInitCallback(endpoint);
-        break;
     case app::Clusters::GeneralCommissioning::Id:
         emberAfGeneralCommissioningClusterInitCallback(endpoint);
         break;
@@ -48,9 +45,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::ThreadNetworkDirectory::Id:
         emberAfThreadNetworkDirectoryClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        emberAfWiFiNetworkDiagnosticsClusterInitCallback(endpoint);
         break;
     case app::Clusters::WiFiNetworkManagement::Id:
         emberAfWiFiNetworkManagementClusterInitCallback(endpoint);
@@ -78,9 +72,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterShutdownCallback(endpoint);
         break;
-    case app::Clusters::EthernetNetworkDiagnostics::Id:
-        emberAfEthernetNetworkDiagnosticsClusterShutdownCallback(endpoint);
-        break;
     case app::Clusters::GeneralCommissioning::Id:
         emberAfGeneralCommissioningClusterShutdownCallback(endpoint);
         break;
@@ -104,9 +95,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::ThreadNetworkDirectory::Id:
         emberAfThreadNetworkDirectoryClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        emberAfWiFiNetworkDiagnosticsClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::WiFiNetworkManagement::Id:
         emberAfWiFiNetworkManagementClusterShutdownCallback(endpoint);

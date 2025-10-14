@@ -26,13 +26,11 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::GeneratedCommandList::Id,
     Attributes::LatchControlModes::Id,
     Attributes::LimitRange::Id,
-    Attributes::ModulationType::Id,
     Attributes::Overflow::Id,
     Attributes::Resolution::Id,
     Attributes::RotationAxis::Id,
     Attributes::StepValue::Id,
     Attributes::TargetState::Id,
-    Attributes::TranslationDirection::Id,
     Attributes::Unit::Id,
     Attributes::UnitRange::Id,
 };
@@ -51,13 +49,11 @@ inline constexpr AttributeId kEndpoint3EnabledAttributes[] = {
     Attributes::GeneratedCommandList::Id,
     Attributes::LatchControlModes::Id,
     Attributes::LimitRange::Id,
-    Attributes::ModulationType::Id,
     Attributes::Overflow::Id,
     Attributes::Resolution::Id,
     Attributes::RotationAxis::Id,
     Attributes::StepValue::Id,
     Attributes::TargetState::Id,
-    Attributes::TranslationDirection::Id,
     Attributes::Unit::Id,
     Attributes::UnitRange::Id,
 };
@@ -99,13 +95,11 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::GeneratedCommandList::Id:
     case Attributes::LatchControlModes::Id:
     case Attributes::LimitRange::Id:
-    case Attributes::ModulationType::Id:
     case Attributes::Overflow::Id:
     case Attributes::Resolution::Id:
     case Attributes::RotationAxis::Id:
     case Attributes::StepValue::Id:
     case Attributes::TargetState::Id:
-    case Attributes::TranslationDirection::Id:
     case Attributes::Unit::Id:
     case Attributes::UnitRange::Id:
       return true;

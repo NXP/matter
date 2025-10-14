@@ -44,7 +44,7 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::MicrophoneMinLevel::Id,
     Attributes::MicrophoneMuted::Id,
     Attributes::MicrophoneVolumeLevel::Id,
-    Attributes::MinViewport::Id,
+    Attributes::MinViewportResolution::Id,
     Attributes::NightVision::Id,
     Attributes::NightVisionIllum::Id,
     Attributes::NightVisionUsesInfrared::Id,
@@ -126,7 +126,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::MicrophoneMinLevel::Id:
     case Attributes::MicrophoneMuted::Id:
     case Attributes::MicrophoneVolumeLevel::Id:
-    case Attributes::MinViewport::Id:
+    case Attributes::MinViewportResolution::Id:
     case Attributes::NightVision::Id:
     case Attributes::NightVisionIllum::Id:
     case Attributes::NightVisionUsesInfrared::Id:
