@@ -111,10 +111,12 @@ LightSwitchApp::AppTask & LightSwitchApp::AppTask::GetDefaultInstance()
     return sAppTask;
 }
 
+#ifndef CONFIG_APP_TASK_CUSTOM_SINGLETON_IMPL
 chip::NXP::App::AppTaskBase & chip::NXP::App::GetAppTask()
 {
     return LightSwitchApp::AppTask::GetDefaultInstance();
 }
+#endif
 
 CHIP_ERROR LightSwitchApp::AppTask::ProcessSetStateClusterHandler(void)
 {
