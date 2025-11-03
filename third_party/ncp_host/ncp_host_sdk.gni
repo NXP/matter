@@ -29,11 +29,17 @@ template("ncp_host_sdk") {
   config("${ncp_host_target_name}_base_config") {
     include_dirs = []
     include_dirs += [
+      "${ncp_host_sdk_root}/drivers/gpio/",
       "${ncp_host_sdk_root}/src/",
+      "${ncp_host_sdk_root}/src/common/",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/",
       "${ncp_host_sdk_root}/src/common/ncp_cmd_node/",
-      "${ncp_host_sdk_root}/src/common/ncp_debug/",
+      "${ncp_host_sdk_root}/src/common/ncp_log/",
+      "${ncp_host_sdk_root}/src/common/osa/include",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_tlv/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/os/",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/sdio/",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/uart/",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/usb/",
@@ -97,8 +103,17 @@ template("ncp_host_sdk") {
       sources = []
     }
     sources += [
-      "${ncp_host_sdk_root}/src/common/crc/crc.c",
-      "${ncp_host_sdk_root}/src/common/lpm/lpm.c",
+      "${ncp_host_sdk_root}/drivers/gpio/gpio_driver.c",
+      "${ncp_host_sdk_root}/drivers/gpio/gpio_ncp_adapter.c",
+      "${ncp_host_sdk_root}/src/common/crc/ncp_crc_sw.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/ncp_pm_action.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/ncp_pm_sm.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/ncp_pm.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/os/ncp_pm_linux_host.c",
+      "${ncp_host_sdk_root}/src/common/ncp_log/ncp_log.c",
+      "${ncp_host_sdk_root}/src/common/osa/src/fsl_component_list.c",
+      "${ncp_host_sdk_root}/src/common/osa/src/fsl_os_abstraction_linux.c",
+      "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/ncp_intf_pm.c",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/sdio/ncp_intf_sdio.c",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/sdio/sdio.c",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_intf/spi/ncp_intf_spi.c",
