@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for OperationalCredentials based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -49,56 +49,17 @@ inline constexpr CommandId kEndpoint0EnabledCommands[] = {
     Commands::UpdateNOC::Id,
 };
 
-inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::CommissionedFabrics::Id,
-    Attributes::CurrentFabricIndex::Id,
-    Attributes::Fabrics::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::NOCs::Id,
-    Attributes::SupportedFabrics::Id,
-    Attributes::TrustedRootCertificates::Id,
-};
-
-inline constexpr CommandId kEndpoint2EnabledCommands[] = {
-    Commands::AddNOC::Id,
-    Commands::AddTrustedRootCertificate::Id,
-    Commands::AttestationRequest::Id,
-    Commands::AttestationResponse::Id,
-    Commands::CertificateChainRequest::Id,
-    Commands::CertificateChainResponse::Id,
-    Commands::CSRRequest::Id,
-    Commands::CSRResponse::Id,
-    Commands::NOCResponse::Id,
-    Commands::RemoveFabric::Id,
-    Commands::SetVIDVerificationStatement::Id,
-    Commands::SignVIDVerificationRequest::Id,
-    Commands::SignVIDVerificationResponse::Id,
-    Commands::UpdateFabricLabel::Id,
-    Commands::UpdateNOC::Id,
-};
-
 } // namespace detail
 
 using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
         .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
-    },
-    {
-        .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
     },
 } };
 

@@ -23,8 +23,7 @@
 
 using namespace chip;
 
-void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
-{
+void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId  clusterId) {
     switch (clusterId)
     {
     case app::Clusters::Binding::Id:
@@ -69,8 +68,7 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     }
 }
 
-void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterId)
-{
+void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterId) {
     switch (clusterId)
     {
     case app::Clusters::Binding::Id:

@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for AccessControl based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -29,35 +29,16 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::SubjectsPerAccessControlEntry::Id,
     Attributes::TargetsPerAccessControlEntry::Id,
 };
-inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AccessControlEntriesPerFabric::Id,
-    Attributes::Acl::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::Extension::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::SubjectsPerAccessControlEntry::Id,
-    Attributes::TargetsPerAccessControlEntry::Id,
-};
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
         .enabledCommands = Span<const CommandId>(),
     },
 } };

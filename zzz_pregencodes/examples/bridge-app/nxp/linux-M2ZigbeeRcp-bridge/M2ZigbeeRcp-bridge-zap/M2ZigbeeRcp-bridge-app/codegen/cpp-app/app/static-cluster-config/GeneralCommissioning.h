@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for GeneralCommissioning based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -39,46 +39,17 @@ inline constexpr CommandId kEndpoint0EnabledCommands[] = {
     Commands::SetRegulatoryConfigResponse::Id,
 };
 
-inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::BasicCommissioningInfo::Id,
-    Attributes::Breadcrumb::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::LocationCapability::Id,
-    Attributes::RegulatoryConfig::Id,
-    Attributes::SupportsConcurrentConnection::Id,
-};
-
-inline constexpr CommandId kEndpoint2EnabledCommands[] = {
-    Commands::ArmFailSafe::Id,
-    Commands::ArmFailSafeResponse::Id,
-    Commands::CommissioningComplete::Id,
-    Commands::CommissioningCompleteResponse::Id,
-    Commands::SetRegulatoryConfig::Id,
-    Commands::SetRegulatoryConfigResponse::Id,
-};
-
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
         .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
-    },
-    {
-        .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
     },
 } };
 
