@@ -1,7 +1,7 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for BasicInformation based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -48,54 +48,16 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::VendorID::Id,
     Attributes::VendorName::Id,
 };
-inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::CapabilityMinima::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::ConfigurationVersion::Id,
-    Attributes::DataModelRevision::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::HardwareVersion::Id,
-    Attributes::HardwareVersionString::Id,
-    Attributes::LocalConfigDisabled::Id,
-    Attributes::Location::Id,
-    Attributes::ManufacturingDate::Id,
-    Attributes::MaxPathsPerInvoke::Id,
-    Attributes::NodeLabel::Id,
-    Attributes::PartNumber::Id,
-    Attributes::ProductAppearance::Id,
-    Attributes::ProductID::Id,
-    Attributes::ProductLabel::Id,
-    Attributes::ProductName::Id,
-    Attributes::ProductURL::Id,
-    Attributes::Reachable::Id,
-    Attributes::SerialNumber::Id,
-    Attributes::SoftwareVersion::Id,
-    Attributes::SoftwareVersionString::Id,
-    Attributes::SpecificationVersion::Id,
-    Attributes::UniqueID::Id,
-    Attributes::VendorID::Id,
-    Attributes::VendorName::Id,
-};
 } // namespace detail
 
 using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 0,
         .featureMap = BitFlags<FeatureBitmapType> {
         },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
         .enabledCommands = Span<const CommandId>(),
     },
 } };
