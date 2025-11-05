@@ -32,10 +32,58 @@
 #include "ClosureDimensionEndpoint.h"
 #include "ClosureManager.h"
 
+#ifdef ENABLE_CHIP_SHELL
+#include <lib/shell/Engine.h>
+#include <map>
+using namespace chip::Shell;
+#define MATTER_CLI_LOG(message) (streamer_printf(streamer_get(), message))
+#endif /* ENABLE_CHIP_SHELL */
+
 using namespace chip;
 using namespace chip::app;
+using namespace ::chip::DeviceLayer;
+using namespace chip::app::Clusters;
 using namespace chip::app::Clusters::ClosureControl;
 using namespace chip::app::Clusters::ClosureDimension;
+
+static CHIP_ERROR cliClosure(int argc, char * argv[])
+{
+    if ((argc != 1) && (argc != 2))
+    {
+        ChipLogError(Shell, "Invalid Argument");
+        return CHIP_ERROR_INVALID_ARGUMENT;
+    }
+    if (!strcmp(argv[0], "open"))
+    {
+        ChipLogDetail(Shell, "####Closure Open");
+
+        ClosureManager::GetInstance().InvokeOpenCommand();
+    }
+    else if (!strcmp(argv[0], "close"))
+    {
+        ChipLogDetail(Shell, "####Closure Close");
+
+        ClosureManager::GetInstance().InvokeCloseCommand();
+    }
+	else if (!strcmp(argv[0], "stop"))
+    {
+        ChipLogDetail(Shell, "####Closure Stop");
+
+        ClosureManager::GetInstance().InvokeStopCommand();
+    }
+	else if (!strcmp(argv[0], "unlatch"))
+    {
+        ChipLogDetail(Shell, "####Closure Unlatch");
+
+        ClosureManager::GetInstance().InvokeCloseCommand();
+    }
+    else
+    {
+        ChipLogError(Shell, "Invalid State to set");
+        return CHIP_ERROR_INVALID_ARGUMENT;
+    }
+    return CHIP_NO_ERROR;
+}
 
 void ClosureApp::AppTask::PreInitMatterStack()
 {
@@ -52,6 +100,19 @@ void ClosureApp::AppTask::PostInitMatterStack()
     chip::NXP::App::BleAppMgr().Init();
 #endif
     chip::app::InteractionModelEngine::GetInstance()->RegisterReadHandlerAppCallback(&chip::NXP::App::GetICDUtil());
+}
+
+void ClosureApp::AppTask::AppMatter_RegisterCustomCliCommands()
+{
+#ifdef ENABLE_CHIP_SHELL
+    /* Register application commands */
+    static const shell_command_t kCommands[] = {
+        { .cmd_func = cliClosure,
+          .cmd_name = "closure",
+          .cmd_help = "open/close/stop/unlatch the closure, open|close|stop|unlatch " },
+    };
+    Engine::Root().RegisterCommands(kCommands, sizeof(kCommands) / sizeof(kCommands[0]));
+#endif
 }
 
 void ClosureApp::AppTask::PostInitMatterServerInstance()

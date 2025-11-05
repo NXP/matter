@@ -38,6 +38,7 @@ public:
     void PostInitMatterStack(void) override;
     void PreInitMatterStack(void) override;
     void PostInitMatterServerInstance(void) override;
+    void AppMatter_RegisterCustomCliCommands(void) override;
     // This returns an instance of this class.
     static AppTask & GetDefaultInstance();
 
