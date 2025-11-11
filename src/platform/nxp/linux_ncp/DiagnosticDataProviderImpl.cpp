@@ -424,24 +424,6 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketMulticastTxCount(uint32_t & 
     return CHIP_NO_ERROR;
 }
 
-CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastRxCount(uint32_t & packetUnicastRxCount)
-{
-    int ret;
-    NCP_CMD_PKT_STATS stats;
-
-    ret = wlan_ncp_get_pkt_stats(&stats);
-    if (ret != WM_SUCCESS)
-    {
-        ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
-    }
-    /*Fix me after ncp_device fixed*/
-    //packetUnicastRxCount = stats.rx_unicast_cnt;
-    packetUnicastRxCount = 0;
-
-    ChipLogProgress(DeviceLayer, "GetWiFiPacketUnicastRxCount: %lu (ToDo)", packetUnicastRxCount);
-    return CHIP_NO_ERROR;
-}
-
 CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastTxCount(uint32_t & packetUnicastTxCount)
 {
     int ret;
@@ -457,25 +439,6 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiPacketUnicastTxCount(uint32_t & pa
     packetUnicastTxCount = stats.tx_frame - stats.mcast_tx_frame;
 
     ChipLogProgress(DeviceLayer, "GetWiFiPacketUnicastTxCount: %lu", packetUnicastTxCount);
-    return CHIP_NO_ERROR;
-}
-
-CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiOverrunCount(uint64_t & overrunCount)
-{
-    int ret;
-    NCP_CMD_PKT_STATS stats;
-
-    ret = wlan_ncp_get_pkt_stats(&stats);
-    if (ret != WM_SUCCESS)
-    {
-        ChipLogError(DeviceLayer, "wlan_ncp_get_pkt_stats failed ");
-    }
-
-    /*Fix it after ncp-device code fixed*/
-    //overrunCount = (stats.tx_overrun_cnt + stats.rx_overrun_cnt) - mOverrunCount;
-    overrunCount = 0;
-
-    ChipLogProgress(DeviceLayer, "GetWiFiOverrunCount: %lu", overrunCount);
     return CHIP_NO_ERROR;
 }
 

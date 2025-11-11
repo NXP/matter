@@ -75,10 +75,10 @@ public:
     CHIP_ERROR GetWiFiBeaconLostCount(uint32_t & beaconLostCount) override;
     CHIP_ERROR GetWiFiPacketMulticastRxCount(uint32_t & packetMulticastRxCount) override;
     CHIP_ERROR GetWiFiPacketMulticastTxCount(uint32_t & packetMulticastTxCount) override;
-    CHIP_ERROR GetWiFiPacketUnicastRxCount(uint32_t & packetUnicastRxCount) override;
+    //CHIP_ERROR GetWiFiPacketUnicastRxCount(uint32_t & packetUnicastRxCount) override;
     CHIP_ERROR GetWiFiPacketUnicastTxCount(uint32_t & packetUnicastTxCount) override;
     CHIP_ERROR GetWiFiCurrentMaxRate(uint64_t & currentMaxRate) override;
-    CHIP_ERROR GetWiFiOverrunCount(uint64_t & overrunCount) override;
+    //CHIP_ERROR GetWiFiOverrunCount(uint64_t & overrunCount) override;
     CHIP_ERROR ResetWiFiNetworkDiagnosticsCounts() override;
 #endif
 

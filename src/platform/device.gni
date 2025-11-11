@@ -164,7 +164,6 @@ if (chip_device_platform == "cc13x2_26x2") {
 } else if (chip_device_platform == "linux") {
   _chip_device_layer = "Linux"
 } else if (chip_device_platform == "linux_ncp") {
-  print("xinyu src/platform/device.gni _chip_device_layer = nxp/linux_ncp")
   _chip_device_layer = "nxp/linux_ncp"
 } else if (chip_device_platform == "tizen") {
   _chip_device_layer = "Tizen"
