@@ -342,20 +342,19 @@
     }
 
 // clang-format off
-#define GENERATED_EVENT_COUNT 10
+#define GENERATED_EVENT_COUNT 9
 #define GENERATED_EVENTS { \
   /* Endpoint: 0, Cluster: Access Control (server) */ \
   /* EventList (index=0) */ \
   0x00000000, /* AccessControlEntryChanged */ \
-  0x00000001, /* AccessControlExtensionChanged */ \
   0x00000002, /* FabricRestrictionReviewUpdate */ \
   /* Endpoint: 0, Cluster: Basic Information (server) */ \
-  /* EventList (index=3) */ \
+  /* EventList (index=2) */ \
   0x00000000, /* StartUp */ \
   0x00000001, /* ShutDown */ \
   0x00000002, /* Leave */ \
   /* Endpoint: 0, Cluster: General Diagnostics (server) */ \
-  /* EventList (index=6) */ \
+  /* EventList (index=5) */ \
   0x00000000, /* HardwareFaultChange */ \
   0x00000001, /* RadioFaultChange */ \
   0x00000002, /* NetworkFaultChange */ \
@@ -489,7 +488,7 @@
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 0 ), \
       .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 2 ), \
       .eventList = ZAP_GENERATED_EVENTS_INDEX( 0 ), \
-      .eventCount = 3, \
+      .eventCount = 2, \
     },\
   { \
       /* Endpoint: 0, Cluster: Basic Information (server) */ \
@@ -501,7 +500,7 @@
       .functions = NULL, \
       .acceptedCommandList = nullptr, \
       .generatedCommandList = nullptr, \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 3 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 2 ), \
       .eventCount = 3, \
     },\
   { \
@@ -540,7 +539,7 @@
       .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 12 ), \
       .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 15 ), \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 6 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 5 ), \
       .eventCount = 4, \
     },\
   { \

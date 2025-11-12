@@ -28,35 +28,34 @@ void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterOperationalStatePluginServerShutdownCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterMicrowaveOvenControlPluginServerInitCallback(); \
-    MatterMicrowaveOvenModePluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterOperationalStatePluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterMicrowaveOvenControlPluginServerInitCallback();                                                                          \
+    MatterMicrowaveOvenModePluginServerInitCallback();                                                                             \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOperationalStatePluginServerInitCallback();                                                                              \
     MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterMicrowaveOvenControlPluginServerShutdownCallback(); \
-    MatterMicrowaveOvenModePluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterOperationalStatePluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterMicrowaveOvenControlPluginServerShutdownCallback();                                                                      \
+    MatterMicrowaveOvenModePluginServerShutdownCallback();                                                                         \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOperationalStatePluginServerShutdownCallback();                                                                          \
     MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
-

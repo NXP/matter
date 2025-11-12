@@ -98,20 +98,23 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kPacketCounts, // feature bit 0x1
-            FeatureBitmapType::kErrorCounts, // feature bit 0x2
-            FeatureBitmapType::kMLECounts, // feature bit 0x4
-            FeatureBitmapType::kMACCounts// feature bit 0x8
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kPacketCounts, // feature bit 0x1
+                FeatureBitmapType::kErrorCounts,  // feature bit 0x2
+                FeatureBitmapType::kMLECounts,    // feature bit 0x4
+                FeatureBitmapType::kMACCounts     // feature bit 0x8
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::ActiveNetworkFaultsList::Id:
     case Attributes::AttachAttemptCount::Id:
@@ -179,20 +182,22 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::TxTotalCount::Id:
     case Attributes::TxUnicastCount::Id:
     case Attributes::Weighting::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::ResetCounts::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -200,4 +205,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

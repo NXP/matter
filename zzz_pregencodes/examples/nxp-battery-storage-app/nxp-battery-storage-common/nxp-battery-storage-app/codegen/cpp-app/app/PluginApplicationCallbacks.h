@@ -40,47 +40,46 @@ void MatterTimeFormatLocalizationPluginServerShutdownCallback();
 void MatterUnitLocalizationPluginServerShutdownCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterDeviceEnergyManagementPluginServerInitCallback(); \
-    MatterDeviceEnergyManagementModePluginServerInitCallback(); \
-    MatterElectricalEnergyMeasurementPluginServerInitCallback(); \
-    MatterElectricalPowerMeasurementPluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterLocalizationConfigurationPluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterPowerSourcePluginServerInitCallback(); \
-    MatterPowerTopologyPluginServerInitCallback(); \
-    MatterTimeFormatLocalizationPluginServerInitCallback(); \
-    MatterUnitLocalizationPluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDeviceEnergyManagementPluginServerInitCallback();                                                                        \
+    MatterDeviceEnergyManagementModePluginServerInitCallback();                                                                    \
+    MatterElectricalEnergyMeasurementPluginServerInitCallback();                                                                   \
+    MatterElectricalPowerMeasurementPluginServerInitCallback();                                                                    \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterLocalizationConfigurationPluginServerInitCallback();                                                                     \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterPowerSourcePluginServerInitCallback();                                                                                   \
+    MatterPowerTopologyPluginServerInitCallback();                                                                                 \
+    MatterTimeFormatLocalizationPluginServerInitCallback();                                                                        \
+    MatterUnitLocalizationPluginServerInitCallback();                                                                              \
     MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterDeviceEnergyManagementPluginServerShutdownCallback(); \
-    MatterDeviceEnergyManagementModePluginServerShutdownCallback(); \
-    MatterElectricalEnergyMeasurementPluginServerShutdownCallback(); \
-    MatterElectricalPowerMeasurementPluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterLocalizationConfigurationPluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterPowerSourcePluginServerShutdownCallback(); \
-    MatterPowerTopologyPluginServerShutdownCallback(); \
-    MatterTimeFormatLocalizationPluginServerShutdownCallback(); \
-    MatterUnitLocalizationPluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDeviceEnergyManagementPluginServerShutdownCallback();                                                                    \
+    MatterDeviceEnergyManagementModePluginServerShutdownCallback();                                                                \
+    MatterElectricalEnergyMeasurementPluginServerShutdownCallback();                                                               \
+    MatterElectricalPowerMeasurementPluginServerShutdownCallback();                                                                \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterLocalizationConfigurationPluginServerShutdownCallback();                                                                 \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterPowerSourcePluginServerShutdownCallback();                                                                               \
+    MatterPowerTopologyPluginServerShutdownCallback();                                                                             \
+    MatterTimeFormatLocalizationPluginServerShutdownCallback();                                                                    \
+    MatterUnitLocalizationPluginServerShutdownCallback();                                                                          \
     MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
-

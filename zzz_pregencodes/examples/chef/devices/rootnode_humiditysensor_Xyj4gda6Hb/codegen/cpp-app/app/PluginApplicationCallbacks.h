@@ -28,35 +28,34 @@ void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
 void MatterRelativeHumidityMeasurementPluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterDiagnosticLogsPluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
-    MatterRelativeHumidityMeasurementPluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
+    MatterRelativeHumidityMeasurementPluginServerInitCallback();                                                                   \
     MatterSoftwareDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterDiagnosticLogsPluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
-    MatterRelativeHumidityMeasurementPluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
+    MatterRelativeHumidityMeasurementPluginServerShutdownCallback();                                                               \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback();
-

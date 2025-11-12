@@ -86,25 +86,28 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kPINCredential, // feature bit 0x1
-            FeatureBitmapType::kRFIDCredential, // feature bit 0x2
-            FeatureBitmapType::kWeekDayAccessSchedules, // feature bit 0x10
-            FeatureBitmapType::kDoorPositionSensor, // feature bit 0x20
-            FeatureBitmapType::kCredentialsOverTheAirAccess, // feature bit 0x80
-            FeatureBitmapType::kUser, // feature bit 0x100
-            FeatureBitmapType::kYearDayAccessSchedules, // feature bit 0x400
-            FeatureBitmapType::kHolidaySchedules, // feature bit 0x800
-            FeatureBitmapType::kUnbolt// feature bit 0x1000
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kPINCredential,               // feature bit 0x1
+                FeatureBitmapType::kRFIDCredential,              // feature bit 0x2
+                FeatureBitmapType::kWeekDayAccessSchedules,      // feature bit 0x10
+                FeatureBitmapType::kDoorPositionSensor,          // feature bit 0x20
+                FeatureBitmapType::kCredentialsOverTheAirAccess, // feature bit 0x80
+                FeatureBitmapType::kUser,                        // feature bit 0x100
+                FeatureBitmapType::kYearDayAccessSchedules,      // feature bit 0x400
+                FeatureBitmapType::kHolidaySchedules,            // feature bit 0x800
+                FeatureBitmapType::kUnbolt                       // feature bit 0x1000
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::ActuatorEnabled::Id:
     case Attributes::AttributeList::Id:
@@ -136,15 +139,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::SupportedOperatingModes::Id:
     case Attributes::UserCodeTemporaryDisableTime::Id:
     case Attributes::WrongCodeEntryLimit::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::ClearCredential::Id:
     case Commands::ClearHolidaySchedule::Id:
     case Commands::ClearUser::Id:
@@ -170,10 +175,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::UnboltDoor::Id:
     case Commands::UnlockDoor::Id:
     case Commands::UnlockWithTimeout::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -181,4 +186,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

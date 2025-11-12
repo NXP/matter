@@ -40,14 +40,9 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::Move::Id,
-    Commands::MoveToLevel::Id,
-    Commands::MoveToLevelWithOnOff::Id,
-    Commands::MoveWithOnOff::Id,
-    Commands::Step::Id,
-    Commands::StepWithOnOff::Id,
-    Commands::Stop::Id,
-    Commands::StopWithOnOff::Id,
+    Commands::Move::Id,          Commands::MoveToLevel::Id,   Commands::MoveToLevelWithOnOff::Id,
+    Commands::MoveWithOnOff::Id, Commands::Step::Id,          Commands::StepWithOnOff::Id,
+    Commands::Stop::Id,          Commands::StopWithOnOff::Id,
 };
 
 } // namespace detail
@@ -57,18 +52,21 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kOnOff, // feature bit 0x1
-            FeatureBitmapType::kLighting// feature bit 0x2
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kOnOff,   // feature bit 0x1
+                FeatureBitmapType::kLighting // feature bit 0x2
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
@@ -88,15 +86,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::Options::Id:
     case Attributes::RemainingTime::Id:
     case Attributes::StartUpCurrentLevel::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::Move::Id:
     case Commands::MoveToLevel::Id:
     case Commands::MoveToLevelWithOnOff::Id:
@@ -105,10 +105,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::StepWithOnOff::Id:
     case Commands::Stop::Id:
     case Commands::StopWithOnOff::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -116,4 +116,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

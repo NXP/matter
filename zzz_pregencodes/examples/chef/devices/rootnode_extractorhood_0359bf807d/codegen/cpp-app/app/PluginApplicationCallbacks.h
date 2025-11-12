@@ -34,41 +34,40 @@ void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterActivatedCarbonFilterMonitoringPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterDiagnosticLogsPluginServerInitCallback(); \
-    MatterFanControlPluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterHepaFilterMonitoringPluginServerInitCallback(); \
-    MatterIcdManagementPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterLocalizationConfigurationPluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterActivatedCarbonFilterMonitoringPluginServerInitCallback();                                                               \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
+    MatterFanControlPluginServerInitCallback();                                                                                    \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterHepaFilterMonitoringPluginServerInitCallback();                                                                          \
+    MatterIcdManagementPluginServerInitCallback();                                                                                 \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterLocalizationConfigurationPluginServerInitCallback();                                                                     \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
     MatterSoftwareDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterActivatedCarbonFilterMonitoringPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterDiagnosticLogsPluginServerShutdownCallback(); \
-    MatterFanControlPluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterHepaFilterMonitoringPluginServerShutdownCallback(); \
-    MatterIcdManagementPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterLocalizationConfigurationPluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterActivatedCarbonFilterMonitoringPluginServerShutdownCallback();                                                           \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
+    MatterFanControlPluginServerShutdownCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterHepaFilterMonitoringPluginServerShutdownCallback();                                                                      \
+    MatterIcdManagementPluginServerShutdownCallback();                                                                             \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterLocalizationConfigurationPluginServerShutdownCallback();                                                                 \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback();
-

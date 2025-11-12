@@ -24,15 +24,9 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::AddGroup::Id,
-    Commands::AddGroupIfIdentifying::Id,
-    Commands::AddGroupResponse::Id,
-    Commands::GetGroupMembership::Id,
-    Commands::GetGroupMembershipResponse::Id,
-    Commands::RemoveAllGroups::Id,
-    Commands::RemoveGroup::Id,
-    Commands::RemoveGroupResponse::Id,
-    Commands::ViewGroup::Id,
+    Commands::AddGroup::Id,           Commands::AddGroupIfIdentifying::Id,      Commands::AddGroupResponse::Id,
+    Commands::GetGroupMembership::Id, Commands::GetGroupMembershipResponse::Id, Commands::RemoveAllGroups::Id,
+    Commands::RemoveGroup::Id,        Commands::RemoveGroupResponse::Id,        Commands::ViewGroup::Id,
     Commands::ViewGroupResponse::Id,
 };
 
@@ -42,29 +36,32 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 1,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::ClusterRevision::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::NameSupport::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::AddGroup::Id:
     case Commands::AddGroupIfIdentifying::Id:
     case Commands::AddGroupResponse::Id:
@@ -75,10 +72,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::RemoveGroupResponse::Id:
     case Commands::ViewGroup::Id:
     case Commands::ViewGroupResponse::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -86,4 +83,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

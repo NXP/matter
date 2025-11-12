@@ -357,30 +357,29 @@
     }
 
 // clang-format off
-#define GENERATED_EVENT_COUNT 14
+#define GENERATED_EVENT_COUNT 13
 #define GENERATED_EVENTS { \
   /* Endpoint: 0, Cluster: Access Control (server) */ \
   /* EventList (index=0) */ \
   0x00000000, /* AccessControlEntryChanged */ \
-  0x00000001, /* AccessControlExtensionChanged */ \
   /* Endpoint: 0, Cluster: Basic Information (server) */ \
-  /* EventList (index=2) */ \
+  /* EventList (index=1) */ \
   0x00000000, /* StartUp */ \
   0x00000001, /* ShutDown */ \
   0x00000002, /* Leave */ \
   /* Endpoint: 0, Cluster: General Diagnostics (server) */ \
-  /* EventList (index=5) */ \
+  /* EventList (index=4) */ \
   0x00000000, /* HardwareFaultChange */ \
   0x00000001, /* RadioFaultChange */ \
   0x00000002, /* NetworkFaultChange */ \
   0x00000003, /* BootReason */ \
   /* Endpoint: 0, Cluster: Wi-Fi Network Diagnostics (server) */ \
-  /* EventList (index=9) */ \
+  /* EventList (index=8) */ \
   0x00000000, /* Disconnection */ \
   0x00000001, /* AssociationFailure */ \
   0x00000002, /* ConnectionStatus */ \
   /* Endpoint: 1, Cluster: Operational State (server) */ \
-  /* EventList (index=12) */ \
+  /* EventList (index=11) */ \
   0x00000000, /* OperationalError */ \
   0x00000001, /* OperationCompletion */ \
 }
@@ -532,7 +531,7 @@
       .acceptedCommandList = nullptr, \
       .generatedCommandList = nullptr, \
       .eventList = ZAP_GENERATED_EVENTS_INDEX( 0 ), \
-      .eventCount = 2, \
+      .eventCount = 1, \
     },\
   { \
       /* Endpoint: 0, Cluster: Basic Information (server) */ \
@@ -544,7 +543,7 @@
       .functions = NULL, \
       .acceptedCommandList = nullptr, \
       .generatedCommandList = nullptr, \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 2 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 1 ), \
       .eventCount = 3, \
     },\
   { \
@@ -596,7 +595,7 @@
       .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 19 ), \
       .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 22 ), \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 5 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 4 ), \
       .eventCount = 4, \
     },\
   { \
@@ -609,7 +608,7 @@
       .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 24 ), \
       .generatedCommandList = nullptr, \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 9 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 8 ), \
       .eventCount = 3, \
     },\
   { \
@@ -726,7 +725,7 @@
       .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 65 ), \
       .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 70 ), \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 12 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 11 ), \
       .eventCount = 2, \
     },\
 }

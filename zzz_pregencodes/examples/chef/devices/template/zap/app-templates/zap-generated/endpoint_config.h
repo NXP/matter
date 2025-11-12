@@ -242,10 +242,12 @@
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */                             \
                                                                                                                                    \
         /* Endpoint: 1, Cluster: Identify (server) */                                                                              \
-        { ZAP_SIMPLE_DEFAULT(0x0), 0x00000000, 2, ZAP_TYPE(INT16U),                                                                \
-          ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) },                            /* IdentifyTime */             \
-        { ZAP_SIMPLE_DEFAULT(0x0), 0x00000001, 1, ZAP_TYPE(ENUM8), ZAP_ATTRIBUTE_MASK(READABLE) },  /* IdentifyType */             \
-        { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */               \
+        { ZAP_EMPTY_DEFAULT(), 0x00000000, 2, ZAP_TYPE(INT16U),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* IdentifyTime */ \
+        { ZAP_EMPTY_DEFAULT(), 0x00000001, 1, ZAP_TYPE(ENUM8),                                                                     \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* IdentifyType */                                \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32),                                                                  \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */                                  \
         { ZAP_EMPTY_DEFAULT(), 0x0000FFFD, 2, ZAP_TYPE(INT16U),                                                                    \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */                             \
                                                                                                                                    \
@@ -270,19 +272,18 @@
     }
 
 // clang-format off
-#define GENERATED_EVENT_COUNT 6
+#define GENERATED_EVENT_COUNT 5
 #define GENERATED_EVENTS { \
   /* Endpoint: 0, Cluster: Access Control (server) */ \
   /* EventList (index=0) */ \
   0x00000000, /* AccessControlEntryChanged */ \
-  0x00000001, /* AccessControlExtensionChanged */ \
   /* Endpoint: 0, Cluster: Basic Information (server) */ \
-  /* EventList (index=2) */ \
+  /* EventList (index=1) */ \
   0x00000000, /* StartUp */ \
   0x00000001, /* ShutDown */ \
   0x00000002, /* Leave */ \
   /* Endpoint: 0, Cluster: General Diagnostics (server) */ \
-  /* EventList (index=5) */ \
+  /* EventList (index=4) */ \
   0x00000003, /* BootReason */ \
 }
 
@@ -290,10 +291,6 @@
 
 // Cluster function static arrays
 #define GENERATED_FUNCTION_ARRAYS                                                                                                  \
-    const EmberAfGenericClusterFunction chipFuncArrayIdentifyServer[] = {                                                          \
-        (EmberAfGenericClusterFunction) emberAfIdentifyClusterServerInitCallback,                                                  \
-        (EmberAfGenericClusterFunction) MatterIdentifyClusterServerAttributeChangedCallback,                                       \
-    };                                                                                                                             \
     const EmberAfGenericClusterFunction chipFuncArrayGroupsServer[] = {                                                            \
         (EmberAfGenericClusterFunction) emberAfGroupsClusterServerInitCallback,                                                    \
     };
@@ -429,7 +426,7 @@
       .acceptedCommandList = nullptr, \
       .generatedCommandList = nullptr, \
       .eventList = ZAP_GENERATED_EVENTS_INDEX( 0 ), \
-      .eventCount = 2, \
+      .eventCount = 1, \
     },\
   { \
       /* Endpoint: 0, Cluster: Basic Information (server) */ \
@@ -441,7 +438,7 @@
       .functions = NULL, \
       .acceptedCommandList = nullptr, \
       .generatedCommandList = nullptr, \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 2 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 1 ), \
       .eventCount = 3, \
     },\
   { \
@@ -493,7 +490,7 @@
       .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 23 ), \
       .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 26 ), \
-      .eventList = ZAP_GENERATED_EVENTS_INDEX( 5 ), \
+      .eventList = ZAP_GENERATED_EVENTS_INDEX( 4 ), \
       .eventCount = 1, \
     },\
   { \
@@ -540,9 +537,9 @@
       .clusterId = 0x00000003, \
       .attributes = ZAP_ATTRIBUTE_INDEX(82), \
       .attributeCount = 4, \
-      .clusterSize = 7, \
-      .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(ATTRIBUTE_CHANGED_FUNCTION), \
-      .functions = chipFuncArrayIdentifyServer, \
+      .clusterSize = 0, \
+      .mask = ZAP_CLUSTER_MASK(SERVER), \
+      .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 57 ), \
       .generatedCommandList = nullptr, \
       .eventList = nullptr, \
@@ -584,7 +581,7 @@
 #define GENERATED_ENDPOINT_TYPES                                                                                                   \
     {                                                                                                                              \
         { ZAP_CLUSTER_INDEX(0), 10, 4 },                                                                                           \
-        { ZAP_CLUSTER_INDEX(10), 3, 14 },                                                                                          \
+        { ZAP_CLUSTER_INDEX(10), 3, 7 },                                                                                           \
     }
 
 // Largest attribute size is needed for various buffers
@@ -596,7 +593,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (0)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (18)
+#define ATTRIBUTE_MAX_SIZE (11)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (2)

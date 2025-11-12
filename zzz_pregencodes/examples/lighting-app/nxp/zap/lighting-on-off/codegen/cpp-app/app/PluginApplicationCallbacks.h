@@ -32,39 +32,38 @@ void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterGroupsPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterLevelControlPluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOnOffPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
-    MatterSoftwareDiagnosticsPluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterGroupsPluginServerInitCallback();                                                                                        \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterLevelControlPluginServerInitCallback();                                                                                  \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOnOffPluginServerInitCallback();                                                                                         \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
+    MatterSoftwareDiagnosticsPluginServerInitCallback();                                                                           \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterGroupsPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterLevelControlPluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOnOffPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
-    MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterGroupsPluginServerShutdownCallback();                                                                                    \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterLevelControlPluginServerShutdownCallback();                                                                              \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOnOffPluginServerShutdownCallback();                                                                                     \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
+    MatterSoftwareDiagnosticsPluginServerShutdownCallback();                                                                       \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
-

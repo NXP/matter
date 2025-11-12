@@ -103,21 +103,24 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kHueAndSaturation, // feature bit 0x1
-            FeatureBitmapType::kEnhancedHue, // feature bit 0x2
-            FeatureBitmapType::kColorLoop, // feature bit 0x4
-            FeatureBitmapType::kXY, // feature bit 0x8
-            FeatureBitmapType::kColorTemperature// feature bit 0x10
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kHueAndSaturation, // feature bit 0x1
+                FeatureBitmapType::kEnhancedHue,      // feature bit 0x2
+                FeatureBitmapType::kColorLoop,        // feature bit 0x4
+                FeatureBitmapType::kXY,               // feature bit 0x8
+                FeatureBitmapType::kColorTemperature  // feature bit 0x10
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::ClusterRevision::Id:
     case Attributes::ColorCapabilities::Id:
     case Attributes::ColorLoopActive::Id:
@@ -172,15 +175,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::StartUpColorTemperatureMireds::Id:
     case Attributes::WhitePointX::Id:
     case Attributes::WhitePointY::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::ColorLoopSet::Id:
     case Commands::EnhancedMoveHue::Id:
     case Commands::EnhancedMoveToHue::Id:
@@ -200,10 +205,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::StepHue::Id:
     case Commands::StepSaturation::Id:
     case Commands::StopMoveStep::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -211,4 +216,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

@@ -18,14 +18,11 @@ namespace BasicInformation {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
     Attributes::CapabilityMinima::Id,
     Attributes::ClusterRevision::Id,
     Attributes::ConfigurationVersion::Id,
     Attributes::DataModelRevision::Id,
     Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
     Attributes::HardwareVersion::Id,
     Attributes::HardwareVersionString::Id,
     Attributes::LocalConfigDisabled::Id,
@@ -52,25 +49,23 @@ using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefin
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 0,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
-    case Attributes::AcceptedCommandList::Id:
-    case Attributes::AttributeList::Id:
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::CapabilityMinima::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::ConfigurationVersion::Id:
     case Attributes::DataModelRevision::Id:
     case Attributes::FeatureMap::Id:
-    case Attributes::GeneratedCommandList::Id:
     case Attributes::HardwareVersion::Id:
     case Attributes::HardwareVersionString::Id:
     case Attributes::LocalConfigDisabled::Id:
@@ -90,18 +85,20 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::UniqueID::Id:
     case Attributes::VendorID::Id:
     case Attributes::VendorName::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -109,4 +106,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

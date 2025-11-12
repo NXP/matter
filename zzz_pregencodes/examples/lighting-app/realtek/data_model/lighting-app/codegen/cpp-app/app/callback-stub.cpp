@@ -161,6 +161,16 @@ void __attribute__((weak)) emberAfOtaSoftwareUpdateRequestorClusterShutdownCallb
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfScenesManagementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfScenesManagementClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfSoftwareDiagnosticsClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning

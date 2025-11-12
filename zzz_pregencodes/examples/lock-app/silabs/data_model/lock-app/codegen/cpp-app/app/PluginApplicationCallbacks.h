@@ -40,47 +40,46 @@ void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterUserLabelPluginServerShutdownCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterDiagnosticLogsPluginServerInitCallback(); \
-    MatterDoorLockPluginServerInitCallback(); \
-    MatterEthernetNetworkDiagnosticsPluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterIcdManagementPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback(); \
-    MatterPowerSourcePluginServerInitCallback(); \
-    MatterSoftwareDiagnosticsPluginServerInitCallback(); \
-    MatterThreadNetworkDiagnosticsPluginServerInitCallback(); \
-    MatterUserLabelPluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
+    MatterDoorLockPluginServerInitCallback();                                                                                      \
+    MatterEthernetNetworkDiagnosticsPluginServerInitCallback();                                                                    \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterIcdManagementPluginServerInitCallback();                                                                                 \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
+    MatterPowerSourcePluginServerInitCallback();                                                                                   \
+    MatterSoftwareDiagnosticsPluginServerInitCallback();                                                                           \
+    MatterThreadNetworkDiagnosticsPluginServerInitCallback();                                                                      \
+    MatterUserLabelPluginServerInitCallback();                                                                                     \
     MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterDiagnosticLogsPluginServerShutdownCallback(); \
-    MatterDoorLockPluginServerShutdownCallback(); \
-    MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterIcdManagementPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback(); \
-    MatterPowerSourcePluginServerShutdownCallback(); \
-    MatterSoftwareDiagnosticsPluginServerShutdownCallback(); \
-    MatterThreadNetworkDiagnosticsPluginServerShutdownCallback(); \
-    MatterUserLabelPluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
+    MatterDoorLockPluginServerShutdownCallback();                                                                                  \
+    MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();                                                                \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterIcdManagementPluginServerShutdownCallback();                                                                             \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
+    MatterPowerSourcePluginServerShutdownCallback();                                                                               \
+    MatterSoftwareDiagnosticsPluginServerShutdownCallback();                                                                       \
+    MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();                                                                  \
+    MatterUserLabelPluginServerShutdownCallback();                                                                                 \
     MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
-

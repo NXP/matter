@@ -36,43 +36,42 @@ void MatterTemperatureControlPluginServerShutdownCallback();
 void MatterUnitLocalizationPluginServerShutdownCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterDishwasherAlarmPluginServerInitCallback(); \
-    MatterDishwasherModePluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterLocalizationConfigurationPluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOnOffPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterOperationalStatePluginServerInitCallback(); \
-    MatterTemperatureControlPluginServerInitCallback(); \
-    MatterUnitLocalizationPluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDishwasherAlarmPluginServerInitCallback();                                                                               \
+    MatterDishwasherModePluginServerInitCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterLocalizationConfigurationPluginServerInitCallback();                                                                     \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOnOffPluginServerInitCallback();                                                                                         \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOperationalStatePluginServerInitCallback();                                                                              \
+    MatterTemperatureControlPluginServerInitCallback();                                                                            \
+    MatterUnitLocalizationPluginServerInitCallback();                                                                              \
     MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterDishwasherAlarmPluginServerShutdownCallback(); \
-    MatterDishwasherModePluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterLocalizationConfigurationPluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOnOffPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterOperationalStatePluginServerShutdownCallback(); \
-    MatterTemperatureControlPluginServerShutdownCallback(); \
-    MatterUnitLocalizationPluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDishwasherAlarmPluginServerShutdownCallback();                                                                           \
+    MatterDishwasherModePluginServerShutdownCallback();                                                                            \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterLocalizationConfigurationPluginServerShutdownCallback();                                                                 \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOnOffPluginServerShutdownCallback();                                                                                     \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOperationalStatePluginServerShutdownCallback();                                                                          \
+    MatterTemperatureControlPluginServerShutdownCallback();                                                                        \
+    MatterUnitLocalizationPluginServerShutdownCallback();                                                                          \
     MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
-

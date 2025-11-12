@@ -49,14 +49,9 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::ClearTargets::Id,
-    Commands::Disable::Id,
-    Commands::EnableCharging::Id,
-    Commands::EnableDischarging::Id,
-    Commands::GetTargets::Id,
-    Commands::GetTargetsResponse::Id,
-    Commands::SetTargets::Id,
-    Commands::StartDiagnostics::Id,
+    Commands::ClearTargets::Id,      Commands::Disable::Id,          Commands::EnableCharging::Id,
+    Commands::EnableDischarging::Id, Commands::GetTargets::Id,       Commands::GetTargetsResponse::Id,
+    Commands::SetTargets::Id,        Commands::StartDiagnostics::Id,
 };
 
 } // namespace detail
@@ -65,17 +60,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 1,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::ApproximateEVEfficiency::Id:
     case Attributes::AttributeList::Id:
@@ -104,15 +100,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::SupplyState::Id:
     case Attributes::UserMaximumChargeCurrent::Id:
     case Attributes::VehicleID::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::ClearTargets::Id:
     case Commands::Disable::Id:
     case Commands::EnableCharging::Id:
@@ -121,10 +119,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::GetTargetsResponse::Id:
     case Commands::SetTargets::Id:
     case Commands::StartDiagnostics::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -132,4 +130,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

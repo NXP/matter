@@ -221,6 +221,7 @@
     0x0000001F, /* Cluster: Access Control, Event: AccessControlEntryChanged, Privilege: administer */ \
     0x0000001F, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     0x0000001F, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
+    0x0000001F, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
     0x00000751, /* Cluster: Commissioner Control, Event: CommissioningRequestResult, Privilege: manage */ \
 }
 
@@ -229,6 +230,7 @@
     0x00000000, /* Cluster: Access Control, Event: AccessControlEntryChanged, Privilege: administer */ \
     0x00000001, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     0x00000002, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
+    0x00000003, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
     0x00000000, /* Cluster: Commissioner Control, Event: CommissioningRequestResult, Privilege: manage */ \
 }
 
@@ -237,6 +239,7 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AccessControlEntryChanged, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
     chip::Access::Privilege::kManage, /* Cluster: Commissioner Control, Event: CommissioningRequestResult, Privilege: manage */ \
 }
 

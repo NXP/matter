@@ -1,7 +1,8 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for Thermostat based on EMBER configuration
-// from ../third_party/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
+// from
+// /opt/matter/matter_dev/connectedhomeip/examples/bridge-app/nxp/linux-M2ZigbeeRcp-bridge/M2ZigbeeRcp-bridge-zap/M2ZigbeeRcp-bridge-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -38,11 +39,8 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint2EnabledCommands[] = {
-    Commands::ClearWeeklySchedule::Id,
-    Commands::GetWeeklySchedule::Id,
-    Commands::GetWeeklyScheduleResponse::Id,
-    Commands::SetpointRaiseLower::Id,
-    Commands::SetWeeklySchedule::Id,
+    Commands::ClearWeeklySchedule::Id, Commands::GetWeeklySchedule::Id, Commands::GetWeeklyScheduleResponse::Id,
+    Commands::SetpointRaiseLower::Id,  Commands::SetWeeklySchedule::Id,
 };
 
 } // namespace detail
@@ -51,17 +49,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 2,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::HVACSystemTypeConfiguration::Id:
     case Attributes::PICoolingDemand::Id:
     case Attributes::PIHeatingDemand::Id:
@@ -79,24 +78,26 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::Occupancy::Id:
     case Attributes::OutdoorTemperature::Id:
     case Attributes::SystemMode::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::ClearWeeklySchedule::Id:
     case Commands::GetWeeklySchedule::Id:
     case Commands::GetWeeklyScheduleResponse::Id:
     case Commands::SetWeeklySchedule::Id:
     case Commands::SetpointRaiseLower::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -104,4 +105,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

@@ -40,47 +40,46 @@ void MatterWaterHeaterManagementPluginServerShutdownCallback();
 void MatterWaterHeaterModePluginServerShutdownCallback();
 void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 
-#define MATTER_PLUGINS_INIT \
-    MatterAccessControlPluginServerInitCallback(); \
-    MatterAdministratorCommissioningPluginServerInitCallback(); \
-    MatterBasicInformationPluginServerInitCallback(); \
-    MatterDescriptorPluginServerInitCallback(); \
-    MatterDeviceEnergyManagementPluginServerInitCallback(); \
-    MatterDeviceEnergyManagementModePluginServerInitCallback(); \
-    MatterGeneralCommissioningPluginServerInitCallback(); \
-    MatterGeneralDiagnosticsPluginServerInitCallback(); \
-    MatterGroupKeyManagementPluginServerInitCallback(); \
-    MatterIdentifyPluginServerInitCallback(); \
-    MatterLocalizationConfigurationPluginServerInitCallback(); \
-    MatterNetworkCommissioningPluginServerInitCallback(); \
-    MatterOperationalCredentialsPluginServerInitCallback(); \
-    MatterPowerSourcePluginServerInitCallback(); \
-    MatterThermostatPluginServerInitCallback(); \
-    MatterTimeFormatLocalizationPluginServerInitCallback(); \
-    MatterUnitLocalizationPluginServerInitCallback(); \
-    MatterWaterHeaterManagementPluginServerInitCallback(); \
-    MatterWaterHeaterModePluginServerInitCallback(); \
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDeviceEnergyManagementPluginServerInitCallback();                                                                        \
+    MatterDeviceEnergyManagementModePluginServerInitCallback();                                                                    \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterLocalizationConfigurationPluginServerInitCallback();                                                                     \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterPowerSourcePluginServerInitCallback();                                                                                   \
+    MatterThermostatPluginServerInitCallback();                                                                                    \
+    MatterTimeFormatLocalizationPluginServerInitCallback();                                                                        \
+    MatterUnitLocalizationPluginServerInitCallback();                                                                              \
+    MatterWaterHeaterManagementPluginServerInitCallback();                                                                         \
+    MatterWaterHeaterModePluginServerInitCallback();                                                                               \
     MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 
-#define MATTER_PLUGINS_SHUTDOWN \
-    MatterAccessControlPluginServerShutdownCallback(); \
-    MatterAdministratorCommissioningPluginServerShutdownCallback(); \
-    MatterBasicInformationPluginServerShutdownCallback(); \
-    MatterDescriptorPluginServerShutdownCallback(); \
-    MatterDeviceEnergyManagementPluginServerShutdownCallback(); \
-    MatterDeviceEnergyManagementModePluginServerShutdownCallback(); \
-    MatterGeneralCommissioningPluginServerShutdownCallback(); \
-    MatterGeneralDiagnosticsPluginServerShutdownCallback(); \
-    MatterGroupKeyManagementPluginServerShutdownCallback(); \
-    MatterIdentifyPluginServerShutdownCallback(); \
-    MatterLocalizationConfigurationPluginServerShutdownCallback(); \
-    MatterNetworkCommissioningPluginServerShutdownCallback(); \
-    MatterOperationalCredentialsPluginServerShutdownCallback(); \
-    MatterPowerSourcePluginServerShutdownCallback(); \
-    MatterThermostatPluginServerShutdownCallback(); \
-    MatterTimeFormatLocalizationPluginServerShutdownCallback(); \
-    MatterUnitLocalizationPluginServerShutdownCallback(); \
-    MatterWaterHeaterManagementPluginServerShutdownCallback(); \
-    MatterWaterHeaterModePluginServerShutdownCallback(); \
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDeviceEnergyManagementPluginServerShutdownCallback();                                                                    \
+    MatterDeviceEnergyManagementModePluginServerShutdownCallback();                                                                \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterLocalizationConfigurationPluginServerShutdownCallback();                                                                 \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterPowerSourcePluginServerShutdownCallback();                                                                               \
+    MatterThermostatPluginServerShutdownCallback();                                                                                \
+    MatterTimeFormatLocalizationPluginServerShutdownCallback();                                                                    \
+    MatterUnitLocalizationPluginServerShutdownCallback();                                                                          \
+    MatterWaterHeaterManagementPluginServerShutdownCallback();                                                                     \
+    MatterWaterHeaterModePluginServerShutdownCallback();                                                                           \
     MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
-

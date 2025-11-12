@@ -1,7 +1,8 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for AccessControl based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/air-quality-sensor-app/air-quality-sensor-common/icd-lit-air-quality-sensor-app.matter
+// from
+// /opt/matter/matter_dev/connectedhomeip/examples/air-quality-sensor-app/air-quality-sensor-common/icd-lit-air-quality-sensor-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -32,17 +33,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 0,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AccessControlEntriesPerFabric::Id:
     case Attributes::Acl::Id:
     case Attributes::AttributeList::Id:
@@ -50,18 +52,20 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::FeatureMap::Id:
     case Attributes::SubjectsPerAccessControlEntry::Id:
     case Attributes::TargetsPerAccessControlEntry::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -69,4 +73,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

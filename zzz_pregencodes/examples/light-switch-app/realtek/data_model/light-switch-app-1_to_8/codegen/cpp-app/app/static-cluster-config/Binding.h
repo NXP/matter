@@ -71,97 +71,93 @@ inline constexpr AttributeId kEndpoint9EnabledAttributes[] = {
 
 using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 10> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 10> kFixedClusterConfig = {
     {
-        .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 0,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 1,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 2,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 3,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 3,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 4,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 4,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint4EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint4EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 5,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 5,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint5EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint5EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 6,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 6,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint6EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint6EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 7,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 7,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint7EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint7EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 8,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 8,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint8EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint8EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber = 9,
-        .featureMap = BitFlags<FeatureBitmapType> {
+        {
+            .endpointNumber    = 9,
+            .featureMap        = BitFlags<FeatureBitmapType>{},
+            .enabledAttributes = Span<const AttributeId>(detail::kEndpoint9EnabledAttributes),
+            .enabledCommands   = Span<const CommandId>(),
         },
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint9EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
-    },
-} };
+    }
+};
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::Binding::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::FeatureMap::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -169,4 +165,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

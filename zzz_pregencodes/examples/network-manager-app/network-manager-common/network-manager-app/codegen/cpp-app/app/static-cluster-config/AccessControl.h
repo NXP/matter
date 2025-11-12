@@ -42,17 +42,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 0,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AccessControlEntriesPerFabric::Id:
     case Attributes::Acl::Id:
@@ -64,21 +65,23 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::GeneratedCommandList::Id:
     case Attributes::SubjectsPerAccessControlEntry::Id:
     case Attributes::TargetsPerAccessControlEntry::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::ReviewFabricRestrictions::Id:
     case Commands::ReviewFabricRestrictionsResponse::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -86,4 +89,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

@@ -1,7 +1,8 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for PressureMeasurement based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/chef/devices/rootnode_contactsensor_lightsensor_occupancysensor_temperaturesensor_pressuresensor_flowsensor_humiditysensor_airqualitysensor_powersource_367e7cea91.matter
+// from
+// /opt/matter/matter_dev/connectedhomeip/examples/chef/devices/rootnode_contactsensor_lightsensor_occupancysensor_temperaturesensor_pressuresensor_flowsensor_humiditysensor_airqualitysensor_powersource_367e7cea91.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -18,14 +19,9 @@ namespace PressureMeasurement {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint5EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::MaxMeasuredValue::Id,
-    Attributes::MeasuredValue::Id,
-    Attributes::MinMeasuredValue::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id,        Attributes::ClusterRevision::Id,
+    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id, Attributes::MaxMeasuredValue::Id,
+    Attributes::MeasuredValue::Id,       Attributes::MinMeasuredValue::Id,
 };
 } // namespace detail
 
@@ -33,17 +29,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 5,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 5,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint5EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
@@ -52,18 +49,20 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::MaxMeasuredValue::Id:
     case Attributes::MeasuredValue::Id:
     case Attributes::MinMeasuredValue::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -71,4 +70,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

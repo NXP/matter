@@ -36,13 +36,8 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::DPTZRelativeMove::Id,
-    Commands::DPTZSetViewport::Id,
-    Commands::MPTZMoveToPreset::Id,
-    Commands::MPTZRelativeMove::Id,
-    Commands::MPTZRemovePreset::Id,
-    Commands::MPTZSavePreset::Id,
-    Commands::MPTZSetPosition::Id,
+    Commands::DPTZRelativeMove::Id, Commands::DPTZSetViewport::Id, Commands::MPTZMoveToPreset::Id, Commands::MPTZRelativeMove::Id,
+    Commands::MPTZRemovePreset::Id, Commands::MPTZSavePreset::Id,  Commands::MPTZSetPosition::Id,
 };
 
 } // namespace detail
@@ -52,21 +47,24 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kDigitalPTZ, // feature bit 0x1
-            FeatureBitmapType::kMechanicalPan, // feature bit 0x2
-            FeatureBitmapType::kMechanicalTilt, // feature bit 0x4
-            FeatureBitmapType::kMechanicalZoom, // feature bit 0x8
-            FeatureBitmapType::kMechanicalPresets// feature bit 0x10
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kDigitalPTZ,       // feature bit 0x1
+                FeatureBitmapType::kMechanicalPan,    // feature bit 0x2
+                FeatureBitmapType::kMechanicalTilt,   // feature bit 0x4
+                FeatureBitmapType::kMechanicalZoom,   // feature bit 0x8
+                FeatureBitmapType::kMechanicalPresets // feature bit 0x10
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::DPTZStreams::Id:
     case Attributes::MPTZPosition::Id:
     case Attributes::MPTZPresets::Id:
@@ -82,15 +80,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::TiltMax::Id:
     case Attributes::TiltMin::Id:
     case Attributes::ZoomMax::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::DPTZRelativeMove::Id:
     case Commands::DPTZSetViewport::Id:
     case Commands::MPTZMoveToPreset::Id:
@@ -98,10 +98,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::MPTZRemovePreset::Id:
     case Commands::MPTZSavePreset::Id:
     case Commands::MPTZSetPosition::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -109,4 +109,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

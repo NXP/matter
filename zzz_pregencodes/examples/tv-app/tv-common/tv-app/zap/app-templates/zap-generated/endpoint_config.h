@@ -344,11 +344,13 @@
                                                                                                                                    \
         /* Endpoint: 0, Cluster: Localization Configuration (server) */                                                            \
         { ZAP_LONG_DEFAULTS_INDEX(0), 0x00000000, 36, ZAP_TYPE(CHAR_STRING),                                                       \
-          ZAP_ATTRIBUTE_MASK(TOKENIZE) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ActiveLocale */         \
+          ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ActiveLocale */                                        \
         { ZAP_EMPTY_DEFAULT(), 0x00000001, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) },                    /* SupportedLocales */         \
-        { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */               \
-        { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) },   /* ClusterRevision */          \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SupportedLocales */                            \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32),                                                                  \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */                                  \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFD, 2, ZAP_TYPE(INT16U),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */                             \
                                                                                                                                    \
         /* Endpoint: 0, Cluster: Time Format Localization (server) */                                                              \
         { ZAP_SIMPLE_DEFAULT(0), 0x00000000, 1, ZAP_TYPE(ENUM8),                                                                   \
@@ -699,8 +701,10 @@
         /* Endpoint: 0, Cluster: User Label (server) */                                                                            \
         { ZAP_EMPTY_DEFAULT(), 0x00000000, 0, ZAP_TYPE(ARRAY),                                                                     \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* LabelList */    \
-        { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), ZAP_ATTRIBUTE_MASK(READABLE) },             /* FeatureMap */   \
-        { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */            \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32),                                                                  \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */                                  \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFD, 2, ZAP_TYPE(INT16U),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */                             \
                                                                                                                                    \
         /* Endpoint: 0, Cluster: Relative Humidity Measurement (server) */                                                         \
         { ZAP_EMPTY_DEFAULT(), 0x00000000, 2, ZAP_TYPE(INT16U),                                                                    \
@@ -1063,10 +1067,6 @@
 
 // Cluster function static arrays
 #define GENERATED_FUNCTION_ARRAYS                                                                                                  \
-    const EmberAfGenericClusterFunction chipFuncArrayLocalizationConfigurationServer[] = {                                         \
-        (EmberAfGenericClusterFunction) emberAfLocalizationConfigurationClusterServerInitCallback,                                 \
-        (EmberAfGenericClusterFunction) MatterLocalizationConfigurationClusterServerPreAttributeChangedCallback,                   \
-    };                                                                                                                             \
     const EmberAfGenericClusterFunction chipFuncArrayOnOffServer[] = {                                                             \
         (EmberAfGenericClusterFunction) emberAfOnOffClusterServerInitCallback,                                                     \
         (EmberAfGenericClusterFunction) MatterOnOffClusterServerShutdownCallback,                                                  \
@@ -1473,9 +1473,9 @@
       .clusterId = 0x0000002B, \
       .attributes = ZAP_ATTRIBUTE_INDEX(42), \
       .attributeCount = 4, \
-      .clusterSize = 42, \
-      .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION) | ZAP_CLUSTER_MASK(PRE_ATTRIBUTE_CHANGED_FUNCTION), \
-      .functions = chipFuncArrayLocalizationConfigurationServer, \
+      .clusterSize = 36, \
+      .mask = ZAP_CLUSTER_MASK(SERVER), \
+      .functions = NULL, \
       .acceptedCommandList = nullptr, \
       .generatedCommandList = nullptr, \
       .eventList = nullptr, \
@@ -1694,7 +1694,7 @@
       .clusterId = 0x00000041, \
       .attributes = ZAP_ATTRIBUTE_INDEX(197), \
       .attributeCount = 3, \
-      .clusterSize = 6, \
+      .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
       .acceptedCommandList = nullptr, \
@@ -2101,7 +2101,7 @@
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES                                                                                                   \
     {                                                                                                                              \
-        { ZAP_CLUSTER_INDEX(0), 25, 94 },                                                                                          \
+        { ZAP_CLUSTER_INDEX(0), 25, 82 },                                                                                          \
         { ZAP_CLUSTER_INDEX(25), 14, 164 },                                                                                        \
         { ZAP_CLUSTER_INDEX(39), 3, 34 },                                                                                          \
         { ZAP_CLUSTER_INDEX(42), 12, 452 },                                                                                        \
@@ -2116,7 +2116,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (0)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (744)
+#define ATTRIBUTE_MAX_SIZE (732)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (4)

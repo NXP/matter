@@ -1,12 +1,12 @@
-#include <lib/format/tlv_meta.h>
 #include <lib/format/FlatTree.h>
+#include <lib/format/tlv_meta.h>
 
 #include <array>
 
 namespace chip {
 namespace TLVMeta {
 
-extern const std::array<const FlatTree::Node<ItemInfo>, 1526 + 2> clusters_meta;
+extern const std::array<const FlatTree::Node<ItemInfo>, 1553 + 2> clusters_meta;
 
 } // namespace TLVMeta
 } // namespace chip
