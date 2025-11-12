@@ -48,13 +48,8 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::DownOrClose::Id,
-    Commands::GoToLiftPercentage::Id,
-    Commands::GoToLiftValue::Id,
-    Commands::GoToTiltPercentage::Id,
-    Commands::GoToTiltValue::Id,
-    Commands::StopMotion::Id,
-    Commands::UpOrOpen::Id,
+    Commands::DownOrClose::Id,   Commands::GoToLiftPercentage::Id, Commands::GoToLiftValue::Id, Commands::GoToTiltPercentage::Id,
+    Commands::GoToTiltValue::Id, Commands::StopMotion::Id,         Commands::UpOrOpen::Id,
 };
 
 inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
@@ -88,13 +83,8 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint2EnabledCommands[] = {
-    Commands::DownOrClose::Id,
-    Commands::GoToLiftPercentage::Id,
-    Commands::GoToLiftValue::Id,
-    Commands::GoToTiltPercentage::Id,
-    Commands::GoToTiltValue::Id,
-    Commands::StopMotion::Id,
-    Commands::UpOrOpen::Id,
+    Commands::DownOrClose::Id,   Commands::GoToLiftPercentage::Id, Commands::GoToLiftValue::Id, Commands::GoToTiltPercentage::Id,
+    Commands::GoToTiltValue::Id, Commands::StopMotion::Id,         Commands::UpOrOpen::Id,
 };
 
 } // namespace detail
@@ -104,32 +94,36 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kLift, // feature bit 0x1
-            FeatureBitmapType::kTilt, // feature bit 0x2
-            FeatureBitmapType::kPositionAwareLift, // feature bit 0x4
-            FeatureBitmapType::kAbsolutePosition, // feature bit 0x8
-            FeatureBitmapType::kPositionAwareTilt// feature bit 0x10
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kLift,              // feature bit 0x1
+                FeatureBitmapType::kTilt,              // feature bit 0x2
+                FeatureBitmapType::kPositionAwareLift, // feature bit 0x4
+                FeatureBitmapType::kAbsolutePosition,  // feature bit 0x8
+                FeatureBitmapType::kPositionAwareTilt  // feature bit 0x10
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
     {
         .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kLift, // feature bit 0x1
-            FeatureBitmapType::kTilt, // feature bit 0x2
-            FeatureBitmapType::kPositionAwareLift, // feature bit 0x4
-            FeatureBitmapType::kPositionAwareTilt// feature bit 0x10
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kLift,              // feature bit 0x1
+                FeatureBitmapType::kTilt,              // feature bit 0x2
+                FeatureBitmapType::kPositionAwareLift, // feature bit 0x4
+                FeatureBitmapType::kPositionAwareTilt  // feature bit 0x10
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
@@ -157,15 +151,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::TargetPositionLiftPercent100ths::Id:
     case Attributes::TargetPositionTiltPercent100ths::Id:
     case Attributes::Type::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::DownOrClose::Id:
     case Commands::GoToLiftPercentage::Id:
     case Commands::GoToLiftValue::Id:
@@ -173,10 +169,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::GoToTiltValue::Id:
     case Commands::StopMotion::Id:
     case Commands::UpOrOpen::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -184,4 +180,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

@@ -18,17 +18,9 @@ namespace EthernetNetworkDiagnostics {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
-    Attributes::CarrierDetect::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::CollisionCount::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::FullDuplex::Id,
-    Attributes::OverrunCount::Id,
-    Attributes::PacketRxCount::Id,
-    Attributes::PacketTxCount::Id,
-    Attributes::PHYRate::Id,
-    Attributes::TimeSinceReset::Id,
-    Attributes::TxErrCount::Id,
+    Attributes::CarrierDetect::Id, Attributes::ClusterRevision::Id, Attributes::CollisionCount::Id, Attributes::FeatureMap::Id,
+    Attributes::FullDuplex::Id,    Attributes::OverrunCount::Id,    Attributes::PacketRxCount::Id,  Attributes::PacketTxCount::Id,
+    Attributes::PHYRate::Id,       Attributes::TimeSinceReset::Id,  Attributes::TxErrCount::Id,
 };
 } // namespace detail
 
@@ -37,18 +29,21 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kPacketCounts, // feature bit 0x1
-            FeatureBitmapType::kErrorCounts// feature bit 0x2
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kPacketCounts, // feature bit 0x1
+                FeatureBitmapType::kErrorCounts   // feature bit 0x2
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::PHYRate::Id:
     case Attributes::CarrierDetect::Id:
     case Attributes::ClusterRevision::Id:
@@ -60,18 +55,20 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::PacketTxCount::Id:
     case Attributes::TimeSinceReset::Id:
     case Attributes::TxErrCount::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -79,4 +76,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

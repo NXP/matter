@@ -43,6 +43,7 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::OccupiedHeatingSetpoint::Id,
     Attributes::Presets::Id,
     Attributes::PresetTypes::Id,
+    Attributes::ScheduleTypes::Id,
     Attributes::SetpointHoldExpiryTimestamp::Id,
     Attributes::SystemMode::Id,
     Attributes::ThermostatSuggestionNotFollowingReason::Id,
@@ -50,12 +51,8 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::AddThermostatSuggestion::Id,
-    Commands::AddThermostatSuggestionResponse::Id,
-    Commands::AtomicRequest::Id,
-    Commands::AtomicResponse::Id,
-    Commands::RemoveThermostatSuggestion::Id,
-    Commands::SetActivePresetRequest::Id,
+    Commands::AddThermostatSuggestion::Id, Commands::AddThermostatSuggestionResponse::Id, Commands::AtomicRequest::Id,
+    Commands::AtomicResponse::Id,          Commands::RemoveThermostatSuggestion::Id,      Commands::SetActivePresetRequest::Id,
     Commands::SetpointRaiseLower::Id,
 };
 
@@ -66,20 +63,24 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kHeating, // feature bit 0x1
-            FeatureBitmapType::kCooling, // feature bit 0x2
-            FeatureBitmapType::kAutoMode, // feature bit 0x20
-            FeatureBitmapType::kPresets// feature bit 0x100
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kHeating,                     // feature bit 0x1
+                FeatureBitmapType::kCooling,                     // feature bit 0x2
+                FeatureBitmapType::kAutoMode,                    // feature bit 0x20
+                FeatureBitmapType::kMatterScheduleConfiguration, // feature bit 0x80
+                FeatureBitmapType::kPresets                      // feature bit 0x100
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AbsMaxCoolSetpointLimit::Id:
     case Attributes::AbsMaxHeatSetpointLimit::Id:
     case Attributes::AbsMinCoolSetpointLimit::Id:
@@ -105,19 +106,22 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::OccupiedHeatingSetpoint::Id:
     case Attributes::PresetTypes::Id:
     case Attributes::Presets::Id:
+    case Attributes::ScheduleTypes::Id:
     case Attributes::SetpointHoldExpiryTimestamp::Id:
     case Attributes::SystemMode::Id:
     case Attributes::ThermostatSuggestionNotFollowingReason::Id:
     case Attributes::ThermostatSuggestions::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::AddThermostatSuggestion::Id:
     case Commands::AddThermostatSuggestionResponse::Id:
     case Commands::AtomicRequest::Id:
@@ -125,10 +129,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::RemoveThermostatSuggestion::Id:
     case Commands::SetActivePresetRequest::Id:
     case Commands::SetpointRaiseLower::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -136,4 +140,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

@@ -23,6 +23,10 @@
 
 #include <app/util/basic-types.h>
 
+void MatterDescriptorClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterDescriptorClusterShutdownCallback(chip::EndpointId endpointId);
+
 void MatterAccessControlClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterAccessControlClusterShutdownCallback(chip::EndpointId endpointId);
@@ -54,3 +58,7 @@ void MatterOperationalCredentialsClusterShutdownCallback(chip::EndpointId endpoi
 void MatterGroupKeyManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId);
+
+void MatterUserLabelClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterUserLabelClusterShutdownCallback(chip::EndpointId endpointId);

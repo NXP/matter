@@ -105,12 +105,11 @@
     }
 
 // clang-format off
-#define GENERATED_EVENT_COUNT 2
+#define GENERATED_EVENT_COUNT 1
 #define GENERATED_EVENTS { \
   /* Endpoint: 0, Cluster: Access Control (server) */ \
   /* EventList (index=0) */ \
   0x00000000, /* AccessControlEntryChanged */ \
-  0x00000001, /* AccessControlExtensionChanged */ \
 }
 
 // clang-format on
@@ -190,7 +189,7 @@
       .acceptedCommandList = nullptr, \
       .generatedCommandList = nullptr, \
       .eventList = ZAP_GENERATED_EVENTS_INDEX( 0 ), \
-      .eventCount = 2, \
+      .eventCount = 1, \
     },\
   { \
       /* Endpoint: 0, Cluster: General Commissioning (server) */ \

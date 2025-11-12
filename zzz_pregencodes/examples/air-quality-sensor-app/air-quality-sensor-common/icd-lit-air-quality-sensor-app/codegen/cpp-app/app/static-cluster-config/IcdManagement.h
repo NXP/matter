@@ -1,7 +1,8 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for IcdManagement based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/air-quality-sensor-app/air-quality-sensor-common/icd-lit-air-quality-sensor-app.matter
+// from
+// /opt/matter/matter_dev/connectedhomeip/examples/air-quality-sensor-app/air-quality-sensor-common/icd-lit-air-quality-sensor-app.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -36,11 +37,8 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
-    Commands::RegisterClient::Id,
-    Commands::RegisterClientResponse::Id,
-    Commands::StayActiveRequest::Id,
-    Commands::StayActiveResponse::Id,
-    Commands::UnregisterClient::Id,
+    Commands::RegisterClient::Id,     Commands::RegisterClientResponse::Id, Commands::StayActiveRequest::Id,
+    Commands::StayActiveResponse::Id, Commands::UnregisterClient::Id,
 };
 
 } // namespace detail
@@ -49,17 +47,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 0,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::ICDCounter::Id:
     case Attributes::AcceptedCommandList::Id:
     case Attributes::ActiveModeDuration::Id:
@@ -75,24 +74,26 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::RegisteredClients::Id:
     case Attributes::UserActiveModeTriggerHint::Id:
     case Attributes::UserActiveModeTriggerInstruction::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::RegisterClient::Id:
     case Commands::RegisterClientResponse::Id:
     case Commands::StayActiveRequest::Id:
     case Commands::StayActiveResponse::Id:
     case Commands::UnregisterClient::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -100,4 +101,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

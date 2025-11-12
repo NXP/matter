@@ -1,7 +1,8 @@
 // DO NOT EDIT - Generated file
 //
 // Application configuration for NetworkCommissioning based on EMBER configuration
-// from /opt/matter/matter_dev/connectedhomeip/examples/chef/devices/rootnode_oven_temperaturecontrolledcabinet_cooktop_cooksurface_738dd18832.matter
+// from
+// /opt/matter/matter_dev/connectedhomeip/examples/chef/devices/rootnode_oven_temperaturecontrolledcabinet_cooktop_cooksurface_738dd18832.matter
 #pragma once
 
 #include <app/util/cluster-config.h>
@@ -32,15 +33,9 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
-    Commands::AddOrUpdateThreadNetwork::Id,
-    Commands::AddOrUpdateWiFiNetwork::Id,
-    Commands::ConnectNetwork::Id,
-    Commands::ConnectNetworkResponse::Id,
-    Commands::NetworkConfigResponse::Id,
-    Commands::RemoveNetwork::Id,
-    Commands::ReorderNetwork::Id,
-    Commands::ScanNetworks::Id,
-    Commands::ScanNetworksResponse::Id,
+    Commands::AddOrUpdateThreadNetwork::Id, Commands::AddOrUpdateWiFiNetwork::Id, Commands::ConnectNetwork::Id,
+    Commands::ConnectNetworkResponse::Id,   Commands::NetworkConfigResponse::Id,  Commands::RemoveNetwork::Id,
+    Commands::ReorderNetwork::Id,           Commands::ScanNetworks::Id,           Commands::ScanNetworksResponse::Id,
 };
 
 } // namespace detail
@@ -49,17 +44,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 0,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
@@ -71,15 +67,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::LastNetworkingStatus::Id:
     case Attributes::MaxNetworks::Id:
     case Attributes::Networks::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::AddOrUpdateThreadNetwork::Id:
     case Commands::AddOrUpdateWiFiNetwork::Id:
     case Commands::ConnectNetwork::Id:
@@ -89,10 +87,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::ReorderNetwork::Id:
     case Commands::ScanNetworks::Id:
     case Commands::ScanNetworksResponse::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -100,4 +98,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

@@ -18,15 +18,9 @@ namespace MeterIdentification {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::MeterSerialNumber::Id,
-    Attributes::MeterType::Id,
-    Attributes::PointOfDelivery::Id,
-    Attributes::PowerThreshold::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id,        Attributes::ClusterRevision::Id,
+    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id, Attributes::MeterSerialNumber::Id,
+    Attributes::MeterType::Id,           Attributes::PointOfDelivery::Id,      Attributes::PowerThreshold::Id,
     Attributes::ProtocolVersion::Id,
 };
 } // namespace detail
@@ -35,17 +29,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 1,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
@@ -56,18 +51,20 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::PointOfDelivery::Id:
     case Attributes::PowerThreshold::Id:
     case Attributes::ProtocolVersion::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -75,4 +72,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

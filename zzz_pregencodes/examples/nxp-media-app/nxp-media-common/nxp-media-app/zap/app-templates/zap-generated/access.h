@@ -170,6 +170,15 @@
     0x0000050B, /* Cluster: Audio Output, Command: RenameOutput, Privilege: manage */ \
     0x0000050E, /* Cluster: Account Login, Command: GetSetupPIN, Privilege: administer */ \
     0x0000050E, /* Cluster: Account Login, Command: Login, Privilege: administer */ \
+    0x0000050F, /* Cluster: Content Control, Command: UpdatePIN, Privilege: manage */ \
+    0x0000050F, /* Cluster: Content Control, Command: ResetPIN, Privilege: administer */ \
+    0x0000050F, /* Cluster: Content Control, Command: Enable, Privilege: manage */ \
+    0x0000050F, /* Cluster: Content Control, Command: Disable, Privilege: manage */ \
+    0x0000050F, /* Cluster: Content Control, Command: SetScreenDailyTime, Privilege: manage */ \
+    0x0000050F, /* Cluster: Content Control, Command: BlockUnratedContent, Privilege: manage */ \
+    0x0000050F, /* Cluster: Content Control, Command: UnblockUnratedContent, Privilege: manage */ \
+    0x0000050F, /* Cluster: Content Control, Command: SetOnDemandRatingThreshold, Privilege: manage */ \
+    0x0000050F, /* Cluster: Content Control, Command: SetScheduledContentRatingThreshold, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, *command*, privilege) for invoke command
@@ -206,6 +215,15 @@
     0x00000001, /* Cluster: Audio Output, Command: RenameOutput, Privilege: manage */ \
     0x00000000, /* Cluster: Account Login, Command: GetSetupPIN, Privilege: administer */ \
     0x00000002, /* Cluster: Account Login, Command: Login, Privilege: administer */ \
+    0x00000000, /* Cluster: Content Control, Command: UpdatePIN, Privilege: manage */ \
+    0x00000001, /* Cluster: Content Control, Command: ResetPIN, Privilege: administer */ \
+    0x00000003, /* Cluster: Content Control, Command: Enable, Privilege: manage */ \
+    0x00000004, /* Cluster: Content Control, Command: Disable, Privilege: manage */ \
+    0x00000006, /* Cluster: Content Control, Command: SetScreenDailyTime, Privilege: manage */ \
+    0x00000007, /* Cluster: Content Control, Command: BlockUnratedContent, Privilege: manage */ \
+    0x00000008, /* Cluster: Content Control, Command: UnblockUnratedContent, Privilege: manage */ \
+    0x00000009, /* Cluster: Content Control, Command: SetOnDemandRatingThreshold, Privilege: manage */ \
+    0x0000000A, /* Cluster: Content Control, Command: SetScheduledContentRatingThreshold, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, command, *privilege*) for invoke command
@@ -242,6 +260,15 @@
     chip::Access::Privilege::kManage, /* Cluster: Audio Output, Command: RenameOutput, Privilege: manage */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Account Login, Command: GetSetupPIN, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Account Login, Command: Login, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: UpdatePIN, Privilege: manage */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: Content Control, Command: ResetPIN, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: Enable, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: Disable, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: SetScreenDailyTime, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: BlockUnratedContent, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: UnblockUnratedContent, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: SetOnDemandRatingThreshold, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: SetScheduledContentRatingThreshold, Privilege: manage */ \
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -251,6 +278,7 @@
     0x0000001F, /* Cluster: Access Control, Event: AccessControlEntryChanged, Privilege: administer */ \
     0x0000001F, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     0x0000001F, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
+    0x0000001F, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
     0x0000050E, /* Cluster: Account Login, Event: LoggedOut, Privilege: administer */ \
 }
 
@@ -259,6 +287,7 @@
     0x00000000, /* Cluster: Access Control, Event: AccessControlEntryChanged, Privilege: administer */ \
     0x00000001, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     0x00000002, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
+    0x00000003, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
     0x00000000, /* Cluster: Account Login, Event: LoggedOut, Privilege: administer */ \
 }
 
@@ -267,6 +296,7 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AccessControlEntryChanged, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Account Login, Event: LoggedOut, Privilege: administer */ \
 }
 

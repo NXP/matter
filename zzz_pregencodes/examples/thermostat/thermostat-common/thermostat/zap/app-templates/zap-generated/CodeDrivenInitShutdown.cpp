@@ -27,6 +27,12 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
 {
     switch (clusterId)
     {
+    case app::Clusters::Identify::Id:
+        MatterIdentifyClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::Descriptor::Id:
+        MatterDescriptorClusterInitCallback(endpoint);
+        break;
     case app::Clusters::Binding::Id:
         MatterBindingClusterInitCallback(endpoint);
         break;
@@ -35,6 +41,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::LocalizationConfiguration::Id:
+        MatterLocalizationConfigurationClusterInitCallback(endpoint);
         break;
     case app::Clusters::GeneralCommissioning::Id:
         MatterGeneralCommissioningClusterInitCallback(endpoint);
@@ -63,6 +72,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::UserLabel::Id:
+        MatterUserLabelClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -70,6 +82,12 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
 {
     switch (clusterId)
     {
+    case app::Clusters::Identify::Id:
+        MatterIdentifyClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::Descriptor::Id:
+        MatterDescriptorClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::Binding::Id:
         MatterBindingClusterShutdownCallback(endpoint);
         break;
@@ -78,6 +96,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::LocalizationConfiguration::Id:
+        MatterLocalizationConfigurationClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::GeneralCommissioning::Id:
         MatterGeneralCommissioningClusterShutdownCallback(endpoint);
@@ -105,6 +126,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::UserLabel::Id:
+        MatterUserLabelClusterShutdownCallback(endpoint);
         break;
     }
 }

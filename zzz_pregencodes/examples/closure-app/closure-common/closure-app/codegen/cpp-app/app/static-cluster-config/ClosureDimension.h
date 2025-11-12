@@ -18,21 +18,11 @@ namespace ClosureDimension {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::CurrentState::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::LatchControlModes::Id,
-    Attributes::LimitRange::Id,
-    Attributes::Overflow::Id,
-    Attributes::Resolution::Id,
-    Attributes::RotationAxis::Id,
-    Attributes::StepValue::Id,
-    Attributes::TargetState::Id,
-    Attributes::Unit::Id,
-    Attributes::UnitRange::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id, Attributes::ClusterRevision::Id,
+    Attributes::CurrentState::Id,        Attributes::FeatureMap::Id,    Attributes::GeneratedCommandList::Id,
+    Attributes::LatchControlModes::Id,   Attributes::LimitRange::Id,    Attributes::Overflow::Id,
+    Attributes::Resolution::Id,          Attributes::RotationAxis::Id,  Attributes::StepValue::Id,
+    Attributes::TargetState::Id,         Attributes::Unit::Id,          Attributes::UnitRange::Id,
 };
 
 inline constexpr CommandId kEndpoint2EnabledCommands[] = {
@@ -41,21 +31,11 @@ inline constexpr CommandId kEndpoint2EnabledCommands[] = {
 };
 
 inline constexpr AttributeId kEndpoint3EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::CurrentState::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::LatchControlModes::Id,
-    Attributes::LimitRange::Id,
-    Attributes::Overflow::Id,
-    Attributes::Resolution::Id,
-    Attributes::RotationAxis::Id,
-    Attributes::StepValue::Id,
-    Attributes::TargetState::Id,
-    Attributes::Unit::Id,
-    Attributes::UnitRange::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id, Attributes::ClusterRevision::Id,
+    Attributes::CurrentState::Id,        Attributes::FeatureMap::Id,    Attributes::GeneratedCommandList::Id,
+    Attributes::LatchControlModes::Id,   Attributes::LimitRange::Id,    Attributes::Overflow::Id,
+    Attributes::Resolution::Id,          Attributes::RotationAxis::Id,  Attributes::StepValue::Id,
+    Attributes::TargetState::Id,         Attributes::Unit::Id,          Attributes::UnitRange::Id,
 };
 
 inline constexpr CommandId kEndpoint3EnabledCommands[] = {
@@ -69,24 +49,24 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
     {
-        .endpointNumber = 2,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 2,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
     },
     {
-        .endpointNumber = 3,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 3,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint3EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint3EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
@@ -102,21 +82,23 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::TargetState::Id:
     case Attributes::Unit::Id:
     case Attributes::UnitRange::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::SetTarget::Id:
     case Commands::Step::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -124,4 +106,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

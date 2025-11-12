@@ -18,21 +18,11 @@ namespace MediaPlayback {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::ActiveAudioTrack::Id,
-    Attributes::ActiveTextTrack::Id,
-    Attributes::AttributeList::Id,
-    Attributes::AvailableAudioTracks::Id,
-    Attributes::AvailableTextTracks::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::CurrentState::Id,
-    Attributes::Duration::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::PlaybackSpeed::Id,
-    Attributes::SampledPosition::Id,
-    Attributes::SeekRangeEnd::Id,
-    Attributes::SeekRangeStart::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::ActiveAudioTrack::Id,     Attributes::ActiveTextTrack::Id,
+    Attributes::AttributeList::Id,       Attributes::AvailableAudioTracks::Id, Attributes::AvailableTextTracks::Id,
+    Attributes::ClusterRevision::Id,     Attributes::CurrentState::Id,         Attributes::Duration::Id,
+    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id, Attributes::PlaybackSpeed::Id,
+    Attributes::SampledPosition::Id,     Attributes::SeekRangeEnd::Id,         Attributes::SeekRangeStart::Id,
     Attributes::StartTime::Id,
 };
 
@@ -95,27 +85,31 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kAdvancedSeek, // feature bit 0x1
-            FeatureBitmapType::kVariableSpeed// feature bit 0x2
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kAdvancedSeek, // feature bit 0x1
+                FeatureBitmapType::kVariableSpeed // feature bit 0x2
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
     {
         .endpointNumber = 3,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kAdvancedSeek, // feature bit 0x1
-            FeatureBitmapType::kVariableSpeed// feature bit 0x2
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kAdvancedSeek, // feature bit 0x1
+                FeatureBitmapType::kVariableSpeed // feature bit 0x2
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint3EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint3EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::ActiveAudioTrack::Id:
     case Attributes::ActiveTextTrack::Id:
@@ -132,15 +126,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::SeekRangeEnd::Id:
     case Attributes::SeekRangeStart::Id:
     case Attributes::StartTime::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::ActivateAudioTrack::Id:
     case Commands::ActivateTextTrack::Id:
     case Commands::DeactivateTextTrack::Id:
@@ -156,10 +152,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::SkipForward::Id:
     case Commands::StartOver::Id:
     case Commands::Stop::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -167,4 +163,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

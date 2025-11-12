@@ -51,21 +51,24 @@ using FeatureBitmapType = Feature;
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-            FeatureBitmapType::kConstantPressure, // feature bit 0x1
-            FeatureBitmapType::kCompensatedPressure, // feature bit 0x2
-            FeatureBitmapType::kConstantFlow, // feature bit 0x4
-            FeatureBitmapType::kConstantSpeed, // feature bit 0x8
-            FeatureBitmapType::kConstantTemperature// feature bit 0x10
-        },
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kConstantPressure,    // feature bit 0x1
+                FeatureBitmapType::kCompensatedPressure, // feature bit 0x2
+                FeatureBitmapType::kConstantFlow,        // feature bit 0x4
+                FeatureBitmapType::kConstantSpeed,       // feature bit 0x8
+                FeatureBitmapType::kConstantTemperature  // feature bit 0x10
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::Capacity::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::ControlMode::Id:
@@ -91,18 +94,20 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::Power::Id:
     case Attributes::PumpStatus::Id:
     case Attributes::Speed::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -110,4 +115,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

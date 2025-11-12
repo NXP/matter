@@ -18,17 +18,10 @@ namespace OperationalCredentials {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::CommissionedFabrics::Id,
-    Attributes::CurrentFabricIndex::Id,
-    Attributes::Fabrics::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::NOCs::Id,
-    Attributes::SupportedFabrics::Id,
-    Attributes::TrustedRootCertificates::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id,           Attributes::ClusterRevision::Id,
+    Attributes::CommissionedFabrics::Id, Attributes::CurrentFabricIndex::Id,      Attributes::Fabrics::Id,
+    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id,    Attributes::NOCs::Id,
+    Attributes::SupportedFabrics::Id,    Attributes::TrustedRootCertificates::Id,
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
@@ -55,17 +48,18 @@ using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefin
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 0,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 0,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::NOCs::Id:
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
@@ -77,15 +71,17 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::GeneratedCommandList::Id:
     case Attributes::SupportedFabrics::Id:
     case Attributes::TrustedRootCertificates::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::AddNOC::Id:
     case Commands::AddTrustedRootCertificate::Id:
     case Commands::AttestationRequest::Id:
@@ -101,10 +97,10 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
     case Commands::SignVIDVerificationResponse::Id:
     case Commands::UpdateFabricLabel::Id:
     case Commands::UpdateNOC::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -112,4 +108,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-

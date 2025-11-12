@@ -18,14 +18,10 @@ namespace DoorLock {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
-    Attributes::ActuatorEnabled::Id,
-    Attributes::AutoRelockTime::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::LockState::Id,
-    Attributes::LockType::Id,
-    Attributes::OperatingMode::Id,
-    Attributes::SupportedOperatingModes::Id,
+    Attributes::ActuatorEnabled::Id, Attributes::AutoRelockTime::Id,
+    Attributes::ClusterRevision::Id, Attributes::FeatureMap::Id,
+    Attributes::LockState::Id,       Attributes::LockType::Id,
+    Attributes::OperatingMode::Id,   Attributes::SupportedOperatingModes::Id,
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
@@ -39,17 +35,18 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 1,
-        .featureMap = BitFlags<FeatureBitmapType> {
-        },
+        .endpointNumber    = 1,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
 // If a specific attribute is supported at all across all endpoint static instantiations
-inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) {
-  switch (attributeId) {
+inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
+{
+    switch (attributeId)
+    {
     case Attributes::ActuatorEnabled::Id:
     case Attributes::AutoRelockTime::Id:
     case Attributes::ClusterRevision::Id:
@@ -58,21 +55,23 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId) 
     case Attributes::LockType::Id:
     case Attributes::OperatingMode::Id:
     case Attributes::SupportedOperatingModes::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 // If a specific command is supported at all across all endpoint static instantiations
-inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
-  switch (commandId) {
+inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
+{
+    switch (commandId)
+    {
     case Commands::LockDoor::Id:
     case Commands::UnlockDoor::Id:
-      return true;
+        return true;
     default:
-      return false;
-  }
+        return false;
+    }
 }
 
 } // namespace StaticApplicationConfig
@@ -80,4 +79,3 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId) {
 } // namespace Clusters
 } // namespace app
 } // namespace chip
-
