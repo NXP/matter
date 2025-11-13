@@ -66,7 +66,7 @@ Status ChimeCommandDelegate::PlayChimeSound()
     auto selectedChime = gChimeClusterServerInstance.GetSelectedChime();
 
     // Play chime sound
-    ChipLogDetail(DeviceLayer, "Playing Chime with sound ID: %u", unsigned(selectedChime));  
+    ChipLogProgress(DeviceLayer, "Playing Chime with sound ID: %u", unsigned(selectedChime));  
     return Status::Success;
 }
 
