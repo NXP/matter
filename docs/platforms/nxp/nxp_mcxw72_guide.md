@@ -95,6 +95,42 @@ See
 
 ## Flashing and debugging
 
+### Flashing the NBU firmware
+
+Normally the `NBU` image should be written/updated only when migrating to a new
+NXP SDK or to a new Matter release altogether. The procedure below can be used
+to upload/refresh the board's NBU firmware.
+
+1. Install
+   [NXP LinkServer for Microcontrollers](https://www.nxp.com/design/design-center/software/development-software/mcuxpresso-software-and-tools-/linkserver-for-microcontrollers:LINKERSERVER).
+
+2. The NBU image is available in your Matter source code tree in
+
+`third_party/nxp/nxp_matter_support/github_sdk/sdk_next/repo/mcuxsdk/middleware/wireless/ieee-802.15.4/bin/mcxw72/mcxw72_nbu_ble_full_15_4_dyn.bin`
+
+3. Initialize the board in `ISP` (In-System Programming) mode, which allows the
+   SoC to accept commands to erase/write/update internal flash memories via the
+   serial port. In order to do that disconnect the board from your PC and hold
+   down the SW3 button while reconnecting it back. When you release the SW3
+   button the board should be operating in ISP mode.
+
+4. Erase the host and NBU flash memories using the `blhost` tool from the _NXP
+   LinkServer for Microcontrollers_
+
+    ```
+    blhost -p <assigned_port> flash-erase-all 0
+    blhost -p <assigned_port> flash-erase-all 1
+    ```
+
+5. Use the same `blhost` tool to write the NBU image on the board:
+
+    ```
+    blhost -p <assigned_port> write-memory 0x48800000 mcxw72_nbu_ble_full_15_4_dyn.bin
+    ```
+
+6. Return the board to normal operating mode by disconnecting and then
+   reconnecting it back to your PC.
+
 ### Flashing the example application
 
 We recommend using `JLink` from Segger to flash the example application. It can
@@ -123,22 +159,6 @@ Program the application executable :
 ```
 J-Link > loadfile <application_binary> (.elf or .srec format)
 ```
-
-### Flashing the NBU
-
-Normally the `NBU` image should be written/updated only when migrating to a new NXP SDK or to a new Matter release.
-
-1. Install [NXP LinkServer for Microcontrollers](https://www.nxp.com/design/design-center/software/development-software/mcuxpresso-software-and-tools-/linkserver-for-microcontrollers:LINKERSERVER).
-
-2. The NBU image is available in your Matter source code tree in
-
-  `third_party/nxp/nxp_matter_support/github_sdk/sdk_next/repo/mcuxsdk/middleware/wireless/ieee-802.15.4/bin/mcxw72/mcxw72_nbu_ble_full_15_4_dyn.bin`
-
-3. Use the `blhost` tool from the _NXP LinkServer for Microcontrollers_ to write the image on the board:
-
-   ```
-   blhost -p <assigned_port> write-memory 0x48800000 mcxw72_nbu_ble_full_15_4_dyn.bin
-   ```
 
 <a name="testing-the-example"></a>
 
@@ -184,12 +204,12 @@ The device state feedback is provided through the on-board LEDs:
 
 The user can control the device using the on-board buttons. The actions are summarized below:
 
-| Button | Action       | State                                        | Output                                                                                                                                 |
-| ------ | ------------ | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| SW2    | short press  | not commissioned                             | Enable/disable BLE advertising                                                                                                                 |
-| SW2    | long press   | any                                          | Initiate a factory reset (can be cancelled by pressing the button again within the factory reset timeout limit - 6 seconds by default) |
-| SW3    | short press  | any                                          | Toggle attribute `StateValue` value                                                                                                    |
-| SW3    | long press   | any                                          | Clean soft reset of the device (takes into account proper Matter shutdown procedure)                                                   |
+| Button | Action      | State            | Output                                                                                                                                 |
+| ------ | ----------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| SW2    | short press | not commissioned | Enable/disable BLE advertising                                                                                                         |
+| SW2    | long press  | any              | Initiate a factory reset (can be cancelled by pressing the button again within the factory reset timeout limit - 6 seconds by default) |
+| SW4    | short press | any              | Toggle attribute `StateValue` value                                                                                                    |
+| SW4    | long press  | any              | Clean soft reset of the device (takes into account proper Matter shutdown procedure)                                                   |
 
 <a name="ota-software-update"></a>
 
