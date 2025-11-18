@@ -159,22 +159,10 @@ CHIP_ERROR AES_CCM_encrypt(const uint8_t * plaintext, size_t plaintext_length, c
         ciphertext += out_length;
     }
 
-    if (plaintext_length != 0)
-    {
-        out_length     = 0;
-        tag_out_length = 0;
+    out_length     = 0;
+    tag_out_length = 0;
 
-        status = psa_aead_finish(&operation, ciphertext, PSA_AEAD_FINISH_OUTPUT_SIZE(PSA_KEY_TYPE_AES, algorithm), &out_length, tag,
-                                 tag_length, &tag_out_length);
-    }
-
-    else
-    {
-        out_length     = 0;
-        tag_out_length = 0;
-
-        status = psa_aead_finish(&operation, nullptr, 0, &out_length, tag, tag_length, &tag_out_length);
-    }
+    status = psa_aead_finish(&operation, nullptr, 0, &out_length, tag, tag_length, &tag_out_length);
     VerifyOrReturnError(status == PSA_SUCCESS && tag_length == tag_out_length, CHIP_ERROR_INTERNAL);
 #endif
 
@@ -273,18 +261,8 @@ CHIP_ERROR AES_CCM_decrypt(const uint8_t * ciphertext, size_t ciphertext_length,
         plaintext += out_length;
     }
 
-    if (ciphertext_length != 0)
-    {
-        out_length = 0;
-        status = psa_aead_verify(&operation, plaintext, PSA_AEAD_VERIFY_OUTPUT_SIZE(PSA_KEY_TYPE_AES, algorithm), &out_length, tag,
-                                 tag_length);
-    }
-    else
-    {
-        out_length = 0;
-        status     = psa_aead_verify(&operation, nullptr, 0, &out_length, tag, tag_length);
-    }
-
+    out_length = 0;
+    status     = psa_aead_verify(&operation, nullptr, 0, &out_length, tag, tag_length);
     VerifyOrReturnError(status == PSA_SUCCESS, CHIP_ERROR_INTERNAL);
 #endif
 
