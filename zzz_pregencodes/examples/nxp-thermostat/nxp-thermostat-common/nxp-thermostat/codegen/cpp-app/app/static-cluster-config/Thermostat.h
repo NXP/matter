@@ -43,6 +43,7 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::OccupiedHeatingSetpoint::Id,
     Attributes::Presets::Id,
     Attributes::PresetTypes::Id,
+    Attributes::ScheduleTypes::Id,
     Attributes::SetpointHoldExpiryTimestamp::Id,
     Attributes::SystemMode::Id,
     Attributes::ThermostatSuggestionNotFollowingReason::Id,
@@ -64,10 +65,11 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .endpointNumber = 1,
         .featureMap =
             BitFlags<FeatureBitmapType>{
-                FeatureBitmapType::kHeating,  // feature bit 0x1
-                FeatureBitmapType::kCooling,  // feature bit 0x2
-                FeatureBitmapType::kAutoMode, // feature bit 0x20
-                FeatureBitmapType::kPresets   // feature bit 0x100
+                FeatureBitmapType::kHeating,                     // feature bit 0x1
+                FeatureBitmapType::kCooling,                     // feature bit 0x2
+                FeatureBitmapType::kAutoMode,                    // feature bit 0x20
+                FeatureBitmapType::kMatterScheduleConfiguration, // feature bit 0x80
+                FeatureBitmapType::kPresets                      // feature bit 0x100
             },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
@@ -104,6 +106,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::OccupiedHeatingSetpoint::Id:
     case Attributes::PresetTypes::Id:
     case Attributes::Presets::Id:
+    case Attributes::ScheduleTypes::Id:
     case Attributes::SetpointHoldExpiryTimestamp::Id:
     case Attributes::SystemMode::Id:
     case Attributes::ThermostatSuggestionNotFollowingReason::Id:
