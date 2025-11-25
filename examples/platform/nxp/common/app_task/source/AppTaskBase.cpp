@@ -327,6 +327,11 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
     }
 #endif
 
+#if CONFIG_CHIP_SE05X
+    err = chip::DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().Init();
+    SuccessOrExit(err);
+#endif
+
 #if CONFIG_CHIP_WIFI || CHIP_DEVICE_CONFIG_ENABLE_WPA
     sNetworkCommissioningInstance.Init();
 #ifdef ENABLE_CHIP_SHELL

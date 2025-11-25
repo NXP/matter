@@ -49,12 +49,14 @@ public:
         CHIP_ERROR status = CHIP_NO_ERROR;
         // tmp_buffer - Need larger buffer to read node operational certificate chain
         uint8_t tmp_buffer[(2 * chip::Credentials::kMaxCHIPCertLength) + 32];
-        size_t tmp_buffer_len = sizeof(tmp_buffer);
-        char kvs_key_name[32] = { 0 };
+        size_t tmp_buffer_len                                   = sizeof(tmp_buffer);
+        char kvs_key_name[32]                                   = { 0 };
         char ssid[DeviceLayer::Internal::kMaxWiFiSSIDLength]    = { 0 };
         char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
-        size_t ssid_len     = sizeof(ssid);
-        size_t password_len = sizeof(password);
+        char op_data_set[256]                                   = { 0 };
+        size_t ssid_len                                         = sizeof(ssid);
+        size_t password_len                                     = sizeof(password);
+        size_t op_data_set_len                                  = sizeof(op_data_set);
 
         ChipLogDetail(Crypto, "SE05x :: KVS Initialization ");
 
@@ -108,10 +110,13 @@ public:
         status         = se05x_read_ICA(tmp_buffer, &tmp_buffer_len);
         VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/i", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+        if (tmp_buffer_len != 0)
+        {
+            VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%x/i", se05x_get_fabric_id()) > 0,
+                                CHIP_ERROR_INTERNAL);
+            status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
+            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+        }
 
         memset(tmp_buffer, 0, sizeof(tmp_buffer));
         tmp_buffer_len = sizeof(tmp_buffer);
@@ -173,14 +178,17 @@ public:
 
         memset(tmp_buffer, 0, sizeof(tmp_buffer));
         tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_wifi_credentials(tmp_buffer, tmp_buffer_len, ssid, &ssid_len, password, &password_len);
-
+        status = se05x_read_wifi_and_thread_credentials(tmp_buffer, tmp_buffer_len, ssid, &ssid_len, password, &password_len,
+                                                        op_data_set, &op_data_set_len);
         if (status == CHIP_NO_ERROR)
         {
-            status = _Put("wifi-ssid", ssid, ssid_len);
-            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-            status = _Put("wifi-pass", password, password_len);
-            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+            if ((password_len > 0) && (ssid_len > 0))
+            {
+                status = _Put("wifi-ssid", ssid, ssid_len);
+                VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+                status = _Put("wifi-pass", password, password_len);
+                VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+            }
         }
         else
         {

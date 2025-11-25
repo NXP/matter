@@ -32,6 +32,7 @@
 #include <lib/core/TLVTypes.h>
 #include <lib/support/CHIPMem.h>
 #include <lib/support/CodeUtils.h>
+#include "se051h_nfc_comm_prov.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -41,14 +42,9 @@
         0xA5, 0xA6, 0xB5, 0xB6, 0xA5, 0xA6, 0xB5, 0xB6                                                                             \
     }
 
-#define NIST256_HEADER_OFFSET 26
-#define SE05X_OPERATIONAL_CRED_CLUSTER_ID 0x7FFE003E
-#define SE05X_ROOT_CERTIFICATE_ID 0x7FFF3301
-#define SE05X_NODE_OPERATIONAL_KEY_PAIR 0x7FFF3101
-#define SE05X_IPK_ID 0x7FFF3601
-#define SE05X_ACCESS_CONTROL_CLUSTER 0x7FFF3501
-#define SE05X_BASIC_INFO_CONTROL_ID 0x7FFE0028
-#define SE05X_WIFI_BINARY_FILE 0x7FFF3401
+#define NIST256_HEADER_OFFSET                       26
+#define SE05X_WIFI_BINARY_FILE                      SE051H_WIFI_CRED_ID_APP_8_8
+//#define SE05X_WIFI_BINARY_FILE                      SE051H_WIFI_CRED_ID_APP_8_6
 
 using namespace chip;
 using namespace chip::TLV;
@@ -86,6 +82,7 @@ static CHIP_ERROR se05x_create_refkey(const uint8_t * pubKeyBuf, size_t pubKeyBu
     memcpy(&outBuf[offset], pubKeyBuf + 16, pubKeyBufLen - NIST256_HEADER_OFFSET);
     offset += pubKeyBufLen - NIST256_HEADER_OFFSET;
 
+    VerifyOrReturnError((SIZE_MAX - sizeof(se05x_magic_no)) >= (offset), CHIP_ERROR_INTERNAL);
     VerifyOrReturnError((offset + sizeof(se05x_magic_no)) <= *outLen, CHIP_ERROR_INTERNAL);
     memcpy(&outBuf[offset], se05x_magic_no, sizeof(se05x_magic_no));
     offset += sizeof(se05x_magic_no);
@@ -93,6 +90,7 @@ static CHIP_ERROR se05x_create_refkey(const uint8_t * pubKeyBuf, size_t pubKeyBu
     uint8_t keyIdBytes[] = { static_cast<uint8_t>((keyId >> 24) & 0xFF), static_cast<uint8_t>((keyId >> 16) & 0xFF),
                              static_cast<uint8_t>((keyId >> 8) & 0xFF), static_cast<uint8_t>(keyId & 0xFF) };
 
+    VerifyOrReturnError((SIZE_MAX - sizeof(keyIdBytes)) >= (offset), CHIP_ERROR_INTERNAL);
     VerifyOrReturnError((offset + sizeof(keyIdBytes)) <= *outLen, CHIP_ERROR_INTERNAL);
     memcpy(&outBuf[offset], keyIdBytes, sizeof(keyIdBytes));
     offset += sizeof(keyIdBytes);
@@ -115,7 +113,7 @@ CHIP_ERROR se05x_is_nfc_commissioning_done()
     std::vector<uint8_t> op_cred_buff(512);
     size_t op_cred_buff_len = op_cred_buff.size();
 
-    status = se05x_get_certificate(SE05X_OPERATIONAL_CRED_CLUSTER_ID, op_cred_buff.data(), &op_cred_buff_len);
+    status = se05x_get_certificate(SE051H_OP_CRED_CLUSTER_ID, op_cred_buff.data(), &op_cred_buff_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     if (op_cred_buff.data()[op_cred_buff_len - 1] == 0x00)
@@ -138,11 +136,11 @@ CHIP_ERROR se05x_read_node_operational_keypair(uint8_t * op_key_ref_key, size_t 
     std::vector<uint8_t> pubKeyBuf(256);
     size_t pubKeyBufLen = pubKeyBuf.size();
 
-    status = se05x_get_certificate(SE05X_NODE_OPERATIONAL_KEY_PAIR, pubKeyBuf.data(), &pubKeyBufLen);
+    status = se05x_get_certificate(SE051H_NODE_OP_KEY_ID, pubKeyBuf.data(), &pubKeyBufLen);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     status =
-        se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE05X_NODE_OPERATIONAL_KEY_PAIR, op_key_ref_key, op_key_ref_key_len);
+        se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE051H_NODE_OP_KEY_ID, op_key_ref_key, op_key_ref_key_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     return CHIP_NO_ERROR;
@@ -161,7 +159,7 @@ CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
     size_t buf_len = *noc_buf_len;
     size_t noc_len = 0;
 
-    status = se05x_get_certificate(SE05X_OPERATIONAL_CRED_CLUSTER_ID, noc_buf, &buf_len);
+    status = se05x_get_certificate(SE051H_OP_CRED_CLUSTER_ID, noc_buf, &buf_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     reader.Init(noc_buf, *noc_buf_len);
@@ -291,6 +289,8 @@ CHIP_ERROR se05x_read_ICA(uint8_t * ica_buf, size_t * ica_buf_len)
     VerifyOrReturnError(buf_len >= offset + 2, CHIP_ERROR_INTERNAL);
     ica_len = (ica_buf[offset + 1] << 8) | ica_buf[offset];
 
+    VerifyOrReturnError((SIZE_MAX - offset) >= (ica_len), CHIP_ERROR_INTERNAL);
+    VerifyOrReturnError((SIZE_MAX - 2) >= (offset + ica_len), CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(*ica_buf_len > (offset + 2 + ica_len), CHIP_ERROR_INTERNAL);
     memmove(ica_buf, &ica_buf[offset + 2], ica_len);
     *ica_buf_len = ica_len;
@@ -300,21 +300,18 @@ CHIP_ERROR se05x_read_ICA(uint8_t * ica_buf, size_t * ica_buf_len)
 
 CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
 {
-    CHIP_ERROR status = CHIP_NO_ERROR;
+    CHIP_ERROR status       = CHIP_NO_ERROR;
+    TLVType container       = kTLVType_NotSpecified;
+    TLVType outer_container = kTLVType_NotSpecified;
+    TLVType inner_container = kTLVType_NotSpecified;
+    TLVWriter writer;
 
     VerifyOrReturnError(ipk_buf != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(ipk_buf_len != NULL, CHIP_ERROR_INTERNAL);
 
-    /* TODO: Remove this and use TLV apis to create the ipk buffer */
-    uint8_t ipk_start_data[] = { 0x15, 0x24, 0x01, 0x00, 0x24, 0x02, 0x01, 0x36, 0x03, 0x15,
-                                 0x24, 0x04, 0x00, 0x25, 0x05, 0xd0, 0xea, 0x30, 0x06, 0x10 };
-    uint8_t ipk_end_data[]   = { 0x18, 0x15, 0x24, 0x04, 0x00, 0x24, 0x05, 0x00, 0x30, 0x06, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x18, 0x15, 0x24, 0x04, 0x00,
-                                 0x24, 0x05, 0x00, 0x30, 0x06, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x18, 0x18, 0x25, 0x07, 0xa3, 0x01, 0x18 };
-
     uint8_t cert_buf[128] = { 0 };
     size_t cert_buf_len   = sizeof(cert_buf);
+    uint8_t ipk_data[128] = { 0 };
 
     uint8_t encryption_key_buf[Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES] = { 0 };
     uint8_t compressedFabricIdBuf[sizeof(uint64_t)];
@@ -323,26 +320,45 @@ CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
     ByteSpan epoch_key(cert_buf, Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES);
     chip::Credentials::P256PublicKeySpan root_pub_key_span(g_p256_root_public_key);
 
-    status = se05x_get_certificate(SE05X_IPK_ID, cert_buf, &cert_buf_len);
+    status = se05x_get_certificate(SE051H_IPK_ID, cert_buf, &cert_buf_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(cert_buf_len >= Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES, CHIP_ERROR_INTERNAL);
 
     chip::Crypto::GenerateCompressedFabricId(root_pub_key_span, g_fabric_id, compressedFabricIdSpan);
     ReturnErrorOnFailure(Crypto::DeriveGroupOperationalKey(epoch_key, compressedFabricIdSpan, encryption_key));
 
-    VerifyOrReturnError(*ipk_buf_len >=
-                            (sizeof(ipk_start_data) + Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES + sizeof(ipk_end_data)),
-                        CHIP_ERROR_INTERNAL);
+    writer.Init(ipk_data, sizeof(ipk_data));
+    writer.StartContainer(AnonymousTag(), kTLVType_Structure, container);
+    writer.Put(ContextTag(1), uint8_t(0x00));
+    writer.Put(ContextTag(2), uint8_t(0x01));
+    writer.StartContainer(ContextTag(0x03), kTLVType_Array, outer_container);
+    uint8_t ipk_value[16] = { 0 };
+
+    auto write_inner_container = [&](uint8_t val1, uint32_t val2) {
+        writer.StartContainer(AnonymousTag(), kTLVType_Structure, inner_container);
+        writer.Put(ContextTag(4), val1);
+        writer.Put(ContextTag(5), val2);
+        writer.PutBytes(ContextTag(6), ipk_value, sizeof(ipk_value));
+        writer.EndContainer(inner_container);
+    };
+
+    write_inner_container(0x00, 0xEAD0);
+    write_inner_container(0x00, 0x00);
+    write_inner_container(0x00, 0x00);
+    writer.EndContainer(outer_container);
+    writer.Put(ContextTag(7), uint32_t(0x01A3));
+    writer.EndContainer(container);
+    writer.Finalize();
 
     size_t offset = 0;
-    memcpy(ipk_buf + offset, ipk_start_data, sizeof(ipk_start_data));
-    offset += sizeof(ipk_start_data);
+    memcpy(ipk_buf + offset, ipk_data, 20);
+    offset += 20;
 
     memcpy(ipk_buf + offset, encryption_key_buf, Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES);
     offset += Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES;
 
-    memcpy(ipk_buf + offset, ipk_end_data, sizeof(ipk_end_data));
-    offset += sizeof(ipk_end_data);
+    memcpy(ipk_buf + offset, ipk_data + 36, (writer.GetLengthWritten() - 36));
+    offset += writer.GetLengthWritten() - 36;
 
     *ipk_buf_len = offset;
 
@@ -357,10 +373,16 @@ CHIP_ERROR se05x_read_acl_data(uint8_t * acl, size_t * acl_len)
     VerifyOrReturnError(acl != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(acl_len != NULL, CHIP_ERROR_INTERNAL);
 
-    status = se05x_get_certificate(SE05X_ACCESS_CONTROL_CLUSTER, acl, acl_len);
+    status = se05x_get_certificate(SE051H_ACL_ID, acl, acl_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     *acl_len = 18;
+
+#if 0
+    uint16_t len = (static_cast<uint16_t>(acl[0]) << 8) | acl[1];
+    memmove(acl, acl+2, len);
+    *acl_len = len;
+#endif
 
     /*
      * TBC.
@@ -382,6 +404,7 @@ CHIP_ERROR se05x_read_fabric_groups(uint8_t * fabgrp_data, size_t * fabgrp_data_
     VerifyOrReturnError(fabgrp_data != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(fabgrp_data_len != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(*fabgrp_data_len >= 9, CHIP_ERROR_INTERNAL);
+    VerifyOrReturnError(g_fabric_index <= UINT8_MAX, CHIP_ERROR_INTERNAL);
 
     writer.Init(fabgrp_data, *fabgrp_data_len);
     writer.StartContainer(AnonymousTag(), kTLVType_Structure, container);
@@ -412,7 +435,7 @@ CHIP_ERROR se05x_read_meta_data(uint8_t * meta_data, size_t * meta_data_len)
     size_t buf_len    = *meta_data_len;
 
     /* reuse the same input buffer */
-    status = se05x_get_certificate(SE05X_BASIC_INFO_CONTROL_ID, meta_data, &buf_len);
+    status = se05x_get_certificate(SE051H_BASIC_INFO_CLUSTER_ID, meta_data, &buf_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     reader.Init(meta_data, buf_len);
@@ -444,18 +467,25 @@ CHIP_ERROR se05x_read_fabric_index_info_data(uint8_t * fab_info_data, size_t * f
     VerifyOrReturnError(fab_info_data != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(fab_info_data_len != NULL, CHIP_ERROR_INTERNAL);
 
-    static const uint8_t tempData[] = { 0x15, 0x24, 0x00, 0x02, 0x36, 0x01, 0x04, 0x01, 0x18, 0x18 };
+    TLVType container = kTLVType_NotSpecified;
+    TLVType inner_container = kTLVType_NotSpecified;
+    TLVWriter writer;
 
-    VerifyOrReturnError(*fab_info_data_len >= sizeof(tempData), CHIP_ERROR_INTERNAL);
-    memcpy(fab_info_data, tempData, sizeof(tempData));
+    writer.Init(fab_info_data, *fab_info_data_len);
+    writer.StartContainer(AnonymousTag(), kTLVType_Structure, container);
+    writer.Put(ContextTag(0), static_cast<uint8_t>(0x02));
+    writer.StartContainer(ContextTag(1), kTLVType_Array, inner_container);
+    writer.Put(AnonymousTag(), static_cast<uint8_t>(se05x_get_fabric_id()));
+    writer.EndContainer(inner_container);
+    writer.EndContainer(container);
 
-    *fab_info_data_len = sizeof(tempData);
+    *fab_info_data_len = writer.GetLengthWritten();
 
     return CHIP_NO_ERROR;
 }
 
-CHIP_ERROR se05x_read_wifi_credentials(uint8_t * buf, size_t buflen, char * ssid, size_t * ssid_len, char * password,
-                                       size_t * password_len)
+CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, char * ssid, size_t * ssid_len, char * password,
+                                                  size_t * password_len, char * opdata, size_t * opdata_len)
 {
     VerifyOrReturnError(buf != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(ssid != NULL, CHIP_ERROR_INTERNAL);
@@ -471,18 +501,38 @@ CHIP_ERROR se05x_read_wifi_credentials(uint8_t * buf, size_t buflen, char * ssid
 
     uint16_t len = (static_cast<uint16_t>(buf[0]) << 8) | buf[1];
 
-    reader.Init(&buf[2], len);
-    reader.Next(kTLVType_UTF8String, ContextTag(0x00));
-    VerifyOrReturnError(reader.GetLength() <= (*ssid_len), CHIP_ERROR_INTERNAL);
-    *ssid_len = reader.GetLength();
+    // TBU
 
-    status = reader.GetString(ssid, (*ssid_len) + 1);
-    VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+    if (buf[2] == 0x30)
+    {
+        reader.Init(&buf[2], len);
+        reader.Next();
+        VerifyOrReturnError(reader.GetLength() <= (*ssid_len), CHIP_ERROR_INTERNAL);
+        *ssid_len = reader.GetLength();
+        status    = reader.GetString(ssid, (*ssid_len) + 1);
+        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
 
-    reader.Next(kTLVType_UTF8String, ContextTag(0x01));
-    VerifyOrReturnError(reader.GetLength() <= (*password_len), CHIP_ERROR_INTERNAL);
-    *password_len = reader.GetLength();
+        reader.Next();
+        if (reader.GetTag() == ContextTag(0x01))
+        {
+            VerifyOrReturnError(reader.GetLength() <= (*password_len), CHIP_ERROR_INTERNAL);
+            *password_len = reader.GetLength();
+            status        = reader.GetString(password, (*password_len) + 1);
+            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+        }
+        else
+        {
+            memcpy(opdata, ssid, *ssid_len);
+            *opdata_len = *ssid_len;
+            *ssid_len   = 0;
+        }
+    }
+    else
+    {
+        memcpy(opdata, &buf[2], len);
+        *opdata_len = len;
+        *ssid_len   = 0;
+    }
 
-    status = reader.GetString(password, (*password_len) + 1);
     return status;
 }

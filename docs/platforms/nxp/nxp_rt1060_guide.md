@@ -547,3 +547,33 @@ dedicated guide
 To enable Thread Border Router support see the [build](#building) section.
 
 The complete Border Router guide is located [here](./nxp_otbr_guide.md).
+
+## Enabling SE05x Secure Element with MIMXRT1060-EVK-B
+
+### Hardware connections
+
+-   Connections using OM-SE051ARD board :
+
+    | Signal         | EVKBMIMXRT1060 Pin | OM-SE051ARD Pin |
+    | -------------- | ------------------ | --------------- |
+    | I2C SDA        | J17_9              | J2_9            |
+    | I2C SCL        | J17_10             | J2_10           |
+    | 3V3            | J32_4              | J8_4            |
+    | GND            | J17_7              | J8_7            |
+
+### Build options
+
+-   Build the example with below options to offload crypto operations to SE05x
+    using CMAKE configuration :
+
+```
+-DCONFIG_CHIP_SE05X=y
+```
+
+Example :
+
+```
+ubuntu@ubuntu-Latitude-5420:~/matter/connectedhomeip$ west build -d <out_dir> -b evkbmimxrt1060 examples/thermostat/nxp/ -DCONF_FILE_NAME=prj_wifi.conf -DCONFIG_MCUX_COMPONENT_component.wifi_bt_module.IW416=y -DCONFIG_CHIP_SE05X=y
+```
+
+Refer [SE05x](nxp_se05x_guide.md) for more details on configurations of SE05x.

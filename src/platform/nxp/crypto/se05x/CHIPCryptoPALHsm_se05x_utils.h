@@ -19,15 +19,15 @@
 
 #include <string.h>
 
-#include <platform/nxp/crypto/se05x/CHIPCryptoPAL_se05x.h>
 #include <crypto/CHIPCryptoPAL.h>
+#include <platform/nxp/crypto/se05x/CHIPCryptoPAL_se05x.h>
 #include <type_traits>
 
-#include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_config.h>
 #include <lib/core/CHIPSafeCasts.h>
 #include <lib/support/BufferWriter.h>
 #include <lib/support/CodeUtils.h>
 #include <lib/support/logging/CHIPLogging.h>
+#include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_config.h>
 #include <system/SystemMutex.h>
 
 /* se05x includes */

@@ -25,9 +25,9 @@
 
 #include <string>
 
+#include <credentials/CHIPCert.h>
 #include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_utils.h>
 #include <platform/nxp/crypto/se05x/kvs_utilities/CHIPCryptoPALHsm_se05x_readClusters.h>
-#include <credentials/CHIPCert.h>
 
 namespace chip {
 namespace DeviceLayer {
@@ -52,6 +52,8 @@ public:
         char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
         size_t ssid_len                                         = sizeof(ssid);
         size_t password_len                                     = sizeof(password);
+        char op_data_set[256]                                   = { 0 };
+        size_t op_data_set_len                                  = sizeof(op_data_set);
 
         ChipLogDetail(Crypto, "SE05x :: KVS Initialization ");
 
@@ -91,10 +93,13 @@ public:
         status         = se05x_read_ICA(tmp_buffer, &tmp_buffer_len);
         VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/i", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+        if (tmp_buffer_len != 0)
+        {
+            VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/i", se05x_get_fabric_id()) > 0,
+                                CHIP_ERROR_INTERNAL);
+            status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
+            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+        }
 
         memset(tmp_buffer, 0, sizeof(tmp_buffer));
         tmp_buffer_len = sizeof(tmp_buffer);
@@ -156,18 +161,35 @@ public:
 
         memset(tmp_buffer, 0, sizeof(tmp_buffer));
         tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_wifi_credentials(tmp_buffer, tmp_buffer_len, ssid, &ssid_len, password, &password_len);
-
+        status = se05x_read_wifi_and_thread_credentials(tmp_buffer, tmp_buffer_len, ssid, &ssid_len, password, &password_len,
+                                                        op_data_set, &op_data_set_len);
         if (status == CHIP_NO_ERROR)
         {
-            status = _Put("wifi-ssid", ssid, ssid_len);
-            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-            status = _Put("wifi-pass", password, password_len);
-            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+            if ((password_len > 0) && (ssid_len > 0))
+            {
+                ChipLogDetail(Crypto, "SE05x: Setting Wi-Fi credentials");
+                status = _Put("wifi-ssid", ssid, ssid_len);
+                VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+                status = _Put("wifi-pass", password, password_len);
+                VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+            }
+            else if (op_data_set_len > 0)
+            {
+#if CHIP_DEVICE_CONFIG_ENABLE_THREAD
+                ChipLogDetail(Crypto, "SE05x: Setting thread operational data");
+                ByteSpan dataset((const unsigned char*)op_data_set, op_data_set_len);
+                DeviceLayer::ThreadStackMgrImpl().SetThreadProvision(dataset);
+#else
+                ChipLogDetail(Crypto, "SE05x: SE05x commissioned for thread, but example is not built with thread support.");
+#endif
+            }
+            else {
+                ChipLogDetail(Crypto, "SE05x: Reading Wi-Fi / Thread credentials from secure element failed");
+            }
         }
         else
         {
-            ChipLogDetail(Crypto, "SE05x: Reading Wi-Fi credentials from secure element failed");
+            ChipLogDetail(Crypto, "SE05x: Reading Wi-Fi / Thread credentials from secure element failed");
         }
 
         return CHIP_NO_ERROR;

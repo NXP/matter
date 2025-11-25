@@ -295,4 +295,9 @@ Example :
 ubuntu@ubuntu-Latitude-5420:~/matter/connectedhomeip$ west build -d <out_dir> -b frdmrw612 examples/thermostat/nxp/ -DCONF_FILE_NAME=prj_wifi.conf -DCONFIG_CHIP_SE05X=y
 ```
 
+**NOTE** To control secure element using enable pin, ensure to connect jumper
+J14 on OM-SE051ARD board to 3-4 pins. Also build the example with
+-DCONFIG_SE05X_HOST_GPIO_RW61X=y option to allow frdm-rw61x gpio to control the
+enable pin as required.
+
 Refer [SE05x](nxp_se05x_guide.md) for more details on configurations of SE05x.

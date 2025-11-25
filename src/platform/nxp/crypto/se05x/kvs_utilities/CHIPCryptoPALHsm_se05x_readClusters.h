@@ -119,7 +119,9 @@ CHIP_ERROR se05x_read_fabric_index_info_data(uint8_t * fab_info_data, size_t * f
  * @param[in,out] ssid_len - ssid input buffer length when input and ssid length when output
  * @param[in,out] password - input buffer for password
  * @param[in,out] password_len - password input buffer length when input and password length when output
+ * @Param[in,out] opdata - input buffer for operational data set
+ * @param[in,out] opdata_len - opdata input buffer length when input and opdata length when output
  * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
  */
-CHIP_ERROR se05x_read_wifi_credentials(uint8_t * buf, size_t buflen, char * ssid, size_t * ssid_len, char * password,
-                                       size_t * password_len);
+CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, char * ssid, size_t * ssid_len, char * password,
+                                                  size_t * password_len, char * opdata, size_t * opdata_len);

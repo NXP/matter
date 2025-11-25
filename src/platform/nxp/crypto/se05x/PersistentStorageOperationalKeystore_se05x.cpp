@@ -18,17 +18,62 @@
 #include "PersistentStorageOperationalKeystore_se05x.h"
 #include "CHIPCryptoPALHsm_se05x_utils.h"
 #include <lib/support/DefaultStorageKeyAllocator.h>
+#include "se051h_nfc_comm_prov.h"
 
 namespace chip {
 
 using namespace chip::Crypto;
 
-#define CHIP_SE05x_NODE_OP_KEY_INDEX 0x7E000000
+#define CHIP_SE05x_NODE_OP_KEY_INDEX            (SE051H_NODE_OP_KEY_ID - 1)
+#define CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID   (SE051H_SELECT_RESPONSE_ID)
+#define NUM_NODE_OP_KEY_INDEXES                 (5)
+#define CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL      {SE051H_SELECT_RESPONSE}                                                                                        \
+
 #define CHIP_SE05x_NODE_OP_REF_KEY_TEMPLATE                                                                                        \
     {                                                                                                                              \
         0xA5, 0xA6, 0xB5, 0xB6, 0xA5, 0xA6, 0xB5, 0xB6, 0x7E, 0x00, 0x00, 0x00                                                     \
     }
 #define CHIP_SE05x_NODE_OP_KEY_ID_INDEX 11
+
+static CHIP_ERROR generate_node_oper_key()
+{
+    sss_object_t keyObject = { 0 };
+    sss_status_t status    = kStatus_SSS_Fail;
+
+    status = sss_key_object_init(&keyObject, &gex_sss_chip_ctx.ks);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_object_allocate_handle(&keyObject, CHIP_SE05x_NODE_OP_KEY_INDEX + 1, kSSS_KeyPart_Pair,
+                                            kSSS_CipherType_EC_NIST_P, 256, kKeyObject_Mode_Persistent);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_store_generate_key(&gex_sss_chip_ctx.ks, &keyObject, 256, 0);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    return CHIP_NO_ERROR;
+}
+
+static CHIP_ERROR disable_nfc_commision()
+{
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    const uint8_t buf[8] = { 0x00 };
+
+    err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));
+    VerifyOrReturnError(err == CHIP_NO_ERROR, err);
+
+    return CHIP_NO_ERROR;
+}
+
+static CHIP_ERROR enable_nfc_commision()
+{
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    const uint8_t buf[] = CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL;
+
+    err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));
+    VerifyOrReturnError(err == CHIP_NO_ERROR, err);
+
+    return CHIP_NO_ERROR;
+}
 
 CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex fabricIndex,
                                                                    MutableByteSpan & outCertificateSigningRequest)
@@ -87,15 +132,36 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     outCertificateSigningRequest.reduce_size(csrLength);
     mPendingFabricIndex = fabricIndex;
 
+    CHIP_ERROR nfcErr = disable_nfc_commision();
+    if (nfcErr != CHIP_NO_ERROR)
+    {
+        ChipLogError(Crypto, "Failed to disable NFC commissioning: %" CHIP_ERROR_FORMAT, nfcErr.Format());
+    }
+    else
+    {
+        ChipLogProgress(Crypto, "NOTE: NFC commissioning disabled");
+    }
+
     return CHIP_NO_ERROR;
 }
 
+#define SE05X_SET_BIN_DATA_TEMPLATE(keyid, buf)                     \
+    {                                                               \
+        const uint8_t buffer[] = {buf};                             \
+        err = se05x_set_binary_data(keyid, buffer, sizeof(buffer)); \
+        VerifyOrReturnError(err == CHIP_NO_ERROR, err);             \
+    }
+
+
 CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricIndex fabricIndex)
 {
+    CHIP_ERROR err = CHIP_NO_ERROR;
     VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(IsValidFabricIndex(fabricIndex), CHIP_ERROR_INVALID_FABRIC_INDEX);
 
     uint32_t keyId = CHIP_SE05x_NODE_OP_KEY_INDEX + fabricIndex;
+    SE05x_Result_t exists;
+    bool allDeleted = true;
 
     ChipLogDetail(
         Crypto, "PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric ::Delete NIST256 key in SE05x (at id = 0x%" PRIx32 ")",
@@ -108,10 +174,121 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
         RevertPendingKeypair();
     }
 
-    CHIP_ERROR err = mStorage->SyncDeleteKeyValue(DefaultStorageKeyAllocator::FabricOpKey(fabricIndex).KeyName());
+    err = mStorage->SyncDeleteKeyValue(DefaultStorageKeyAllocator::FabricOpKey(fabricIndex).KeyName());
     if (err == CHIP_ERROR_PERSISTED_STORAGE_VALUE_NOT_FOUND)
     {
-        err = CHIP_ERROR_INVALID_FABRIC_INDEX;
+        return CHIP_ERROR_INVALID_FABRIC_INDEX;
+    }
+
+    for (int i = 0; i < NUM_NODE_OP_KEY_INDEXES; i++)
+    {
+        uint32_t objectID = CHIP_SE05x_NODE_OP_KEY_INDEX + i;
+        smStatus_t status =
+            Se05x_API_CheckObjectExists(&((sss_se05x_session_t *) &gex_sss_chip_ctx.session)->s_ctx, objectID, &exists);
+        if (status == SM_OK)
+        {
+            if (exists == kSE05x_Result_SUCCESS)
+            {
+                // Object exists — so don't enable NFC
+                allDeleted = false;
+                break;
+            }
+        }
+        else
+        {
+            ChipLogError(Crypto, "SE05x error checking object 0x%" PRIx32, objectID);
+            allDeleted = false;
+            break;
+        }
+    }
+
+    if (allDeleted)
+    {
+        err = enable_nfc_commision();
+        if (err != CHIP_NO_ERROR)
+        {
+            ChipLogError(Crypto, "Failed to enable NFC commissioning: %" CHIP_ERROR_FORMAT, err.Format());
+        }
+        else
+        {
+            ChipLogProgress(Crypto, "NOTE: All node OP keys deleted — NFC commissioning enabled.");
+        }
+    }
+
+    /* Create a dummy key pair at node operational key location,
+    so that if the NFC commissioned data is provisioned, user can do the NFC commission. */
+    if (keyId == CHIP_SE05x_NODE_OP_KEY_INDEX + 1)
+    {
+        err = generate_node_oper_key();
+        if (err != CHIP_NO_ERROR)
+        {
+            ChipLogError(Crypto, "Failed to dummy key pair (at id = 0x%" PRIx32 ")", (uint32_t) (CHIP_SE05x_NODE_OP_KEY_INDEX + 1));
+            return err;
+        }
+        else
+        {
+            ChipLogProgress(Crypto, "Created dummy key pair (at id = 0x%" PRIx32 ")",
+                            (uint32_t) (CHIP_SE05x_NODE_OP_KEY_INDEX + 1));
+        }
+
+        /* Delete NFC commissioned data also, like Operational Credential cluster,
+        Root CA, ICA, IPK, Access control cluster, Wi-fi / thread credentials,  */
+        SE05X_SET_BIN_DATA_TEMPLATE(SE051H_OP_CRED_CLUSTER_ID, OCC);
+        SE05X_SET_BIN_DATA_TEMPLATE(SE051H_ROOT_CER_ID, ROOT_CERTIFICATE);
+        SE05X_SET_BIN_DATA_TEMPLATE(SE051H_IPK_ID, IPK);
+        SE05X_SET_BIN_DATA_TEMPLATE(SE051H_ACL_ID, ACL);
+        SE05X_SET_BIN_DATA_TEMPLATE(SE051H_WIFI_CRED_ID_APP_8_6, WIFI_CRED_DATA);
+        SE05X_SET_BIN_DATA_TEMPLATE(SE051H_WIFI_CRED_ID_APP_8_8, WIFI_CRED_DATA);
+        {
+            uint8_t ncc_buf[] = {
+              DATA_VERSION_NCC,
+              CLUSTER_REVISION_NCC,
+              FEATUREMAP_NCC,
+              ATTRIBUTE_LIST_NCC,
+              ACCEPTED_COMMAND_LIST_NCC,
+              GENERATED_COMMAND_LIST_NCC,
+              MAX_NETWORKS,
+              NETWORKS,
+              NETWORKS_FILLER,
+              SCAN_MAX_TIME_SECONDS,
+              CONNECT_MAX_TIME_SECONDS,
+              INTERFACE_ENABLED,
+              LAST_NETWORKING_STATUS,
+              LAST_NETWORK_ID,
+              LAST_NETWORK_ID_FILLER,
+              LAST_CONNECT_ERROR_VALUE_NCC,
+              LAST_CONNECT_ERROR_VALUE_FILLER_NCC,
+              SUPPORTED_WIFI_BANDS_NCC,
+              SUPPORTED_THREAD_FEATURES_NCC,
+              THREAD_VERSION_NCC,
+            };
+            err = se05x_set_binary_data(SE051H_NCC_ID, ncc_buf, sizeof(ncc_buf));
+            VerifyOrReturnError(err == CHIP_NO_ERROR, err);
+        }
+
+        {
+            uint8_t Genaral_comm_cluster_data[] = {
+              DATA_VERSION_GCC,
+              CLUSTER_REVISION_GCC,
+              FEATUREMAP_GCC,
+              ATTRIBUTE_LIST_GCC,
+              ACCEPTED_COMMAND_LIST_GCC,
+              GENERATED_COMMAND_LIST_GCC,
+              BREADCRUMB,
+              BASIC_COMMISSIONING_INFO,
+              REGULATORY_CONFIG,
+              LOCATION_CAPABILITY,
+              SUPPORTS_CONCURRENT_CONNECTION,
+              TC_ACCEPTED_VERSION,
+              TC_MIN_REQUIRED_VERSION,
+              TC_ACKNOWLEDGEMENTS,
+              TC_ACKNOWLEDGEMENTS_REQUIRED,
+              TC_UPDATE_DEADLINE,
+              RECOVERY_IDENTIFIER,
+            };
+            err = se05x_set_binary_data(SE051H_GENERAL_COMM_CLUSTER_ID, Genaral_comm_cluster_data, sizeof(Genaral_comm_cluster_data));
+            VerifyOrReturnError(err == CHIP_NO_ERROR, err);
+        }
     }
 
     return err;

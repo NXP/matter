@@ -23,7 +23,7 @@
 #include <platform/DeviceInstanceInfoProvider.h>
 
 #if CONFIG_CHIP_PLAT_LOAD_REAL_FACTORY_DATA
-#include "platform/nxp/common/factory_data/legacy/FactoryDataProvider.h"
+#include "platform/nxp/se05x/rt/common/factory_data_impl/Se05xDataProvider.h"
 #if CONFIG_CHIP_ENCRYPTED_FACTORY_DATA
 /*
  * Test key used to encrypt factory data before storing it to the flash.
@@ -65,6 +65,22 @@ CHIP_ERROR chip::NXP::App::AppFactoryData_PreMatterStackInit(void)
 CHIP_ERROR chip::NXP::App::AppFactoryData_PostMatterStackInit(void)
 {
 #if CONFIG_CHIP_PLAT_LOAD_REAL_FACTORY_DATA
+#if ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
+#if CONFIG_CHIP_ENCRYPTED_FACTORY_DATA
+    Se05xDataPrvdImpl().SetEncryptionMode(FactoryDataProvider::encrypt_ecb);
+    Se05xDataPrvdImpl().SetAesKey(&aes128TestKey[0], FactoryDataProvider::aes_128);
+#endif /* CONFIG_CHIP_ENCRYPTED_FACTORY_DATA */
+
+    ReturnErrorOnFailure(Se05xDataPrvdImpl().Init());
+
+    SetDeviceInstanceInfoProvider(&Se05xDataPrvdImpl());
+    SetCommissionableDataProvider(&Se05xDataPrvdImpl());
+#if ENABLE_SE05X_DEVICE_ATTESTATION
+    SetDeviceAttestationCredentialsProvider(Examples::GetExampleSe05xDACProvider());
+#else
+    SetDeviceAttestationCredentialsProvider(&Se05xDataPrvdImpl());
+#endif
+#else
 #if CONFIG_CHIP_ENCRYPTED_FACTORY_DATA
     FactoryDataPrvdImpl().SetEncryptionMode(FactoryDataProvider::encrypt_ecb);
     FactoryDataPrvdImpl().SetAesKey(&aes128TestKey[0], FactoryDataProvider::aes_128);
@@ -73,9 +89,17 @@ CHIP_ERROR chip::NXP::App::AppFactoryData_PostMatterStackInit(void)
     ReturnErrorOnFailure(FactoryDataPrvdImpl().Init());
 
     SetDeviceInstanceInfoProvider(&FactoryDataPrvdImpl());
-    SetDeviceAttestationCredentialsProvider(&FactoryDataPrvdImpl());
     SetCommissionableDataProvider(&FactoryDataPrvdImpl());
+#if ENABLE_SE05X_DEVICE_ATTESTATION
+    SetDeviceAttestationCredentialsProvider(Examples::GetExampleSe05xDACProvider());
 #else
+    SetDeviceAttestationCredentialsProvider(&FactoryDataPrvdImpl());
+#endif
+#endif
+#else // Legacy implementation
+#if ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
+    ChipLogDetail(Crypto, "NOTE : ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES is not used in this build and should be used only with factory data configuration");
+#endif
 #if ENABLE_SE05X_DEVICE_ATTESTATION
 #ifdef CONFIG_CHIP_SE05X
     SetDeviceAttestationCredentialsProvider(Examples::GetExampleSe05xDACProvider());

@@ -87,6 +87,11 @@ the correct variant of secure element connected.
 Integration of SE05x with RW61x is demonstrated using the thermostat and all
 cluster app. Refer [RW61x](nxp_rw61x_guide.md) to set up the build environment.
 
+### RT1060
+
+Integration of SE05x with RT1060 EVKB board is demonstrated using the thermostat and all
+cluster app. Refer [RT1060](nxp_rt1060_guide.md) to set up the build environment.
+
 #### To build Thermostat for NFC Commissioning
 
 In case wifi credentials are already provisioned then use the following command
@@ -123,31 +128,37 @@ operations to be offloaded to SE05x
 
 -   GN Options :
 
-    | GN Options                    | Description              | Type    | Default setting |
-    | ----------------------------- | ------------------------ | ------- | --------------- |
-    | chip_se05x_spake_verifier     | Spake2P Verifier on SE   | Boolean | Disabled        |
-    | chip_se05x_spake_prover       | Spake2P Prover on SE     | Boolean | Disabled        |
-    | chip_se05x_rnd_gen            | Random number generation | Boolean | Disabled        |
-    | chip_se05x_gen_ec_key         | Generate EC key in SE    | Boolean | Enabled         |
-    | chip_se05x_ecdsa_verify       | ECDSA Verify             | Boolean | Enabled         |
-    | chip_se05x_pbkdf2_sha256      | PBKDF2-SHA256            | Boolean | Disabled        |
-    | chip_se05x_hkdf_sha256        | HKDF-SHA256              | Boolean | Disabled        |
-    | chip_se05x_hmac_sha256        | HMAC-SHA256              | Boolean | Disabled        |
-    | chip_se05x_device_attestation | Device attestation       | Boolean | Disabled        |
+    | GN Options                              | Description              | Type    | Default setting |
+    | --------------------------------------- | ------------------------ | ------- | --------------- |
+    | chip_se05x_spake_verifier               | Spake2P Verifier on SE   | Boolean | Disabled        |
+    | chip_se05x_spake_prover                 | Spake2P Prover on SE     | Boolean | Disabled        |
+    | chip_se05x_rnd_gen                      | Random number generation | Boolean | Disabled        |
+    | chip_se05x_gen_ec_key                   | Generate EC key in SE    | Boolean | Enabled         |
+    | chip_se05x_ecdsa_verify                 | ECDSA Verify             | Boolean | Enabled         |
+    | chip_se05x_pbkdf2_sha256                | PBKDF2-SHA256            | Boolean | Disabled        |
+    | chip_se05x_hkdf_sha256                  | HKDF-SHA256              | Boolean | Disabled        |
+    | chip_se05x_hmac_sha256                  | HMAC-SHA256              | Boolean | Disabled        |
+    | chip_se05x_device_attestation           | Device attestation       | Boolean | Disabled        |
+    | chip_se05x_spake_verifier_use_tp_values | Spake with TP verifiers  | Boolean | Disabled        |
+    | chip_se05x_spake_verifier_tp_set_no     | TP Passcode set number   | Integer | 1               |
+    | chip_se05x_spake_verifier_tp_itter_cnt  | Spake itteration count   | Integer | 1000            |
 
 *   CMAKE Options :
 
-    | Kconfig Options                      | Description              | Default setting |
-    | ------------------------------------ | ------------------------ | --------------- |
-    | CONFIG_CHIP_SE05X_SPAKE_VERIFIER     | Spake2P Verifier on SE   | Disabled        |
-    | CONFIG_CHIP_SE05X_SPAKE_PROVER       | Spake2P Prover on SE     | Disabled        |
-    | CONFIG_CHIP_SE05X_RND_GEN            | Random number generation | Disabled        |
-    | CONFIG_CHIP_SE05X_GENERATE_EC_KEY    | Generate EC key in SE    | Enabled         |
-    | CONFIG_CHIP_SE05X_ECDSA_VERIFY       | ECDSA Verify             | Enabled         |
-    | CONFIG_CHIP_SE05X_PBKDF2_SHA256      | PBKDF2-SHA256            | Disabled        |
-    | CONFIG_CHIP_SE05X_HKDF_SHA256        | HKDF-SHA256              | Disabled        |
-    | CONFIG_CHIP_SE05X_HMAC_SHA256        | HMAC-SHA256              | Disabled        |
-    | CONFIG_CHIP_SE05X_DEVICE_ATTESTATION | Device attestation       | Disabled        |
+    | Kconfig Options                         | Description              | Default setting |
+    | --------------------------------------- | ------------------------ | --------------- |
+    | CONFIG_CHIP_SE05X_SPAKE_VERIFIER        | Spake2P Verifier on SE   | Disabled        |
+    | CONFIG_CHIP_SE05X_SPAKE_PROVER          | Spake2P Prover on SE     | Disabled        |
+    | CONFIG_CHIP_SE05X_RND_GEN               | Random number generation | Disabled        |
+    | CONFIG_CHIP_SE05X_GENERATE_EC_KEY       | Generate EC key in SE    | Enabled         |
+    | CONFIG_CHIP_SE05X_ECDSA_VERIFY          | ECDSA Verify             | Enabled         |
+    | CONFIG_CHIP_SE05X_PBKDF2_SHA256         | PBKDF2-SHA256            | Disabled        |
+    | CONFIG_CHIP_SE05X_HKDF_SHA256           | HKDF-SHA256              | Disabled        |
+    | CONFIG_CHIP_SE05X_HMAC_SHA256           | HMAC-SHA256              | Disabled        |
+    | CONFIG_CHIP_SE05X_DEVICE_ATTESTATION    | Device attestation       | Disabled        |
+    | CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES | Spake with TP verifiers  | Disabled        |
+    | CHIP_SE05X_SPAKE_VERIFIER_TP_SET_NO     | TP Passcode set number   | 1               |
+    | CHIP_SE05X_SPAKE_VERIFIER_TP_ITTER_CNT  | Spake itteration count   | 1000            |
 
 <a name="se05x_type_configurations"></a>
 
@@ -320,3 +331,62 @@ the KVS file / file system for CASE operation to work.
 
 The command will establish a CASE session using the Node operation key created
 during the NFC commissioning step.
+
+## Using Trust Provisioned Verifiers of SE051H for SPAKE2P
+
+SE051H has a binary file (Binary file-id = 0X7fff2000) which contains 3 set of
+pass-code and salt values. The format is shown below,
+
+```
+[4 byte passcode #1] [16 byte salt #1]
+[4 byte passcode #2] [16 byte salt #2]
+[4 byte passcode #3] [16 byte salt #3]
+```
+
+Pre-calculated values of verifiers (w0 and L) for above pass-codes, salt and 5
+different iterations (1000, 5000, 10000, 50000, 100000) are also trust
+provisioned in SE051H and can be used for spake connection with commissioner.
+
+### Provision SE051H T4T applet with QR code of TP pass-code
+
+Using SIMW tool, we can get the TP pass-code and provision the respective QR code
+to T4T applet.
+
+To Build the tools refer -
+[SE051H Get Pass-code Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se05x_get_passcode/readme.md)
+and
+[SE051H Provision Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se051h_nfc_comm_prov/readme.md),
+
+Commands to be executed are shown below
+
+```
+./se05x_get_passcode --tp_passcode_set_no 1
+./chip_tool payload generate-qrcode --setup-pin-code <PASS-CODE FROM PREVIOUS STEP>
+./se051H_provision --only_t4t_provision --qrcode <QR_CODE FROM PREVIOUS STEP>
+```
+
+### Building example to use the TP verifiers (w0 and L)
+
+To build the examples to use the TP verifiers, use the below build options,
+
+(Also refer platform\nxp\crypto\se05x\CHIPCryptoPALHsm_se05x_config.h for some
+code changes required for this integration)
+
+For GN Build system -
+
+```
+gn gen out --args="chip_se05x_spake_verifier=true chip_se05x_spake_verifier_use_tp_values=true chip_se05x_spake_verifier_tp_set_no=1 chip_se05x_spake_verifier_tp_itter_cnt=1000"
+```
+
+For CMake Build system - Add the following command while building example.
+
+```
+-DCONFIG_CHIP_SE05X_SPAKE_VERIFIER=y -DCONFIG_CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES=y -DCONFIG_CHIP_SE05X_SPAKE_VERIFIER_TP_SET_NO=1 -DCONFIG_CHIP_SE05X_SPAKE_VERIFIER_TP_ITTER_CNT=1000
+```
+
+NOTE: When running the example ensure to pass the iteration count again via
+command line. Example -
+
+```
+./thermostat-app --spake2p-iterations 1000
+```
