@@ -145,20 +145,20 @@ operations to be offloaded to SE05x
 
 *   CMAKE Options :
 
-    | Kconfig Options                         | Description              | Default setting |
-    | --------------------------------------- | ------------------------ | --------------- |
-    | CONFIG_CHIP_SE05X_SPAKE_VERIFIER        | Spake2P Verifier on SE   | Disabled        |
-    | CONFIG_CHIP_SE05X_SPAKE_PROVER          | Spake2P Prover on SE     | Disabled        |
-    | CONFIG_CHIP_SE05X_RND_GEN               | Random number generation | Disabled        |
-    | CONFIG_CHIP_SE05X_GENERATE_EC_KEY       | Generate EC key in SE    | Enabled         |
-    | CONFIG_CHIP_SE05X_ECDSA_VERIFY          | ECDSA Verify             | Enabled         |
-    | CONFIG_CHIP_SE05X_PBKDF2_SHA256         | PBKDF2-SHA256            | Disabled        |
-    | CONFIG_CHIP_SE05X_HKDF_SHA256           | HKDF-SHA256              | Disabled        |
-    | CONFIG_CHIP_SE05X_HMAC_SHA256           | HMAC-SHA256              | Disabled        |
-    | CONFIG_CHIP_SE05X_DEVICE_ATTESTATION    | Device attestation       | Disabled        |
-    | CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES | Spake with TP verifiers  | Disabled        |
-    | CHIP_SE05X_SPAKE_VERIFIER_TP_SET_NO     | TP Passcode set number   | 1               |
-    | CHIP_SE05X_SPAKE_VERIFIER_TP_ITTER_CNT  | Spake itteration count   | 1000            |
+    | Kconfig Options                                | Description              | Default setting |
+    | ---------------------------------------------- | ------------------------ | --------------- |
+    | CONFIG_CHIP_SE05X_SPAKE_VERIFIER               | Spake2P Verifier on SE   | Disabled        |
+    | CONFIG_CHIP_SE05X_SPAKE_PROVER                 | Spake2P Prover on SE     | Disabled        |
+    | CONFIG_CHIP_SE05X_RND_GEN                      | Random number generation | Disabled        |
+    | CONFIG_CHIP_SE05X_GENERATE_EC_KEY              | Generate EC key in SE    | Enabled         |
+    | CONFIG_CHIP_SE05X_ECDSA_VERIFY                 | ECDSA Verify             | Enabled         |
+    | CONFIG_CHIP_SE05X_PBKDF2_SHA256                | PBKDF2-SHA256            | Disabled        |
+    | CONFIG_CHIP_SE05X_HKDF_SHA256                  | HKDF-SHA256              | Disabled        |
+    | CONFIG_CHIP_SE05X_HMAC_SHA256                  | HMAC-SHA256              | Disabled        |
+    | CONFIG_CHIP_SE05X_DEVICE_ATTESTATION           | Device attestation       | Disabled        |
+    | CONFIG_CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES | Spake with TP verifiers  | Disabled        |
+    | CONFIG_CHIP_SE05X_SPAKE_VERIFIER_TP_SET_NO     | TP Passcode set number   | 1               |
+    | CONFIG_CHIP_SE05X_SPAKE_VERIFIER_TP_ITTER_CNT  | Spake itteration count   | 1000            |
 
 <a name="se05x_type_configurations"></a>
 
@@ -362,7 +362,7 @@ Commands to be executed are shown below
 ```
 ./se05x_get_passcode --tp_passcode_set_no 1
 ./chip_tool payload generate-qrcode --setup-pin-code <PASS-CODE FROM PREVIOUS STEP>
-./se051H_provision --only_t4t_provision --qrcode <QR_CODE FROM PREVIOUS STEP>
+./se051h_nfc_comm_prov --only_t4t_provision --qrcode <QR_CODE FROM PREVIOUS STEP>
 ```
 
 ### Building example to use the TP verifiers (w0 and L)
