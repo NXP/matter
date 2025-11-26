@@ -245,11 +245,6 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
 
     mStartTime = System::SystemClock().GetMonotonicTimestamp();
 
-#if CONFIG_CHIP_SE05X
-    err = chip::DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().Init();
-    SuccessOrExit(err);
-#endif
-
 exit:
     return err;
 }
