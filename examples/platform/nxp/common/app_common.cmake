@@ -137,9 +137,11 @@ if (CONFIG_CHIP_APP_FACTORY_DATA)
     endif()
 
     if (CONFIG_CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES)
-        target_sources(app PRIVATE
-            ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/../se05x/rt/common/factory_data_impl/Se05xDataProvider.cpp
-        )
+        if (CONFIG_CHIP_PLAT_LOAD_REAL_FACTORY_DATA)
+                target_sources(app PRIVATE
+                    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/../se05x/rt/common/factory_data_impl/Se05xDataProvider.cpp
+                )
+        endif()
     endif()
 endif()
 
