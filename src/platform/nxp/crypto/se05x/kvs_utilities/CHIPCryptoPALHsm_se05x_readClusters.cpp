@@ -24,6 +24,7 @@
 
 #include "CHIPCryptoPALHsm_se05x_readClusters.h"
 #include "CHIPCryptoPALHsm_se05x_utils.h"
+#include "se051h_nfc_comm_prov.h"
 #include <credentials/CHIPCert.h>
 #include <crypto/CHIPCryptoPAL.h>
 #include <lib/core/CHIPError.h>
@@ -32,7 +33,6 @@
 #include <lib/core/TLVTypes.h>
 #include <lib/support/CHIPMem.h>
 #include <lib/support/CodeUtils.h>
-#include "se051h_nfc_comm_prov.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -42,9 +42,9 @@
         0xA5, 0xA6, 0xB5, 0xB6, 0xA5, 0xA6, 0xB5, 0xB6                                                                             \
     }
 
-#define NIST256_HEADER_OFFSET                       26
-#define SE05X_WIFI_BINARY_FILE                      SE051H_WIFI_CRED_ID_APP_8_8
-//#define SE05X_WIFI_BINARY_FILE                      SE051H_WIFI_CRED_ID_APP_8_6
+#define NIST256_HEADER_OFFSET 26
+//#define SE05X_WIFI_BINARY_FILE SE051H_WIFI_CRED_ID_APP_8_8
+#define SE05X_WIFI_BINARY_FILE SE051H_WIFI_CRED_ID_APP_8_6
 
 using namespace chip;
 using namespace chip::TLV;
@@ -139,8 +139,7 @@ CHIP_ERROR se05x_read_node_operational_keypair(uint8_t * op_key_ref_key, size_t 
     status = se05x_get_certificate(SE051H_NODE_OP_KEY_ID, pubKeyBuf.data(), &pubKeyBufLen);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
-    status =
-        se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE051H_NODE_OP_KEY_ID, op_key_ref_key, op_key_ref_key_len);
+    status = se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE051H_NODE_OP_KEY_ID, op_key_ref_key, op_key_ref_key_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     return CHIP_NO_ERROR;
@@ -467,7 +466,7 @@ CHIP_ERROR se05x_read_fabric_index_info_data(uint8_t * fab_info_data, size_t * f
     VerifyOrReturnError(fab_info_data != NULL, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(fab_info_data_len != NULL, CHIP_ERROR_INTERNAL);
 
-    TLVType container = kTLVType_NotSpecified;
+    TLVType container       = kTLVType_NotSpecified;
     TLVType inner_container = kTLVType_NotSpecified;
     TLVWriter writer;
 

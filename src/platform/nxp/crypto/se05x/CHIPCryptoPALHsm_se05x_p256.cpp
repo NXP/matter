@@ -128,7 +128,7 @@ CHIP_ERROR P256Keypair::Initialize(ECPKeyTarget key_target)
     if (key_target == ECPKeyTarget::ECDH)
     {
         keyid = 0; // Use host for ECDH
-        //keyid = kKeyId_case_ephemeral_keyid;
+        // keyid = kKeyId_case_ephemeral_keyid;
     }
     else
     {

@@ -46,7 +46,7 @@ static_library("nxp_crypto_lib") {
     "${chip_root}/src/platform/nxp/crypto/se05x/kvs_utilities/CHIPCryptoPALHsm_se05x_readClusters.h",
   ]
 
-  if ((nxp_platform == "rt/rw61x") || (nxp_platform == "rt/rt1060")) {
+  if (nxp_platform == "rt/rw61x" || nxp_platform == "rt/rt1060") {
     sources += [
       "${chip_root}/examples/platform/nxp/se05x/DeviceAttestationSe05xCredsExample.cpp",
       "${chip_root}/src/credentials/examples/ExampleDACs.h",
@@ -122,7 +122,7 @@ static_library("nxp_crypto_lib") {
     "${chip_root}/third_party/inipp",
   ]
 
-  if ((nxp_platform != "rt/rw61x") && (nxp_platform != "rt/rt1060")) {
+  if (nxp_platform != "rt/rw61x" && nxp_platform != "rt/rt1060") {
     public_deps += [ "${chip_root}/src/platform" ]
     public_deps += [ "${chip_root}/src/app/server" ]
   }

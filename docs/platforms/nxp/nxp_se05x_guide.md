@@ -89,8 +89,9 @@ cluster app. Refer [RW61x](nxp_rw61x_guide.md) to set up the build environment.
 
 ### RT1060
 
-Integration of SE05x with RT1060 EVKB board is demonstrated using the thermostat and all
-cluster app. Refer [RT1060](nxp_rt1060_guide.md) to set up the build environment.
+Integration of SE05x with RT1060 EVKB board is demonstrated using the thermostat
+and all cluster app. Refer [RT1060](nxp_rt1060_guide.md) to set up the build
+environment.
 
 #### To build Thermostat for NFC Commissioning
 
@@ -349,8 +350,8 @@ provisioned in SE051H and can be used for spake connection with commissioner.
 
 ### Provision SE051H T4T applet with QR code of TP pass-code
 
-Using SIMW tool, we can get the TP pass-code and provision the respective QR code
-to T4T applet.
+Using SIMW tool, we can get the TP pass-code and provision the respective QR
+code to T4T applet.
 
 To Build the tools refer -
 [SE051H Get Pass-code Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se05x_get_passcode/readme.md)
@@ -380,8 +381,9 @@ gn gen out --args="chip_se05x_spake_verifier=true chip_se05x_spake_verifier_use_
 
 For CMake Build system - Add the following command while building example.
 
-NOTE: Ensure to flash real factory data and use the -DCONF_FILE_NAME=prj_wifi_fdata.conf configuration file.
-Refer [NXP manufacturing data](nxp_manufacturing_flow.md) for details.
+NOTE: Ensure to flash real factory data and use the
+-DCONF_FILE_NAME=prj_wifi_fdata.conf configuration file. Refer
+[NXP manufacturing data](nxp_manufacturing_flow.md) for details.
 
 ```
 -DCONF_FILE_NAME=prj_wifi_fdata.conf -DCONFIG_CHIP_SE05X_SPAKE_VERIFIER=y -DCONFIG_CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES=y -DCONFIG_CHIP_SE05X_SPAKE_VERIFIER_TP_SET_NO=1 -DCONFIG_CHIP_SE05X_SPAKE_VERIFIER_TP_ITTER_CNT=1000

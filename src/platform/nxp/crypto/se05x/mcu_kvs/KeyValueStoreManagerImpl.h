@@ -177,13 +177,14 @@ public:
             {
 #if CHIP_DEVICE_CONFIG_ENABLE_THREAD
                 ChipLogDetail(Crypto, "SE05x: Setting thread operational data");
-                ByteSpan dataset((const unsigned char*)op_data_set, op_data_set_len);
+                ByteSpan dataset((const unsigned char *) op_data_set, op_data_set_len);
                 DeviceLayer::ThreadStackMgrImpl().SetThreadProvision(dataset);
 #else
                 ChipLogDetail(Crypto, "SE05x: SE05x commissioned for thread, but example is not built with thread support.");
 #endif
             }
-            else {
+            else
+            {
                 ChipLogDetail(Crypto, "SE05x: Reading Wi-Fi / Thread credentials from secure element failed");
             }
         }

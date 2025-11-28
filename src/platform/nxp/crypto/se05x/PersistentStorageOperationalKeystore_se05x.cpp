@@ -17,17 +17,20 @@
 
 #include "PersistentStorageOperationalKeystore_se05x.h"
 #include "CHIPCryptoPALHsm_se05x_utils.h"
-#include <lib/support/DefaultStorageKeyAllocator.h>
 #include "se051h_nfc_comm_prov.h"
+#include <lib/support/DefaultStorageKeyAllocator.h>
 
 namespace chip {
 
 using namespace chip::Crypto;
 
-#define CHIP_SE05x_NODE_OP_KEY_INDEX            (SE051H_NODE_OP_KEY_ID - 1)
-#define CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID   (SE051H_SELECT_RESPONSE_ID)
-#define NUM_NODE_OP_KEY_INDEXES                 (5)
-#define CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL      {SE051H_SELECT_RESPONSE}                                                                                        \
+#define CHIP_SE05x_NODE_OP_KEY_INDEX (SE051H_NODE_OP_KEY_ID - 1)
+#define CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID (SE051H_SELECT_RESPONSE_ID)
+#define NUM_NODE_OP_KEY_INDEXES (5)
+#define CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL                                                                                         \
+    {                                                                                                                              \
+        SE051H_SELECT_RESPONSE                                                                                                     \
+    }
 
 #define CHIP_SE05x_NODE_OP_REF_KEY_TEMPLATE                                                                                        \
     {                                                                                                                              \
@@ -55,7 +58,7 @@ static CHIP_ERROR generate_node_oper_key()
 
 static CHIP_ERROR disable_nfc_commision()
 {
-    CHIP_ERROR err = CHIP_NO_ERROR;
+    CHIP_ERROR err       = CHIP_NO_ERROR;
     const uint8_t buf[8] = { 0x00 };
 
     err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));
@@ -66,7 +69,7 @@ static CHIP_ERROR disable_nfc_commision()
 
 static CHIP_ERROR enable_nfc_commision()
 {
-    CHIP_ERROR err = CHIP_NO_ERROR;
+    CHIP_ERROR err      = CHIP_NO_ERROR;
     const uint8_t buf[] = CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL;
 
     err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));
@@ -145,13 +148,12 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     return CHIP_NO_ERROR;
 }
 
-#define SE05X_SET_BIN_DATA_TEMPLATE(keyid, buf)                     \
-    {                                                               \
-        const uint8_t buffer[] = {buf};                             \
-        err = se05x_set_binary_data(keyid, buffer, sizeof(buffer)); \
-        VerifyOrReturnError(err == CHIP_NO_ERROR, err);             \
+#define SE05X_SET_BIN_DATA_TEMPLATE(keyid, buf)                                                                                    \
+    {                                                                                                                              \
+        const uint8_t buffer[] = { buf };                                                                                          \
+        err                    = se05x_set_binary_data(keyid, buffer, sizeof(buffer));                                             \
+        VerifyOrReturnError(err == CHIP_NO_ERROR, err);                                                                            \
     }
-
 
 CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricIndex fabricIndex)
 {
@@ -241,26 +243,26 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
         SE05X_SET_BIN_DATA_TEMPLATE(SE051H_WIFI_CRED_ID_APP_8_8, WIFI_CRED_DATA);
         {
             uint8_t ncc_buf[] = {
-              DATA_VERSION_NCC,
-              CLUSTER_REVISION_NCC,
-              FEATUREMAP_NCC,
-              ATTRIBUTE_LIST_NCC,
-              ACCEPTED_COMMAND_LIST_NCC,
-              GENERATED_COMMAND_LIST_NCC,
-              MAX_NETWORKS,
-              NETWORKS,
-              NETWORKS_FILLER,
-              SCAN_MAX_TIME_SECONDS,
-              CONNECT_MAX_TIME_SECONDS,
-              INTERFACE_ENABLED,
-              LAST_NETWORKING_STATUS,
-              LAST_NETWORK_ID,
-              LAST_NETWORK_ID_FILLER,
-              LAST_CONNECT_ERROR_VALUE_NCC,
-              LAST_CONNECT_ERROR_VALUE_FILLER_NCC,
-              SUPPORTED_WIFI_BANDS_NCC,
-              SUPPORTED_THREAD_FEATURES_NCC,
-              THREAD_VERSION_NCC,
+                DATA_VERSION_NCC,
+                CLUSTER_REVISION_NCC,
+                FEATUREMAP_NCC,
+                ATTRIBUTE_LIST_NCC,
+                ACCEPTED_COMMAND_LIST_NCC,
+                GENERATED_COMMAND_LIST_NCC,
+                MAX_NETWORKS,
+                NETWORKS,
+                NETWORKS_FILLER,
+                SCAN_MAX_TIME_SECONDS,
+                CONNECT_MAX_TIME_SECONDS,
+                INTERFACE_ENABLED,
+                LAST_NETWORKING_STATUS,
+                LAST_NETWORK_ID,
+                LAST_NETWORK_ID_FILLER,
+                LAST_CONNECT_ERROR_VALUE_NCC,
+                LAST_CONNECT_ERROR_VALUE_FILLER_NCC,
+                SUPPORTED_WIFI_BANDS_NCC,
+                SUPPORTED_THREAD_FEATURES_NCC,
+                THREAD_VERSION_NCC,
             };
             err = se05x_set_binary_data(SE051H_NCC_ID, ncc_buf, sizeof(ncc_buf));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
@@ -268,25 +270,26 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
 
         {
             uint8_t Genaral_comm_cluster_data[] = {
-              DATA_VERSION_GCC,
-              CLUSTER_REVISION_GCC,
-              FEATUREMAP_GCC,
-              ATTRIBUTE_LIST_GCC,
-              ACCEPTED_COMMAND_LIST_GCC,
-              GENERATED_COMMAND_LIST_GCC,
-              BREADCRUMB,
-              BASIC_COMMISSIONING_INFO,
-              REGULATORY_CONFIG,
-              LOCATION_CAPABILITY,
-              SUPPORTS_CONCURRENT_CONNECTION,
-              TC_ACCEPTED_VERSION,
-              TC_MIN_REQUIRED_VERSION,
-              TC_ACKNOWLEDGEMENTS,
-              TC_ACKNOWLEDGEMENTS_REQUIRED,
-              TC_UPDATE_DEADLINE,
-              RECOVERY_IDENTIFIER,
+                DATA_VERSION_GCC,
+                CLUSTER_REVISION_GCC,
+                FEATUREMAP_GCC,
+                ATTRIBUTE_LIST_GCC,
+                ACCEPTED_COMMAND_LIST_GCC,
+                GENERATED_COMMAND_LIST_GCC,
+                BREADCRUMB,
+                BASIC_COMMISSIONING_INFO,
+                REGULATORY_CONFIG,
+                LOCATION_CAPABILITY,
+                SUPPORTS_CONCURRENT_CONNECTION,
+                TC_ACCEPTED_VERSION,
+                TC_MIN_REQUIRED_VERSION,
+                TC_ACKNOWLEDGEMENTS,
+                TC_ACKNOWLEDGEMENTS_REQUIRED,
+                TC_UPDATE_DEADLINE,
+                RECOVERY_IDENTIFIER,
             };
-            err = se05x_set_binary_data(SE051H_GENERAL_COMM_CLUSTER_ID, Genaral_comm_cluster_data, sizeof(Genaral_comm_cluster_data));
+            err =
+                se05x_set_binary_data(SE051H_GENERAL_COMM_CLUSTER_ID, Genaral_comm_cluster_data, sizeof(Genaral_comm_cluster_data));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
         }
     }

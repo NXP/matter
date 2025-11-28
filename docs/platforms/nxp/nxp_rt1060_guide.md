@@ -554,12 +554,12 @@ The complete Border Router guide is located [here](./nxp_otbr_guide.md).
 
 -   Connections using OM-SE051ARD board :
 
-    | Signal         | EVKBMIMXRT1060 Pin | OM-SE051ARD Pin |
-    | -------------- | ------------------ | --------------- |
-    | I2C SDA        | J17_9              | J2_9            |
-    | I2C SCL        | J17_10             | J2_10           |
-    | 3V3            | J32_4              | J8_4            |
-    | GND            | J17_7              | J8_7            |
+    | Signal  | EVKBMIMXRT1060 Pin | OM-SE051ARD Pin |
+    | ------- | ------------------ | --------------- |
+    | I2C SDA | J17_9              | J2_9            |
+    | I2C SCL | J17_10             | J2_10           |
+    | 3V3     | J32_4              | J8_4            |
+    | GND     | J17_7              | J8_7            |
 
 ### Build options
 
