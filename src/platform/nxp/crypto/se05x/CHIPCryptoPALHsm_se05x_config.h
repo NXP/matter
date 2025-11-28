@@ -33,6 +33,12 @@
  *    3a - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/app/server/BUILD.gn,
  *    3b - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/controller/BUILD.gn,
  *    3c - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/protocols/secure_channel/BUILD.gn.
+ *
+ *    if (chip_se05x_spake_verifier) {
+        defines = ["ENABLE_SE05X_SPAKE_VERIFIER=1" ]
+      }
+
+      include - import("${chip_root}/src/platform/nxp/crypto/se05x/args.gni")
  */
 
 #ifndef ENABLE_SE05X_SPAKE_VERIFIER
