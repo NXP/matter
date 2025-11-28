@@ -53,6 +53,9 @@ CHIP_ERROR GeneratePaseSalt(std::vector<uint8_t> & spake2pSaltVector)
     err = se05x_get_certificate(kSpake2p_Pwd_Salt_Bin_File_id, cert, &certLen);
     VerifyOrReturnError(err == CHIP_NO_ERROR, err);
 
+    // To ensure we turn off the gpio and be ready for NFC comm
+    VerifyOrReturnError(se05x_close_session() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+
     VerifyOrReturnError(certLen >= (offset + kSpake2p_PBKDF_Salt_Length_SE05x + kSpake2p_Passcode_Length_SE05x),
                         CHIP_ERROR_INTERNAL);
 
