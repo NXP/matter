@@ -201,7 +201,6 @@ if (chip_with_web2 == 1) {
 
     libs = [
       "boost_filesystem",
-      "boost_system",
       "boost_thread",
       "boost_date_time",
     ]
