@@ -244,6 +244,34 @@ For CMake Build system - Add the following command while building example.
 > [!IMPORTANT] Ensure to enable CMAC (MBEDTLS_CMAC_C) in mbedtls config file
 > used.
 
+```
+**NOTE** -
+When using SCP03 authentication on RT1060, ensure to disable AES ALT in 'third_party\nxp\nxp_matter_support\gn_build\mbedtls\config\nxp_matter_mbedtls_config.h' config file.
+
+Append the below code snippet at the end of the file,
+
+#if CONFIG_CHIP_SE05X
+#if defined(CPU_MIMXRT1062DVL6A) || defined(CPU_MIMXRT1062DVL6B)
+
+#ifndef MBEDTLS_CMAC_C
+    #define MBEDTLS_CMAC_C
+#endif // MBEDTLS_CMAC_C
+
+#undef MBEDTLS_AES_SETKEY_ENC_ALT
+#undef MBEDTLS_AES_SETKEY_DEC_ALT
+#undef MBEDTLS_AES_ENCRYPT_ALT
+#undef MBEDTLS_AES_DECRYPT_ALT
+#undef MBEDTLS_AES_ALT_NO_192
+#undef MBEDTLS_AES_CRYPT_CBC_ALT
+#undef MBEDTLS_FREESCALE_DCP_AES
+#undef MBEDTLS_AES_ALT
+#undef MBEDTLS_AES_ALT_NO_256
+
+#endif //  defined(CPU_MIMXRT1062DVL6A) || defined(CPU_MIMXRT1062DVL6B)
+#endif
+
+```
+
 <a name="se051h_nfc_unpowered_commissioning"></a>
 
 ## SE051H NFC / Unpowered Commissioning
