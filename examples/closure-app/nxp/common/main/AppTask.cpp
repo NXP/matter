@@ -3,7 +3,6 @@
  *    Copyright (c) 2021-2023 Project CHIP Authors
  *    Copyright (c) 2021 Google LLC.
  *    Copyright 2023-2024 NXP
- *    Copyright 2025 NXP
  *    All rights reserved.
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
