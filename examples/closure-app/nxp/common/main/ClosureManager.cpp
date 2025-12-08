@@ -36,7 +36,7 @@ namespace {
 constexpr uint32_t kCountdownTimeSeconds          = 10;
 constexpr uint32_t kCalibrateCountdownTimeMs      = 3000; // 3 seconds for calibrate motion
 constexpr uint32_t kMotionCountdownTimeMs         = 1000; // 1 second for each motion.
-constexpr chip::Percent100ths kMotionPositionStep = 1000; // 10% of the total range per motion interval.
+constexpr chip::Percent100ths kMotionPositionStep = 2000; // 20% of the total range per motion interval.
 
 // Define the Namespace and Tag for the endpoint
 // Derived from https://github.com/CHIP-Specifications/connectedhomeip-spec/blob/master/src/namespaces/Namespace-Closure.adoc
@@ -232,14 +232,6 @@ CHIP_ERROR ClosureManager::SetClosurePanelInitialState(ClosureDimensionEndpoint 
 
     return CHIP_NO_ERROR;
 }
-
-void ClosureManager::InvokeOpenCommand(){mClosureEndpoint1.GetLogic().HandleMoveTo(chip::Optional<TargetPositionEnum>(TargetPositionEnum::kMoveToFullyOpen), chip::Optional<bool>(false), chip::Optional<chip::app::Clusters::Globals::ThreeLevelAutoEnum>(
-                chip::app::Clusters::Globals::ThreeLevelAutoEnum::kAuto));}
-
-void ClosureManager::InvokeCloseCommand(){mClosureEndpoint1.GetLogic().HandleMoveTo(chip::Optional<TargetPositionEnum>(TargetPositionEnum::kMoveToFullyClosed), chip::Optional<bool>(false), chip::Optional<chip::app::Clusters::Globals::ThreeLevelAutoEnum>(
-                chip::app::Clusters::Globals::ThreeLevelAutoEnum::kAuto));}
-
-void ClosureManager::InvokeStopCommand(){mClosureEndpoint1.GetLogic().HandleStop();}
 
 chip::Protocols::InteractionModel::Status ClosureManager::OnCalibrateCommand()
 {
@@ -1037,7 +1029,7 @@ bool ClosureManager::GetPanelNextPosition(const GenericDimensionStateStruct & cu
 
     if (currentPosition < targetPosition)
     {
-        // Increment position by kMotionPositionStep units, capped at target.
+        // Increment position by 2000 units, capped at target.
         // No overflow handling needed due to currentposition max value is 10000
         nextPosition.SetNonNull(std::min(static_cast<chip::Percent100ths>(currentPosition + kMotionPositionStep), targetPosition));
     }
@@ -1046,7 +1038,7 @@ bool ClosureManager::GetPanelNextPosition(const GenericDimensionStateStruct & cu
         // Handling underflow for CurrentPosition
         chip::Percent100ths newCurrentPosition =
             (currentPosition > kMotionPositionStep) ? currentPosition - kMotionPositionStep : 0;
-        // Moving down: Decreasing the current position by a step of kMotionPositionStep units,
+        // Moving down: Decreasing the current position by a step of 2000 units,
         // ensuring it does not go below the target position.
         nextPosition.SetNonNull(std::max(newCurrentPosition, targetPosition));
     }

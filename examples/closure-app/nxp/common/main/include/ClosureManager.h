@@ -153,10 +153,6 @@ public:
                   const chip::Optional<chip::app::Clusters::Globals::ThreeLevelAutoEnum> & speed,
                   const chip::EndpointId endpointId);
 
-    void InvokeOpenCommand(void);
-    void InvokeCloseCommand(void);
-    void InvokeStopCommand(void);
-
 private:
     /**
      * @brief Singleton instance of the ClosureManager.
