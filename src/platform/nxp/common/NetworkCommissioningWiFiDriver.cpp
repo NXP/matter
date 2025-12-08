@@ -240,32 +240,6 @@ void NXPWiFiDriver::OnConnectWiFiNetwork(Status commissioningError, CharSpan deb
     }
 }
 
-void NXPWiFiDriver::OnNetworkStatusChange()
-{
-    ChipLogProgress(NetworkProvisioning, "NXPWiFiDriver::OnNetworkStatusChange\r\n");
-    Network configuredNetwork;
-
-    VerifyOrReturn(mpStatusChangeCallback != nullptr);
-    CHIP_ERROR err = GetConnectedNetwork(configuredNetwork);
-    if (err != CHIP_NO_ERROR)
-    {
-        ChipLogError(DeviceLayer, "Failed to get configured network when updating network status: %s", err.AsString());
-        return;
-    }
-
-    if (configuredNetwork.networkIDLen)
-    {
-        mpStatusChangeCallback->OnNetworkingStatusChange(
-            Status::kSuccess, MakeOptional(ByteSpan(configuredNetwork.networkID, configuredNetwork.networkIDLen)), NullOptional);
-    }
-    else
-    {
-        mpStatusChangeCallback->OnNetworkingStatusChange(
-            Status::kUnknownError, MakeOptional(ByteSpan(configuredNetwork.networkID, configuredNetwork.networkIDLen)),
-            NullOptional);
-    }
-}
-
 void NXPWiFiDriver::ConnectNetwork(ByteSpan networkId, ConnectCallback * callback)
 {
     CHIP_ERROR err          = CHIP_NO_ERROR;
@@ -474,7 +448,7 @@ uint32_t NXPWiFiDriver::GetSupportedWiFiBandsMask() const
     return bands;
 }
 
-CHIP_ERROR NXPWiFiDriver::GetConnectedNetwork(Network & network)
+static CHIP_ERROR GetConnectedNetwork(Network & network)
 {
     struct wlan_network wlan_network;
     int result;
@@ -516,7 +490,7 @@ bool NXPWiFiDriver::WiFiNetworkIterator::Next(Network & item)
     mExhausted        = true;
 
     Network connectedNetwork;
-    CHIP_ERROR err = mDriver->GetConnectedNetwork(connectedNetwork);
+    CHIP_ERROR err = GetConnectedNetwork(connectedNetwork);
 
     if (err == CHIP_NO_ERROR)
     {
