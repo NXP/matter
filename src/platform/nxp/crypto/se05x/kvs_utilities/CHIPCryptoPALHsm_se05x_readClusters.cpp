@@ -42,9 +42,13 @@
         0xA5, 0xA6, 0xB5, 0xB6, 0xA5, 0xA6, 0xB5, 0xB6                                                                             \
     }
 
-#define NIST256_HEADER_OFFSET 26
-//#define SE05X_WIFI_BINARY_FILE SE051H_WIFI_CRED_ID_APP_8_8
-#define SE05X_WIFI_BINARY_FILE SE051H_WIFI_CRED_ID_APP_8_6
+#define NIST256_HEADER_OFFSET                       26
+
+#define VERSION_8_4 \
+    ((8) << (8 * 3) | (4) << (8 * 2) | (32) << (8 * 1))
+
+#define VERSION_8_12 \
+    ((8) << (8 * 3) | (12) << (8 * 2) | (32) << (8 * 1))
 
 using namespace chip;
 using namespace chip::TLV;
@@ -139,7 +143,8 @@ CHIP_ERROR se05x_read_node_operational_keypair(uint8_t * op_key_ref_key, size_t 
     status = se05x_get_certificate(SE051H_NODE_OP_KEY_ID, pubKeyBuf.data(), &pubKeyBufLen);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
-    status = se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE051H_NODE_OP_KEY_ID, op_key_ref_key, op_key_ref_key_len);
+    status =
+        se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE051H_NODE_OP_KEY_ID, op_key_ref_key, op_key_ref_key_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     return CHIP_NO_ERROR;
@@ -375,21 +380,22 @@ CHIP_ERROR se05x_read_acl_data(uint8_t * acl, size_t * acl_len)
     status = se05x_get_certificate(SE051H_ACL_ID, acl, acl_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
-    *acl_len = 18;
-
-#if 0
-    uint16_t len = (static_cast<uint16_t>(acl[0]) << 8) | acl[1];
-    memmove(acl, acl+2, len);
-    *acl_len = len;
-#endif
+    if ((((sss_se05x_session_t *)(&gex_sss_chip_ctx.session))->s_ctx.applet_version) <= VERSION_8_4) {
+        *acl_len = 18;
+    }
+    else {
+        uint16_t len = (static_cast<uint16_t>(acl[0]) << 8) | acl[1];
+        memmove(acl, acl+2, len);
+        *acl_len = len;
+    }
 
     /*
-     * TBC.
-     * Mismatch in the way acl is stored in se05x and the way chip tool expects.
-     * Need to check this.
+     * Mismatch in the way ACL is stored in SE05x and the way chip tool expects.
      */
+    if ((((sss_se05x_session_t *)(&gex_sss_chip_ctx.session))->s_ctx.applet_version) <= VERSION_8_12) {
+        acl[9]  = 0x06;
+    }
     acl[7]  = 0x36;
-    acl[9]  = 0x06;
     acl[15] = 0x34;
 
     return CHIP_NO_ERROR;
@@ -494,8 +500,16 @@ CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, 
 
     CHIP_ERROR status = CHIP_NO_ERROR;
     TLVReader reader;
+    uint32_t keyId = 0;
 
-    status = se05x_get_certificate(SE05X_WIFI_BINARY_FILE, buf, &buflen);
+    if ((((sss_se05x_session_t *)(&gex_sss_chip_ctx.session))->s_ctx.applet_version) <= VERSION_8_4) {
+        keyId = SE051H_WIFI_CRED_ID_APP_8_4;
+    }
+    else {
+        keyId = SE051H_WIFI_CRED_ID_APP_8_8;
+    }
+
+    status = se05x_get_certificate(keyId, buf, &buflen);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     uint16_t len = (static_cast<uint16_t>(buf[0]) << 8) | buf[1];
