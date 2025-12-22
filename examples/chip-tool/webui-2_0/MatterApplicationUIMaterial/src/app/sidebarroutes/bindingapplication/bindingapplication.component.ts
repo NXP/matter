@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { ScrollgallerycomponentComponent } from '../../mainapplicationbody/scrollgallerycomponent/scrollgallerycomponent.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,11 +18,11 @@ import { LoaderService } from '../../services/loader.service';
 @Component({
   selector: 'app-bindingapplication',
   standalone: true,
-  imports: [MatCardModule, MatIconModule,
+  imports: [MatCardModule, MatIconModule, MatButtonModule,
     ScrollgallerycomponentComponent,
     MatFormField, MatLabel, MatFormFieldModule, MatInputModule, MatSelectModule, MatChip, FloatingactionareaComponent, SettingsapplicationComponent],
   templateUrl: './bindingapplication.component.html',
-  styleUrl: './bindingapplication.component.css'
+  styleUrl: '../sidebarroutes.share.css'
 })
 export class BindingapplicationComponent {
   constructor(private httpClient: HttpClient, private appDialogService: AppDialogService, private postRequestsService: PostRequestsService,

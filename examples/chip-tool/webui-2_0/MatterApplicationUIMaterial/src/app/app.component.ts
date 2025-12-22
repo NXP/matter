@@ -13,6 +13,7 @@ import { MatSidenavContainer } from '@angular/material/sidenav';
 import { ApplicationsidebarComponent } from './applicationsidebar/applicationsidebar.component';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatCardModule } from '@angular/material/card';
 
 // For mat-toolbar
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -33,7 +34,7 @@ export interface ChipColor {
   imports: [RouterOutlet, MatChipsModule,CommonModule, NgbModule, FormsModule,
     ApplicationheaderComponent, FloatingactionareaComponent, NgStyle, MatToolbarModule, FootercomponentComponent,
     MatSidenavModule, MainapplicationbodyComponent, MatSidenavContainer, ApplicationsidebarComponent, ApplicationsidebarComponent,
-    LoaderoverlayComponent
+    LoaderoverlayComponent, MatCardModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -56,18 +57,25 @@ export class AppComponent implements OnInit, OnDestroy  {
     // Connect web socket service
   }
 
-   ngOnDestroy() {
+  ngOnDestroy() {
     this.disconnectSocket();
-   }
+  }
 
-   disconnectSocket() {
+  disconnectSocket() {
     this.webSocketService.closeConnection();
-   }
+  }
 
   onSidebarColapsedEventCatch(value: boolean) {
     console.log('Sidebar collapsed event caught in the AppComponent; value: ' + value);
     this.isDrawerOpen = value;
     this.drawer.toggle();
+
+    // Set the drawer state based on the value.
+    if (value) {
+      this.drawer.open();
+    } else {
+      this.drawer.close();
+    }
   }
 
   public getTitle(): string {

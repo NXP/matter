@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { FloatingactionareaComponent } from './../../mainapplicationbody/floatingactionarea/floatingactionarea.component';
 import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { ScrollgallerycomponentComponent } from '../../mainapplicationbody/scrollgallerycomponent/scrollgallerycomponent.component';
 import { MatFormField } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
@@ -20,12 +21,12 @@ import { LoaderService } from '../../services/loader.service';
   selector: 'app-audioapplication',
   standalone: true,
   // Import mat-card module
-  imports: [MatCardModule, MatIconModule,
+  imports: [MatCardModule, MatIconModule, MatButtonModule,
     ScrollgallerycomponentComponent,
     MatFormField, MatLabel, MatFormFieldModule, MatInputModule, MatSelectModule, MatChip, FloatingactionareaComponent
   ],
   templateUrl: './audioapplication.component.html',
-  styleUrl: './audioapplication.component.css'
+  styleUrl: '../sidebarroutes.share.css'
 })
 
 export class AudioapplicationComponent {

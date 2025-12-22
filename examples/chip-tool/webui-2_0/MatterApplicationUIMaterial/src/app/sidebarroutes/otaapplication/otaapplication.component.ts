@@ -2,6 +2,7 @@ import { ApplicationcardComponent } from './../../applicationcard/applicationcar
 import { PostRequestsService } from './../../services/post-requests.service';
 import { Component, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { ScrollgallerycomponentComponent } from '../../mainapplicationbody/scrollgallerycomponent/scrollgallerycomponent.component';
@@ -31,14 +32,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-otaapplication',
   standalone: true,
-  imports: [MatCardModule, MatIconModule,
+  imports: [MatCardModule, MatButtonModule, MatIconModule,
     ScrollgallerycomponentComponent,
     MatFormField, MatLabel, MatFormFieldModule, MatInputModule, MatSelectModule, MatChip, SettingsapplicationComponent, NgbModule, MatCardModule, MatCard, NgClass, NgFor, NgIf, NgStyle,
     ScrollgallerycomponentComponent, ApplicationcardComponent, CardscomponentComponent, FloatingactionareaComponent, NgxMasonryModule, NgbProgressbarModule, MatProgressBarModule,
     FormsModule, ReactiveFormsModule
   ],
   templateUrl: './otaapplication.component.html',
-  styleUrl: './otaapplication.component.css'
+  styleUrl: '../sidebarroutes.share.css'
 })
 
 export class OtaapplicationComponent {
@@ -110,7 +111,7 @@ export class OtaapplicationComponent {
         }
       )
     } else {
-      this.appDialogService.showErrorDialog('No file was selected for OTA upload');
+      this.appDialogService.showErrorDialog('No file was selected for OTA file upload');
     }
   }
 
@@ -129,7 +130,7 @@ export class OtaapplicationComponent {
       ))
       this.appDialogService.showInfoDialog("Run Chip OTA Provider command sent through websockets")
     } else {
-      this.appDialogService.showErrorDialog('Error running Chip OTA provider command, check the input fields');
+      this.appDialogService.showErrorDialog('Error running chip-ota-provider, please fill in input fields (Command, Discriminator, File Name)');
     }
   }
 
@@ -158,7 +159,7 @@ export class OtaapplicationComponent {
         }
       )
     } else {
-      this.appDialogService.showErrorDialog('Error running Chip OTA Write-ACL provider command, check the input fields');
+      this.appDialogService.showErrorDialog('Error running Write ACL command, please fill in input field (OTA Provider Device ID).');
     }
   }
 
@@ -189,7 +190,7 @@ export class OtaapplicationComponent {
         }
       )
     } else {
-      this.appDialogService.showErrorDialog('Error running OTA sendRunOTASoftwareUpdateRequestorCommand, check the input fields');
+      this.appDialogService.showErrorDialog('Error running send OTA Software Update Requestor command, please fill in input fields (OTA Provider Device ID, OTA Requestor Device ID).');
     }
   }
 

@@ -1,69 +1,94 @@
-<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-  <div class="not-yet-implemented-maindiv"
-    style="margin-top: 20px; margin-bottom: 20px; margin-left: 20px; margin-right: 20px; padding: 20px;
-    border-radius: 20px; width: 100%; height: 100%; align-items: center; justify-content: center;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
-    background-color: #ffffff;
-    "
-  >
-  <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Write ACL</p>
+<mat-card class="main-content-card">
 
-    <div class="container-for-media" style="align-items:center; justify-content: center;">
-      <!-- Create a form for the input fields and buttons related to the application -->
-      <div class="grid-container">
-      <mat-form-field class="formfield grid-item item1" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Light Node Alias (Optional)</mat-label>
-        <input class="grid-item item1" matInput id="light-node-alias">
-      </mat-form-field>
-      <mat-form-field class="formfield item2 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Light Node ID*</mat-label>
-        <input class="grid-item item1" matInput id="light-node-id">
-      </mat-form-field>
-      <mat-form-field class="formfield item3 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Switch Node Alias (Optional)</mat-label>
-        <input class="grid-item item1" matInput id="switch-node-alias">
-      </mat-form-field>
-      <mat-form-field class="formfield item4 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Switch Node ID*</mat-label>
-        <input class="grid-item item1" matInput id="switch-node-id">
-      </mat-form-field>
-      <mat-form-field class="formfield item5 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">ACL Endpoint ID*</mat-label>
-        <input class="grid-item item1" matInput id="acl-endpoint-id" value="0">
-      </mat-form-field>
+  <!-- Content Section -->
+  <mat-card-content class="content-section">
+    <!-- Write ACL Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">Write ACL</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>Light Node Alias</mat-label>
+          <input matInput id="light-node-alias" placeholder="Enter light node alias">
+          <mat-icon matPrefix>lightbulb</mat-icon>
+          <mat-hint>Alias for the light node</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Light Node ID</mat-label>
+          <input matInput id="light-node-id" placeholder="Enter light node ID" required>
+          <mat-icon matPrefix>devices</mat-icon>
+          <mat-hint>The node ID of the light device</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Switch Node Alias</mat-label>
+          <input matInput id="switch-node-alias" placeholder="Enter switch node alias">
+          <mat-icon matPrefix>toggle_on</mat-icon>
+          <mat-hint>Alias for the switch node</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Switch Node ID</mat-label>
+          <input matInput id="switch-node-id" placeholder="Enter switch node ID" required>
+          <mat-icon matPrefix>devices</mat-icon>
+          <mat-hint>The node ID of the switch device</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>ACL Endpoint ID</mat-label>
+          <input matInput id="acl-endpoint-id" type="number" value="0" required>
+          <mat-icon matPrefix>tag</mat-icon>
+          <mat-hint>ACL endpoint identifier (default: 0)</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="onPressedWriteACLCommand()">
+          <mat-icon>security</mat-icon>
+          Write ACL
+        </button>
+      </div>
+
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- Write Binding Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">Write Binding</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>Light Endpoint ID</mat-label>
+          <input matInput id="light-endpoint-id" type="number" value="1" required>
+          <mat-icon matPrefix>tag</mat-icon>
+          <mat-hint>Light endpoint identifier (default: 1)</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Switch Endpoint ID</mat-label>
+          <input matInput id="switch-endpoint-id" type="number" value="2" required>
+          <mat-icon matPrefix>tag</mat-icon>
+          <mat-hint>Switch endpoint identifier (default: 2)</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="onPressedWriteBindingCommand()">
+          <mat-icon>link</mat-icon>
+          Write Binding
+        </button>
+      </div>
+
+      <div class="action-info">
+        <mat-icon class="info-icon">info</mat-icon>
+        <p class="mat-body-2">
+          After triggering the write binding, press SW2 twice on the device acting as the Switch to register the binding entry.
+        </p>
       </div>
     </div>
+  </mat-card-content>
+</mat-card>
 
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onPressedWriteACLCommand()">
-        <mat-icon>build</mat-icon>
-        <span class="aligned-with-icon">Write ACL</span>
-      </mat-chip>
-    </div>
-
-    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">Write Binding</p>
-
-    <div class="container-for-media" style="align-items:center; justify-content: center;">
-      <!-- Create a form for the input fields and buttons related to the application -->
-      <div class="grid-container">
-      <mat-form-field class="formfield grid-item item1" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Light Endpoint ID*</mat-label>
-        <input class="grid-item item1" matInput id="light-endpoint-id" value="1">
-      </mat-form-field>
-      <mat-form-field class="formfield item2 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Switch Endpoint ID*</mat-label>
-        <input class="grid-item item1" matInput id="switch-endpoint-id" value="2">
-      </mat-form-field>
-      </div>
-    </div>
-
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onPressedWriteBindingCommand()">
-        <mat-icon>build</mat-icon>
-        <span class="aligned-with-icon">Write Binding</span>
-      </mat-chip>
-    </div>
-
-    <app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>
-  </div>
-</div>
+<app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>

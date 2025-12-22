@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { ScrollgallerycomponentComponent } from '../../mainapplicationbody/scrollgallerycomponent/scrollgallerycomponent.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,8 +18,9 @@ import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatCard } from '@angular/material/card';
 import { NgClass } from '@angular/common';
 import { NgFor, NgIf, NgStyle } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { NgxMasonryComponent, NgxMasonryModule } from 'ngx-masonry';
+import { NgxMasonryModule } from 'ngx-masonry';
 import { CardModel } from '../../models/card-model';
 import { MatDialog } from '@angular/material/dialog';
 import { GetRequestsService } from '../../services/get-requests.service';
@@ -27,12 +29,12 @@ import * as QRCode from 'qrcode';
 @Component({
   selector: 'app-multiadminapplication',
   standalone: true,
-  imports: [MatCardModule, MatIconModule,
+  imports: [MatCardModule, MatIconModule, MatButtonModule, FormsModule,
     ScrollgallerycomponentComponent,
     MatFormField, MatLabel, MatFormFieldModule, MatInputModule, MatSelectModule, MatChip, SettingsapplicationComponent, NgbModule, MatCardModule, MatCard, NgClass, NgFor, NgIf, NgStyle,
     ScrollgallerycomponentComponent, ApplicationcardComponent, CardscomponentComponent, FloatingactionareaComponent, NgxMasonryModule],
   templateUrl: './multiadminapplication.component.html',
-  styleUrl: './multiadminapplication.component.css'
+  styleUrl: '../sidebarroutes.share.css'
 })
 
 export class MultiadminapplicationComponent {
@@ -41,34 +43,10 @@ export class MultiadminapplicationComponent {
     private loaderService: LoaderService
   ) {}
 
+  commissioningMethod: '0' | '1' = '0';
+
   public cards: CardModel[] = [];
-  ngOnInit(): void {
-  //   this.loaderService.showLoader();
-  //   this.getRequestsService.getDevicesList().subscribe(
-  //     (data: any) => {
-  //       const parsedData = JSON.parse(JSON.stringify(data));
-  //       if (parsedData['result'] === 'successful') {
-  //         this.cards = []
-  //         for (const [key, value] of Object.entries(parsedData['devices'])) {
-  //           let card: CardModel;
-  //           const device = value as string;
-  //           card = new CardModel('../../assets/wireless-transparent.png', parseInt(key), [], true, device);
-  //           this.cards.push(card);
-  //         }
-  //         this.loaderService.hideLoader();
-  //         // this.appDialogService.showInfoDialog('Got the list of devices successfully');
-  //       } else {
-  //         this.loaderService.hideLoader();
-  //         this.appDialogService.showErrorDialog('Error getting devices list (id\'s and aliases)');
-  //       }
-  //     },
-  //     (error: any) => {
-  //       console.error('Error received: ', error);
-  //       this.loaderService.hideLoader();
-  //       this.appDialogService.showErrorDialog('Error getting devices list (id\'s and aliases)');
-  //     }
-  // );
-  }
+  ngOnInit(): void {}
   ngOnDestroy(): void {}
 
   onButtonPressedEventCatch(value: {
@@ -82,21 +60,20 @@ export class MultiadminapplicationComponent {
   getInputFieldsCurrentValue() {
     return {
       nodeId: (document.getElementById("nodeid-input") as HTMLInputElement).value,
-      option: (document.getElementById("option-input") as HTMLInputElement).value,
-      "window-timeout": (document.getElementById("window-timeout-input") as HTMLInputElement).value,
+      windowtimeout: (document.getElementById("window-timeout-input") as HTMLInputElement).value,
+      option: this.commissioningMethod,
       iteration: (document.getElementById("iteration-input") as HTMLInputElement).value,
       discriminator: (document.getElementById("discriminator-input") as HTMLInputElement).value,
     }
-
   }
 
   openCommissioningWindowWithBCM() : void {
     console.log('Opening commissioning window with BCM');
-    var values_for_the_input = this.getInputFieldsCurrentValue()
+    var values_for_the_input = this.getInputFieldsCurrentValue();
     this.loaderService.showLoader();
 
     this.postRequestsService.sendOpenCommissioningWindowWithBCM(
-      values_for_the_input.nodeId, values_for_the_input['window-timeout'], values_for_the_input.option, values_for_the_input.iteration, values_for_the_input.discriminator
+      values_for_the_input.nodeId, values_for_the_input.windowtimeout, values_for_the_input.option, values_for_the_input.iteration, values_for_the_input.discriminator
     ).subscribe(
       data => {
         console.log('Data received: ', data);
@@ -126,11 +103,11 @@ export class MultiadminapplicationComponent {
     }
 
     console.log('Opening commissioning window with ECM');
-    var values_for_the_input = this.getInputFieldsCurrentValue()
+    var values_for_the_input = this.getInputFieldsCurrentValue();
     this.loaderService.showLoader();
 
     this.postRequestsService.sendOpenCommissioningWindowWithECM(
-      values_for_the_input.nodeId, values_for_the_input['window-timeout'], values_for_the_input.option, values_for_the_input.iteration, values_for_the_input.discriminator
+      values_for_the_input.nodeId, values_for_the_input.windowtimeout, values_for_the_input.option, values_for_the_input.iteration, values_for_the_input.discriminator
     ).subscribe(
       (data: any) => {
         data = data as DataPayload

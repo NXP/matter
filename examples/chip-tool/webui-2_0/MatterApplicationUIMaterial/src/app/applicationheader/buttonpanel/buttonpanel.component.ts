@@ -82,7 +82,6 @@ export class ButtonpanelComponent implements OnInit {
             {inputFieldType: 'text', inputFieldName: 'Network SSID', inputFieldContent: 'NetworkSSID', inputFieldDefaultValue: 'Default: NetworkSSID'},
             {inputFieldType: 'password', inputFieldName: 'Network Password', inputFieldContent: 'NetPa55!', inputFieldDefaultValue: 'Default: NetPa55!'},
             {inputFieldType: 'text', inputFieldName: 'Device Bluetooth Discriminator (3840)', inputFieldContent: '3840', inputFieldDefaultValue: 'Default: 3840'},
-
           ]
         },
         [

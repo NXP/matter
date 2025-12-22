@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { ScrollgallerycomponentComponent } from '../../mainapplicationbody/scrollgallerycomponent/scrollgallerycomponent.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -27,12 +28,12 @@ import { CardModel } from '../../models/card-model';
 @Component({
   selector: 'app-easyevseapplication',
   standalone: true,
-  imports: [MatCardModule, MatIconModule,
+  imports: [MatCardModule, MatIconModule, MatButtonModule,
     ScrollgallerycomponentComponent,
     MatFormField, MatLabel, MatFormFieldModule, MatInputModule, MatSelectModule, MatChip, SettingsapplicationComponent, NgbModule, MatCardModule, MatCard, NgClass, NgFor, NgIf, NgStyle,
     ScrollgallerycomponentComponent, ApplicationcardComponent, CardscomponentComponent, FloatingactionareaComponent, NgxMasonryModule],
   templateUrl: './easyevseapplication.component.html',
-  styleUrl: './easyevseapplication.component.css'
+  styleUrl: '../sidebarroutes.share.css'
 })
 export class EasyevseapplicationComponent {
   constructor(private modalService: NgbModal, private dialog: MatDialog, private getRequestsService: GetRequestsService, private appDialogService: AppDialogService, private postRequestsService: PostRequestsService,

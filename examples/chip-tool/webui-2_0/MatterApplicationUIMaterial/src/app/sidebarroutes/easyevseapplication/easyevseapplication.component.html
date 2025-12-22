@@ -1,221 +1,205 @@
-<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-  <div class="not-yet-implemented-maindiv"
-    style="margin-top: 20px; margin-bottom: 20px; margin-left: 20px; margin-right: 20px; padding: 20px;
-    border-radius: 20px; width: 100%; height: 100%; align-items: center; justify-content: center;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 4px 6px 0 rgba(0, 0, 0, 0.19);
-    background-color: #ffffff;
-    "
-  >
-  <!-- If we have cards available  -->
-  <!-- <div *ngIf="cards.length > 0" class="container-fluid" style="align-items: center; justify-content: center;" >
-    <div #ngxmasonry_container fxLayoutAlign="center js-masonry masonry-container"
-      style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-      "
-      class="mt-4" data-masonry-options='{ "isFitWidth": true }'>
-      <ngx-masonry [options]="{ gutter: 10, fitWidth: true }" style="margin: 10px"
-        fxLayout="row" fxLayoutAlign="center" #masonry_item_container [style]="
-          'flex-direction: row; align-items: center; justify-content: center; width: 100%; height: 100%;'
-        "
-      >
-        <div
-          #card_component_container
-          id="card--component--container--id"
-          *ngFor="let card of cards"
-          class="card pr-3 masonry-item masonry-item--width2"
-          style="
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
-              0 2px 10px 0 rgba(0, 0, 0, 0.12);
-            transition: box-shadow 0.3s;
-            border-radius: 20px;
-            align-items: center;
-            justify-content: center;
-            display: flex;
-          "
-          [ngStyle] = "{
-            'margin': '{{getMasonryLayoutGap(card)}}',
-          }"
+<mat-card class="main-content-card">
 
-          ngxMasonryItem>
-          <app-applicationcard
-            [deviceTypeImageURL]="card.deviceTypeImageURL"
-            [isDeviceOnline]="card.isDeviceOnline"
-            [deviceId]="card.deviceId"
-            [deviceName]="card.deviceName"
-            [endpoints]="card.endpoints"
-            [withSubscription]="false"
-          ></app-applicationcard>
+  <!-- Content Section -->
+  <mat-card-content class="content-section">
+    
+    <!-- EEVSE Event Trigger Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">EEVSE Event Trigger</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>Device Alias</mat-label>
+          <input matInput id="node-alias" placeholder="Enter device alias">
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-hint>Alias for the EEVSE device</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Device ID</mat-label>
+          <input matInput id="node-id" placeholder="Enter device ID" required>
+          <mat-icon matPrefix>devices</mat-icon>
+          <mat-hint>The node ID of the EEVSE device</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Endpoint ID</mat-label>
+          <input matInput id="endpoint-id" type="number" value="1" required>
+          <mat-icon matPrefix>tag</mat-icon>
+          <mat-hint>Endpoint identifier (default: 1)</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Key</mat-label>
+          <input matInput id="key-input" value="000102030405060708090a0b0c0d0e0f" required>
+          <mat-icon matPrefix>vpn_key</mat-icon>
+          <mat-hint>Encryption key for trigger events</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="startEEVSETriggerEvent()">
+          <mat-icon>play_arrow</mat-icon>
+          Start Trigger Event
+        </button>
+        <button mat-raised-button class="action-button" (click)="clearEEVSETriggerEvent()">
+          <mat-icon>clear</mat-icon>
+          Clear Trigger Event
+        </button>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="triggerEEVSEPluggedIn()">
+          <mat-icon>power</mat-icon>
+          Trigger PluggedIn
+        </button>
+        <button mat-raised-button class="action-button" (click)="clearEEVSEPluggedIn()">
+          <mat-icon>power_off</mat-icon>
+          Clear PluggedIn
+        </button>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="triggerEEVSEChargingDemand()">
+          <mat-icon>ev_station</mat-icon>
+          Trigger Charging Demand
+        </button>
+        <button mat-raised-button class="action-button" (click)="clearEEVSEChargingDemand()">
+          <mat-icon>cancel</mat-icon>
+          Clear Charging Demand
+        </button>
+      </div>
+
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- EEVSE Charging Enable Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">EEVSE Charging Enable</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>Minimum Charge Current</mat-label>
+          <input matInput id="minimum-charge-current" type="number" value="6000" required>
+          <mat-icon matPrefix>bolt</mat-icon>
+          <span matSuffix>mA</span>
+          <mat-hint>Minimum charging current in milliamps</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Maximum Charge Current</mat-label>
+          <input matInput id="maximum-charge-current" type="number" value="20000" required>
+          <mat-icon matPrefix>bolt</mat-icon>
+          <span matSuffix>mA</span>
+          <mat-hint>Maximum charging current in milliamps</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="eevseEnableCharging()">
+          <mat-icon>battery_charging_full</mat-icon>
+          Enable Charging
+        </button>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- EEVSE Write Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">EEVSE Write</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>User Maximum Charge Current</mat-label>
+          <input matInput id="user-maximum-charge-current" type="number" value="15000" required>
+          <mat-icon matPrefix>bolt</mat-icon>
+          <span matSuffix>mA</span>
+          <mat-hint>User-defined maximum charging current</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="writeEEVSEUserMaximumChargeCurrent()">
+          <mat-icon>edit</mat-icon>
+          Write User Maximum Charge Current
+        </button>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- EEVSE Disable Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">EEVSE Disable</h3>
+      
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="eevseDisableCharging()">
+          <mat-icon>block</mat-icon>
+          Disable Charging
+        </button>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- EEVSE Status Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">EEVSE Status</h3>
+      
+      <div class="status-subsection">
+        <h4 class="mat-h4">State Information</h4>
+        <div class="action-buttons">
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('state')">
+            <mat-icon>info</mat-icon>
+            State
+          </button>
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('supplystate')">
+            <mat-icon>power_settings_new</mat-icon>
+            Supply State
+          </button>
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('faultstate')">
+            <mat-icon>error_outline</mat-icon>
+            Fault State
+          </button>
         </div>
+      </div>
 
-      </ngx-masonry>
-    </div>
+      <div class="status-subsection">
+        <h4 class="mat-h4">Charging Information</h4>
+        <div class="action-buttons">
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('chargingenableduntil')">
+            <mat-icon>schedule</mat-icon>
+            Charging Enabled Until
+          </button>
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('minimumchargecurrent')">
+            <mat-icon>bolt</mat-icon>
+            Minimum Charge Current
+          </button>
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('maximumchargecurrent')">
+            <mat-icon>bolt</mat-icon>
+            Maximum Charge Current
+          </button>
+        </div>
+      </div>
 
-  </div> -->
-
-  <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">EEVSE Event Trigger</p>
-
-    <div class="container-for-media" style="align-items:center; justify-content: center;">
-      <!-- Create a form for the input fields and buttons related to the application -->
-      <div class="grid-container">
-
-      <mat-form-field class="formfield grid-item item1" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Node ID*</mat-label>
-        <input class="grid-item item1" matInput id="node-id">
-      </mat-form-field>
-      <mat-form-field class="formfield item2 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Endpoint ID*</mat-label>
-        <input class="grid-item item1" matInput id="endpoint-id">
-      </mat-form-field>
-      <mat-form-field class="formfield item3 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Node Alias (Optional)</mat-label>
-        <input class="grid-item item1" matInput id="node-alias">
-      </mat-form-field>
-      <mat-form-field class="formfield item4 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Key*</mat-label>
-        <input class="grid-item item1" matInput id="key-input" value="000102030405060708090a0b0c0d0e0f">
-      </mat-form-field>
-      <!-- <mat-form-field class="formfield item3 grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">Type</mat-label>
-        <input class="grid-item item1" matInput>
-      </mat-form-field> -->
+      <div class="status-subsection">
+        <h4 class="mat-h4">Session Information</h4>
+        <div class="action-buttons">
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('sessionid')">
+            <mat-icon>fingerprint</mat-icon>
+            Session ID
+          </button>
+          <button mat-raised-button class="status-button" (click)="onCurrentStateEEVSERead('sessionduration')">
+            <mat-icon>timer</mat-icon>
+            Session Duration
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="startEEVSETriggerEvent()" >
-        <mat-icon>build</mat-icon>
-        <span class="aligned-with-icon">Start Trigger Event</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="clearEEVSETriggerEvent()" >
-        <mat-icon >build</mat-icon>
-        <span class="aligned-with-icon">Clear Trigger Event</span>
-      </mat-chip>
-    </div>
-    <div class="button-container" style="align-items: center; justify-content: center; text-align: center; display:flex; align-items: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="triggerEEVSEPluggedIn()">
-        <mat-icon >power</mat-icon>
-        <span class="aligned-with-icon">Trigger PluggedIn</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; align-content: horizontal;" (click)="clearEEVSEPluggedIn()">
-        <mat-icon>power</mat-icon>
-        <span class="aligned-with-icon">Clear PluggedIn</span>
-      </mat-chip>
-    </div>
-    <div class="button-container" style="align-items: center; justify-content: center; text-align: center; display:flex; align-items: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; display: flex;" (click)="triggerEEVSEChargingDemand()">
-        <mat-icon>ev_station</mat-icon>
-        <span class="aligned-with-icon">Trigger Charging Demand</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center; align-content: horizontal;" (click)="clearEEVSEChargingDemand()">
-        <mat-icon>ev_station</mat-icon>
-        <span class="aligned-with-icon">Clear Charging Demand</span>
-      </mat-chip>
-    </div>
+  </mat-card-content>
+</mat-card>
 
-    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">EEVSE Charging Enable</p>
-
-    <div class="container-for-media" style="align-items:center; justify-content: center;">
-      <div class="grid-container">
-        <!-- <mat-form-field class="formfield grid-item item1-eevse-charging-enable" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">Charging Enabled Until</mat-label>
-          <input class="grid-item item1" matInput id="charging-enabled-until">
-        </mat-form-field> -->
-
-        <mat-form-field class="formfield grid-item item1-span" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">Minimum Charge Current*</mat-label>
-          <input class="grid-item item1-span" matInput id="minimum-charge-current">
-        </mat-form-field>
-        
-        <mat-form-field class="formfield item3-eevse-charging-enable grid-item" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-          <mat-label style="color: #000000">Maximum Charge Current*</mat-label>
-          <input class="grid-item item3" matInput id="maximum-charge-current">
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="eevseEnableCharging()" >
-        <mat-icon>build</mat-icon>
-        <span class="aligned-with-icon">Enable Charging</span>
-      </mat-chip>
-    </div>
-
-    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">EEVSE Write</p>
-
-    <div class="container-for-media" style="align-items:center; justify-content: center;">
-      <!-- Create a form for the input fields and buttons related to the application -->
-      <div class="grid-container">
-      <mat-form-field class="formfield" appearance="fill" style="width:100%; vertical-align: middle; border-radius: 10px; border-color: #000000;">
-        <mat-label style="color: #000000">User Maximum Charge Current*</mat-label>
-        <input class="grid-item item1" matInput id="user-maximum-charge-current">
-      </mat-form-field>
-      </div>
-    </div>
-
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;"  (click)="writeEEVSEUserMaximumChargeCurrent()">
-        <mat-icon>build</mat-icon>
-        <span class="aligned-with-icon">Write User Maximum Charge Current*</span>
-      </mat-chip>
-    </div>
-
-    <!-- EEVSE Disable  -->
-    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">EEVSE Disable</p>
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="eevseDisableCharging()">
-        <mat-icon>build</mat-icon>
-        <span class="aligned-with-icon">Disable Charging</span>
-      </mat-chip>
-    </div>
-
-    <!-- EEVSE Status  -->
-    <p style="font-family:'Times New Roman', Times, serif; font-size: large; align-items: center; text-align: center; padding:20px">EEVSE Status</p>
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('state')">
-        <mat-icon>info</mat-icon>
-        <span class="aligned-with-icon">State</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('supplystate')">
-        <mat-icon>info</mat-icon>
-        <span class="aligned-with-icon">Supply State</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('faultstate')">
-        <mat-icon>info</mat-icon>
-        <span class="aligned-with-icon">Fault State</span>
-      </mat-chip>
-    </div>
-
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('chargingenableduntil')">
-        <mat-icon>battery_charging_full</mat-icon>
-        <span class="aligned-with-icon">Charging Enabled Until</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('minimumchargecurrent')">
-        <mat-icon>battery_charging_full</mat-icon>
-        <span class="aligned-with-icon">Minimum Charge Current</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('maximumchargecurrent')">
-        <mat-icon>battery_charging_full</mat-icon>
-        <span class="aligned-with-icon">Maximum Charge Current</span>
-      </mat-chip>
-    </div>
-
-    <div class="button-container container-fluid" style="align-items: center; justify-content: center;">
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('sessionid')">
-        <mat-icon>hub</mat-icon>
-        <span class="aligned-with-icon">Session ID</span>
-      </mat-chip>
-      <mat-chip mat-button class="material-chip" style="align-items: center; justify-content: center;" (click)="onCurrentStateEEVSERead('sessionduration')">
-        <mat-icon>hub</mat-icon>
-        <span class="aligned-with-icon">Session Duration</span>
-      </mat-chip>
-    </div>
-
-    <app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>
-  </div>
-</div>
+<app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>

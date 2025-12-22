@@ -1,67 +1,69 @@
-@media (min-width: 100px) {
-  .card-group.card-group-scroll {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-  }
-
-  .card-group.card-group-scroll > .card {
-      flex-basis: 35%;
-  }
-}
-
-div.card-group.card-group-scroll {
+/* Container styling */
+.card-group {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 24px;
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-div.card-group.card-group-scroll > div.card {
-  flex-basis: 100%;
-}
-
-div.card {
-  margin: 10px;
-}
-
-div.card > div.card-body {
-  padding: 0;
-  align-items: center;
+/* Material card styling */
+mat-card {
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
 }
 
-img {
-  max-height: 100px;
-  width: auto;
+/* Image styling */
+mat-card img {
+  height: 120px;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
-div.card > div.card-body > img {
-  border-radius: 10px 10px 0 0;
-  /* Fit cover */
-  object-fit: cover;
+/* Card content */
+mat-card-content {
+  padding: 8px 8px;
+  flex-grow: 1;
 }
 
-div.card {
-  /* Very elevated */
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-  transition: box-shadow 0.3s;
+mat-card-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  color: rgba(0, 0, 0, 0.87);
+  text-align: center;
 }
 
-div.card {
-  /* Rounded corners */
-  border-radius: 10px;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
-  padding: 10px;
+mat-card-subtitle {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 0;
+  text-align: center;
 }
 
-/* Font */
+/* Responsive design - Mobile */
+@media (max-width: 500px) {
+  .card-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  mat-card {
+    width: 100%;
+  }
+}
+
+/* Responsive design - Tablet */
+@media (min-width: 500px) and (max-width: 1200px) {
+  .card-group {
+    gap: 18px;
+  }
+}
 
 * {
-  font-family: "DM Sans", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: normal;
-  font-style: normal;
+  font-family: 'Roboto', sans-serif;
 }

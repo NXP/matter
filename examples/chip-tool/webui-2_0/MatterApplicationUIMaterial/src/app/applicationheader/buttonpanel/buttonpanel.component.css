@@ -3,7 +3,7 @@ div[class="globalcollapsediv"] {
   border-radius: 25px;
   background: #d8d8d8;
   border-width: 1px;
-  border-color: orange;
+  border-color: #FCA600;
   margin: 10px;
   flex-direction: row;
   display: flex;
@@ -31,7 +31,7 @@ div[class="globalcollapsediv"] > div[id="matter-logo-div-id"] {
 
 mat-chip {
   border-width: 1px;
-  border-color: orange;
+  border-color: #FCA600;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 10px 0 rgb(0 0 0 / 12%);
 }
 
@@ -97,7 +97,7 @@ img {
   }
 
   * {
-    font-family: "DM Sans", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-optical-sizing: auto;
     font-weight: normal;
     font-style: normal;

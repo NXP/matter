@@ -278,7 +278,7 @@ export class PostRequestsService {
   // For Open Commissioning Window with BCM/ECM
   sendOpenCommissioningWindowWithBCM(nodeId: string, windowTimeout: string, option: string, iteration: string, discriminator: string): Observable<string> {
     if (nodeId.length == 0 || windowTimeout.length == 0 || option.length == 0 || iteration.length == 0 || discriminator.length == 0) {
-      return throwError("Please fill in all the input fields");
+      return throwError("Please fill in all the input fields (Device ID, Option, Window Timeout, Iteration, Discriminator)");
     }
     const data = {
       nodeId: nodeId,
@@ -323,7 +323,7 @@ export class PostRequestsService {
 
   sendOpenCommissioningWindowWithECM(nodeId: string, windowTimeout: string, option: string, iteration: string, discriminator: string): Observable<string> {
     if (nodeId.length == 0 || windowTimeout.length == 0 || option.length == 0 || iteration.length == 0 || discriminator.length == 0) {
-      return throwError("Please fill in all the input fields");
+      return throwError("Please fill in all the input fields (Device ID, Option, Window Timeout, Iteration, Discriminator)");
     }
     const data = {
       nodeId: nodeId,
@@ -375,7 +375,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId, chargingEnabledUntil, minimumChargeCurrent, maximumChargeCurrent")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID, Minimum Charge Current, Maximum Charge Current).")
       }
     }
 
@@ -402,7 +402,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId, usermaximumchargecurrent)")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID, User Maximum Charge Current).")
     }
   }
 
@@ -429,7 +429,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId)")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -486,7 +486,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -514,7 +514,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -540,7 +540,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -566,7 +566,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -592,7 +592,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -618,7 +618,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -644,7 +644,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -670,7 +670,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -696,7 +696,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -740,7 +740,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (nodeId, endpointId) and select the correct type")
+      return throwError("Please complete all the missing input fields (Device Alias, Device ID, Endpoint ID).")
     }
   }
 
@@ -874,7 +874,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -903,7 +903,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
@@ -929,7 +929,7 @@ export class PostRequestsService {
       );
 
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Key).")
     }
   }
   sendEEVSETriggerChargingDemandEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
@@ -954,7 +954,7 @@ export class PostRequestsService {
       );
 
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Key).")
     }
   }
   sendEEVSEClearPluggedinEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
@@ -979,7 +979,7 @@ export class PostRequestsService {
       );
 
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Key).")
     }
   }
   sendEEVSEStartPluggedinEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
@@ -1004,7 +1004,7 @@ export class PostRequestsService {
       );
 
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Key).")
     }
   }
   sendEEVSEClearTriggerEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
@@ -1029,7 +1029,7 @@ export class PostRequestsService {
       );
 
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Key).")
     }
   }
   sendEEVSEStartTriggerEvent(nodeId: string, nodeAlias: string | undefined, key: string) {
@@ -1054,7 +1054,7 @@ export class PostRequestsService {
       );
 
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Device ID, Key).")
     }
   }
 
@@ -1091,7 +1091,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Light Node ID, Switch Node ID, ACL Endpoint ID).")
     }
   }
 
@@ -1120,7 +1120,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (Light Node ID, Switch Node ID, Light Endpoint ID, Switch Endpoint ID).")
     }
   }
 
@@ -1168,7 +1168,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (OTA Provider Device ID).")
     }
   }
 
@@ -1192,7 +1192,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all missing fields")
+      return throwError("Please complete all the missing input fields (OTA Provider Device ID, OTA Requestor Device ID).")
     }
   }
 

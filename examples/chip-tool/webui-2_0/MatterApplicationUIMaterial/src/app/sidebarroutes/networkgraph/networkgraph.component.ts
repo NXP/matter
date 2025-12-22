@@ -3,6 +3,8 @@ import { GetRequestsService } from '../../services/get-requests.service';
 import { AppDialogService } from '../../services/app-dialog.service';
 import { LoaderService } from './../../services/loader.service';
 import { MatIcon } from '@angular/material/icon';
+import { MatCard } from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import * as d3 from 'd3';
 
 interface NodeDatum extends d3.SimulationNodeDatum {
@@ -22,7 +24,7 @@ interface LinkDatum extends d3.SimulationLinkDatum<NodeDatum> {
 @Component({
   selector: 'app-networkgraph',
   standalone: true,
-  imports: [ MatIcon ],
+  imports: [ MatIcon, MatCard, MatCardModule],
   templateUrl: './networkgraph.component.html',
   styleUrls: ['./networkgraph.component.css'],
 })

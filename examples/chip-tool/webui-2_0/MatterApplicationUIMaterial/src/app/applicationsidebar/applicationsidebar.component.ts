@@ -18,10 +18,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgFor, NgStyle } from '@angular/common';
 import { MatSidenavContent } from '@angular/material/sidenav';
-import { MdbCheckboxModule } from 'mdb-angular-ui-kit/checkbox';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatChip, MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
 import { Router } from '@angular/router';
 
 @Component({
@@ -38,7 +37,8 @@ import { Router } from '@angular/router';
     MatIconModule,
     NgStyle,
     MatChip,
-    MatChipsModule
+    MatChipsModule,
+    MatListModule
   ],
   templateUrl: './applicationsidebar.component.html',
   styleUrl: './applicationsidebar.component.css',
@@ -53,18 +53,13 @@ export class ApplicationsidebarComponent {
 
   public activeItemFromList!: number;
 
-  // public toggleSidebar(): void {
-  //   this.isDrawerOpen = !this.isDrawerOpen;
-  //   this.isCollapsedChange.emit(this.isDrawerOpen);
-  //   console.log('isCollapsed in Sidebar Component: ', this.isDrawerOpen);
-  // }
-
   public onClick(index : number) : void {
     console.log('Clicked on item: ', index);
     this.activeItemFromList = index;
     this.router.navigate([this.sidebarNavigationItems[index].linkRoute]);
+    // Auto-collapse the sidebar after navigation.
+    this.isCollapsedChange.emit(false);
   }
-
 
   public sidebarNavigationItems = [
     {
@@ -86,11 +81,6 @@ export class ApplicationsidebarComponent {
       name: 'Media',
       icon: 'audiotrack',
       linkRoute: 'audio'
-    },
-    {
-      name: 'Help',
-      icon: 'help',
-      linkRoute: 'help'
     },
     {
       name: 'Multi-Admin',
