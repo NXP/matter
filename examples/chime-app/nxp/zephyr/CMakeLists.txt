@@ -91,6 +91,13 @@ if(CONFIG_CHIP_OTA_REQUESTOR)
     )
 endif()
 
+if (CONFIG_CHIP_FACTORY_DATA)
+    target_sources(app PRIVATE
+        ${CHIP_ROOT}/src/platform/nxp/zephyr/FactoryDataProviderImpl.cpp
+        ${CHIP_ROOT}/src/platform/nxp/common/factory_data/legacy/FactoryDataProvider.cpp
+    )
+endif()
+
 chip_configure_data_model(app
     ZAP_FILE ${ALL_CLUSTERS_COMMON_DIR}/../../chime-app/nxp/zap/chime_matter_wifi.zap
 )
