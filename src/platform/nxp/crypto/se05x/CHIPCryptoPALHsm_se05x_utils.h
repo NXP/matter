@@ -35,6 +35,8 @@
 #include "fsl_sss_api.h"
 #include <fsl_sss_se05x_apis.h>
 #include <se05x_APDU.h>
+#include "se051h_nfc_comm_prov.h"
+#include "se05x_host_gpio.h"
 
 extern ex_sss_boot_ctx_t gex_sss_chip_ctx;
 
@@ -48,6 +50,11 @@ enum keyid_values
     kKeyId_sha256_ecc_pub_keyid, // Used for ECDSA verify
     kKeyId_case_ephemeral_keyid, // Used for ECDH
 };
+
+#define CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID   (SE051H_SELECT_RESPONSE_ID)
+#define CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL      {SE051H_SELECT_RESPONSE}
+
+#define CHIP_SE05X_NFC_COMM_DESELECT_RSP_VAL    {SE051H_DESELECT_RESPONSE}
 
 // Enable the below macro to make spake HSM implementation re-entrant.
 #define ENABLE_REENTRANCY 0
@@ -87,9 +94,10 @@ CHIP_ERROR se05x_close_session(void);
 /**
  * @brief Check if key exists in se05x.
  * @param[in] Key id of the key to be checked.
+ * @param[out] key_exists boolean true if the key id presents.
  * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
  */
-CHIP_ERROR se05x_check_object_exists(uint32_t keyid);
+CHIP_ERROR se05x_check_object_exists(uint32_t keyid, bool * key_exists);
 
 /**
  * @brief Delete the key in se05x.
@@ -167,6 +175,22 @@ SE05x_CryptoObjectID_t se05x_getCryptoObjID(void);
 void se05x_setCryptoObjID(SE05x_CryptoObjectID_t objId, uint8_t status);
 
 #endif // #if ENABLE_REENTRANCY
+
+/**
+ * @brief Disable NFC commissioning mode in SE05x.
+ * Writes zero bytes to the NFC commissioning select response binary object
+ * to prevent the device from responding to NFC commissioning requests.
+ * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
+ */
+CHIP_ERROR se05x_disable_nfc_commision();
+
+/**
+ * @brief Enable NFC commissioning mode in SE05x.
+ * Writes the NFC commissioning select response to the binary object
+ * to allow the device to respond to NFC commissioning requests.
+ * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
+ */
+CHIP_ERROR se05x_enable_nfc_commision();
 
 #ifdef __cplusplus
 }

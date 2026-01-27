@@ -31,7 +31,7 @@
  * @brief The function is used to get the fabric id.
  * @return Fabric id (0 if no NFC commissioning done)
  */
-uint32_t se05x_get_fabric_id();
+uint8_t  se05x_get_fabric_id();
 
 /**
  * @brief The function is used to check if the NFC commissioning is done or not.
@@ -121,7 +121,38 @@ CHIP_ERROR se05x_read_fabric_index_info_data(uint8_t * fab_info_data, size_t * f
  * @param[in,out] password_len - password input buffer length when input and password length when output
  * @Param[in,out] opdata - input buffer for operational data set
  * @param[in,out] opdata_len - opdata input buffer length when input and opdata length when output
+ * @param[in] networkId - Network ID for thread/Wifi credentials stored in SE05x
  * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
  */
 CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, char * ssid, size_t * ssid_len, char * password,
-                                                  size_t * password_len, char * opdata, size_t * opdata_len);
+                                                  size_t * password_len, char * opdata, size_t * opdata_len, uint32_t * networkId);
+
+/**
+ * @brief The function is used for reset breadcrumb on SE05x.
+ * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
+ */
+CHIP_ERROR se05x_reset_breadcrumb();
+
+/**
+ * @brief The function is used for setting IsCommissioningWithoutPower false attribute on SE05x.
+ * @param[in] is_comm_without_power - bool value to set/reset IsCommissioningWithoutPower attribute
+ * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
+ */
+CHIP_ERROR se05x_reset_iscomm_without_power(bool is_comm_without_power);
+
+/**
+ * @brief Read network ID from network commissioning cluster stored in SE05x.
+ *
+ * This function retrieves the network ID of the connected network (WiFi or Thread)
+ * from the network commissioning cluster data stored in the secure element.
+ * It searches through the available network entries to find the one marked as connected.
+ *
+ * @param[out] networkId - Pointer to store the retrieved network ID
+ * @return CHIP_ERROR_INTERNAL on error or if no connected network found, CHIP_NO_ERROR otherwise
+ */
+CHIP_ERROR se05x_net_id_from_net_comm_cluster(uint32_t * networkId);
+
+/**
+ * @brief Get remaining fail safe timer from SE05x
+ */
+CHIP_ERROR se05x_get_remain_fail_safe_time(uint16_t * fail_safe_time);

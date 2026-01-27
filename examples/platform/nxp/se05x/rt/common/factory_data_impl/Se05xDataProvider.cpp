@@ -15,17 +15,17 @@
  *    limitations under the License.
  */
 
-#include "Se05xDataProvider.h"
 #include <credentials/CHIPCert.h>
 #include <credentials/DeviceAttestationCredsProvider.h>
 #include <crypto/CHIPCryptoPAL.h>
 #include <lib/core/CHIPError.h>
 #include <lib/core/TLV.h>
 #include <lib/support/Base64.h>
-#include <lib/support/SafeInt.h>
 #include <lib/support/Span.h>
 #include <platform/ConfigurationManager.h>
+#include "Se05xDataProvider.h"
 #include <platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_utils.h>
+#include <lib/support/SafeInt.h>
 
 #include <cctype>
 
@@ -44,7 +44,7 @@ uint32_t setUpPINCode_se05x                       = 0;
 
 #define BCD_TO_DEC(x) (x - 6 * (x >> 4))
 
-CHIP_ERROR GeneratePaseSaltSe05x(char * buf, uint16_t bufLen, uint16_t * outLen)
+CHIP_ERROR GeneratePaseSaltSe05x(char * buf, uint16_t bufLen, uint16_t *outLen)
 {
     CHIP_ERROR err            = CHIP_NO_ERROR;
     constexpr size_t kSaltLen = kSpake2p_PBKDF_Salt_Length_SE05x;
@@ -58,15 +58,12 @@ CHIP_ERROR GeneratePaseSaltSe05x(char * buf, uint16_t bufLen, uint16_t * outLen)
     err = se05x_get_certificate(kSpake2p_Pwd_Salt_Bin_File_id, cert, &certLen);
     VerifyOrReturnError(err == CHIP_NO_ERROR, err);
 
-    // To ensure we turn off the gpio and be ready for NFC comm
-    VerifyOrReturnError(se05x_close_session() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
     VerifyOrReturnError(certLen >= (offset + kSpake2p_PBKDF_Salt_Length_SE05x + kSpake2p_Passcode_Length_SE05x),
                         CHIP_ERROR_INTERNAL);
 
     VerifyOrReturnError(bufLen >= kSaltLen, CHIP_ERROR_INTERNAL);
     memcpy(buf, cert + offset + kSpake2p_Passcode_Length_SE05x, kSaltLen);
-    *outLen            = kSaltLen;
+    *outLen = kSaltLen;
     setUpPINCode_se05x = (BCD_TO_DEC(cert[offset + 3])) + (100 * BCD_TO_DEC(cert[offset + 2])) +
         (10000 * BCD_TO_DEC(cert[offset + 1])) + (1000000 * BCD_TO_DEC(cert[offset]));
 
@@ -79,7 +76,7 @@ CHIP_ERROR Se05xDataProviderImpl::GetSpake2pSalt(MutableByteSpan & saltBuf)
     CHIP_ERROR err                          = CHIP_NO_ERROR;
     char saltB64[kSpake2pSalt_MaxBase64Len] = { 0 };
     uint16_t saltB64Len                     = 0;
-    err                                     = GeneratePaseSaltSe05x(saltB64, sizeof(saltB64), &saltB64Len);
+    err = GeneratePaseSaltSe05x(saltB64, sizeof(saltB64), &saltB64Len);
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(Support, "Failed to generate PASE salt: %" CHIP_ERROR_FORMAT, err.Format());
@@ -89,14 +86,16 @@ CHIP_ERROR Se05xDataProviderImpl::GetSpake2pSalt(MutableByteSpan & saltBuf)
     memcpy(saltBuf.data(), saltB64, saltB64Len);
     saltBuf.reduce_size(saltB64Len);
     return err;
+
 }
+
 
 CHIP_ERROR Se05xDataProviderImpl::GetSetupPasscode(uint32_t & setupPasscode)
 {
     CHIP_ERROR err                          = CHIP_NO_ERROR;
     char saltB64[kSpake2pSalt_MaxBase64Len] = { 0 };
     uint16_t saltB64Len                     = 0;
-    err                                     = GeneratePaseSaltSe05x(saltB64, sizeof(saltB64), &saltB64Len);
+    err = GeneratePaseSaltSe05x(saltB64, sizeof(saltB64), &saltB64Len);
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(Support, "Failed to generate PASE salt: %" CHIP_ERROR_FORMAT, err.Format());

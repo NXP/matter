@@ -43,157 +43,88 @@ public:
     /* To read the provisioning data from se05x and write to the MCU flash */
     CHIP_ERROR Init(void)
     {
-        CHIP_ERROR status = CHIP_NO_ERROR;
-        // tmp_buffer - Need larger buffer to read node operational certificate chain
-        uint8_t tmp_buffer[(2 * chip::Credentials::kMaxCHIPCertLength) + 32];
-        size_t tmp_buffer_len                                   = sizeof(tmp_buffer);
-        char kvs_key_name[32]                                   = { 0 };
-        char ssid[DeviceLayer::Internal::kMaxWiFiSSIDLength]    = { 0 };
-        char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
-        size_t ssid_len                                         = sizeof(ssid);
-        size_t password_len                                     = sizeof(password);
-        char op_data_set[256]                                   = { 0 };
-        size_t op_data_set_len                                  = sizeof(op_data_set);
+        ChipLogDetail(Crypto, "SE05x :: KVS Initialization");
 
-        ChipLogDetail(Crypto, "SE05x :: KVS Initialization ");
+        // Reset breadcrumb and commissioning state
+        ReturnErrorOnFailure(se05x_reset_breadcrumb());
+        ReturnErrorOnFailure(se05x_reset_iscomm_without_power(false));
 
+        // Check if NFC commissioning was performed
         if (se05x_is_nfc_commissioning_done() != CHIP_NO_ERROR)
         {
-            ChipLogDetail(Crypto, "SE05x :: No NFC commissioned data found ");
-            VerifyOrReturnError(se05x_close_session() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+            ChipLogDetail(Crypto, "SE05x :: No NFC commissioned data found");
+            ReturnErrorOnFailure(se05x_close_session());
+
+#if defined(CONFIG_SE05X_HOST_GPIO)
+            // Check commissioning status and initialize GPIO if needed
+            CHIP_ERROR gpioStatus = CheckCommissioningStatusAndInitGPIO();
+            if (gpioStatus == CHIP_NO_ERROR)
+            {
+                ChipLogProgress(Crypto, "SE05x :: GPIO notification initialized for NFC");
+            }
+            else if (gpioStatus != CHIP_ERROR_INCORRECT_STATE)
+            {
+                ChipLogError(Crypto, "SE05x :: Failed to initialize GPIO notification (error: %" CHIP_ERROR_FORMAT ")",
+                            gpioStatus.Format());
+            }
+#endif
             return CHIP_NO_ERROR;
         }
 
-        ChipLogDetail(Crypto, "SE05x :: NFC commissioned data found. Reading the contents from SE05x");
+        ChipLogDetail(Crypto, "SE05x :: NFC commissioned data found. Reading contents from SE05x");
 
-        /*  NFC commissioning is done, read the credentials from SE and
-            write to chip kvs file.
-        */
-
-        status = se05x_read_node_oper_cert(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/n", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_root_cert(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/r", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_ICA(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        if (tmp_buffer_len != 0)
+        // Disable NFC commissioning after successful detection
+        ReturnErrorOnFailure(se05x_disable_nfc_commision());
+        // Check if KVS is already synchronized with SE05x
+        if (IsKVSAlreadySynchronized())
         {
-            VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/i", se05x_get_fabric_id()) > 0,
-                                CHIP_ERROR_INTERNAL);
-            status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-            VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+            ChipLogDetail(Crypto, "SE05x :: KVS is already updated with SE contents. Skipping synchronization.");
+            return CHIP_NO_ERROR;
         }
 
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_ipk(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+        // Mark that we're reading from SE05x for fail-safe timer handling
+        se05x_read_fail_safe = 1;
 
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/k/0", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
+        // Synchronize all credentials from SE05x to KVS
+        ReturnErrorOnFailure(SynchronizeOperationalCredentials());
+        ReturnErrorOnFailure(SynchronizeNetworkCredentials());
 
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_node_operational_keypair(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/o", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_acl_data(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/ac/0/0", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_fabric_groups(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/g", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_meta_data(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        VerifyOrReturnError(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%" PRIx32 "/m", se05x_get_fabric_id()) > 0,
-                            CHIP_ERROR_INTERNAL);
-        status = _Put(kvs_key_name, tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status         = se05x_read_fabric_index_info_data(tmp_buffer, &tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
-
-        status = _Put("g/fidx", tmp_buffer, tmp_buffer_len);
-        VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-
-        memset(tmp_buffer, 0, sizeof(tmp_buffer));
-        tmp_buffer_len = sizeof(tmp_buffer);
-        status = se05x_read_wifi_and_thread_credentials(tmp_buffer, tmp_buffer_len, ssid, &ssid_len, password, &password_len,
-                                                        op_data_set, &op_data_set_len);
-        if (status == CHIP_NO_ERROR)
-        {
-            if ((password_len > 0) && (ssid_len > 0))
-            {
-                ChipLogDetail(Crypto, "SE05x: Setting Wi-Fi credentials");
-                status = _Put("wifi-ssid", ssid, ssid_len);
-                VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-                status = _Put("wifi-pass", password, password_len);
-                VerifyOrReturnError(status == CHIP_NO_ERROR, status);
-            }
-            else if (op_data_set_len > 0)
-            {
-#if CHIP_DEVICE_CONFIG_ENABLE_THREAD
-                ChipLogDetail(Crypto, "SE05x: Setting thread operational data");
-                ByteSpan dataset((const unsigned char *) op_data_set, op_data_set_len);
-                DeviceLayer::ThreadStackMgrImpl().SetThreadProvision(dataset);
-#else
-                ChipLogDetail(Crypto, "SE05x: SE05x commissioned for thread, but example is not built with thread support.");
-#endif
-            }
-            else
-            {
-                ChipLogDetail(Crypto, "SE05x: Reading Wi-Fi / Thread credentials from secure element failed");
-            }
-        }
-        else
-        {
-            ChipLogDetail(Crypto, "SE05x: Reading Wi-Fi / Thread credentials from secure element failed");
-        }
-
+        ChipLogDetail(Crypto, "SE05x :: Successfully synchronized all credentials to KVS");
         return CHIP_NO_ERROR;
+    }
+
+    uint32_t GetRemainingFailSafeTimerForSE05x()
+    {
+        // If not reading from SE05x for the first time after NFC commissioning, return 0
+        if (se05x_read_fail_safe == 0)
+        {
+            ChipLogDetail(Crypto, "SE05x: Fail-safe timer not active (not first read after NFC commissioning)");
+            return 0;
+        }
+
+        uint16_t fail_safe_time = 0;
+        CHIP_ERROR status = se05x_get_remain_fail_safe_time(&fail_safe_time);
+
+        if (status != CHIP_NO_ERROR)
+        {
+            ChipLogError(Crypto, "SE05x: Failed to read fail-safe time from secure element (error: %" CHIP_ERROR_FORMAT ")",
+                        status.Format());
+            // Reset the flag since we attempted to read
+            se05x_read_fail_safe = 0;
+            return 0;
+        }
+
+        // Reset the flag after successful read
+        se05x_read_fail_safe = 0;
+
+        // TODO: Remove hardcoded value once applet fix is available
+        // Currently returning 60 seconds as a workaround for applet limitation
+        constexpr uint32_t kDefaultFailSafeTimeSeconds = 60;
+
+        ChipLogDetail(Crypto, "SE05x: Fail-safe time read from SE: %" PRIu16 "seconds, returning: %" PRIu32" seconds (hardcoded)",
+                     fail_safe_time, kDefaultFailSafeTimeSeconds);
+
+        return kDefaultFailSafeTimeSeconds;
     }
 
     // NOTE: Currently this platform does not support partial and offset reads
@@ -204,7 +135,219 @@ public:
 
     CHIP_ERROR _Put(const char * key, const void * value, size_t value_size);
 
+    inline static uint32_t se05x_read_fail_safe;
+
 private:
+
+#if defined(CONFIG_SE05X_HOST_GPIO)
+    /**
+     * @brief Check if device is commissioned and initialize GPIO notification if needed
+     *
+     * This function checks the commissioning status by looking for fabric index information
+     * in the key-value store. If the device is not commissioned, it initializes GPIO
+     * notification for NFC-based commissioning.
+     *
+     * @return CHIP_NO_ERROR if GPIO notification was successfully initialized
+     *         CHIP_ERROR_INCORRECT_STATE if device is already commissioned
+     *         Other CHIP_ERROR codes on failure
+     */
+    CHIP_ERROR CheckCommissioningStatusAndInitGPIO()
+    {
+        constexpr size_t kMaxBufferSize = 256;
+        constexpr const char * kFabricIndexKey = "g/fidx";
+
+        uint8_t fab_idx[kMaxBufferSize] = {0};
+        size_t fab_idx_len = sizeof(fab_idx);
+
+        // Check if fabric index info exists in KVS (indicates device is commissioned)
+        CHIP_ERROR status = _Get(kFabricIndexKey, fab_idx, sizeof(fab_idx), &fab_idx_len, 0);
+
+        if (status == CHIP_NO_ERROR)
+        {
+            ChipLogProgress(Crypto, "SE05x :: Device is commissioned (fabric index found), skipping GPIO notification");
+            return CHIP_ERROR_INCORRECT_STATE;
+        }
+
+        if (status != CHIP_ERROR_PERSISTED_STORAGE_VALUE_NOT_FOUND)
+        {
+            ChipLogError(Crypto, "SE05x :: Failed to read fabric index from KVS (error: %" CHIP_ERROR_FORMAT ")",
+                        status.Format());
+            return status;
+        }
+
+        ChipLogProgress(Crypto, "SE05x :: Device not commissioned, initializing GPIO notification for NFC");
+
+        // Initialize GPIO notification for NFC commissioning
+        void* gpioResult = se05x_host_gpio_notification_monitor_init(nullptr);
+        if (gpioResult != NULL)
+        {
+            ChipLogError(Crypto, "SE05x :: Failed to initialize GPIO notification ");
+            return CHIP_ERROR_INTERNAL;
+        }
+
+        ChipLogProgress(Crypto, "SE05x :: GPIO notification successfully initialized");
+        return CHIP_NO_ERROR;
+    }
+#endif
+
+    /**
+     * @brief Check if KVS already contains synchronized SE05x data
+     * @return true if KVS is synchronized, false otherwise
+     */
+    bool IsKVSAlreadySynchronized()
+    {
+        constexpr size_t kMaxKeySize = 32;
+        constexpr size_t kMaxOperKeySize = 256;
+
+        char kvs_key_name[kMaxKeySize];
+        uint8_t kvs_node_oper_key[kMaxOperKeySize] = {0};
+        uint8_t se_node_oper_key[kMaxOperKeySize]  = {0};
+        size_t kvs_key_len = sizeof(kvs_node_oper_key);
+        size_t se_key_len = sizeof(se_node_oper_key);
+
+        // Build key name for operational keypair
+        VerifyOrReturnValue(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%x/o", 1) > 0, false);
+
+        // Try to read operational key from KVS
+        CHIP_ERROR status = _Get(kvs_key_name, kvs_node_oper_key, sizeof(kvs_node_oper_key), &kvs_key_len, 0);
+        VerifyOrReturnValue(status == CHIP_NO_ERROR, false);
+
+        // Read operational key from SE05x
+        status = se05x_read_node_operational_keypair(se_node_oper_key, &se_key_len);
+        VerifyOrReturnValue(status == CHIP_NO_ERROR, false);
+
+        // Compare keys - if identical, KVS is already synchronized
+        return (kvs_key_len == se_key_len) && (memcmp(kvs_node_oper_key, se_node_oper_key, kvs_key_len) == 0);
+    }
+
+    /**
+     * @brief Synchronize operational credentials from SE05x to KVS
+     */
+    CHIP_ERROR SynchronizeOperationalCredentials()
+    {
+        constexpr size_t kMaxBufferSize = (2 * chip::Credentials::kMaxCHIPCertLength) + 32;
+        constexpr size_t kMaxKeyNameSize = 32;
+
+        uint8_t buffer[kMaxBufferSize] = {0};
+        char key_name[kMaxKeyNameSize] = {0};
+        size_t buffer_len;
+
+        // Read and store operational keypair
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_node_operational_keypair(buffer, &buffer_len));
+        VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%x/o", 1) > 0, CHIP_ERROR_INTERNAL);
+        ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+
+        // Read and store Node Operational Certificate (NOC)
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_node_oper_cert(buffer, &buffer_len));
+        VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%x/n", 1) > 0, CHIP_ERROR_INTERNAL);
+        ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+
+        const uint32_t fabric_id = se05x_get_fabric_id();
+
+        // Read and store Root Certificate
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_root_cert(buffer, &buffer_len));
+        VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%" PRIx32 "/r", fabric_id) > 0, CHIP_ERROR_INTERNAL);
+        ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+
+        // Read and store Intermediate CA Certificate (if present)
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_ICA(buffer, &buffer_len));
+        if (buffer_len > 0)
+        {
+            VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%" PRIx32 "/i", fabric_id) > 0, CHIP_ERROR_INTERNAL);
+            ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+        }
+
+        // Read and store Identity Protection Key (IPK)
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_ipk(buffer, &buffer_len));
+        VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%" PRIx32 "/k/0", fabric_id) > 0, CHIP_ERROR_INTERNAL);
+        ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+
+        // Read and store Access Control List (ACL)
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_acl_data(buffer, &buffer_len));
+        VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%" PRIx32 "/ac/0/0", fabric_id) > 0, CHIP_ERROR_INTERNAL);
+        ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+
+        // Read and store fabric groups
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_fabric_groups(buffer, &buffer_len));
+        VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%" PRIx32 "/g", fabric_id) > 0, CHIP_ERROR_INTERNAL);
+        ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+
+        // Read and store metadata
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_meta_data(buffer, &buffer_len));
+        VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%" PRIx32 "/m", fabric_id) > 0, CHIP_ERROR_INTERNAL);
+        ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
+
+        // Read and store fabric index info
+        buffer_len = sizeof(buffer);
+        ReturnErrorOnFailure(se05x_read_fabric_index_info_data(buffer, &buffer_len));
+        ReturnErrorOnFailure(_Put("g/fidx", buffer, buffer_len));
+
+        return CHIP_NO_ERROR;
+    }
+
+    /**
+     * @brief Synchronize network credentials from SE05x to KVS
+     */
+    CHIP_ERROR SynchronizeNetworkCredentials()
+    {
+        constexpr size_t kMaxBufferSize = 512;
+
+        uint8_t buffer[kMaxBufferSize];
+        char ssid[DeviceLayer::Internal::kMaxWiFiSSIDLength] = { 0 };
+        char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
+        char op_data_set[256] = { 0 };
+        size_t ssid_len = sizeof(ssid);
+        size_t password_len = sizeof(password);
+        size_t op_data_set_len = sizeof(op_data_set);
+        uint32_t network_cred_id = 0;
+
+        // Get network credential ID from network commissioning cluster
+        ReturnErrorOnFailure(se05x_net_id_from_net_comm_cluster(&network_cred_id));
+
+        // Read WiFi/Thread credentials
+        CHIP_ERROR status = se05x_read_wifi_and_thread_credentials(
+            buffer, sizeof(buffer), ssid, &ssid_len, password, &password_len, op_data_set, &op_data_set_len, &network_cred_id);
+
+        if (status != CHIP_NO_ERROR)
+        {
+            ChipLogDetail(Crypto, "SE05x: Reading network credentials from secure element failed");
+            return CHIP_NO_ERROR; // Non-fatal - continue without network credentials
+        }
+
+        // Store WiFi credentials if present
+        if (ssid_len > 0 && password_len > 0)
+        {
+            ChipLogDetail(Crypto, "SE05x: Setting Wi-Fi credentials");
+            ReturnErrorOnFailure(_Put("wifi-ssid", ssid, ssid_len));
+            ReturnErrorOnFailure(_Put("wifi-pass", password, password_len));
+        }
+        // Store Thread credentials if available
+        else if (op_data_set_len > 0)
+        {
+#if CHIP_DEVICE_CONFIG_ENABLE_THREAD
+            ChipLogDetail(Crypto, "SE05x: Setting Thread operational data");
+            ByteSpan dataset(reinterpret_cast<const uint8_t *>(op_data_set), op_data_set_len);
+            DeviceLayer::ThreadStackMgrImpl().SetThreadProvision(dataset);
+#else
+            ChipLogDetail(Crypto, "SE05x: SE05x commissioned for Thread, but example is not built with Thread support");
+#endif
+        }
+        else
+        {
+            ChipLogDetail(Crypto, "SE05x: No valid network credentials found");
+        }
+
+        return CHIP_NO_ERROR;
+    }
+
     // ===== Members for internal use by the following friends.
     friend KeyValueStoreManager & KeyValueStoreMgr();
     friend KeyValueStoreManagerImpl & KeyValueStoreMgrImpl();

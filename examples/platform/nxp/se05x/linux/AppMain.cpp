@@ -145,7 +145,10 @@
 #endif
 #include <third_party/simw-top-mini/repo/demos/se05x_host_gpio/se05x_host_gpio.h>
 
+#include <app/FailSafeContext.h>
+#include <app/server/Server.h>
 extern CHIP_ERROR se05x_close_session(void);
+extern CHIP_ERROR se05x_reset_iscomm_without_power(bool is_comm_without_power);
 
 using namespace chip;
 using namespace chip::ArgParser;
@@ -452,16 +455,17 @@ int ChipLinuxAppInit(int argc, char * const argv[], OptionSet * customOptions,
 #if CHIP_DEVICE_CONFIG_ENABLE_WIFIPAF
     rendezvousFlags.Set(RendezvousInformationFlag::kWiFiPAF);
 #endif
+    uint16_t fail_safe_time = 0;
 
-    if (se05x_host_gpio_init() != 0)
+    if (se05x_host_gpio_power_init() != 0)
     {
-        ChipLogError(NotSpecified, "SE05x - Error in se05x_host_gpio_init function");
+        ChipLogError(NotSpecified, "SE05x - Error in se05x_host_gpio_power_init function");
         ChipLogError(NotSpecified, "SE05x - Crypto operations offloaded to secure element will fail");
     }
     else
     {
         ChipLogDetail(Crypto, "SE05x - Turn OFF secure Element");
-        if (se05x_host_gpio_set_value(0) != 0)
+        if (se05x_host_gpio_power_set(0) != 0)
         {
             ChipLogError(NotSpecified, "SE05x - Failed to set the GPIO connected to SE05x to low");
         }
@@ -624,6 +628,50 @@ int ChipLinuxAppInit(int argc, char * const argv[], OptionSet * customOptions,
         }
     }
 #endif // CHIP_CONFIG_ENABLE_ICD_SERVER
+
+    ChipLogDetail(NotSpecified, "SE05x - Check for SE05x fail safe timer");
+    fail_safe_time = DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().GetRemainingFailSafeTimerForSE05x();
+    if (fail_safe_time != 0)
+    {
+        chip::app::FailSafeContext & fileSafeContext = chip::Server::GetInstance().GetFailSafeContext();
+
+        err = fileSafeContext.ArmFailSafe(se05x_get_fabric_id(), chip::System::Clock::Seconds16(fail_safe_time));
+        if (err != CHIP_NO_ERROR){
+            ChipLogError(NotSpecified, "SE05x - Error in starting Fail Safe timer for SE05x NFC commissioned fabric");
+        }
+        else {
+            ChipLogDetail(NotSpecified, "SE05x - Started Fail Safe timer for SE05x NFC commissioned fabric");
+        }
+    }
+
+    if (se05x_is_nfc_commissioning_done() != CHIP_NO_ERROR)
+    {
+        uint8_t fabricIndexInfo[256];
+        size_t fabricIndexInfoLen = sizeof(fabricIndexInfo);
+
+        err = se05x_close_session();
+        if (err != CHIP_NO_ERROR)
+        {
+            ChipLogError(Crypto, "SE05x - Failed to close session: %" CHIP_ERROR_FORMAT, err.Format());
+        }
+
+        err = DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl()._Get(
+            "g/fidx", fabricIndexInfo, sizeof(fabricIndexInfo), &fabricIndexInfoLen, 0);
+
+        if (err == CHIP_NO_ERROR && fabricIndexInfoLen > 0)
+        {
+            ChipLogProgress(Crypto, "SE05x - Fabric index info exists, commissioning was already done");
+        }
+        else
+        {
+            ChipLogProgress(Crypto, "SE05x - No fabric index found, registering NFC commissioning callback");
+            err = DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().RegisterNfcCommCompleteCallback(argv);
+            if (err != CHIP_NO_ERROR)
+            {
+                ChipLogError(Crypto, "SE05x - Failed to register NFC commissioning callback: %" CHIP_ERROR_FORMAT, err.Format());
+            }
+        }
+    }
 
 exit:
     if (err != CHIP_NO_ERROR)
@@ -864,11 +912,15 @@ void ChipLinuxAppMainLoop(AppMainLoopImplementation * impl)
 
     ApplicationShutdown();
 
+    VerifyOrDie(se05x_reset_iscomm_without_power(true) == CHIP_NO_ERROR);
     // Close SE05x session
     se05x_close_session();
 
+    /* De initializing the task or thread which is monitoring the GPIO */
+    se05x_host_gpio_notification_monitor_deinit();
+
     ChipLogDetail(Crypto, "SE05x - De-initialize GPIO after Session Close");
-    if (se05x_host_gpio_deinit() != 0)
+    if (se05x_host_gpio_power_deinit() != 0)
     {
         ChipLogError(NotSpecified, "SE05x - Failed to de-initialize GPIO connected to SE05x");
     }

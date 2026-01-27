@@ -25,20 +25,16 @@
 /*
  * Enable se05x for SPAKE VERIFIER
  * Prerequisites for offloading spake operations to secure element (SE051H):
- * 	1. Include CHIPCryptoPALHsm_se05x_spake2p.cpp for build in src\platform\nxp\crypto\se05x\BUILD.gn file
- *  2. Enable spake HSM class in src\protocols\secure_channel\PASESession.h (change Crypto::Spake2p_P256_SHA256_HKDF_HMAC
+ *  1. Use SE051H and ensure to update the feature file (Enable SSS_HAVE_APPLET_SE051_H in
+ * third_party\simw-top-mini\repo\fsl_sss_ftr.h)
+ * 	2. Include CHIPCryptoPALHsm_se05x_spake2p.cpp for build in src\platform\nxp\crypto\se05x\BUILD.gn file
+ *  3. Enable spake HSM class in src\protocols\secure_channel\PASESession.h (change Crypto::Spake2p_P256_SHA256_HKDF_HMAC
  * mSpake2p; to Crypto::Spake2pHSM_P256_SHA256_HKDF_HMAC mSpake2p;). Also include the header
  * <platform/nxp/crypto/se05x/CHIPCryptoPAL_se05x.h> in PASESession.h.
- *  3. Modify build files -
- *    3a - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/app/server/BUILD.gn,
- *    3b - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/controller/BUILD.gn,
- *    3c - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/protocols/secure_channel/BUILD.gn.
- *
- *    if (chip_se05x_spake_verifier) {
-        defines = ["ENABLE_SE05X_SPAKE_VERIFIER=1" ]
-      }
-
-      include - import("${chip_root}/src/platform/nxp/crypto/se05x/args.gni")
+ *  4. Modify build files -
+ *    4a - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/app/server/BUILD.gn,
+ *    4b - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/controller/BUILD.gn,
+ *    4c - Define ENABLE_SE05X_SPAKE_VERIFIER in  src/protocols/secure_channel/BUILD.gn.
  */
 
 #ifndef ENABLE_SE05X_SPAKE_VERIFIER

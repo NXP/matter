@@ -35,9 +35,9 @@ config("se05x_config") {
   }
 
   if (chip_se05x_host_gpio == "rpi") {
-    defines += [ "SE05X_HOST_GPIO_RPI = 1" ]
+    defines += [ "CONFIG_SE05X_HOST_GPIO_RPI = 1" ]
   } else if (chip_se05x_host_gpio == "frdm_imx93") {
-    defines += [ "SE05X_HOST_GPIO_FRDM_IMX93 = 1" ]
+    defines += [ "CONFIG_SE05X_HOST_GPIO_FRDM_IMX93 = 1" ]
   }
 
   # defines += ["FLOW_VERBOSE"]
@@ -73,7 +73,7 @@ config("se05x_config") {
   } else if (chip_se05x_auth == "ec_key") {
     include_dirs += [ "repo/feature_file/ec_key_ftr" ]
   } else if (chip_se05x_auth == "scp03_user_id") {
-    include_dirs += [ "repo/feature_file/scp03_user_id_ftr" ]
+    include_dirs += [ "repo/feature_file/scp03_user_id_key_ftr" ]
   } else if (chip_se05x_auth == "scp03_aes_key") {
     include_dirs += [ "repo/feature_file/scp03_aes_key_ftr" ]
   } else if (chip_se05x_auth == "scp03_ec_key") {
@@ -114,7 +114,7 @@ static_library("se05x") {
 
   if (chip_se05x_auth == "scp03" || chip_se05x_auth == "user_id" ||
       chip_se05x_auth == "aes_key" || chip_se05x_auth == "ec_key" ||
-      chip_se05x_auth == "scp03_user_id" || chip_se05x_auth == "scp03_aes_key" ||
+      chip_se05x_auth == "scp03_userid" || chip_se05x_auth == "scp03_aes_key" ||
       chip_se05x_auth == "scp03_ec_key") {
     sources += [
       "repo/hostlib/hostLib/libCommon/nxScp/nxScp03_Com.c",
