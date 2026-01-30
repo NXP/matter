@@ -354,6 +354,24 @@ CHIP_ERROR se05x_set_binary_data(uint32_t keyId, const uint8_t * buf, size_t buf
     return CHIP_NO_ERROR;
 }
 
+/* Set EC key in se05x */
+CHIP_ERROR se05x_set_ec_key(uint32_t keyId, const uint8_t * buf, size_t buflen) {
+    sss_object_t keyObject = { 0 };
+    sss_status_t status    = kStatus_SSS_Fail;
+
+    status = sss_key_object_init(&keyObject, &gex_sss_chip_ctx.ks);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_object_allocate_handle(&keyObject, keyId, kSSS_KeyPart_Pair, kSSS_CipherType_EC_NIST_P, buflen,
+                                            kKeyObject_Mode_Persistent);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_store_set_key(&gex_sss_chip_ctx.ks, &keyObject, buf, buflen, 256, NULL, 0);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    return CHIP_NO_ERROR;
+}
+
 /* Perform internal sign in se05x (only on SE051H) */
 CHIP_ERROR se05x_perform_internal_sign(uint32_t keyId, uint8_t * sigBuf, size_t * sigBufLen)
 {
@@ -476,7 +494,7 @@ void se05x_setCryptoObjID(SE05x_CryptoObjectID_t objId, uint8_t status)
 
 CHIP_ERROR se05x_disable_nfc_commision()
 {
-    CHIP_ERROR err = CHIP_NO_ERROR;
+    CHIP_ERROR err      = CHIP_NO_ERROR;
     const uint8_t buf[] = CHIP_SE05X_NFC_COMM_DESELECT_RSP_VAL;
 
     err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));
@@ -487,7 +505,7 @@ CHIP_ERROR se05x_disable_nfc_commision()
 
 CHIP_ERROR se05x_enable_nfc_commision()
 {
-    CHIP_ERROR err = CHIP_NO_ERROR;
+    CHIP_ERROR err      = CHIP_NO_ERROR;
     const uint8_t buf[] = CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL;
 
     err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));

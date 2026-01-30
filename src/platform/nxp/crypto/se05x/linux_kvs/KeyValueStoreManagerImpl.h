@@ -39,7 +39,6 @@ namespace PersistedStorage {
 class KeyValueStoreManagerImpl : public KeyValueStoreManager
 {
 public:
-
     /**
      * @brief
      * Initialize the KVS, must be called before using.
@@ -96,12 +95,12 @@ public:
         }
 
         uint16_t fail_safe_time = 0;
-        CHIP_ERROR status = se05x_get_remain_fail_safe_time(&fail_safe_time);
+        CHIP_ERROR status       = se05x_get_remain_fail_safe_time(&fail_safe_time);
 
         if (status != CHIP_NO_ERROR)
         {
             ChipLogError(Crypto, "SE05x: Failed to read fail-safe time from secure element (error: %" CHIP_ERROR_FORMAT ")",
-                        status.Format());
+                         status.Format());
             // Reset the flag since we attempted to read
             se05x_read_fail_safe = 0;
             return 0;
@@ -110,12 +109,12 @@ public:
         // Reset the flag after successful read
         se05x_read_fail_safe = 0;
 
-        // TODO: Remove hardcoded value once applet fix is available
-        // Currently returning 60 seconds as a workaround for applet limitation
-        constexpr uint32_t kDefaultFailSafeTimeSeconds = 60;
+        // TODO: Remove hardcoded value
+        // Currently returning 120 seconds as a workaround for applet limitation
+        constexpr uint32_t kDefaultFailSafeTimeSeconds = 120;
 
-        ChipLogDetail(Crypto, "SE05x: Fail-safe time read from SE: %u seconds, returning: %u seconds (hardcoded)",
-                     fail_safe_time, kDefaultFailSafeTimeSeconds);
+        ChipLogDetail(Crypto, "SE05x: Fail-safe time read from SE: %u seconds, returning: %u seconds (hardcoded)", fail_safe_time,
+                      kDefaultFailSafeTimeSeconds);
 
         return kDefaultFailSafeTimeSeconds;
     }
@@ -125,7 +124,7 @@ public:
      * @param argv Arguments to pass to the callback thread
      * @return CHIP_NO_ERROR on success, appropriate error code on failure
      */
-    CHIP_ERROR RegisterNfcCommCompleteCallback(char * const *argv)
+    CHIP_ERROR RegisterNfcCommCompleteCallback(char * const * argv)
     {
         pthread_t tid;
         pthread_attr_t attr;
@@ -151,7 +150,7 @@ public:
         }
 
         // Create the callback thread
-        result = pthread_create(&tid, &attr, se05x_host_gpio_notification_monitor_init, (void*)argv);
+        result = pthread_create(&tid, &attr, se05x_host_gpio_notification_monitor_init, (void *) argv);
         if (result != 0)
         {
             ChipLogError(NotSpecified, "Failed to create NFC callback thread: %d", result);
@@ -168,7 +167,7 @@ public:
             ChipLogError(NotSpecified, "Failed to destroy thread attributes");
         }
 
-        ChipLogProgress(NotSpecified, "NFC callback thread registered successfully (TID: %lu)", (unsigned long)tid);
+        ChipLogProgress(NotSpecified, "NFC callback thread registered successfully (TID: %lu)", (unsigned long) tid);
         return CHIP_NO_ERROR;
     }
 
@@ -185,14 +184,14 @@ private:
      */
     bool IsKVSAlreadySynchronized()
     {
-        constexpr size_t kMaxKeySize = 32;
+        constexpr size_t kMaxKeySize     = 32;
         constexpr size_t kMaxOperKeySize = 256;
 
         char kvs_key_name[kMaxKeySize];
-        uint8_t kvs_node_oper_key[kMaxOperKeySize] = {0};
-        uint8_t se_node_oper_key[kMaxOperKeySize]  = {0};
-        size_t kvs_key_len = sizeof(kvs_node_oper_key);
-        size_t se_key_len = sizeof(se_node_oper_key);
+        uint8_t kvs_node_oper_key[kMaxOperKeySize] = { 0 };
+        uint8_t se_node_oper_key[kMaxOperKeySize]  = { 0 };
+        size_t kvs_key_len                         = sizeof(kvs_node_oper_key);
+        size_t se_key_len                          = sizeof(se_node_oper_key);
 
         // Build key name for operational keypair
         VerifyOrReturnValue(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%x/o", 1) > 0, false);
@@ -214,11 +213,11 @@ private:
      */
     CHIP_ERROR SynchronizeOperationalCredentials()
     {
-        constexpr size_t kMaxBufferSize = (2 * chip::Credentials::kMaxCHIPCertLength) + 32;
+        constexpr size_t kMaxBufferSize  = (2 * chip::Credentials::kMaxCHIPCertLength) + 32;
         constexpr size_t kMaxKeyNameSize = 32;
 
-        uint8_t buffer[kMaxBufferSize] = {0};
-        char key_name[kMaxKeyNameSize] = {0};
+        uint8_t buffer[kMaxBufferSize] = { 0 };
+        char key_name[kMaxKeyNameSize] = { 0 };
         size_t buffer_len;
 
         // Read and store operational keypair
@@ -290,20 +289,19 @@ private:
         constexpr size_t kMaxBufferSize = 512;
 
         uint8_t buffer[kMaxBufferSize];
-        char ssid[DeviceLayer::Internal::kMaxWiFiSSIDLength] = { 0 };
         char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
-        char op_data_set[256] = { 0 };
-        size_t ssid_len = sizeof(ssid);
-        size_t password_len = sizeof(password);
-        size_t op_data_set_len = sizeof(op_data_set);
-        uint32_t network_cred_id = 0;
+        char op_data_set[256]                                   = { 0 };
+        size_t ssid_len                                         = sizeof(op_data_set);
+        size_t password_len                                     = sizeof(password);
+        size_t op_data_set_len                                  = sizeof(op_data_set);
+        uint32_t network_cred_id                                = 0;
 
         // Get network credential ID from network commissioning cluster
         ReturnErrorOnFailure(se05x_net_id_from_net_comm_cluster(&network_cred_id));
 
         // Read WiFi/Thread credentials
-        CHIP_ERROR status = se05x_read_wifi_and_thread_credentials(
-            buffer, sizeof(buffer), ssid, &ssid_len, password, &password_len, op_data_set, &op_data_set_len, &network_cred_id);
+        CHIP_ERROR status = se05x_read_wifi_and_thread_credentials(buffer, sizeof(buffer), op_data_set, &ssid_len, password, &password_len,
+                                                                   op_data_set, &op_data_set_len, &network_cred_id);
 
         if (status != CHIP_NO_ERROR)
         {
@@ -315,7 +313,7 @@ private:
         if (ssid_len > 0 && password_len > 0)
         {
             ChipLogDetail(Crypto, "SE05x: Setting Wi-Fi credentials");
-            ReturnErrorOnFailure(_Put("wifi-ssid", ssid, ssid_len));
+            ReturnErrorOnFailure(_Put("wifi-ssid", op_data_set, ssid_len));
             ReturnErrorOnFailure(_Put("wifi-pass", password, password_len));
         }
         // Store Thread credentials if available

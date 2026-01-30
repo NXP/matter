@@ -38,7 +38,6 @@ namespace DeviceLayer {
 class Se05xDataProviderImpl : public FactoryDataProviderImpl
 {
 public:
-
     CHIP_ERROR GetSpake2pSalt(MutableByteSpan & saltBuf) override;
     CHIP_ERROR GetSetupPasscode(uint32_t & setupPasscode) override;
     CHIP_ERROR GetSpake2pIterationCount(uint32_t & iterationCount) override;

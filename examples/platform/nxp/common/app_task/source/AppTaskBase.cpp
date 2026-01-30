@@ -385,10 +385,12 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
         chip::app::FailSafeContext & fileSafeContext = chip::Server::GetInstance().GetFailSafeContext();
 
         err = fileSafeContext.ArmFailSafe(se05x_get_fabric_id(), chip::System::Clock::Seconds16(fail_safe_time));
-        if (err != CHIP_NO_ERROR){
+        if (err != CHIP_NO_ERROR)
+        {
             ChipLogError(NotSpecified, "SE05x - Error in starting Fail Safe timer for SE05x NFC commissioned fabric");
         }
-        else {
+        else
+        {
             ChipLogDetail(NotSpecified, "SE05x - Started Fail Safe timer for SE05x NFC commissioned fabric");
         }
     }

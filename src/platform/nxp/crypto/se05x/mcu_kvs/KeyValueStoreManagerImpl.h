@@ -65,7 +65,7 @@ public:
             else if (gpioStatus != CHIP_ERROR_INCORRECT_STATE)
             {
                 ChipLogError(Crypto, "SE05x :: Failed to initialize GPIO notification (error: %" CHIP_ERROR_FORMAT ")",
-                            gpioStatus.Format());
+                             gpioStatus.Format());
             }
 #endif
             return CHIP_NO_ERROR;
@@ -103,12 +103,12 @@ public:
         }
 
         uint16_t fail_safe_time = 0;
-        CHIP_ERROR status = se05x_get_remain_fail_safe_time(&fail_safe_time);
+        CHIP_ERROR status       = se05x_get_remain_fail_safe_time(&fail_safe_time);
 
         if (status != CHIP_NO_ERROR)
         {
             ChipLogError(Crypto, "SE05x: Failed to read fail-safe time from secure element (error: %" CHIP_ERROR_FORMAT ")",
-                        status.Format());
+                         status.Format());
             // Reset the flag since we attempted to read
             se05x_read_fail_safe = 0;
             return 0;
@@ -117,12 +117,12 @@ public:
         // Reset the flag after successful read
         se05x_read_fail_safe = 0;
 
-        // TODO: Remove hardcoded value once applet fix is available
-        // Currently returning 60 seconds as a workaround for applet limitation
-        constexpr uint32_t kDefaultFailSafeTimeSeconds = 60;
+        // TODO: Remove hardcoded value
+        // Currently returning 120 seconds as a workaround for applet limitation
+        constexpr uint32_t kDefaultFailSafeTimeSeconds = 120;
 
-        ChipLogDetail(Crypto, "SE05x: Fail-safe time read from SE: %" PRIu16 "seconds, returning: %" PRIu32" seconds (hardcoded)",
-                     fail_safe_time, kDefaultFailSafeTimeSeconds);
+        ChipLogDetail(Crypto, "SE05x: Fail-safe time read from SE: %" PRIu16 "seconds, returning: %" PRIu32 " seconds (hardcoded)",
+                      fail_safe_time, kDefaultFailSafeTimeSeconds);
 
         return kDefaultFailSafeTimeSeconds;
     }
@@ -138,7 +138,6 @@ public:
     inline static uint32_t se05x_read_fail_safe;
 
 private:
-
 #if defined(CONFIG_SE05X_HOST_GPIO)
     /**
      * @brief Check if device is commissioned and initialize GPIO notification if needed
@@ -153,11 +152,11 @@ private:
      */
     CHIP_ERROR CheckCommissioningStatusAndInitGPIO()
     {
-        constexpr size_t kMaxBufferSize = 256;
+        constexpr size_t kMaxBufferSize        = 256;
         constexpr const char * kFabricIndexKey = "g/fidx";
 
-        uint8_t fab_idx[kMaxBufferSize] = {0};
-        size_t fab_idx_len = sizeof(fab_idx);
+        uint8_t fab_idx[kMaxBufferSize] = { 0 };
+        size_t fab_idx_len              = sizeof(fab_idx);
 
         // Check if fabric index info exists in KVS (indicates device is commissioned)
         CHIP_ERROR status = _Get(kFabricIndexKey, fab_idx, sizeof(fab_idx), &fab_idx_len, 0);
@@ -170,15 +169,14 @@ private:
 
         if (status != CHIP_ERROR_PERSISTED_STORAGE_VALUE_NOT_FOUND)
         {
-            ChipLogError(Crypto, "SE05x :: Failed to read fabric index from KVS (error: %" CHIP_ERROR_FORMAT ")",
-                        status.Format());
+            ChipLogError(Crypto, "SE05x :: Failed to read fabric index from KVS (error: %" CHIP_ERROR_FORMAT ")", status.Format());
             return status;
         }
 
         ChipLogProgress(Crypto, "SE05x :: Device not commissioned, initializing GPIO notification for NFC");
 
         // Initialize GPIO notification for NFC commissioning
-        void* gpioResult = se05x_host_gpio_notification_monitor_init(nullptr);
+        void * gpioResult = se05x_host_gpio_notification_monitor_init(nullptr);
         if (gpioResult != NULL)
         {
             ChipLogError(Crypto, "SE05x :: Failed to initialize GPIO notification ");
@@ -196,14 +194,14 @@ private:
      */
     bool IsKVSAlreadySynchronized()
     {
-        constexpr size_t kMaxKeySize = 32;
+        constexpr size_t kMaxKeySize     = 32;
         constexpr size_t kMaxOperKeySize = 256;
 
         char kvs_key_name[kMaxKeySize];
-        uint8_t kvs_node_oper_key[kMaxOperKeySize] = {0};
-        uint8_t se_node_oper_key[kMaxOperKeySize]  = {0};
-        size_t kvs_key_len = sizeof(kvs_node_oper_key);
-        size_t se_key_len = sizeof(se_node_oper_key);
+        uint8_t kvs_node_oper_key[kMaxOperKeySize] = { 0 };
+        uint8_t se_node_oper_key[kMaxOperKeySize]  = { 0 };
+        size_t kvs_key_len                         = sizeof(kvs_node_oper_key);
+        size_t se_key_len                          = sizeof(se_node_oper_key);
 
         // Build key name for operational keypair
         VerifyOrReturnValue(snprintf(kvs_key_name, sizeof(kvs_key_name), "f/%x/o", 1) > 0, false);
@@ -225,11 +223,11 @@ private:
      */
     CHIP_ERROR SynchronizeOperationalCredentials()
     {
-        constexpr size_t kMaxBufferSize = (2 * chip::Credentials::kMaxCHIPCertLength) + 32;
+        constexpr size_t kMaxBufferSize  = (2 * chip::Credentials::kMaxCHIPCertLength) + 32;
         constexpr size_t kMaxKeyNameSize = 32;
 
-        uint8_t buffer[kMaxBufferSize] = {0};
-        char key_name[kMaxKeyNameSize] = {0};
+        uint8_t buffer[kMaxBufferSize] = { 0 };
+        char key_name[kMaxKeyNameSize] = { 0 };
         size_t buffer_len;
 
         // Read and store operational keypair
@@ -301,20 +299,19 @@ private:
         constexpr size_t kMaxBufferSize = 512;
 
         uint8_t buffer[kMaxBufferSize];
-        char ssid[DeviceLayer::Internal::kMaxWiFiSSIDLength] = { 0 };
         char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
-        char op_data_set[256] = { 0 };
-        size_t ssid_len = sizeof(ssid);
-        size_t password_len = sizeof(password);
-        size_t op_data_set_len = sizeof(op_data_set);
-        uint32_t network_cred_id = 0;
+        char op_data_set[256]                                   = { 0 };
+        size_t ssid_len                                         = sizeof(op_data_set);
+        size_t password_len                                     = sizeof(password);
+        size_t op_data_set_len                                  = sizeof(op_data_set);
+        uint32_t network_cred_id                                = 0;
 
         // Get network credential ID from network commissioning cluster
         ReturnErrorOnFailure(se05x_net_id_from_net_comm_cluster(&network_cred_id));
 
         // Read WiFi/Thread credentials
-        CHIP_ERROR status = se05x_read_wifi_and_thread_credentials(
-            buffer, sizeof(buffer), ssid, &ssid_len, password, &password_len, op_data_set, &op_data_set_len, &network_cred_id);
+        CHIP_ERROR status = se05x_read_wifi_and_thread_credentials(buffer, sizeof(buffer), op_data_set, &ssid_len, password, &password_len,
+                                                                   op_data_set, &op_data_set_len, &network_cred_id);
 
         if (status != CHIP_NO_ERROR)
         {
@@ -326,7 +323,7 @@ private:
         if (ssid_len > 0 && password_len > 0)
         {
             ChipLogDetail(Crypto, "SE05x: Setting Wi-Fi credentials");
-            ReturnErrorOnFailure(_Put("wifi-ssid", ssid, ssid_len));
+            ReturnErrorOnFailure(_Put("wifi-ssid", op_data_set, ssid_len));
             ReturnErrorOnFailure(_Put("wifi-pass", password, password_len));
         }
         // Store Thread credentials if available

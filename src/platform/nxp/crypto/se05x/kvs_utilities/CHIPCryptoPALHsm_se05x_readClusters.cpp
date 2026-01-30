@@ -41,13 +41,11 @@
         0xA5, 0xA6, 0xB5, 0xB6, 0xA5, 0xA6, 0xB5, 0xB6                                                                             \
     }
 
-#define NIST256_HEADER_OFFSET                       26
+#define NIST256_HEADER_OFFSET 26
 
-#define VERSION_8_4 \
-    ((8) << (8 * 3) | (4) << (8 * 2) | (32) << (8 * 1))
+#define VERSION_8_4 ((8) << (8 * 3) | (4) << (8 * 2) | (32) << (8 * 1))
 
-#define VERSION_8_12 \
-    ((8) << (8 * 3) | (12) << (8 * 2) | (32) << (8 * 1))
+#define VERSION_8_12 ((8) << (8 * 3) | (12) << (8 * 2) | (32) << (8 * 1))
 
 #define MAKE_SE05X_NETWORK_ID(keyID) (0x7FFF3400 + keyID)
 #define SE051H_COMM_PARAMETERS 0x7FFF3002
@@ -55,7 +53,7 @@
 using namespace chip;
 using namespace chip::TLV;
 
-static uint8_t g_fabric_index = 0;
+static uint8_t g_fabric_index  = 0;
 static uint32_t g_noc_chain_id = 0;
 static uint32_t g_root_cert_id = 0;
 /* For IPK calculation */
@@ -144,8 +142,7 @@ CHIP_ERROR se05x_read_node_operational_keypair(uint8_t * op_key_ref_key, size_t 
     status = se05x_get_certificate(SE051H_NODE_OP_KEY_ID, pubKeyBuf.data(), &pubKeyBufLen);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
-    status =
-        se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE051H_NODE_OP_KEY_ID, op_key_ref_key, op_key_ref_key_len);
+    status = se05x_create_refkey(pubKeyBuf.data(), pubKeyBufLen, SE051H_NODE_OP_KEY_ID, op_key_ref_key, op_key_ref_key_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     return CHIP_NO_ERROR;
@@ -153,9 +150,9 @@ CHIP_ERROR se05x_read_node_operational_keypair(uint8_t * op_key_ref_key, size_t 
 
 CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
 {
-    CHIP_ERROR status = CHIP_NO_ERROR;
-    uint64_t id_64b   = 0;
-    TLVType outertype = kTLVType_NotSpecified;
+    CHIP_ERROR status      = CHIP_NO_ERROR;
+    uint64_t id_64b        = 0;
+    TLVType outertype      = kTLVType_NotSpecified;
     TLVType outerContainer = kTLVType_NotSpecified;
     TLVReader reader;
 
@@ -165,10 +162,10 @@ CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
     VerifyOrReturnError(*noc_buf_len > 0, CHIP_ERROR_INVALID_ARGUMENT);
 
     const size_t original_buf_len = *noc_buf_len;
-    size_t buf_len = original_buf_len;
+    size_t buf_len                = original_buf_len;
 
     noc_buf[0] = 0x15;
-    buf_len = original_buf_len - 1;
+    buf_len    = original_buf_len - 1;
 
     // Read operational credential cluster data
     status = se05x_get_certificate(SE051H_OP_CRED_CLUSTER_ID, noc_buf + 1, &buf_len);
@@ -177,8 +174,8 @@ CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
 
     VerifyOrReturnError(buf_len < (original_buf_len - 3), CHIP_ERROR_INTERNAL);
 
-    noc_buf[buf_len+1] = 0x18;
-    buf_len = buf_len + 2;
+    noc_buf[buf_len + 1] = 0x18;
+    buf_len              = buf_len + 2;
 
     // Parse TLV structure to extract NOC chain ID
     reader.Init(noc_buf, buf_len);
@@ -201,10 +198,8 @@ CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
     ReturnErrorOnFailure(reader.Get(id_64b));
 
     g_noc_chain_id = static_cast<uint32_t>(id_64b >> 32);
-    g_noc_chain_id = ((g_noc_chain_id >> 24) & 0x000000FF) |
-                     ((g_noc_chain_id >> 8) & 0x0000FF00) |
-                     ((g_noc_chain_id << 8) & 0x00FF0000) |
-                     ((g_noc_chain_id << 24) & 0xFF000000);
+    g_noc_chain_id = ((g_noc_chain_id >> 24) & 0x000000FF) | ((g_noc_chain_id >> 8) & 0x0000FF00) |
+        ((g_noc_chain_id << 8) & 0x00FF0000) | ((g_noc_chain_id << 24) & 0xFF000000);
 
     ChipLogDetail(Crypto, "SE05x: Node Operational certificate chain id: 0x%08" PRIX32, g_noc_chain_id);
     ReturnErrorOnFailure(reader.ExitContainer(outertype));
@@ -220,10 +215,8 @@ CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
     ReturnErrorOnFailure(reader.Get(id_64b));
 
     g_root_cert_id = static_cast<uint32_t>(id_64b >> 32);
-    g_root_cert_id = ((g_root_cert_id >> 24) & 0x000000FF) |
-                     ((g_root_cert_id >> 8) & 0x0000FF00) |
-                     ((g_root_cert_id << 8) & 0x00FF0000) |
-                     ((g_root_cert_id << 24) & 0xFF000000);
+    g_root_cert_id = ((g_root_cert_id >> 24) & 0x000000FF) | ((g_root_cert_id >> 8) & 0x0000FF00) |
+        ((g_root_cert_id << 8) & 0x00FF0000) | ((g_root_cert_id << 24) & 0xFF000000);
 
     ChipLogDetail(Crypto, "SE05x: Root certificate id: 0x%08" PRIX32, g_root_cert_id);
     ReturnErrorOnFailure(reader.ExitContainer(outertype));
@@ -249,7 +242,7 @@ CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
      *   [...]: ICA data
      */
     constexpr size_t kNocChainHeaderSize = 6;
-    constexpr size_t kNocLengthOffset = 4;
+    constexpr size_t kNocLengthOffset    = 4;
 
     VerifyOrReturnError(buf_len >= kNocChainHeaderSize, CHIP_ERROR_BUFFER_TOO_SMALL);
 
@@ -265,11 +258,10 @@ CHIP_ERROR se05x_read_node_oper_cert(uint8_t * noc_buf, size_t * noc_buf_len)
 
     // Extract Node ID and Fabric ID for IPK calculation
     MutableByteSpan nocSpan{ noc_buf, noc_len };
-    NodeId g_node_id                                                     = kUndefinedNodeId;
+    NodeId g_node_id = kUndefinedNodeId;
     ReturnErrorOnFailure(chip::Credentials::ExtractNodeIdFabricIdFromOpCert(nocSpan, &g_node_id, &g_fabric_id));
 
-    ChipLogDetail(Crypto, "SE05x: Extracted NodeId: 0x%016" PRIX64 ", FabricId: 0x%016" PRIX64,
-                  g_node_id, g_fabric_id);
+    ChipLogDetail(Crypto, "SE05x: Extracted NodeId: 0x%016" PRIX64 ", FabricId: 0x%016" PRIX64, g_node_id, g_fabric_id);
 
     return CHIP_NO_ERROR;
 }
@@ -282,7 +274,7 @@ CHIP_ERROR se05x_read_root_cert(uint8_t * root_cert_buf, size_t * root_cert_buf_
     VerifyOrReturnError(*root_cert_buf_len > 0, CHIP_ERROR_INVALID_ARGUMENT);
 
     const size_t original_buf_len = *root_cert_buf_len;
-    size_t buf_len = original_buf_len;
+    size_t buf_len                = original_buf_len;
 
     // Read root certificate from SE05x
     CHIP_ERROR status = se05x_get_certificate(g_root_cert_id, root_cert_buf, &buf_len);
@@ -294,7 +286,7 @@ CHIP_ERROR se05x_read_root_cert(uint8_t * root_cert_buf, size_t * root_cert_buf_
      *   [5..]: Root certificate data
      */
     constexpr size_t kRootCertHeaderSize = 5;
-    constexpr size_t kLengthFieldSize = 2;
+    constexpr size_t kLengthFieldSize    = 2;
 
     VerifyOrReturnError(buf_len >= kLengthFieldSize, CHIP_ERROR_BUFFER_TOO_SMALL);
 
@@ -321,7 +313,7 @@ CHIP_ERROR se05x_read_root_cert(uint8_t * root_cert_buf, size_t * root_cert_buf_
     // Store root public key for later IPK calculation
     memcpy(g_p256_root_public_key, root_pub_key_span.data(), root_pub_key_span.size());
 
-    ChipLogDetail(Crypto, "SE05x: Successfully read root certificate (length: %zu bytes)", root_cert_len);
+    ChipLogDetail(Crypto, "SE05x: Successfully read root certificate (length: %lu bytes)", (unsigned long) root_cert_len);
 
     return CHIP_NO_ERROR;
 }
@@ -337,7 +329,7 @@ CHIP_ERROR se05x_read_ICA(uint8_t * ica_buf, size_t * ica_buf_len)
     VerifyOrReturnError(g_noc_chain_id != 0, CHIP_ERROR_INCORRECT_STATE);
 
     const size_t original_buf_len = *ica_buf_len;
-    size_t buf_len = original_buf_len;
+    size_t buf_len                = original_buf_len;
 
     // Read Node Operational Certificate chain from SE05x (contains both NOC and ICA)
     CHIP_ERROR status = se05x_get_certificate(g_noc_chain_id, ica_buf, &buf_len);
@@ -391,8 +383,8 @@ CHIP_ERROR se05x_read_ICA(uint8_t * ica_buf, size_t * ica_buf_len)
     memmove(ica_buf, &ica_buf[ica_data_offset], ica_len);
     *ica_buf_len = ica_len;
 
-    ChipLogDetail(Crypto, "SE05x: Successfully extracted ICA certificate (NOC length: %zu, ICA length: %zu bytes)",
-                  noc_len, ica_len);
+    ChipLogDetail(Crypto, "SE05x: Successfully extracted ICA certificate (NOC length: %lu, ICA length: %lu bytes)", (unsigned long) noc_len,
+                  (unsigned long) ica_len);
 
     return CHIP_NO_ERROR;
 }
@@ -407,17 +399,17 @@ CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
     // Validate that we have the required fabric information
     VerifyOrReturnError(g_fabric_id != kUndefinedFabricId, CHIP_ERROR_INCORRECT_STATE);
 
-    constexpr size_t kEpochKeySize = Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES;
-    constexpr size_t kIPKValueSize = 16;
-    constexpr size_t kCertBufferSize = 128;
-    constexpr size_t kIPKDataBufferSize = 128;
-    constexpr uint8_t kGroupKeySetId = 0x00;
+    constexpr size_t kEpochKeySize            = Crypto::CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES;
+    constexpr size_t kIPKValueSize            = 16;
+    constexpr size_t kCertBufferSize          = 128;
+    constexpr size_t kIPKDataBufferSize       = 128;
+    constexpr uint8_t kGroupKeySetId          = 0x00;
     constexpr uint8_t kGroupKeySecurityPolicy = 0x01;
-    constexpr uint32_t kEpochKey0Id = 0xEAD0;
-    constexpr uint32_t kGroupKeyMapId = 0x01A3;
+    constexpr uint32_t kEpochKey0Id           = 0xEAD0;
+    constexpr uint32_t kGroupKeyMapId         = 0x01A3;
 
-    uint8_t cert_buf[kCertBufferSize] = { 0 };
-    size_t cert_buf_len = sizeof(cert_buf);
+    uint8_t cert_buf[kCertBufferSize]    = { 0 };
+    size_t cert_buf_len                  = sizeof(cert_buf);
     uint8_t ipk_data[kIPKDataBufferSize] = { 0 };
 
     // Read epoch key from SE05x
@@ -426,7 +418,7 @@ CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
     VerifyOrReturnError(cert_buf_len >= kEpochKeySize, CHIP_ERROR_BUFFER_TOO_SMALL);
 
     // Derive group operational key from epoch key
-    uint8_t encryption_key_buf[kEpochKeySize] = { 0 };
+    uint8_t encryption_key_buf[kEpochKeySize]          = { 0 };
     uint8_t compressed_fabric_id_buf[sizeof(uint64_t)] = { 0 };
 
     MutableByteSpan compressed_fabric_id_span(compressed_fabric_id_buf);
@@ -435,12 +427,10 @@ CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
     chip::Credentials::P256PublicKeySpan root_pub_key_span(g_p256_root_public_key);
 
     // Generate compressed fabric ID
-    ReturnErrorOnFailure(chip::Crypto::GenerateCompressedFabricId(
-        root_pub_key_span, g_fabric_id, compressed_fabric_id_span));
+    ReturnErrorOnFailure(chip::Crypto::GenerateCompressedFabricId(root_pub_key_span, g_fabric_id, compressed_fabric_id_span));
 
     // Derive the group operational key
-    ReturnErrorOnFailure(Crypto::DeriveGroupOperationalKey(
-        epoch_key_span, compressed_fabric_id_span, encryption_key_span));
+    ReturnErrorOnFailure(Crypto::DeriveGroupOperationalKey(epoch_key_span, compressed_fabric_id_span, encryption_key_span));
 
     // Build IPK TLV structure
     TLVWriter writer;
@@ -461,7 +451,7 @@ CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
 
     // Helper lambda to write epoch key entries
     uint8_t ipk_value[kIPKValueSize] = { 0 };
-    auto write_epoch_key_entry = [&](uint8_t epoch_index, uint32_t epoch_start_time) -> CHIP_ERROR {
+    auto write_epoch_key_entry       = [&](uint8_t epoch_index, uint32_t epoch_start_time) -> CHIP_ERROR {
         TLVType epoch_container = kTLVType_NotSpecified;
         ReturnErrorOnFailure(writer.StartContainer(AnonymousTag(), kTLVType_Structure, epoch_container));
         ReturnErrorOnFailure(writer.Put(ContextTag(4), epoch_index));
@@ -488,7 +478,7 @@ CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
     VerifyOrReturnError(tlv_written >= 36, CHIP_ERROR_INTERNAL);
 
     // Construct final IPK buffer: [TLV prefix] + [encryption key] + [TLV suffix]
-    constexpr size_t kTLVPrefixSize = 20;
+    constexpr size_t kTLVPrefixSize   = 20;
     constexpr size_t kTLVSuffixOffset = 36;
 
     const size_t required_size = kTLVPrefixSize + kEpochKeySize + (tlv_written - kTLVSuffixOffset);
@@ -511,7 +501,7 @@ CHIP_ERROR se05x_read_ipk(uint8_t * ipk_buf, size_t * ipk_buf_len)
 
     *ipk_buf_len = offset;
 
-    ChipLogDetail(Crypto, "SE05x: Successfully constructed IPK (length: %zu bytes)", offset);
+    ChipLogDetail(Crypto, "SE05x: Successfully constructed IPK (length: %lu bytes)", (unsigned long) offset);
 
     return CHIP_NO_ERROR;
 }
@@ -543,7 +533,7 @@ CHIP_ERROR se05x_read_acl_data(uint8_t * acl, size_t * acl_len)
         constexpr size_t kVersion84AclLength = 18;
         VerifyOrReturnError(original_buf_len >= kVersion84AclLength, CHIP_ERROR_BUFFER_TOO_SMALL);
         *acl_len = kVersion84AclLength;
-        ChipLogDetail(Crypto, "SE05x: ACL data for version 8.4 (length: %zu bytes)", *acl_len);
+        ChipLogDetail(Crypto, "SE05x: ACL data for version 8.4 (length: %lu bytes)", (unsigned long) *acl_len);
     }
     else
     {
@@ -562,7 +552,7 @@ CHIP_ERROR se05x_read_acl_data(uint8_t * acl, size_t * acl_len)
         memmove(acl, acl + kLengthHeaderSize, acl_data_len);
         *acl_len = acl_data_len;
 
-        ChipLogDetail(Crypto, "SE05x: ACL data extracted (length: %zu bytes)", *acl_len);
+        ChipLogDetail(Crypto, "SE05x: ACL data extracted (length: %lu bytes)", (unsigned long) *acl_len);
     }
 
     // Apply version-specific ACL format corrections
@@ -610,7 +600,7 @@ CHIP_ERROR se05x_read_acl_data(uint8_t * acl, size_t * acl_len)
     VerifyOrReturnError(target_index < *acl_len, CHIP_ERROR_INTERNAL);
     acl[target_index] = kByte7Value;
 
-    ChipLogDetail(Crypto, "SE05x: Successfully read and processed ACL data (final length: %zu bytes)", *acl_len);
+    ChipLogDetail(Crypto, "SE05x: Successfully read and processed ACL data (final length: %lu bytes)", (unsigned long) *acl_len);
 
     return CHIP_NO_ERROR;
 }
@@ -627,12 +617,12 @@ CHIP_ERROR se05x_read_fabric_groups(uint8_t * fabgrp_data, size_t * fabgrp_data_
     VerifyOrReturnError(g_fabric_index <= UINT8_MAX, CHIP_ERROR_INVALID_FABRIC_INDEX);
 
     // Define fabric group structure field values
-    constexpr uint8_t kVendorId = 0x00;
+    constexpr uint8_t kVendorId      = 0x00;
     constexpr uint8_t kVendorGroupId = 0x00;
     constexpr uint8_t kGroupKeySetId = 0x00;
-    constexpr uint8_t kReserved1 = 0x00;
-    constexpr uint8_t kReserved2 = 0x00;
-    constexpr uint8_t kReserved3 = 0x00;
+    constexpr uint8_t kReserved1     = 0x00;
+    constexpr uint8_t kReserved2     = 0x00;
+    constexpr uint8_t kReserved3     = 0x00;
 
     // Estimate minimum required buffer size for TLV structure
     constexpr size_t kMinimumBufferSize = 32;
@@ -687,8 +677,8 @@ CHIP_ERROR se05x_read_fabric_groups(uint8_t * fabgrp_data, size_t * fabgrp_data_
 
     *fabgrp_data_len = written_length;
 
-    ChipLogDetail(Crypto, "SE05x: Successfully created fabric groups data (fabric index: %" PRIu8 ", length: %zu bytes)",
-                  g_fabric_index, written_length);
+    ChipLogDetail(Crypto, "SE05x: Successfully created fabric groups data (fabric index: %" PRIu8 ", length: %lu bytes)",
+                  g_fabric_index, (unsigned long) written_length);
 
     return CHIP_NO_ERROR;
 }
@@ -776,8 +766,8 @@ CHIP_ERROR se05x_read_meta_data(uint8_t * meta_data, size_t * meta_data_len)
 
     *meta_data_len = written_length;
 
-    ChipLogDetail(Crypto, "SE05x: Successfully created metadata (VendorID: 0x%04" PRIX32 ", length: %zu bytes)",
-                  vendor_id, written_length);
+    ChipLogDetail(Crypto, "SE05x: Successfully created metadata (VendorID: 0x%04" PRIX32 ", length: %lu bytes)", vendor_id,
+                  (unsigned long) written_length);
 
     return CHIP_NO_ERROR;
 }
@@ -796,8 +786,8 @@ CHIP_ERROR se05x_read_fabric_index_info_data(uint8_t * fab_info_data, size_t * f
     const size_t original_buf_len = *fab_info_data_len;
 
     // Define fabric index info structure constants
-    constexpr uint8_t kCurrentFabricIndex = 0x02;  // Current fabric index identifier
-    constexpr size_t kMinimumBufferSize = 32;      // Minimum buffer size for TLV structure
+    constexpr uint8_t kCurrentFabricIndex = 0x02; // Current fabric index identifier
+    constexpr size_t kMinimumBufferSize   = 32;   // Minimum buffer size for TLV structure
 
     // Validate buffer has sufficient capacity
     VerifyOrReturnError(original_buf_len >= kMinimumBufferSize, CHIP_ERROR_BUFFER_TOO_SMALL);
@@ -844,8 +834,8 @@ CHIP_ERROR se05x_read_fabric_index_info_data(uint8_t * fab_info_data, size_t * f
 
     *fab_info_data_len = written_length;
 
-    ChipLogDetail(Crypto, "SE05x: Successfully created fabric index info (fabric index: %" PRIu8 ", length: %zu bytes)",
-                  g_fabric_index, written_length);
+    ChipLogDetail(Crypto, "SE05x: Successfully created fabric index info (fabric index: %" PRIu8 ", length: %lu bytes)",
+                  g_fabric_index, (unsigned long) written_length);
 
     return CHIP_NO_ERROR;
 }
@@ -868,7 +858,7 @@ CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, 
     VerifyOrReturnError(*opdata_len > 0, CHIP_ERROR_INVALID_ARGUMENT);
 
     // Read credential data from SE05x using the provided key ID
-    size_t read_len = buflen;
+    size_t read_len   = buflen;
     CHIP_ERROR status = se05x_get_certificate(*keyId, buf, &read_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, status);
     VerifyOrReturnError(read_len > 0, CHIP_ERROR_INTERNAL);
@@ -877,7 +867,7 @@ CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, 
     //   [0-1]: Total length (2 bytes, big-endian)
     //   [2..]: Credential payload
     constexpr size_t kLengthHeaderSize = 2;
-    constexpr uint8_t kWiFiTLVMarker = 0x30;  // TLV marker indicating WiFi credentials
+    constexpr uint8_t kWiFiTLVMarker   = 0x30; // TLV marker indicating WiFi credentials
 
     VerifyOrReturnError(read_len >= kLengthHeaderSize, CHIP_ERROR_BUFFER_TOO_SMALL);
 
@@ -887,10 +877,23 @@ CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, 
     VerifyOrReturnError(credential_len > 0, CHIP_ERROR_INTERNAL);
     VerifyOrReturnError(read_len >= (kLengthHeaderSize + credential_len), CHIP_ERROR_BUFFER_TOO_SMALL);
 
-    // Determine credential type based on TLV marker
-    // WiFi credentials are stored in TLV format (starts with 0x30)
-    // Thread operational data is stored in raw binary format (does not start with 0x30)
-    const bool is_wifi_credential = (read_len > kLengthHeaderSize) && (buf[2] == kWiFiTLVMarker);
+    // Get SE05x applet version for version-specific handling
+    sss_se05x_session_t * se05x_session = reinterpret_cast<sss_se05x_session_t *>(&gex_sss_chip_ctx.session);
+    VerifyOrReturnError(se05x_session != nullptr, CHIP_ERROR_INTERNAL);
+
+    const uint32_t applet_version = se05x_session->s_ctx.applet_version;
+
+    bool is_wifi_credential = false;
+
+    if (applet_version < VERSION_8_12) {
+        // Determine credential type based on TLV marker
+        // WiFi credentials are stored in TLV format (starts with 0x30)
+        // Thread operational data is stored in raw binary format (does not start with 0x30)
+        is_wifi_credential = (read_len > kLengthHeaderSize) && (buf[2] == kWiFiTLVMarker);
+    }
+    else {
+        is_wifi_credential = true;
+    }
 
     if (is_wifi_credential)
     {
@@ -912,8 +915,6 @@ CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, 
         VerifyOrReturnError(status == CHIP_NO_ERROR, status);
         *ssid_len = ssid_data_len;
 
-        ChipLogDetail(Crypto, "SE05x: WiFi SSID extracted (length: %zu bytes)", ssid_data_len);
-
         // Read next field to check if it's a password or operational data
         reader.Next();
         const Tag current_tag = reader.GetTag();
@@ -928,17 +929,19 @@ CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, 
             VerifyOrReturnError(status == CHIP_NO_ERROR, status);
             *password_len = password_data_len;
 
-            ChipLogDetail(Crypto, "SE05x: WiFi password extracted (length: %zu bytes)", password_data_len);
+            ChipLogDetail(Crypto, "SE05x: WiFi SSID extracted (length: %lu bytes)", (unsigned long) ssid_data_len);
+            ChipLogDetail(Crypto, "SE05x: WiFi password extracted (length: %lu bytes)", (unsigned long) password_data_len);
         }
         else
         {
             // Not a password field - treat SSID data as operational data
             ChipLogDetail(Crypto, "SE05x: No password field found, treating as operational data");
+            ChipLogDetail(Crypto, "SE05x: Thread operational data detected (length: %lu bytes)", (unsigned long) ssid_data_len);
 
             VerifyOrReturnError(*ssid_len <= *opdata_len, CHIP_ERROR_BUFFER_TOO_SMALL);
             memcpy(opdata, ssid, *ssid_len);
-            *opdata_len = *ssid_len;
-            *ssid_len = 0;
+            *opdata_len   = *ssid_len;
+            *ssid_len     = 0;
             *password_len = 0;
         }
     }
@@ -951,8 +954,8 @@ CHIP_ERROR se05x_read_wifi_and_thread_credentials(uint8_t * buf, size_t buflen, 
 
         // Copy raw operational data (skip length header)
         memcpy(opdata, &buf[kLengthHeaderSize], credential_len);
-        *opdata_len = credential_len;
-        *ssid_len = 0;
+        *opdata_len   = credential_len;
+        *ssid_len     = 0;
         *password_len = 0;
     }
 
@@ -965,7 +968,7 @@ CHIP_ERROR se05x_reset_breadcrumb()
 {
     // Check if general commissioning cluster exists in SE05x
     bool cluster_exists = false;
-    CHIP_ERROR status = se05x_check_object_exists(SE051H_GENERAL_COMM_CLUSTER_ID, &cluster_exists);
+    CHIP_ERROR status   = se05x_check_object_exists(SE051H_GENERAL_COMM_CLUSTER_ID, &cluster_exists);
     VerifyOrReturnError(status == CHIP_NO_ERROR, status);
 
     if (!cluster_exists)
@@ -975,9 +978,9 @@ CHIP_ERROR se05x_reset_breadcrumb()
     }
 
     // Read existing general commissioning cluster data from SE05x
-    constexpr size_t kMaxClusterDataSize = 256;
+    constexpr size_t kMaxClusterDataSize      = 256;
     uint8_t cluster_data[kMaxClusterDataSize] = { 0 };
-    size_t cluster_data_len = sizeof(cluster_data);
+    size_t cluster_data_len                   = sizeof(cluster_data);
 
     status = se05x_get_certificate(SE051H_GENERAL_COMM_CLUSTER_ID, cluster_data, &cluster_data_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, status);
@@ -1015,7 +1018,7 @@ CHIP_ERROR se05x_reset_breadcrumb()
     // Move to next element (breadcrumb attribute)
     reader.Next();
 
-    const Tag current_tag = reader.GetTag();
+    const Tag current_tag      = reader.GetTag();
     const TLVType current_type = reader.GetType();
 
     // Verify this is the breadcrumb attribute
@@ -1029,18 +1032,17 @@ CHIP_ERROR se05x_reset_breadcrumb()
     //   [offset + 0]: TLV control byte (0x27 for 8-byte unsigned integer)
     //   [offset + 1]: Context tag (0x00)
     //   [offset + 2 to offset + 9]: 8-byte breadcrumb value
-    constexpr size_t kBreadcrumbTLVHeaderSize = 2;  // Control byte + tag
-    constexpr size_t kBreadcrumbValueSize = 8;      // 8-byte unsigned integer
-    constexpr size_t kBreadcrumbTotalSize = kBreadcrumbTLVHeaderSize + kBreadcrumbValueSize;
-    constexpr uint8_t kBreadcrumbControlByte = 0x27;  // TLV control for 8-byte uint
-    constexpr uint8_t kBreadcrumbContextTag = 0x00;
+    constexpr size_t kBreadcrumbTLVHeaderSize = 2; // Control byte + tag
+    constexpr size_t kBreadcrumbValueSize     = 8; // 8-byte unsigned integer
+    constexpr size_t kBreadcrumbTotalSize     = kBreadcrumbTLVHeaderSize + kBreadcrumbValueSize;
+    constexpr uint8_t kBreadcrumbControlByte  = 0x27; // TLV control for 8-byte uint
+    constexpr uint8_t kBreadcrumbContextTag   = 0x00;
 
     // Validate buffer has enough space for breadcrumb data
     VerifyOrReturnError((breadcrumb_offset + kBreadcrumbTotalSize) <= cluster_data_len, CHIP_ERROR_BUFFER_TOO_SMALL);
 
     // Verify breadcrumb TLV structure
-    if (cluster_data[breadcrumb_offset] == kBreadcrumbControlByte &&
-        cluster_data[breadcrumb_offset + 1] == kBreadcrumbContextTag)
+    if (cluster_data[breadcrumb_offset] == kBreadcrumbControlByte && cluster_data[breadcrumb_offset + 1] == kBreadcrumbContextTag)
     {
         // Read current breadcrumb value for logging
         uint64_t current_breadcrumb = 0;
@@ -1071,7 +1073,7 @@ CHIP_ERROR se05x_reset_iscomm_without_power(bool is_comm_without_power)
 {
     // Check if general commissioning cluster exists in SE05x
     bool cluster_exists = false;
-    CHIP_ERROR status = se05x_check_object_exists(SE051H_GENERAL_COMM_CLUSTER_ID, &cluster_exists);
+    CHIP_ERROR status   = se05x_check_object_exists(SE051H_GENERAL_COMM_CLUSTER_ID, &cluster_exists);
     VerifyOrReturnError(status == CHIP_NO_ERROR, status);
 
     if (!cluster_exists)
@@ -1081,9 +1083,9 @@ CHIP_ERROR se05x_reset_iscomm_without_power(bool is_comm_without_power)
     }
 
     // Read existing general commissioning cluster data from SE05x
-    constexpr size_t kMaxClusterDataSize = 256;
+    constexpr size_t kMaxClusterDataSize      = 256;
     uint8_t cluster_data[kMaxClusterDataSize] = { 0 };
-    size_t cluster_data_len = sizeof(cluster_data);
+    size_t cluster_data_len                   = sizeof(cluster_data);
 
     status = se05x_get_certificate(SE051H_GENERAL_COMM_CLUSTER_ID, cluster_data, &cluster_data_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, status);
@@ -1120,7 +1122,7 @@ CHIP_ERROR se05x_reset_iscomm_without_power(bool is_comm_without_power)
     // Move to the attribute element
     reader.Next();
 
-    const Tag current_tag = reader.GetTag();
+    const Tag current_tag      = reader.GetTag();
     const TLVType current_type = reader.GetType();
 
     // Verify this is the IsCommWithoutPower attribute
@@ -1136,23 +1138,22 @@ CHIP_ERROR se05x_reset_iscomm_without_power(bool is_comm_without_power)
     //     0x28 = false (Boolean false)
     //     0x29 = true (Boolean true)
     constexpr uint8_t kBooleanFalseControlByte = 0x28;
-    constexpr uint8_t kBooleanTrueControlByte = 0x29;
-    constexpr size_t kBooleanTLVSize = 1;  // Single byte for boolean value
+    constexpr uint8_t kBooleanTrueControlByte  = 0x29;
+    constexpr size_t kBooleanTLVSize           = 1; // Single byte for boolean value
 
     // Validate buffer has enough space for boolean data
     VerifyOrReturnError((attribute_offset + kBooleanTLVSize) <= cluster_data_len, CHIP_ERROR_BUFFER_TOO_SMALL);
 
     // Read current value for logging
     const uint8_t current_value = cluster_data[attribute_offset];
-    const bool current_state = (current_value == kBooleanTrueControlByte);
+    const bool current_state    = (current_value == kBooleanTrueControlByte);
 
     // Update IsCommWithoutPower attribute value
     const uint8_t new_value = is_comm_without_power ? kBooleanTrueControlByte : kBooleanFalseControlByte;
 
     if (current_value != new_value)
     {
-        ChipLogDetail(Crypto, "SE05x: Updating IsCommWithoutPower from %s to %s",
-                      current_state ? "true" : "false",
+        ChipLogDetail(Crypto, "SE05x: Updating IsCommWithoutPower from %s to %s", current_state ? "true" : "false",
                       is_comm_without_power ? "true" : "false");
 
         cluster_data[attribute_offset] = new_value;
@@ -1177,11 +1178,11 @@ CHIP_ERROR se05x_net_id_from_net_comm_cluster(uint32_t * networkId)
 {
     CHIP_ERROR status = CHIP_NO_ERROR;
     TLVReader reader;
-    uint8_t readBuff[280] = {0};
-    size_t readBuffLen = sizeof(readBuff);
-    uint8_t maxNetworks = 0;
-    TLVType outerContainer = kTLVType_NotSpecified;
-    TLVType networksContainer = kTLVType_NotSpecified;
+    uint8_t readBuff[280]         = { 0 };
+    size_t readBuffLen            = sizeof(readBuff);
+    uint8_t maxNetworks           = 0;
+    TLVType outerContainer        = kTLVType_NotSpecified;
+    TLVType networksContainer     = kTLVType_NotSpecified;
     TLVType networkEntryContainer = kTLVType_NotSpecified;
 
     VerifyOrReturnError(networkId != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
@@ -1190,12 +1191,12 @@ CHIP_ERROR se05x_net_id_from_net_comm_cluster(uint32_t * networkId)
     readBuffLen = readBuffLen - 1;
 
     // Read the network commissioning cluster data from SE05x
-    status = se05x_get_certificate(SE051H_NCC_ID, readBuff+1, &readBuffLen);
+    status = se05x_get_certificate(SE051H_NCC_ID, readBuff + 1, &readBuffLen);
     VerifyOrReturnError(status == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
 
     VerifyOrReturnError(readBuffLen < (sizeof(readBuff) - 3), CHIP_ERROR_INTERNAL);
-    readBuff[readBuffLen+1] = 0x18;
-    readBuffLen = readBuffLen + 2;
+    readBuff[readBuffLen + 1] = 0x18;
+    readBuffLen               = readBuffLen + 2;
 
     reader.Init(readBuff, readBuffLen);
 
@@ -1220,7 +1221,7 @@ CHIP_ERROR se05x_net_id_from_net_comm_cluster(uint32_t * networkId)
     VerifyOrReturnError(maxNetworks > 0, CHIP_ERROR_INTERNAL);
 
     // For version 8.4, use hardcoded network ID
-    if ((((sss_se05x_session_t *)(&gex_sss_chip_ctx.session))->s_ctx.applet_version) <= VERSION_8_4)
+    if ((((sss_se05x_session_t *) (&gex_sss_chip_ctx.session))->s_ctx.applet_version) <= VERSION_8_4)
     {
         *networkId = SE051H_WIFI_CRED_ID_APP_8_4;
         ChipLogDetail(Crypto, "SE05x: Found network credential keyID = 0x%" PRIx32, *networkId);
@@ -1256,8 +1257,8 @@ CHIP_ERROR se05x_net_id_from_net_comm_cluster(uint32_t * networkId)
                         if (isConnected)
                         {
                             *networkId = MAKE_SE05X_NETWORK_ID(networkIndex);
-                            ChipLogDetail(Crypto, "SE05x: Found connected network at index %u, keyID = 0x%" PRIx32,
-                                        networkIndex, *networkId);
+                            ChipLogDetail(Crypto, "SE05x: Found connected network at index %u, keyID = 0x%" PRIx32, networkIndex,
+                                          *networkId);
                             return CHIP_NO_ERROR;
                         }
                         break;
@@ -1295,9 +1296,9 @@ CHIP_ERROR se05x_get_remain_fail_safe_time(uint16_t * fail_safe_time)
     }
 
     // Read commissioning parameters data from SE05x
-    constexpr size_t kMaxParamsDataSize = 256;
+    constexpr size_t kMaxParamsDataSize     = 256;
     uint8_t params_data[kMaxParamsDataSize] = { 0 };
-    size_t params_data_len = sizeof(params_data);
+    size_t params_data_len                  = sizeof(params_data);
 
     status = se05x_get_certificate(SE051H_COMM_PARAMETERS, params_data, &params_data_len);
     VerifyOrReturnError(status == CHIP_NO_ERROR, status);
@@ -1329,8 +1330,8 @@ CHIP_ERROR se05x_get_remain_fail_safe_time(uint16_t * fail_safe_time)
 
     *fail_safe_time = static_cast<uint16_t>(fail_safe_value);
 
-    ChipLogDetail(Crypto, "SE05x: Remaining fail-safe time: %" PRIu16 " seconds (0x%04" PRIX16 ")",
-                  *fail_safe_time, *fail_safe_time);
+    ChipLogDetail(Crypto, "SE05x: Remaining fail-safe time: %" PRIu16 " seconds (0x%04" PRIX16 ")", *fail_safe_time,
+                  *fail_safe_time);
 
     return CHIP_NO_ERROR;
 }

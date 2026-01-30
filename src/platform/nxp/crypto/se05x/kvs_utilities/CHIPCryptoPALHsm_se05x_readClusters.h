@@ -31,7 +31,7 @@
  * @brief The function is used to get the fabric id.
  * @return Fabric id (0 if no NFC commissioning done)
  */
-uint8_t  se05x_get_fabric_id();
+uint8_t se05x_get_fabric_id();
 
 /**
  * @brief The function is used to check if the NFC commissioning is done or not.

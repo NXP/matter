@@ -98,7 +98,9 @@ CHIP_ERROR chip::NXP::App::AppFactoryData_PostMatterStackInit(void)
 #endif
 #else // Legacy implementation
 #if ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
-    ChipLogDetail(Crypto, "NOTE : ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES is not used in this build and should be used only with factory data configuration");
+    ChipLogDetail(Crypto,
+                  "NOTE : ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES is not used in this build and should be used only with factory "
+                  "data configuration");
 #endif
 #if ENABLE_SE05X_DEVICE_ATTESTATION
 #ifdef CONFIG_CHIP_SE05X
