@@ -247,6 +247,10 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
 {
     CHIP_ERROR err = CHIP_NO_ERROR;
 
+#if CONFIG_CHIP_SE05X
+    uint16_t fail_safe_time = 0;
+#endif
+
     /* Init Chip memory management before the stack */
     chip::Platform::MemoryInit();
 
@@ -331,6 +335,11 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
     }
 #endif
 
+#if CONFIG_CHIP_SE05X
+    err = chip::DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().Init();
+    SuccessOrExit(err);
+#endif
+
 #if CONFIG_CHIP_WIFI || CHIP_DEVICE_CONFIG_ENABLE_WPA
     sNetworkCommissioningInstance.Init();
 #ifdef ENABLE_CHIP_SHELL
@@ -368,6 +377,26 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(DeviceLayer, "Error during ThreadStackMgrImpl().StartThreadTask()");
+    }
+#endif
+
+#if CONFIG_CHIP_SE05X
+
+    ChipLogDetail(DeviceLayer, "SE05x - Check for SE05x fail safe timer");
+    fail_safe_time = DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().GetRemainingFailSafeTimerForSE05x();
+    if (fail_safe_time != 0)
+    {
+        chip::app::FailSafeContext & fileSafeContext = chip::Server::GetInstance().GetFailSafeContext();
+
+        err = fileSafeContext.ArmFailSafe(se05x_get_fabric_id(), chip::System::Clock::Seconds16(fail_safe_time));
+        if (err != CHIP_NO_ERROR)
+        {
+            ChipLogError(NotSpecified, "SE05x - Error in starting Fail Safe timer for SE05x NFC commissioned fabric");
+        }
+        else
+        {
+            ChipLogDetail(NotSpecified, "SE05x - Started Fail Safe timer for SE05x NFC commissioned fabric");
+        }
     }
 #endif
 

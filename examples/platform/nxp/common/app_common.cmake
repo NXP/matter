@@ -111,9 +111,17 @@ endif()
 
 if (CONFIG_CHIP_APP_FACTORY_DATA)
     if (CONFIG_CHIP_APP_FACTORY_DATA_IMPL_PLATFORM)
-        target_sources(app PRIVATE
-            ${EXAMPLE_NXP_PLATFORM_DIR}/factory_data/source/AppFactoryDataExample.cpp
-        )
+        if (CONFIG_CHIP_SE05X)
+            target_sources(app PRIVATE
+                ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/../se05x/rt/common/AppFactoryDataDefaultImpl.cpp
+            )
+            target_include_directories(app PRIVATE
+                ${CHIP_ROOT}/examples)
+        else()
+            target_sources(app PRIVATE
+                ${EXAMPLE_NXP_PLATFORM_DIR}/factory_data/source/AppFactoryDataExample.cpp
+            )
+        endif()
         if (CONFIG_CHIP_ENABLE_SECURE_WHOLE_FACTORY_DATA)
             target_compile_definitions(app PRIVATE
                 ENABLE_SECURE_WHOLE_FACTORY_DATA
@@ -122,7 +130,7 @@ if (CONFIG_CHIP_APP_FACTORY_DATA)
     elseif (CONFIG_CHIP_APP_FACTORY_DATA_IMPL_COMMON)
         if (CONFIG_CHIP_SE05X)
             target_sources(app PRIVATE
-                ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/../se05x/rw61x_factory_data/AppFactoryDataDefaultImpl.cpp
+                ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/../se05x/rt/common/AppFactoryDataDefaultImpl.cpp
             )
             target_include_directories(app PRIVATE
                 ${CHIP_ROOT}/examples)
@@ -130,6 +138,14 @@ if (CONFIG_CHIP_APP_FACTORY_DATA)
             target_sources(app PRIVATE
                 ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/factory_data/source/AppFactoryDataDefaultImpl.cpp
             )
+        endif()
+    endif()
+
+    if (CONFIG_CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES)
+        if (CONFIG_CHIP_PLAT_LOAD_REAL_FACTORY_DATA)
+                target_sources(app PRIVATE
+                    ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/../se05x/rt/common/factory_data_impl/Se05xDataProvider.cpp
+                )
         endif()
     endif()
 endif()

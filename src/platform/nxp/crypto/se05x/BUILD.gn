@@ -39,10 +39,14 @@ static_library("nxp_crypto_lib") {
     "${chip_root}/src/platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_rng.cpp",
     "${chip_root}/src/platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_utils.cpp",
     "${chip_root}/src/platform/nxp/crypto/se05x/CHIPCryptoPAL_HostFallBack.cpp",
+
+    #"${chip_root}/src/platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_spake2p.cpp",
     "${chip_root}/src/platform/nxp/crypto/se05x/PersistentStorageOperationalKeystore_se05x.cpp",
+    "${chip_root}/src/platform/nxp/crypto/se05x/kvs_utilities/CHIPCryptoPALHsm_se05x_readClusters.cpp",
+    "${chip_root}/src/platform/nxp/crypto/se05x/kvs_utilities/CHIPCryptoPALHsm_se05x_readClusters.h",
   ]
 
-  if (nxp_platform == "rt/rw61x") {
+  if ((nxp_platform == "rt/rw61x") || (nxp_platform == "rt/rt1060")) {
     sources += [
       "${chip_root}/examples/platform/nxp/se05x/DeviceAttestationSe05xCredsExample.cpp",
       "${chip_root}/src/credentials/examples/ExampleDACs.h",
@@ -93,6 +97,16 @@ static_library("nxp_crypto_lib") {
     if (chip_se05x_device_attestation) {
       defines += [ "ENABLE_SE05X_DEVICE_ATTESTATION=1" ]
     }
+
+    if (chip_se05x_spake_verifier_use_tp_values) {
+      defines += [ "ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES=1" ]
+    }
+
+    defines += [
+      "SE05X_SPAKE_VERIFIER_TP_SET_NO=$chip_se05x_spake_verifier_tp_set_no",
+    ]
+
+    defines += [ "SE05X_SPAKE_VERIFIER_TP_ITTER_CNT=$chip_se05x_spake_verifier_tp_itter_cnt" ]
   }
 
   external_mbedtls = current_os == "zephyr" || nxp_external_sdk
@@ -101,6 +115,16 @@ static_library("nxp_crypto_lib") {
 
   if (!external_mbedtls) {
     public_deps += [ "${mbedtls_root}:mbedtls" ]
+  }
+
+  public_deps += [
+    "${chip_root}/src/credentials:credentials_header",
+    "${chip_root}/third_party/inipp",
+  ]
+
+  if ((nxp_platform != "rt/rw61x") && (nxp_platform != "rt/rt1060")) {
+    public_deps += [ "${chip_root}/src/platform" ]
+    public_deps += [ "${chip_root}/src/app/server" ]
   }
 
   include_dirs = [
