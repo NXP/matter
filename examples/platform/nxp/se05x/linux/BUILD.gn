@@ -104,7 +104,6 @@ source_set("app-main") {
   defines = [
     "ENABLE_TRACING=${matter_enable_tracing_support}",
     "ENABLE_CAMERA_SERVER=${matter_enable_camera_server}",
-    "CHIP_ATTESTATION_TRUSTY_OS=${chip_with_trusty_os}",
   ]
 
   if (chip_se05x_device_attestation) {
