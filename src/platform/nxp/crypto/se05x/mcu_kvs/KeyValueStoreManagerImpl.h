@@ -230,6 +230,8 @@ private:
         char key_name[kMaxKeyNameSize] = { 0 };
         size_t buffer_len;
 
+        CHIP_ERROR status = CHIP_NO_ERROR;
+
         // Read and store operational keypair
         buffer_len = sizeof(buffer);
         ReturnErrorOnFailure(se05x_read_node_operational_keypair(buffer, &buffer_len));
@@ -252,8 +254,8 @@ private:
 
         // Read and store Intermediate CA Certificate (if present)
         buffer_len = sizeof(buffer);
-        ReturnErrorOnFailure(se05x_read_ICA(buffer, &buffer_len));
-        if (buffer_len > 0)
+        status  = se05x_read_ICA(buffer, &buffer_len);
+        if (status == CHIP_NO_ERROR && buffer_len > 0)
         {
             VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%" PRIx32 "/i", fabric_id) > 0, CHIP_ERROR_INTERNAL);
             ReturnErrorOnFailure(_Put(key_name, buffer, buffer_len));
