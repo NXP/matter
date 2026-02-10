@@ -46,15 +46,8 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber = 1,
-        .featureMap =
-            BitFlags<FeatureBitmapType>{
-                FeatureBitmapType::kDigitalPTZ,       // feature bit 0x1
-                FeatureBitmapType::kMechanicalPan,    // feature bit 0x2
-                FeatureBitmapType::kMechanicalTilt,   // feature bit 0x4
-                FeatureBitmapType::kMechanicalZoom,   // feature bit 0x8
-                FeatureBitmapType::kMechanicalPresets // feature bit 0x10
-            },
+        .endpointNumber    = 1,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },

@@ -101,26 +101,6 @@ void __attribute__((weak)) emberAfBooleanStateConfigurationClusterShutdownCallba
     // To prevent warning
     (void) endpoint;
 }
-void __attribute__((weak)) emberAfCameraAvSettingsUserLevelManagementClusterInitCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
-void __attribute__((weak)) emberAfCameraAvSettingsUserLevelManagementClusterShutdownCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
-void __attribute__((weak)) emberAfCameraAvStreamManagementClusterInitCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
-void __attribute__((weak)) emberAfCameraAvStreamManagementClusterShutdownCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
 void __attribute__((weak)) emberAfCarbonDioxideConcentrationMeasurementClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning
@@ -587,16 +567,6 @@ void __attribute__((weak)) emberAfPumpConfigurationAndControlClusterInitCallback
     (void) endpoint;
 }
 void __attribute__((weak)) emberAfPumpConfigurationAndControlClusterShutdownCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
-void __attribute__((weak)) emberAfPushAvStreamTransportClusterInitCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
-void __attribute__((weak)) emberAfPushAvStreamTransportClusterShutdownCallback(EndpointId endpoint)
 {
     // To prevent warning
     (void) endpoint;

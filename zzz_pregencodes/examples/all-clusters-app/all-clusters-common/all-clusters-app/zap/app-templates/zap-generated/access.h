@@ -56,26 +56,6 @@
     /* Cluster: Color Control, Attribute: ColorPointBY, Privilege: view */ \
     /* Cluster: Color Control, Attribute: ColorPointBIntensity, Privilege: view */ \
     /* Cluster: Color Control, Attribute: StartUpColorTemperatureMireds, Privilege: view */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: HDRModeEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: NightVision, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: NightVisionIllum, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: Viewport, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMuted, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: SpeakerVolumeLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMaxLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMinLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMuted, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneVolumeLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMaxLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMinLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneAGCEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: ImageRotation, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipHorizontal, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipVertical, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: LocalVideoRecordingEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: LocalSnapshotRecordingEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: StatusLightEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: StatusLightBrightness, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, *attribute*, privilege) for read attribute
@@ -107,26 +87,6 @@
     /* Cluster: Color Control, Attribute: ColorPointBY, Privilege: view */ \
     /* Cluster: Color Control, Attribute: ColorPointBIntensity, Privilege: view */ \
     /* Cluster: Color Control, Attribute: StartUpColorTemperatureMireds, Privilege: view */ \
-    0x0000000D, /* Cluster: Camera AV Stream Management, Attribute: HDRModeEnabled, Privilege: manage */ \
-    0x00000016, /* Cluster: Camera AV Stream Management, Attribute: NightVision, Privilege: manage */ \
-    0x00000017, /* Cluster: Camera AV Stream Management, Attribute: NightVisionIllum, Privilege: manage */ \
-    0x00000018, /* Cluster: Camera AV Stream Management, Attribute: Viewport, Privilege: manage */ \
-    0x00000019, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMuted, Privilege: manage */ \
-    0x0000001A, /* Cluster: Camera AV Stream Management, Attribute: SpeakerVolumeLevel, Privilege: manage */ \
-    0x0000001B, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMaxLevel, Privilege: manage */ \
-    0x0000001C, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMinLevel, Privilege: manage */ \
-    0x0000001D, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMuted, Privilege: manage */ \
-    0x0000001E, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneVolumeLevel, Privilege: manage */ \
-    0x0000001F, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMaxLevel, Privilege: manage */ \
-    0x00000020, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMinLevel, Privilege: manage */ \
-    0x00000021, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneAGCEnabled, Privilege: manage */ \
-    0x00000022, /* Cluster: Camera AV Stream Management, Attribute: ImageRotation, Privilege: manage */ \
-    0x00000023, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipHorizontal, Privilege: manage */ \
-    0x00000024, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipVertical, Privilege: manage */ \
-    0x00000025, /* Cluster: Camera AV Stream Management, Attribute: LocalVideoRecordingEnabled, Privilege: manage */ \
-    0x00000026, /* Cluster: Camera AV Stream Management, Attribute: LocalSnapshotRecordingEnabled, Privilege: manage */ \
-    0x00000027, /* Cluster: Camera AV Stream Management, Attribute: StatusLightEnabled, Privilege: manage */ \
-    0x00000028, /* Cluster: Camera AV Stream Management, Attribute: StatusLightBrightness, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, attribute, *privilege*) for read attribute
@@ -158,26 +118,6 @@
     /* Cluster: Color Control, Attribute: ColorPointBY, Privilege: view */ \
     /* Cluster: Color Control, Attribute: ColorPointBIntensity, Privilege: view */ \
     /* Cluster: Color Control, Attribute: StartUpColorTemperatureMireds, Privilege: view */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: HDRModeEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: NightVision, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: NightVisionIllum, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: Viewport, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMuted, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: SpeakerVolumeLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMaxLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMinLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMuted, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneVolumeLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMaxLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMinLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneAGCEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: ImageRotation, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipHorizontal, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipVertical, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: LocalVideoRecordingEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: LocalSnapshotRecordingEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: StatusLightEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: StatusLightBrightness, Privilege: manage */ \
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -234,22 +174,6 @@
     0x00000301, /* Cluster: Ballast Configuration, Attribute: LampBurnHoursTripPoint, Privilege: manage */ \
     0x00000406, /* Cluster: Occupancy Sensing, Attribute: HoldTime, Privilege: manage */ \
     0x00000406, /* Cluster: Occupancy Sensing, Attribute: PIROccupiedToUnoccupiedDelay, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: HDRModeEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: NightVision, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: NightVisionIllum, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: Viewport, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMuted, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: SpeakerVolumeLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMuted, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneVolumeLevel, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneAGCEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: ImageRotation, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipHorizontal, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipVertical, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: LocalVideoRecordingEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: LocalSnapshotRecordingEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: StatusLightEnabled, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Attribute: StatusLightBrightness, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, *attribute*, privilege) for write attribute
@@ -304,22 +228,6 @@
     0x00000035, /* Cluster: Ballast Configuration, Attribute: LampBurnHoursTripPoint, Privilege: manage */ \
     0x00000003, /* Cluster: Occupancy Sensing, Attribute: HoldTime, Privilege: manage */ \
     0x00000010, /* Cluster: Occupancy Sensing, Attribute: PIROccupiedToUnoccupiedDelay, Privilege: manage */ \
-    0x0000000D, /* Cluster: Camera AV Stream Management, Attribute: HDRModeEnabled, Privilege: manage */ \
-    0x00000016, /* Cluster: Camera AV Stream Management, Attribute: NightVision, Privilege: manage */ \
-    0x00000017, /* Cluster: Camera AV Stream Management, Attribute: NightVisionIllum, Privilege: manage */ \
-    0x00000018, /* Cluster: Camera AV Stream Management, Attribute: Viewport, Privilege: manage */ \
-    0x00000019, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMuted, Privilege: manage */ \
-    0x0000001A, /* Cluster: Camera AV Stream Management, Attribute: SpeakerVolumeLevel, Privilege: manage */ \
-    0x0000001D, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMuted, Privilege: manage */ \
-    0x0000001E, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneVolumeLevel, Privilege: manage */ \
-    0x00000021, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneAGCEnabled, Privilege: manage */ \
-    0x00000022, /* Cluster: Camera AV Stream Management, Attribute: ImageRotation, Privilege: manage */ \
-    0x00000023, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipHorizontal, Privilege: manage */ \
-    0x00000024, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipVertical, Privilege: manage */ \
-    0x00000025, /* Cluster: Camera AV Stream Management, Attribute: LocalVideoRecordingEnabled, Privilege: manage */ \
-    0x00000026, /* Cluster: Camera AV Stream Management, Attribute: LocalSnapshotRecordingEnabled, Privilege: manage */ \
-    0x00000027, /* Cluster: Camera AV Stream Management, Attribute: StatusLightEnabled, Privilege: manage */ \
-    0x00000028, /* Cluster: Camera AV Stream Management, Attribute: StatusLightBrightness, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, attribute, *privilege*) for write attribute
@@ -374,22 +282,6 @@
     chip::Access::Privilege::kManage, /* Cluster: Ballast Configuration, Attribute: LampBurnHoursTripPoint, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Occupancy Sensing, Attribute: HoldTime, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Occupancy Sensing, Attribute: PIROccupiedToUnoccupiedDelay, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: HDRModeEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: NightVision, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: NightVisionIllum, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: Viewport, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: SpeakerMuted, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: SpeakerVolumeLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneMuted, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneVolumeLevel, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: MicrophoneAGCEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: ImageRotation, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipHorizontal, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: ImageFlipVertical, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: LocalVideoRecordingEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: LocalSnapshotRecordingEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: StatusLightEnabled, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Attribute: StatusLightBrightness, Privilege: manage */ \
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -445,13 +337,6 @@
     0x00000062, /* Cluster: Scenes Management, Command: StoreScene, Privilege: manage */ \
     0x00000062, /* Cluster: Scenes Management, Command: CopyScene, Privilege: manage */ \
     0x00000201, /* Cluster: Thermostat, Command: AtomicRequest, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamAllocate, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamDeallocate, Privilege: manage */ \
-    0x00000551, /* Cluster: Camera AV Stream Management, Command: SetStreamPriorities, Privilege: administer */ \
-    0x00000555, /* Cluster: Push AV Stream Transport, Command: AllocatePushTransport, Privilege: manage */ \
-    0x00000555, /* Cluster: Push AV Stream Transport, Command: DeallocatePushTransport, Privilege: manage */ \
-    0x00000555, /* Cluster: Push AV Stream Transport, Command: ModifyPushTransport, Privilege: manage */ \
-    0x00000555, /* Cluster: Push AV Stream Transport, Command: SetTransportStatus, Privilege: manage */ \
     0x00000801, /* Cluster: TLS Certificate Management, Command: ProvisionRootCertificate, Privilege: administer */ \
     0x00000801, /* Cluster: TLS Certificate Management, Command: RemoveRootCertificate, Privilege: administer */ \
     0x00000801, /* Cluster: TLS Certificate Management, Command: ClientCSR, Privilege: administer */ \
@@ -514,13 +399,6 @@
     0x00000004, /* Cluster: Scenes Management, Command: StoreScene, Privilege: manage */ \
     0x00000040, /* Cluster: Scenes Management, Command: CopyScene, Privilege: manage */ \
     0x000000FE, /* Cluster: Thermostat, Command: AtomicRequest, Privilege: manage */ \
-    0x00000007, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamAllocate, Privilege: manage */ \
-    0x0000000A, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamDeallocate, Privilege: manage */ \
-    0x0000000B, /* Cluster: Camera AV Stream Management, Command: SetStreamPriorities, Privilege: administer */ \
-    0x00000000, /* Cluster: Push AV Stream Transport, Command: AllocatePushTransport, Privilege: manage */ \
-    0x00000002, /* Cluster: Push AV Stream Transport, Command: DeallocatePushTransport, Privilege: manage */ \
-    0x00000003, /* Cluster: Push AV Stream Transport, Command: ModifyPushTransport, Privilege: manage */ \
-    0x00000004, /* Cluster: Push AV Stream Transport, Command: SetTransportStatus, Privilege: manage */ \
     0x00000000, /* Cluster: TLS Certificate Management, Command: ProvisionRootCertificate, Privilege: administer */ \
     0x00000006, /* Cluster: TLS Certificate Management, Command: RemoveRootCertificate, Privilege: administer */ \
     0x00000007, /* Cluster: TLS Certificate Management, Command: ClientCSR, Privilege: administer */ \
@@ -583,13 +461,6 @@
     chip::Access::Privilege::kManage, /* Cluster: Scenes Management, Command: StoreScene, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Scenes Management, Command: CopyScene, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Thermostat, Command: AtomicRequest, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamAllocate, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Camera AV Stream Management, Command: SnapshotStreamDeallocate, Privilege: manage */ \
-    chip::Access::Privilege::kAdminister, /* Cluster: Camera AV Stream Management, Command: SetStreamPriorities, Privilege: administer */ \
-    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: AllocatePushTransport, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: DeallocatePushTransport, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: ModifyPushTransport, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Push AV Stream Transport, Command: SetTransportStatus, Privilege: manage */ \
     chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: ProvisionRootCertificate, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: RemoveRootCertificate, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: TLS Certificate Management, Command: ClientCSR, Privilege: administer */ \

@@ -25,9 +25,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::CameraAvSettingsUserLevelManagement::Id:
         emberAfCameraAvSettingsUserLevelManagementClusterInitCallback(endpoint);
         break;
-    case app::Clusters::CameraAvStreamManagement::Id:
-        emberAfCameraAvStreamManagementClusterInitCallback(endpoint);
-        break;
     case app::Clusters::Chime::Id:
         emberAfChimeClusterInitCallback(endpoint);
         break;
@@ -128,9 +125,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::CameraAvSettingsUserLevelManagement::Id:
         emberAfCameraAvSettingsUserLevelManagementClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::CameraAvStreamManagement::Id:
-        emberAfCameraAvStreamManagementClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::Chime::Id:
         emberAfChimeClusterShutdownCallback(endpoint);

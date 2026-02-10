@@ -78,6 +78,15 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::PushAvStreamTransport::Id:
         MatterPushAvStreamTransportClusterInitCallback(endpoint);
         break;
+    case app::Clusters::Chime::Id:
+        MatterChimeClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::TlsCertificateManagement::Id:
+        MatterTlsCertificateManagementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::TlsClientManagement::Id:
+        MatterTlsClientManagementClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -135,6 +144,15 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::PushAvStreamTransport::Id:
         MatterPushAvStreamTransportClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::Chime::Id:
+        MatterChimeClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::TlsCertificateManagement::Id:
+        MatterTlsCertificateManagementClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::TlsClientManagement::Id:
+        MatterTlsClientManagementClusterShutdownCallback(endpoint);
         break;
     }
 }

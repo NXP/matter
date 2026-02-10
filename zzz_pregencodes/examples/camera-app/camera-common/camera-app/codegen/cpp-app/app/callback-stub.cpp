@@ -51,16 +51,6 @@ void __attribute__((weak)) emberAfCameraAvSettingsUserLevelManagementClusterShut
     // To prevent warning
     (void) endpoint;
 }
-void __attribute__((weak)) emberAfCameraAvStreamManagementClusterInitCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
-void __attribute__((weak)) emberAfCameraAvStreamManagementClusterShutdownCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
 void __attribute__((weak)) emberAfChimeClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning

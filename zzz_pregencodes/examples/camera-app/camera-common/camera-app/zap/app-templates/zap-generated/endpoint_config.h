@@ -53,27 +53,16 @@
 #define GENERATED_DEFAULTS_COUNT (1)
 
 // This is an array of EmberAfAttributeMinMaxValue structures.
-#define GENERATED_MIN_MAX_DEFAULT_COUNT 8
+#define GENERATED_MIN_MAX_DEFAULT_COUNT 1
 #define GENERATED_MIN_MAX_DEFAULTS                                                                                                 \
     {                                                                                                                              \
                                                                                                                                    \
         /* Endpoint: 1, Cluster: Zone Management (server) */                                                                       \
-        { (uint16_t) 0x0, (uint16_t) 0x1, (uint16_t) 0xA }, /* Sensitivity */                                                      \
-                                                                                                                                   \
-        /* Endpoint: 1, Cluster: Camera AV Stream Management (server) */                                                           \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0x2 },   /* NightVision */                                                    \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0x2 },   /* NightVisionIllum */                                               \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0xFE },  /* SpeakerVolumeLevel */                                             \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0xFE },  /* MicrophoneVolumeLevel */                                          \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0x167 }, /* ImageRotation */                                                  \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0x3 },   /* StatusLightBrightness */                                          \
-                                                                                                                                   \
-        /* Endpoint: 1, Cluster: Chime (server) */                                                                                 \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0xFF } /* SelectedChime */                                                    \
+        { (uint16_t) 0x0, (uint16_t) 0x1, (uint16_t) 0xA } /* Sensitivity */                                                       \
     }
 
 // This is an array of EmberAfAttributeMetadata structures.
-#define GENERATED_ATTRIBUTE_COUNT 314
+#define GENERATED_ATTRIBUTE_COUNT 271
 #define GENERATED_ATTRIBUTES                                                                                                       \
     {                                                                                                                              \
                                                                                                                                    \
@@ -607,125 +596,30 @@
         { ZAP_EMPTY_DEFAULT(), 0x0000FFFD, 2, ZAP_TYPE(INT16U),                                                                    \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */                             \
                                                                                                                                    \
-        /* Endpoint: 1, Cluster: Camera AV Stream Management (server) */                                                           \
-        { ZAP_EMPTY_DEFAULT(), 0x00000000, 1, ZAP_TYPE(INT8U),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MaxConcurrentEncoders */                       \
-        { ZAP_EMPTY_DEFAULT(), 0x00000001, 4, ZAP_TYPE(INT32U),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MaxEncodedPixelRate */                         \
-        { ZAP_EMPTY_DEFAULT(), 0x00000002, 0, ZAP_TYPE(STRUCT),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* VideoSensorParams */                           \
-        { ZAP_EMPTY_DEFAULT(), 0x00000003, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* NightVisionUsesInfrared */                     \
-        { ZAP_EMPTY_DEFAULT(), 0x00000004, 0, ZAP_TYPE(STRUCT),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MinViewportResolution */                       \
-        { ZAP_EMPTY_DEFAULT(), 0x00000005, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* RateDistortionTradeOffPoints */                \
-        { ZAP_EMPTY_DEFAULT(), 0x00000006, 4, ZAP_TYPE(INT32U),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MaxContentBufferSize */                        \
-        { ZAP_EMPTY_DEFAULT(), 0x00000007, 0, ZAP_TYPE(STRUCT),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MicrophoneCapabilities */                      \
-        { ZAP_EMPTY_DEFAULT(), 0x00000008, 0, ZAP_TYPE(STRUCT),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SpeakerCapabilities */                         \
-        { ZAP_EMPTY_DEFAULT(), 0x00000009, 1, ZAP_TYPE(ENUM8),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* TwoWayTalkSupport */                           \
-        { ZAP_EMPTY_DEFAULT(), 0x0000000A, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SnapshotCapabilities */                        \
-        { ZAP_EMPTY_DEFAULT(), 0x0000000B, 4, ZAP_TYPE(INT32U),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MaxNetworkBandwidth */                         \
-        { ZAP_EMPTY_DEFAULT(), 0x0000000C, 2, ZAP_TYPE(INT16U),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* CurrentFrameRate */                            \
-        { ZAP_EMPTY_DEFAULT(), 0x0000000D, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* HDRModeEnabled */                                                                 \
-        { ZAP_EMPTY_DEFAULT(), 0x0000000E, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SupportedStreamUsages */                       \
-        { ZAP_EMPTY_DEFAULT(), 0x0000000F, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* AllocatedVideoStreams */                       \
-        { ZAP_EMPTY_DEFAULT(), 0x00000010, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* AllocatedAudioStreams */                       \
-        { ZAP_EMPTY_DEFAULT(), 0x00000011, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* AllocatedSnapshotStreams */                    \
-        { ZAP_EMPTY_DEFAULT(), 0x00000012, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* StreamUsagePriorities */                       \
-        { ZAP_EMPTY_DEFAULT(), 0x00000013, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* SoftRecordingPrivacyModeEnabled */                                                \
-        { ZAP_EMPTY_DEFAULT(), 0x00000014, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* SoftLivestreamPrivacyModeEnabled */                                               \
-        { ZAP_EMPTY_DEFAULT(), 0x00000015, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* HardPrivacyModeOn */                           \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(1), 0x00000016, 1, ZAP_TYPE(ENUM8),                                                           \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                      \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* NightVision */                                                                    \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(2), 0x00000017, 1, ZAP_TYPE(ENUM8),                                                           \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                      \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* NightVisionIllum */                                                               \
-        { ZAP_EMPTY_DEFAULT(), 0x00000018, 0, ZAP_TYPE(STRUCT),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* Viewport */     \
-        { ZAP_EMPTY_DEFAULT(), 0x00000019, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SpeakerMuted */ \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(3), 0x0000001A, 1, ZAP_TYPE(INT8U),                                                           \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                      \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* SpeakerVolumeLevel */                                                             \
-        { ZAP_EMPTY_DEFAULT(), 0x0000001B, 1, ZAP_TYPE(INT8U),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SpeakerMaxLevel */                             \
-        { ZAP_EMPTY_DEFAULT(), 0x0000001C, 1, ZAP_TYPE(INT8U),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SpeakerMinLevel */                             \
-        { ZAP_EMPTY_DEFAULT(), 0x0000001D, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* MicrophoneMuted */                                                                \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(4), 0x0000001E, 1, ZAP_TYPE(INT8U),                                                           \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                      \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* MicrophoneVolumeLevel */                                                          \
-        { ZAP_EMPTY_DEFAULT(), 0x0000001F, 1, ZAP_TYPE(INT8U),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MicrophoneMaxLevel */                          \
-        { ZAP_EMPTY_DEFAULT(), 0x00000020, 1, ZAP_TYPE(INT8U),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MicrophoneMinLevel */                          \
-        { ZAP_EMPTY_DEFAULT(), 0x00000021, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* MicrophoneAGCEnabled */                                                           \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(5), 0x00000022, 2, ZAP_TYPE(INT16U),                                                          \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                      \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* ImageRotation */                                                                  \
-        { ZAP_EMPTY_DEFAULT(), 0x00000023, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* ImageFlipHorizontal */                                                            \
-        { ZAP_EMPTY_DEFAULT(), 0x00000024, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* ImageFlipVertical */                                                              \
-        { ZAP_EMPTY_DEFAULT(), 0x00000025, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* LocalVideoRecordingEnabled */                                                     \
-        { ZAP_EMPTY_DEFAULT(), 0x00000026, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* LocalSnapshotRecordingEnabled */                                                  \
-        { ZAP_EMPTY_DEFAULT(), 0x00000027, 1, ZAP_TYPE(BOOLEAN),                                                                   \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* StatusLightEnabled */                                                             \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(6), 0x00000028, 1, ZAP_TYPE(ENUM8),                                                           \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                      \
-              ZAP_ATTRIBUTE_MASK(READABLE) }, /* StatusLightBrightness */                                                          \
-        { ZAP_EMPTY_DEFAULT(), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32),                                                                  \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) },                  /* FeatureMap */                 \
-        { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */            \
-                                                                                                                                   \
         /* Endpoint: 1, Cluster: Camera AV Settings User Level Management (server) */                                              \
         { ZAP_EMPTY_DEFAULT(), 0x00000000, 0, ZAP_TYPE(STRUCT),                                                                    \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) },                 /* MPTZPosition */                \
-        { ZAP_SIMPLE_DEFAULT(5), 0x00000001, 1, ZAP_TYPE(INT8U), ZAP_ATTRIBUTE_MASK(READABLE) }, /* MaxPresets */                  \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MPTZPosition */                                \
+        { ZAP_EMPTY_DEFAULT(), 0x00000001, 1, ZAP_TYPE(INT8U),                                                                     \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MaxPresets */                                  \
         { ZAP_EMPTY_DEFAULT(), 0x00000002, 0, ZAP_TYPE(ARRAY),                                                                     \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MPTZPresets */                                 \
         { ZAP_EMPTY_DEFAULT(), 0x00000003, 0, ZAP_TYPE(ARRAY),                                                                     \
-          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) },                     /* DPTZStreams */             \
-        { ZAP_SIMPLE_DEFAULT(100), 0x00000004, 1, ZAP_TYPE(INT8U), ZAP_ATTRIBUTE_MASK(READABLE) },   /* ZoomMax */                 \
-        { ZAP_SIMPLE_DEFAULT(-90), 0x00000005, 2, ZAP_TYPE(INT16S), ZAP_ATTRIBUTE_MASK(READABLE) },  /* TiltMin */                 \
-        { ZAP_SIMPLE_DEFAULT(90), 0x00000006, 2, ZAP_TYPE(INT16S), ZAP_ATTRIBUTE_MASK(READABLE) },   /* TiltMax */                 \
-        { ZAP_SIMPLE_DEFAULT(-180), 0x00000007, 2, ZAP_TYPE(INT16S), ZAP_ATTRIBUTE_MASK(READABLE) }, /* PanMin */                  \
-        { ZAP_SIMPLE_DEFAULT(180), 0x00000008, 2, ZAP_TYPE(INT16S), ZAP_ATTRIBUTE_MASK(READABLE) },  /* PanMax */                  \
-        { ZAP_EMPTY_DEFAULT(), 0x00000009, 1, ZAP_TYPE(ENUM8), ZAP_ATTRIBUTE_MASK(READABLE) },       /* MovementState */           \
-        { ZAP_SIMPLE_DEFAULT(31), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */              \
-        { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) },    /* ClusterRevision */         \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* DPTZStreams */                                 \
+        { ZAP_EMPTY_DEFAULT(), 0x00000004, 1, ZAP_TYPE(INT8U),                                                                     \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ZoomMax */                                     \
+        { ZAP_EMPTY_DEFAULT(), 0x00000005, 2, ZAP_TYPE(INT16S),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* TiltMin */                                     \
+        { ZAP_EMPTY_DEFAULT(), 0x00000006, 2, ZAP_TYPE(INT16S),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* TiltMax */                                     \
+        { ZAP_EMPTY_DEFAULT(), 0x00000007, 2, ZAP_TYPE(INT16S),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* PanMin */                                      \
+        { ZAP_EMPTY_DEFAULT(), 0x00000008, 2, ZAP_TYPE(INT16S),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* PanMax */                                      \
+        { ZAP_EMPTY_DEFAULT(), 0x00000009, 1, ZAP_TYPE(ENUM8),                                                                     \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* MovementState */                               \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32),                                                                  \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) },                  /* FeatureMap */                 \
+        { ZAP_SIMPLE_DEFAULT(1), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */            \
                                                                                                                                    \
         /* Endpoint: 1, Cluster: WebRTC Transport Provider (server) */                                                             \
         { ZAP_EMPTY_DEFAULT(), 0x00000000, 0, ZAP_TYPE(ARRAY),                                                                     \
@@ -745,8 +639,8 @@
         /* Endpoint: 1, Cluster: Chime (server) */                                                                                 \
         { ZAP_EMPTY_DEFAULT(), 0x00000000, 0, ZAP_TYPE(ARRAY),                                                                     \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* InstalledChimeSounds */                        \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(7), 0x00000001, 1, ZAP_TYPE(INT8U),                                                           \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                      \
+        { ZAP_EMPTY_DEFAULT(), 0x00000001, 1, ZAP_TYPE(INT8U),                                                                     \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                    \
               ZAP_ATTRIBUTE_MASK(READABLE) }, /* SelectedChime */                                                                  \
         { ZAP_EMPTY_DEFAULT(), 0x00000002, 1, ZAP_TYPE(BOOLEAN),                                                                   \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* Enabled */      \
@@ -959,27 +853,8 @@
   /*   GeneratedCommandList (index=96)*/ \
   0x00000001 /* CreateTwoDCartesianZoneResponse */, \
   chip::kInvalidCommandId /* end of list */, \
-  /* Endpoint: 1, Cluster: Camera AV Stream Management (server) */\
-  /*   AcceptedCommandList (index=98) */ \
-  0x00000000 /* AudioStreamAllocate */, \
-  0x00000002 /* AudioStreamDeallocate */, \
-  0x00000003 /* VideoStreamAllocate */, \
-  0x00000005 /* VideoStreamModify */, \
-  0x00000006 /* VideoStreamDeallocate */, \
-  0x00000007 /* SnapshotStreamAllocate */, \
-  0x00000009 /* SnapshotStreamModify */, \
-  0x0000000A /* SnapshotStreamDeallocate */, \
-  0x0000000B /* SetStreamPriorities */, \
-  0x0000000C /* CaptureSnapshot */, \
-  chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=109)*/ \
-  0x00000001 /* AudioStreamAllocateResponse */, \
-  0x00000004 /* VideoStreamAllocateResponse */, \
-  0x00000008 /* SnapshotStreamAllocateResponse */, \
-  0x0000000D /* CaptureSnapshotResponse */, \
-  chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: Camera AV Settings User Level Management (server) */\
-  /*   AcceptedCommandList (index=114) */ \
+  /*   AcceptedCommandList (index=98) */ \
   0x00000000 /* MPTZSetPosition */, \
   0x00000001 /* MPTZRelativeMove */, \
   0x00000002 /* MPTZMoveToPreset */, \
@@ -989,19 +864,19 @@
   0x00000006 /* DPTZRelativeMove */, \
   chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: WebRTC Transport Provider (server) */\
-  /*   AcceptedCommandList (index=122) */ \
+  /*   AcceptedCommandList (index=106) */ \
   0x00000000 /* SolicitOffer */, \
   0x00000002 /* ProvideOffer */, \
   0x00000004 /* ProvideAnswer */, \
   0x00000005 /* ProvideICECandidates */, \
   0x00000006 /* EndSession */, \
   chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=128)*/ \
+  /*   GeneratedCommandList (index=112)*/ \
   0x00000001 /* SolicitOfferResponse */, \
   0x00000003 /* ProvideOfferResponse */, \
   chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: Push AV Stream Transport (server) */\
-  /*   AcceptedCommandList (index=131) */ \
+  /*   AcceptedCommandList (index=115) */ \
   0x00000000 /* AllocatePushTransport */, \
   0x00000002 /* DeallocatePushTransport */, \
   0x00000003 /* ModifyPushTransport */, \
@@ -1009,16 +884,16 @@
   0x00000005 /* ManuallyTriggerTransport */, \
   0x00000006 /* FindTransport */, \
   chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=138)*/ \
+  /*   GeneratedCommandList (index=122)*/ \
   0x00000001 /* AllocatePushTransportResponse */, \
   0x00000007 /* FindTransportResponse */, \
   chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: Chime (server) */\
-  /*   AcceptedCommandList (index=141) */ \
+  /*   AcceptedCommandList (index=125) */ \
   0x00000000 /* PlayChimeSound */, \
   chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: TLS Certificate Management (server) */\
-  /*   AcceptedCommandList (index=143) */ \
+  /*   AcceptedCommandList (index=127) */ \
   0x00000000 /* ProvisionRootCertificate */, \
   0x00000002 /* FindRootCertificate */, \
   0x00000004 /* LookupRootCertificate */, \
@@ -1029,7 +904,7 @@
   0x0000000C /* LookupClientCertificate */, \
   0x0000000E /* RemoveClientCertificate */, \
   chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=153)*/ \
+  /*   GeneratedCommandList (index=137)*/ \
   0x00000001 /* ProvisionRootCertificateResponse */, \
   0x00000003 /* FindRootCertificateResponse */, \
   0x00000005 /* LookupRootCertificateResponse */, \
@@ -1038,12 +913,12 @@
   0x0000000D /* LookupClientCertificateResponse */, \
   chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: TLS Client Management (server) */\
-  /*   AcceptedCommandList (index=160) */ \
+  /*   AcceptedCommandList (index=144) */ \
   0x00000000 /* ProvisionEndpoint */, \
   0x00000002 /* FindEndpoint */, \
   0x00000004 /* RemoveEndpoint */, \
   chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=164)*/ \
+  /*   GeneratedCommandList (index=148)*/ \
   0x00000001 /* ProvisionEndpointResponse */, \
   0x00000003 /* FindEndpointResponse */, \
   chip::kInvalidCommandId /* end of list */, \
@@ -1052,7 +927,7 @@
 // clang-format on
 
 // This is an array of EmberAfCluster structures.
-#define GENERATED_CLUSTER_COUNT 34
+#define GENERATED_CLUSTER_COUNT 33
 // clang-format off
 #define GENERATED_CLUSTERS { \
   { \
@@ -1394,27 +1269,14 @@
       .eventCount = 2, \
     },\
   { \
-      /* Endpoint: 1, Cluster: Camera AV Stream Management (server) */ \
-      .clusterId = 0x00000551, \
+      /* Endpoint: 1, Cluster: Camera AV Settings User Level Management (server) */ \
+      .clusterId = 0x00000552, \
       .attributes = ZAP_ATTRIBUTE_INDEX(237), \
-      .attributeCount = 43, \
+      .attributeCount = 12, \
       .clusterSize = 2, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 98 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 109 ), \
-      .eventList = nullptr, \
-      .eventCount = 0, \
-    },\
-  { \
-      /* Endpoint: 1, Cluster: Camera AV Settings User Level Management (server) */ \
-      .clusterId = 0x00000552, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(280), \
-      .attributeCount = 12, \
-      .clusterSize = 17, \
-      .mask = ZAP_CLUSTER_MASK(SERVER), \
-      .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 114 ), \
       .generatedCommandList = nullptr, \
       .eventList = nullptr, \
       .eventCount = 0, \
@@ -1422,20 +1284,20 @@
   { \
       /* Endpoint: 1, Cluster: WebRTC Transport Provider (server) */ \
       .clusterId = 0x00000553, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(292), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(249), \
       .attributeCount = 3, \
       .clusterSize = 2, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 122 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 128 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 106 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 112 ), \
       .eventList = nullptr, \
       .eventCount = 0, \
     },\
   { \
       /* Endpoint: 1, Cluster: WebRTC Transport Requestor (client) */ \
       .clusterId = 0x00000554, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(295), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(252), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -1448,25 +1310,25 @@
   { \
       /* Endpoint: 1, Cluster: Push AV Stream Transport (server) */ \
       .clusterId = 0x00000555, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(295), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(252), \
       .attributeCount = 4, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 131 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 138 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 115 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 122 ), \
       .eventList = ZAP_GENERATED_EVENTS_INDEX( 13 ), \
       .eventCount = 2, \
     },\
   { \
       /* Endpoint: 1, Cluster: Chime (server) */ \
       .clusterId = 0x00000556, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(299), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(256), \
       .attributeCount = 5, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 141 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 125 ), \
       .generatedCommandList = nullptr, \
       .eventList = nullptr, \
       .eventCount = 0, \
@@ -1474,26 +1336,26 @@
   { \
       /* Endpoint: 1, Cluster: TLS Certificate Management (server) */ \
       .clusterId = 0x00000801, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(304), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(261), \
       .attributeCount = 6, \
       .clusterSize = 4, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 143 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 153 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 127 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 137 ), \
       .eventList = nullptr, \
       .eventCount = 0, \
     },\
   { \
       /* Endpoint: 1, Cluster: TLS Client Management (server) */ \
       .clusterId = 0x00000802, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(310), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(267), \
       .attributeCount = 4, \
       .clusterSize = 4, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 160 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 164 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 144 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 148 ), \
       .eventList = nullptr, \
       .eventCount = 0, \
     },\
@@ -1501,13 +1363,13 @@
 
 // clang-format on
 
-#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 32
+#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 31
 
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES                                                                                                   \
     {                                                                                                                              \
         { ZAP_CLUSTER_INDEX(0), 21, 76 },                                                                                          \
-        { ZAP_CLUSTER_INDEX(21), 13, 115 },                                                                                        \
+        { ZAP_CLUSTER_INDEX(21), 12, 98 },                                                                                         \
     }
 
 // Largest attribute size is needed for various buffers
@@ -1519,7 +1381,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (0)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (191)
+#define ATTRIBUTE_MAX_SIZE (174)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (2)

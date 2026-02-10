@@ -670,7 +670,7 @@
         { ZAP_EMPTY_DEFAULT(), 0x00000088, 2, ZAP_TYPE(INT16U),                                                                    \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* NumberOfAliroEndpointKeysSupported */          \
         { ZAP_SIMPLE_DEFAULT(0x7DB3), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */          \
-        { ZAP_SIMPLE_DEFAULT(8), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) },        /* ClusterRevision */     \
+        { ZAP_SIMPLE_DEFAULT(10), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) },       /* ClusterRevision */     \
     }
 
 // clang-format off
@@ -1200,7 +1200,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define FIXED_PROFILE_IDS { 0x0103, 0x0103 }
 
 // Array of device types
-#define FIXED_DEVICE_TYPES { { 0x00000011, 1 }, { 0x00000016, 4 }, { 0x0000000A, 3 }, { 0x00000011, 1 } }
+#define FIXED_DEVICE_TYPES { { 0x00000011, 1 }, { 0x00000016, 4 }, { 0x0000000A, 4 }, { 0x00000011, 1 } }
 
 // Array of device type offsets
 #define FIXED_DEVICE_TYPE_OFFSETS { 0, 2 }

@@ -4,7 +4,6 @@ void MatterAdministratorCommissioningPluginServerInitCallback();
 void MatterBasicInformationPluginServerInitCallback();
 void MatterBindingPluginServerInitCallback();
 void MatterCameraAvSettingsUserLevelManagementPluginServerInitCallback();
-void MatterCameraAvStreamManagementPluginServerInitCallback();
 void MatterChimePluginServerInitCallback();
 void MatterDescriptorPluginServerInitCallback();
 void MatterDiagnosticLogsPluginServerInitCallback();
@@ -35,7 +34,6 @@ void MatterAdministratorCommissioningPluginServerShutdownCallback();
 void MatterBasicInformationPluginServerShutdownCallback();
 void MatterBindingPluginServerShutdownCallback();
 void MatterCameraAvSettingsUserLevelManagementPluginServerShutdownCallback();
-void MatterCameraAvStreamManagementPluginServerShutdownCallback();
 void MatterChimePluginServerShutdownCallback();
 void MatterDescriptorPluginServerShutdownCallback();
 void MatterDiagnosticLogsPluginServerShutdownCallback();
@@ -68,7 +66,6 @@ void MatterZoneManagementPluginServerShutdownCallback();
     MatterBasicInformationPluginServerInitCallback();                                                                              \
     MatterBindingPluginServerInitCallback();                                                                                       \
     MatterCameraAvSettingsUserLevelManagementPluginServerInitCallback();                                                           \
-    MatterCameraAvStreamManagementPluginServerInitCallback();                                                                      \
     MatterChimePluginServerInitCallback();                                                                                         \
     MatterDescriptorPluginServerInitCallback();                                                                                    \
     MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
@@ -101,7 +98,6 @@ void MatterZoneManagementPluginServerShutdownCallback();
     MatterBasicInformationPluginServerShutdownCallback();                                                                          \
     MatterBindingPluginServerShutdownCallback();                                                                                   \
     MatterCameraAvSettingsUserLevelManagementPluginServerShutdownCallback();                                                       \
-    MatterCameraAvStreamManagementPluginServerShutdownCallback();                                                                  \
     MatterChimePluginServerShutdownCallback();                                                                                     \
     MatterDescriptorPluginServerShutdownCallback();                                                                                \
     MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \

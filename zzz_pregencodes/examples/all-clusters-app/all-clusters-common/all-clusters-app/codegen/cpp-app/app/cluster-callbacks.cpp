@@ -40,12 +40,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BooleanStateConfiguration::Id:
         emberAfBooleanStateConfigurationClusterInitCallback(endpoint);
         break;
-    case app::Clusters::CameraAvSettingsUserLevelManagement::Id:
-        emberAfCameraAvSettingsUserLevelManagementClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::CameraAvStreamManagement::Id:
-        emberAfCameraAvStreamManagementClusterInitCallback(endpoint);
-        break;
     case app::Clusters::CarbonDioxideConcentrationMeasurement::Id:
         emberAfCarbonDioxideConcentrationMeasurementClusterInitCallback(endpoint);
         break;
@@ -187,9 +181,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::PumpConfigurationAndControl::Id:
         emberAfPumpConfigurationAndControlClusterInitCallback(endpoint);
         break;
-    case app::Clusters::PushAvStreamTransport::Id:
-        emberAfPushAvStreamTransportClusterInitCallback(endpoint);
-        break;
     case app::Clusters::RadonConcentrationMeasurement::Id:
         emberAfRadonConcentrationMeasurementClusterInitCallback(endpoint);
         break;
@@ -317,12 +308,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::BooleanStateConfiguration::Id:
         emberAfBooleanStateConfigurationClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::CameraAvSettingsUserLevelManagement::Id:
-        emberAfCameraAvSettingsUserLevelManagementClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::CameraAvStreamManagement::Id:
-        emberAfCameraAvStreamManagementClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::CarbonDioxideConcentrationMeasurement::Id:
         emberAfCarbonDioxideConcentrationMeasurementClusterShutdownCallback(endpoint);
@@ -464,9 +449,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::PumpConfigurationAndControl::Id:
         emberAfPumpConfigurationAndControlClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::PushAvStreamTransport::Id:
-        emberAfPushAvStreamTransportClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::RadonConcentrationMeasurement::Id:
         emberAfRadonConcentrationMeasurementClusterShutdownCallback(endpoint);

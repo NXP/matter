@@ -9,8 +9,6 @@ void MatterBasicInformationPluginServerInitCallback();
 void MatterBindingPluginServerInitCallback();
 void MatterBooleanStatePluginServerInitCallback();
 void MatterBooleanStateConfigurationPluginServerInitCallback();
-void MatterCameraAvSettingsUserLevelManagementPluginServerInitCallback();
-void MatterCameraAvStreamManagementPluginServerInitCallback();
 void MatterCarbonDioxideConcentrationMeasurementPluginServerInitCallback();
 void MatterCarbonMonoxideConcentrationMeasurementPluginServerInitCallback();
 void MatterChimePluginServerInitCallback();
@@ -58,7 +56,6 @@ void MatterPowerSourcePluginServerInitCallback();
 void MatterPowerSourceConfigurationPluginServerInitCallback();
 void MatterPressureMeasurementPluginServerInitCallback();
 void MatterPumpConfigurationAndControlPluginServerInitCallback();
-void MatterPushAvStreamTransportPluginServerInitCallback();
 void MatterRadonConcentrationMeasurementPluginServerInitCallback();
 void MatterRefrigeratorAlarmPluginServerInitCallback();
 void MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerInitCallback();
@@ -98,8 +95,6 @@ void MatterBasicInformationPluginServerShutdownCallback();
 void MatterBindingPluginServerShutdownCallback();
 void MatterBooleanStatePluginServerShutdownCallback();
 void MatterBooleanStateConfigurationPluginServerShutdownCallback();
-void MatterCameraAvSettingsUserLevelManagementPluginServerShutdownCallback();
-void MatterCameraAvStreamManagementPluginServerShutdownCallback();
 void MatterCarbonDioxideConcentrationMeasurementPluginServerShutdownCallback();
 void MatterCarbonMonoxideConcentrationMeasurementPluginServerShutdownCallback();
 void MatterChimePluginServerShutdownCallback();
@@ -147,7 +142,6 @@ void MatterPowerSourcePluginServerShutdownCallback();
 void MatterPowerSourceConfigurationPluginServerShutdownCallback();
 void MatterPressureMeasurementPluginServerShutdownCallback();
 void MatterPumpConfigurationAndControlPluginServerShutdownCallback();
-void MatterPushAvStreamTransportPluginServerShutdownCallback();
 void MatterRadonConcentrationMeasurementPluginServerShutdownCallback();
 void MatterRefrigeratorAlarmPluginServerShutdownCallback();
 void MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerShutdownCallback();
@@ -189,8 +183,6 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterBindingPluginServerInitCallback();                                                                                       \
     MatterBooleanStatePluginServerInitCallback();                                                                                  \
     MatterBooleanStateConfigurationPluginServerInitCallback();                                                                     \
-    MatterCameraAvSettingsUserLevelManagementPluginServerInitCallback();                                                           \
-    MatterCameraAvStreamManagementPluginServerInitCallback();                                                                      \
     MatterCarbonDioxideConcentrationMeasurementPluginServerInitCallback();                                                         \
     MatterCarbonMonoxideConcentrationMeasurementPluginServerInitCallback();                                                        \
     MatterChimePluginServerInitCallback();                                                                                         \
@@ -238,7 +230,6 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterPowerSourceConfigurationPluginServerInitCallback();                                                                      \
     MatterPressureMeasurementPluginServerInitCallback();                                                                           \
     MatterPumpConfigurationAndControlPluginServerInitCallback();                                                                   \
-    MatterPushAvStreamTransportPluginServerInitCallback();                                                                         \
     MatterRadonConcentrationMeasurementPluginServerInitCallback();                                                                 \
     MatterRefrigeratorAlarmPluginServerInitCallback();                                                                             \
     MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerInitCallback();                                               \
@@ -280,8 +271,6 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterBindingPluginServerShutdownCallback();                                                                                   \
     MatterBooleanStatePluginServerShutdownCallback();                                                                              \
     MatterBooleanStateConfigurationPluginServerShutdownCallback();                                                                 \
-    MatterCameraAvSettingsUserLevelManagementPluginServerShutdownCallback();                                                       \
-    MatterCameraAvStreamManagementPluginServerShutdownCallback();                                                                  \
     MatterCarbonDioxideConcentrationMeasurementPluginServerShutdownCallback();                                                     \
     MatterCarbonMonoxideConcentrationMeasurementPluginServerShutdownCallback();                                                    \
     MatterChimePluginServerShutdownCallback();                                                                                     \
@@ -329,7 +318,6 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterPowerSourceConfigurationPluginServerShutdownCallback();                                                                  \
     MatterPressureMeasurementPluginServerShutdownCallback();                                                                       \
     MatterPumpConfigurationAndControlPluginServerShutdownCallback();                                                               \
-    MatterPushAvStreamTransportPluginServerShutdownCallback();                                                                     \
     MatterRadonConcentrationMeasurementPluginServerShutdownCallback();                                                             \
     MatterRefrigeratorAlarmPluginServerShutdownCallback();                                                                         \
     MatterRefrigeratorAndTemperatureControlledCabinetModePluginServerShutdownCallback();                                           \
