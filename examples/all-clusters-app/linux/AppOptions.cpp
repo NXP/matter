@@ -35,6 +35,7 @@ using chip::ArgParser::PrintArgError;
 using chip::System::Clock::ClockBase;
 using chip::System::Clock::Microseconds64;
 using chip::System::Clock::Milliseconds64;
+using chip::Protocols::InteractionModel::Status;
 
 constexpr uint16_t kOptionMinCommissioningTimeout    = 0xE002;
 constexpr uint16_t kOptionEndUserSupportFilePath     = 0xE003;
@@ -152,7 +153,12 @@ bool AppOptions::HandleOptions(const char * program, OptionSet * options, int id
         {
             sMockClock.Emplace();
             // This ensures that the UTCTime attribute will be reported to have a value.
-            TimeSource::Set(chip::kRootEndpointId, chip::app::Clusters::TimeSynchronization::TimeSourceEnum::kUnknown);
+            Status status = TimeSource::Set(chip::kRootEndpointId, chip::app::Clusters::TimeSynchronization::TimeSourceEnum::kUnknown);
+            if (status != Status::Success)
+            {
+                retval = false;
+                break;
+            }
         }
         timeoutSec = strtol(value, &endptr, 10);
         if (endptr == value || *endptr != '\0')
