@@ -110,11 +110,20 @@ bool AppOptions::IsEmptyString(const char * value)
 bool AppOptions::HandleOptions(const char * program, OptionSet * options, int identifier, const char * name, const char * value)
 {
     bool retval = true;
+    long timeoutSec = 0;
+    char *endptr = nullptr;
+
     switch (identifier)
     {
     case kOptionMinCommissioningTimeout: {
         auto & commissionMgr = chip::Server::GetInstance().GetCommissioningWindowManager();
-        commissionMgr.OverrideMinCommissioningTimeout(chip::System::Clock::Seconds16(static_cast<uint16_t>(atoi(value))));
+        timeoutSec = strtol(value, &endptr, 10);
+        if (endptr == value || *endptr != '\0' || timeoutSec > UINT16_MAX || timeoutSec < 0)
+        {
+            retval = false;
+            break;
+        }
+        commissionMgr.OverrideMinCommissioningTimeout(chip::System::Clock::Seconds16(static_cast<uint16_t>(timeoutSec)));
         break;
     }
     case kOptionEndUserSupportFilePath: {
@@ -145,10 +154,15 @@ bool AppOptions::HandleOptions(const char * program, OptionSet * options, int id
             // This ensures that the UTCTime attribute will be reported to have a value.
             TimeSource::Set(chip::kRootEndpointId, chip::app::Clusters::TimeSynchronization::TimeSourceEnum::kUnknown);
         }
-        long longValue = atoi(value);
-        if (longValue >= 0)
+        timeoutSec = strtol(value, &endptr, 10);
+        if (endptr == value || *endptr != '\0')
         {
-            uint64_t override = uint64_t(longValue) * chip::kMicrosecondsPerSecond;
+            retval = false;
+            break;
+        }
+        if (timeoutSec >= 0)
+        {
+            uint64_t override = uint64_t(timeoutSec) * chip::kMicrosecondsPerSecond;
             retval            = chip::ChipEpochToUnixEpochMicros(override, override);
             sMockClock.Value().SetUTCTime(Microseconds64(override));
         }
