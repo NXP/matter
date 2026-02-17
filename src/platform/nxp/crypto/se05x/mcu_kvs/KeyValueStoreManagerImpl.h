@@ -334,7 +334,15 @@ private:
 #if CHIP_DEVICE_CONFIG_ENABLE_THREAD
             ChipLogDetail(Crypto, "SE05x: Setting Thread operational data");
             ByteSpan dataset(reinterpret_cast<const uint8_t *>(op_data_set), op_data_set_len);
-            DeviceLayer::ThreadStackMgrImpl().SetThreadProvision(dataset);
+            ReturnErrorOnFailure(DeviceLayer::ThreadStackMgrImpl().SetThreadProvision(dataset));
+            if (DeviceLayer::ThreadStackMgrImpl().IsThreadProvisioned())
+            {
+                ReturnErrorOnFailure(DeviceLayer::ThreadStackMgrImpl().SetThreadEnabled(true));
+            }
+            else
+            {
+                ChipLogDetail(Crypto, "SE05x: Thread not provisioned");
+            }
 #else
             ChipLogDetail(Crypto, "SE05x: SE05x commissioned for Thread, but example is not built with Thread support");
 #endif
