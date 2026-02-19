@@ -1,6 +1,6 @@
 /*
  *
- *    Copyright (c) 2022 Project CHIP Authors
+ *    Copyright (c) 2022, 2026 Project CHIP Authors
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -38,12 +38,24 @@ namespace DeviceLayer {
 class Se05xDataProviderImpl : public FactoryDataProviderImpl
 {
 public:
+#if CONFIG_CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
+    uint8_t cert[128];
+    size_t certLen;
+
+    CHIP_ERROR GetSpake2pSaltBuffer(char * buf, uint16_t bufLen, uint16_t * outLen);
     CHIP_ERROR GetSpake2pSalt(MutableByteSpan & saltBuf) override;
     CHIP_ERROR GetSetupPasscode(uint32_t & setupPasscode) override;
     CHIP_ERROR GetSpake2pIterationCount(uint32_t & iterationCount) override;
+#endif
+
+#if CONFIG_CHIP_SE05X_DEVICE_ATTESTATION
+    // Device Attestation Credentials overrides for SE05X
+    CHIP_ERROR GetDeviceAttestationCert(MutableByteSpan & out_dac_buffer) override;
+    CHIP_ERROR SignWithDeviceAttestationKey(const ByteSpan & messageToSign, MutableByteSpan & out_signature_buffer) override;
+#endif
 };
 
-Se05xDataProviderImpl & Se05xDataPrvdImpl();
+FactoryDataProvider & FactoryDataPrvdImpl();
 
 } // namespace DeviceLayer
 } // namespace chip

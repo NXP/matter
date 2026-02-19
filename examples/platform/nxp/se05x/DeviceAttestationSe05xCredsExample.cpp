@@ -130,7 +130,7 @@ CHIP_ERROR ExampleSe05xDACProvider::SignWithDeviceAttestationKey(const ByteSpan 
                                                                  MutableByteSpan & out_signature_buffer)
 {
     Crypto::P256ECDSASignature signature;
-    Crypto::P256Keypair keypair;
+    Crypto::P256KeypairSE05x keypair;
     Crypto::P256SerializedKeypair serialized_keypair;
     uint8_t magic_bytes[] = NXP_CRYPTO_KEY_MAGIC;
 
