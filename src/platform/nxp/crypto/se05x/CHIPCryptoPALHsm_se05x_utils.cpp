@@ -119,10 +119,6 @@ CHIP_ERROR se05x_session_open(void)
     return CHIP_NO_ERROR;
 }
 
-#if !ENABLE_SE05X_RND_GEN
-extern void free_entropy_context_h();
-#endif
-
 /* Close session to se05x */
 CHIP_ERROR se05x_close_session(void)
 {
@@ -143,10 +139,6 @@ CHIP_ERROR se05x_close_session(void)
         ChipLogError(NotSpecified, "SE05x - Error in se05x_host_gpio_power_set(0) function");
         return CHIP_ERROR_INTERNAL;
     }
-
-#if !ENABLE_SE05X_RND_GEN
-    free_entropy_context_h();
-#endif
 
     return CHIP_NO_ERROR;
 }

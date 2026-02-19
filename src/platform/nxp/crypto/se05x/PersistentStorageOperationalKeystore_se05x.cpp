@@ -77,7 +77,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     // Replace previous pending key pair, if any was previously allocated
     ResetPendingKey();
 
-    mPendingKeypair = Platform::New<Crypto::P256Keypair>();
+    mPendingKeypair = Platform::New<Crypto::P256KeypairSE05x>();
     VerifyOrReturnError(mPendingKeypair != nullptr, CHIP_ERROR_NO_MEMORY);
 
     hsmKeyId                                        = CHIP_SE05x_NODE_OP_KEY_INDEX + fabricIndex;
@@ -234,7 +234,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
 
         {
             uint8_t attest_tbs[] = {STRUCTURE_START,   CERTIFICATE_DECLARATION,
-                          ATTESTATION_NONCE, TIMESTAMP,
+                          ATTESTATION_NONCE, SE_TIMESTAMP,
                           STRUCTURE_END,     ATTESTATION_CHALLENGE};
 
             err = se05x_set_binary_data(SE051H_ATTEST_TBS, attest_tbs, sizeof(attest_tbs));
@@ -270,7 +270,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
             uint8_t ncc_buf[] = {
                 DATA_VERSION_NCC,
                 CLUSTER_REVISION_NCC,
-                FEATUREMAP_NCC,
+                FEATUREMAP_NCC_THREAD_ONLY,
                 ATTRIBUTE_LIST_NCC,
                 ACCEPTED_COMMAND_LIST_NCC,
                 GENERATED_COMMAND_LIST_NCC,
@@ -355,6 +355,44 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
     }
 
     return err;
+}
+
+CHIP_ERROR PersistentStorageOpKeystorese05x::SignWithOpKeypair(FabricIndex fabricIndex, const ByteSpan & message, Crypto::P256ECDSASignature & outSignature) const
+{
+    VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
+    VerifyOrReturnError(IsValidFabricIndex(fabricIndex), CHIP_ERROR_INVALID_FABRIC_INDEX);
+
+    ChipLogDetail(Crypto, "PersistentStorageOpKeystorese05x::SignWithOpKeypair :: ECDSA Sign using SE05x ");
+
+    if (mIsPendingKeypairActive && (fabricIndex == mPendingFabricIndex))
+    {
+        VerifyOrReturnError(mPendingKeypair != nullptr, CHIP_ERROR_INTERNAL);
+        // We have an override key: sign with it!
+        return mPendingKeypair->ECDSA_sign_msg(message.data(), message.size(), outSignature);
+    }
+
+    // Use ExportOpKeypairForFabric from base class directly
+    auto transientOperationalKeypair = Platform::MakeUnique<P256KeypairSE05x>();
+    if (!transientOperationalKeypair)
+    {
+        return CHIP_ERROR_NO_MEMORY;
+    }
+
+    P256SerializedKeypair serializedOpKey;
+    // Call base class method directly using 'this'
+    CHIP_ERROR err = const_cast<PersistentStorageOpKeystorese05x*>(this)->ExportOpKeypairForFabric(fabricIndex, serializedOpKey);
+    if (err == CHIP_ERROR_PERSISTED_STORAGE_VALUE_NOT_FOUND)
+    {
+        return CHIP_ERROR_INVALID_FABRIC_INDEX;
+    }
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(Crypto, "Failed to export keypair for fabric %u: %" CHIP_ERROR_FORMAT, fabricIndex, err.Format());
+    }
+    ReturnErrorOnFailure(err);
+
+    ReturnErrorOnFailure(transientOperationalKeypair->Deserialize(serializedOpKey));
+    return transientOperationalKeypair->ECDSA_sign_msg(message.data(), message.size(), outSignature);
 }
 
 } // namespace chip

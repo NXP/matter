@@ -68,63 +68,6 @@
 #endif // ENABLE_SE05X_RND_GEN
 
 /*
- * Enable se05x for Generate EC Key
- */
-#ifndef ENABLE_SE05X_GENERATE_EC_KEY
-#ifdef CONFIG_CHIP_SE05X_GENERATE_EC_KEY
-#define ENABLE_SE05X_GENERATE_EC_KEY CONFIG_CHIP_SE05X_GENERATE_EC_KEY
-#else
-#define ENABLE_SE05X_GENERATE_EC_KEY 0
-#endif
-#endif // ENABLE_SE05X_GENERATE_EC_KEY
-
-/*
- * Enable ECDSA Verify using se05x
- */
-#ifndef ENABLE_SE05X_ECDSA_VERIFY
-#ifdef CONFIG_CHIP_SE05X_ECDSA_VERIFY
-#define ENABLE_SE05X_ECDSA_VERIFY CONFIG_CHIP_SE05X_ECDSA_VERIFY
-#else
-#define ENABLE_SE05X_ECDSA_VERIFY 0
-#endif
-#endif // ENABLE_SE05X_ECDSA_VERIFY
-
-/*
- * Enable se05x for PBKDF SHA256
- * Note: Not supported for SE052F.
- */
-#ifndef ENABLE_SE05X_PBKDF2_SHA256
-#ifdef CONFIG_CHIP_SE05X_PBKDF2_SHA256
-#define ENABLE_SE05X_PBKDF2_SHA256 CONFIG_CHIP_SE05X_PBKDF2_SHA256
-#else
-#define ENABLE_SE05X_PBKDF2_SHA256 0
-#endif
-#endif // ENABLE_SE05X_PBKDF2_SHA256
-
-/*
- * Enable se05x for HKDF SHA256
- * Note: Not supported for SE052F.
- */
-#ifndef ENABLE_SE05X_HKDF_SHA256
-#ifdef CONFIG_CHIP_SE05X_HKDF_SHA256
-#define ENABLE_SE05X_HKDF_SHA256 CONFIG_CHIP_SE05X_HKDF_SHA256
-#else
-#define ENABLE_SE05X_HKDF_SHA256 0
-#endif
-#endif // ENABLE_SE05X_HKDF_SHA256
-
-/*
- * Enable se05x for HMAC SHA256
- */
-#ifndef ENABLE_SE05X_HMAC_SHA256
-#ifdef CONFIG_CHIP_SE05X_HMAC_SHA256
-#define ENABLE_SE05X_HMAC_SHA256 CONFIG_CHIP_SE05X_HMAC_SHA256
-#else
-#define ENABLE_SE05X_HMAC_SHA256 0
-#endif
-#endif // ENABLE_SE05X_HMAC_SHA256
-
-/*
  * Enable se05x for DA
  * Ensure to run the provision example (one time) `third_party/simw-top-mini/repo/demos/se05x_dev_attest_key_prov/` to provision the
    device attestation key at id - 0x7FFF3007 and
