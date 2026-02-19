@@ -520,6 +520,7 @@ To enable GPIO notification functionality, additional hardware modifications are
 2. **Remove the jumper** on SE051ARD J14
 3. **Connect Host Enable Pin** (to control secure element power) to **SE051ARD SE_VDD** (J14-2)
 4. **Connect Host GPIO Notification Pin** to **SE051ARD IO2** (J11)
+5. **Set J10 on SE051ARD board**. This connects the pull-up resistor to IO2 which let IO2 be always high be default.
 
 > **Note:** If the host GPIO cannot drive the SE05x directly, use an additional OM-SE051ARD board as a switch/driver circuit.
 The connection of the 3 platforms tested are given below.
