@@ -53,6 +53,9 @@ CHIP_ERROR GeneratePaseSalt(std::vector<uint8_t> & spake2pSaltVector)
     err = se05x_get_certificate(kSpake2p_Pwd_Salt_Bin_File_id, cert, &certLen);
     VerifyOrReturnError(err == CHIP_NO_ERROR, err);
 
+    // To ensure we turn off the gpio and be ready for NFC comm
+    VerifyOrReturnError(se05x_close_session() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+
     VerifyOrReturnError(certLen >= (offset + kSpake2p_PBKDF_Salt_Length_SE05x + kSpake2p_Passcode_Length_SE05x),
                         CHIP_ERROR_INTERNAL);
 
@@ -116,8 +119,7 @@ CHIP_ERROR LinuxCommissionableDataProvider::Init(chip::Optional<std::vector<uint
     {
         if (serializedSpake2pVerifier.Value().size() != kSpake2p_VerifierSerialized_Length)
         {
-            ChipLogError(Support, "PASE verifier size invalid: %u",
-                         static_cast<unsigned>(serializedSpake2pVerifier.Value().size()));
+            ChipLogError(Support, "PASE verifier size invalid: %zu", (serializedSpake2pVerifier.Value().size()));
             return CHIP_ERROR_INVALID_ARGUMENT;
         }
 
@@ -161,7 +163,7 @@ CHIP_ERROR LinuxCommissionableDataProvider::Init(chip::Optional<std::vector<uint
 
     bool havePasscode = setupPasscode.HasValue();
 #if !ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
-    Spake2pVerifier passcodeVerifier;
+    Spake2pVerifier passcodeVerifier{};
 #endif
     std::vector<uint8_t> serializedPasscodeVerifier(kSpake2p_VerifierSerialized_Length);
     chip::MutableByteSpan saltSpan{ spake2pSalt.Value().data(), spake2pSalt.Value().size() };

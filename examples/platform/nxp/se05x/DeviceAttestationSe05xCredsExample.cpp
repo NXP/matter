@@ -130,7 +130,7 @@ CHIP_ERROR ExampleSe05xDACProvider::SignWithDeviceAttestationKey(const ByteSpan 
                                                                  MutableByteSpan & out_signature_buffer)
 {
     Crypto::P256ECDSASignature signature;
-    Crypto::P256Keypair keypair;
+    Crypto::P256KeypairSE05x keypair;
     Crypto::P256SerializedKeypair serialized_keypair;
     uint8_t magic_bytes[] = NXP_CRYPTO_KEY_MAGIC;
 
@@ -142,7 +142,7 @@ CHIP_ERROR ExampleSe05xDACProvider::SignWithDeviceAttestationKey(const ByteSpan 
 
     // Add public key + reference private key (ref to key inside SE)
 
-    TEMPORARY_RETURN_IGNORED serialized_keypair.SetLength(Crypto::kP256_PublicKey_Length + Crypto::kP256_PrivateKey_Length);
+    serialized_keypair.SetLength(Crypto::kP256_PublicKey_Length + Crypto::kP256_PrivateKey_Length);
 
     memset(serialized_keypair.Bytes(), 0, Crypto::kP256_PublicKey_Length);
     memcpy(serialized_keypair.Bytes() + Crypto::kP256_PublicKey_Length, magic_bytes, sizeof(magic_bytes));

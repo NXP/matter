@@ -119,10 +119,6 @@ CHIP_ERROR se05x_session_open(void)
     return CHIP_NO_ERROR;
 }
 
-#if !ENABLE_SE05X_RND_GEN
-extern void free_entropy_context_h();
-#endif
-
 /* Close session to se05x */
 CHIP_ERROR se05x_close_session(void)
 {
@@ -143,10 +139,6 @@ CHIP_ERROR se05x_close_session(void)
         ChipLogError(NotSpecified, "SE05x - Error in se05x_host_gpio_power_set(0) function");
         return CHIP_ERROR_INTERNAL;
     }
-
-#if !ENABLE_SE05X_RND_GEN
-    free_entropy_context_h();
-#endif
 
     return CHIP_NO_ERROR;
 }
@@ -349,6 +341,24 @@ CHIP_ERROR se05x_set_binary_data(uint32_t keyId, const uint8_t * buf, size_t buf
     VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
 
     status = sss_key_store_set_key(&gex_sss_chip_ctx.ks, &keyObject, buf, buflen, buflen * 8, NULL, 0);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    return CHIP_NO_ERROR;
+}
+
+/* Set EC key in se05x */
+CHIP_ERROR se05x_set_ec_key(uint32_t keyId, const uint8_t * buf, size_t buflen) {
+    sss_object_t keyObject = { 0 };
+    sss_status_t status    = kStatus_SSS_Fail;
+
+    status = sss_key_object_init(&keyObject, &gex_sss_chip_ctx.ks);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_object_allocate_handle(&keyObject, keyId, kSSS_KeyPart_Pair, kSSS_CipherType_EC_NIST_P, buflen,
+                                            kKeyObject_Mode_Persistent);
+    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+
+    status = sss_key_store_set_key(&gex_sss_chip_ctx.ks, &keyObject, buf, buflen, 256, NULL, 0);
     VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
 
     return CHIP_NO_ERROR;

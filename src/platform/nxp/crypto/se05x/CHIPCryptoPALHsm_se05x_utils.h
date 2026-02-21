@@ -32,7 +32,7 @@
 
 /* se05x includes */
 #include "ex_sss_boot.h"
-#include "fsl_sss_api.h"
+#include "sss/inc/fsl_sss_api.h"
 #include "se051h_nfc_comm_prov.h"
 #include "se05x_host_gpio.h"
 #include <fsl_sss_se05x_apis.h>
@@ -140,6 +140,16 @@ CHIP_ERROR se05x_set_certificate(uint32_t keyId, const uint8_t * buf, size_t buf
  * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
  */
 CHIP_ERROR se05x_set_binary_data(uint32_t keyId, const uint8_t * buf, size_t buflen);
+
+/**
+ * @brief Set EC key in se05x.
+ * The Key is stored with Persistent option.
+ * @param[in] keyid - Key id of the object.
+ * @param[in] buf - Buffer containing Key data.
+ * @param[in] buflen - Buffer length.
+ * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
+ */
+CHIP_ERROR se05x_set_ec_key(uint32_t keyId, const uint8_t * buf, size_t buflen);
 
 /**
  * @brief Perform internal sign in se05x (only on SE051H).

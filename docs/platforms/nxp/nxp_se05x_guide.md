@@ -6,7 +6,7 @@
 -   [SE05x Type Configurations](#se05x_type_configurations)
 -   [Device Attestation](#device_attestation)
 -   [SCP03 Authentication](#scp03)
--   [Using Trust Provisioned Verifiers of SE051H for SPAKE2P](#using_tp_verifiers_for_spake)
+-   [Using Trust Provisioned Verifiers of SE051H for SPAKE2+](#tp_verifiers_se051h)
 
 <hr>
 
@@ -28,6 +28,9 @@ The following cryptographic operations can be offloaded to SE05x:
 -   HKDF (HMAC-based Key Derivation Function)
 -   HMAC (Hash-based Message Authentication Code)
 -   SPAKE2+ (Password Authenticated Key Exchange)
+
+The EC key generation / ECDSA Sign for the operational key is by default offloaded to SE05x on enabling secure element in the build.
+To offload other crypto operations to SE05x, application / matter stack changes will be required.
 
 <a name="supported_platforms"></a>
 
@@ -107,6 +110,20 @@ which crypto operations are offloaded to SE05x.
 Refer to [SE05x Type Configurations](#se05x_type_configurations) to select the
 correct secure element variant.
 
+#### Building the Example
+
+**With Pre-Provisioned WiFi Credentials:**
+
+```bash
+west build -d <out_dir> -b frdmrw612 examples/thermostat/nxp/ -DCONF_FILE_NAME=prj_wifi.conf -DCONFIG_CHIP_SE05X=y
+```
+
+**Without Pre-Provisioned WiFi Credentials:**
+
+```bash
+west build -d <out_dir> -b frdmrw612 examples/thermostat/nxp/ -DCONF_FILE_NAME=prj_wifi_onnetwork.conf -DCONFIG_CHIP_SE05X=y -DCONFIG_CHIP_APP_WIFI_SSID=\"<wifi_ssid>\" -DCONFIG_CHIP_APP_WIFI_PASSWORD=\"<password>\"
+```
+
 ### RT1060 EVKB
 
 Integration of SE05x with RT1060 EVKB board is demonstrated using the thermostat
@@ -115,15 +132,34 @@ and all-clusters-app examples.
 **Prerequisites:** Refer to [RT1060](nxp_rt1060_guide.md) to set up the build
 environment.
 
-Refer to
-[RW61x and SE05x](./nxp_rt1060_guide.md#se05x_secure_element_with_rt1060) for
-detailed hardware connections and build instructions.
+Refer to [RT1060 and SE05x](./nxp_rt1060_guide.md#se05x_secure_element_with_rt1060)
+for detailed hardware connections and build instructions.
 
 Refer to [SE05x Crypto Configurations](#se05x_crypto_configurations) to control
 which crypto operations are offloaded to SE05x.
 
 Refer to [SE05x Type Configurations](#se05x_type_configurations) to select the
 correct secure element variant.
+
+
+### MCXW72
+
+Integration of SE05x with MCXW72 board is demonstrated using the lighting app example.
+
+**Prerequisites:** Refer to [MCXW72](nxp_mcxw72_guide.md) to set up the build
+environment.
+
+Refer to [MCXW72 and SE05x](./nxp_mcxw72_guide.md#se05x_secure_element_with_mcxw72)
+for detailed hardware connections and build instructions.
+
+Refer to [SE05x Crypto Configurations](#se05x_crypto_configurations) to control
+which crypto operations are offloaded to SE05x.
+
+Refer to [SE05x Type Configurations](#se05x_type_configurations) to select the
+correct secure element variant.
+
+**Note:** - It is not recomended to enable random number generation from SE05x when using with W72.
+
 
 <a name="se05x_crypto_configurations"></a>
 
@@ -139,11 +175,6 @@ to SE05x:
 | chip_se05x_spake_verifier               | SPAKE2+ Verifier on SE   | Boolean | false   |
 | chip_se05x_spake_prover                 | SPAKE2+ Prover on SE     | Boolean | false   |
 | chip_se05x_rnd_gen                      | Random number generation | Boolean | false   |
-| chip_se05x_gen_ec_key                   | Generate EC key in SE    | Boolean | true    |
-| chip_se05x_ecdsa_verify                 | ECDSA Verify             | Boolean | true    |
-| chip_se05x_pbkdf2_sha256                | PBKDF2-SHA256            | Boolean | false   |
-| chip_se05x_hkdf_sha256                  | HKDF-SHA256              | Boolean | false   |
-| chip_se05x_hmac_sha256                  | HMAC-SHA256              | Boolean | false   |
 | chip_se05x_device_attestation           | Device attestation       | Boolean | false   |
 | chip_se05x_spake_verifier_use_tp_values | SPAKE with TP verifiers  | Boolean | false   |
 | chip_se05x_spake_verifier_tp_set_no     | TP Passcode set number   | Integer | 1       |
@@ -162,11 +193,6 @@ gn gen out --args="chip_se05x_device_attestation=true chip_se05x_hkdf_sha256=tru
 | CONFIG_CHIP_SE05X_SPAKE_VERIFIER               | SPAKE2+ Verifier on SE   | n       |
 | CONFIG_CHIP_SE05X_SPAKE_PROVER                 | SPAKE2+ Prover on SE     | n       |
 | CONFIG_CHIP_SE05X_RND_GEN                      | Random number generation | n       |
-| CONFIG_CHIP_SE05X_GENERATE_EC_KEY              | Generate EC key in SE    | y       |
-| CONFIG_CHIP_SE05X_ECDSA_VERIFY                 | ECDSA Verify             | y       |
-| CONFIG_CHIP_SE05X_PBKDF2_SHA256                | PBKDF2-SHA256            | n       |
-| CONFIG_CHIP_SE05X_HKDF_SHA256                  | HKDF-SHA256              | n       |
-| CONFIG_CHIP_SE05X_HMAC_SHA256                  | HMAC-SHA256              | n       |
 | CONFIG_CHIP_SE05X_DEVICE_ATTESTATION           | Device attestation       | n       |
 | CONFIG_CHIP_SE05X_SPAKE_VERIFIER_USE_TP_VALUES | SPAKE with TP verifiers  | n       |
 | CONFIG_CHIP_SE05X_SPAKE_VERIFIER_TP_SET_NO     | TP Passcode set number   | 1       |
@@ -281,7 +307,7 @@ west build -d <out_dir> -b <board> <example_path> -DCONFIG_SE05X_SCP03=y
 > **Important:** Ensure CMAC (`MBEDTLS_CMAC_C`) is enabled in your mbedTLS
 > configuration file.
 
-<a name="using_tp_verifiers_for_spake"></a>
+<a name="tp_verifiers_se051h"></a>
 
 ## Using Trust Provisioned Verifiers of SE051H for SPAKE2+
 
@@ -330,7 +356,7 @@ corresponding QR code to the T4T applet.
 **GN Build:**
 
 ```bash
-gn gen out --args="chip_se05x_spake_verifier=true chip_se05x_spake_verifier_use_tp_values=true chip_se05x_spake_verifier_tp_set_no=1 chip_se05x_spake_verifier_tp_iter_cnt=1000"
+gn gen out --args="chip_se05x_spake_verifier=true chip_se05x_spake_verifier_use_tp_values=true chip_se05x_spake_verifier_tp_set_no=1 chip_se05x_spake_verifier_tp_itter_cnt=1000"
 ```
 
 **CMake Build:**

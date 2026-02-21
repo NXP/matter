@@ -57,6 +57,8 @@ CHIP_ERROR Se05xDataProviderImpl::GetSpake2pSaltBuffer(char * buf, uint16_t bufL
     CHIP_ERROR err            = CHIP_NO_ERROR;
     constexpr size_t kSaltLen = kSpake2p_PBKDF_Salt_Length_SE05x;
 
+    VerifyOrReturnError(SE05X_SPAKE_VERIFIER_TP_SET_NO >= 1 && SE05X_SPAKE_VERIFIER_TP_SET_NO <= 3, CHIP_ERROR_INVALID_ARGUMENT);
+
     /* 3 set of verifiers are provisioned in se05x. Each with 4 bytes passcode and 32 bytes salt */
     uint8_t offset = (SE05X_SPAKE_VERIFIER_TP_SET_NO - 1) * (kSpake2p_PBKDF_Salt_Length_SE05x + kSpake2p_Passcode_Length_SE05x);
 
@@ -117,6 +119,7 @@ CHIP_ERROR Se05xDataProviderImpl::GetSetupPasscode(uint32_t & setupPasscode)
     /* 3 set of verifiers are provisioned in se05x. Each with 4 bytes passcode and 32 bytes salt */
     uint8_t offset = (SE05X_SPAKE_VERIFIER_TP_SET_NO - 1) * (kSpake2p_PBKDF_Salt_Length_SE05x + kSpake2p_Passcode_Length_SE05x);
 
+    VerifyOrReturnError(certLen >= offset + 4, CHIP_ERROR_INTERNAL);
     setupPasscode = (BCD_TO_DEC(cert[offset + 3])) + (100 * BCD_TO_DEC(cert[offset + 2])) + (10000 * BCD_TO_DEC(cert[offset + 1])) +
         (1000000 * BCD_TO_DEC(cert[offset]));
     return err;
@@ -148,7 +151,7 @@ CHIP_ERROR Se05xDataProviderImpl::SignWithDeviceAttestationKey(const ByteSpan & 
                                                                MutableByteSpan & out_signature_buffer)
 {
     Crypto::P256ECDSASignature signature;
-    Crypto::P256Keypair keypair;
+    Crypto::P256KeypairSE05x keypair;
     Crypto::P256SerializedKeypair serialized_keypair;
     uint8_t magic_bytes[] = NXP_CRYPTO_KEY_MAGIC;
 
@@ -160,7 +163,7 @@ CHIP_ERROR Se05xDataProviderImpl::SignWithDeviceAttestationKey(const ByteSpan & 
 
     // Add public key + reference private key (ref to key inside SE)
 
-    TEMPORARY_RETURN_IGNORED serialized_keypair.SetLength(Crypto::kP256_PublicKey_Length + Crypto::kP256_PrivateKey_Length);
+    serialized_keypair.SetLength(Crypto::kP256_PublicKey_Length + Crypto::kP256_PrivateKey_Length);
 
     memset(serialized_keypair.Bytes(), 0, Crypto::kP256_PublicKey_Length);
     memcpy(serialized_keypair.Bytes() + Crypto::kP256_PublicKey_Length, magic_bytes, sizeof(magic_bytes));
