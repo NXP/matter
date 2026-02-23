@@ -137,7 +137,7 @@ static void DispatchResolveError(intptr_t context);
 static void HandleResolveCleanup(mDnsQueryCtx & resolveContext, ResolveStep stepType);
 
 static mDnsQueryCtx * GetResolveElement(const char * instanceName, NameType aType);
-static bool IsInResolveList(const mDnsQueryCtx * pResolveContext);
+static mDnsQueryCtx * GetBrowseElement(const char * instanceName);
 
 static CHIP_ERROR ResolveBySrp(otInstance * thrInstancePtr, char * serviceName, mDnsQueryCtx * context, DnssdService * mdnsReq);
 static CHIP_ERROR BrowseBySrp(otInstance * thrInstancePtr, char * serviceName, mDnsQueryCtx * context);
@@ -943,63 +943,54 @@ static void DispatchBrowse(intptr_t context)
 
 static void DispatchTxtResolve(intptr_t context)
 {
-    mDnsQueryCtx * pResolveContext = reinterpret_cast<mDnsQueryCtx *>(context);
+    mDnsQueryCtx * resolveContext = reinterpret_cast<mDnsQueryCtx *>(context);
     otError error;
 
-    VerifyOrReturn(IsInResolveList(pResolveContext));
-
     // Stop SRV resolver before starting TXT one, ignore error as it will only happen if mMDS module is not initialized
-    (void) otMdnsStopSrvResolver(ThreadStackMgrImpl().OTInstance(), &pResolveContext->mSrvInfo);
+    otMdnsStopSrvResolver(ThreadStackMgrImpl().OTInstance(), &resolveContext->mSrvInfo);
 
-    pResolveContext->mTxtInfo.mServiceInstance = pResolveContext->mMdnsService.mName;
-    pResolveContext->mTxtInfo.mServiceType     = pResolveContext->mServiceType;
-    pResolveContext->mTxtInfo.mCallback        = OtTxtCallback;
-    pResolveContext->mTxtInfo.mInfraIfIndex    = mNetifIndex;
+    resolveContext->mTxtInfo.mServiceInstance = resolveContext->mMdnsService.mName;
+    resolveContext->mTxtInfo.mServiceType     = resolveContext->mServiceType;
+    resolveContext->mTxtInfo.mCallback        = OtTxtCallback;
+    resolveContext->mTxtInfo.mInfraIfIndex    = mNetifIndex;
 
-    error = otMdnsStartTxtResolver(ThreadStackMgrImpl().OTInstance(), &pResolveContext->mTxtInfo);
+    error = otMdnsStartTxtResolver(ThreadStackMgrImpl().OTInstance(), &resolveContext->mTxtInfo);
     if (error != OT_ERROR_NONE)
     {
-        pResolveContext->error = MapOpenThreadError(error);
+        resolveContext->error = MapOpenThreadError(error);
         TEMPORARY_RETURN_IGNORED DeviceLayer::PlatformMgr().ScheduleWork(DispatchResolveError,
-                                                                         reinterpret_cast<intptr_t>(pResolveContext));
+                                                                         reinterpret_cast<intptr_t>(resolveContext));
     }
 }
 
 static void DispatchAddressResolve(intptr_t context)
 {
     otError error;
-    mDnsQueryCtx * pResolveContext = reinterpret_cast<mDnsQueryCtx *>(context);
-
-    VerifyOrReturn(IsInResolveList(pResolveContext));
-
+    mDnsQueryCtx * resolveContext = reinterpret_cast<mDnsQueryCtx *>(context);
     // Stop TXT resolver before starting address one, ignore error as it will only happen if mMDS module is not initialized
-    (void) otMdnsStopTxtResolver(ThreadStackMgrImpl().OTInstance(), &pResolveContext->mTxtInfo);
+    otMdnsStopTxtResolver(ThreadStackMgrImpl().OTInstance(), &resolveContext->mTxtInfo);
 
-    pResolveContext->mAddrInfo.mCallback     = OtAddressCallback;
-    pResolveContext->mAddrInfo.mHostName     = pResolveContext->mMdnsService.mHostName;
-    pResolveContext->mAddrInfo.mInfraIfIndex = mNetifIndex;
+    resolveContext->mAddrInfo.mCallback     = OtAddressCallback;
+    resolveContext->mAddrInfo.mHostName     = resolveContext->mMdnsService.mHostName;
+    resolveContext->mAddrInfo.mInfraIfIndex = mNetifIndex;
 
-    error = otMdnsStartIp6AddressResolver(ThreadStackMgrImpl().OTInstance(), &pResolveContext->mAddrInfo);
+    error = otMdnsStartIp6AddressResolver(ThreadStackMgrImpl().OTInstance(), &resolveContext->mAddrInfo);
     if (error != OT_ERROR_NONE)
     {
-        pResolveContext->error = MapOpenThreadError(error);
+        resolveContext->error = MapOpenThreadError(error);
         TEMPORARY_RETURN_IGNORED DeviceLayer::PlatformMgr().ScheduleWork(DispatchResolveError,
-                                                                         reinterpret_cast<intptr_t>(pResolveContext));
+                                                                         reinterpret_cast<intptr_t>(resolveContext));
     }
 }
 
 static void DispatchResolve(intptr_t context)
 {
     mDnsQueryCtx * pResolveContext = reinterpret_cast<mDnsQueryCtx *>(context);
-
-    VerifyOrReturn(IsInResolveList(pResolveContext));
-
-    Dnssd::DnssdService & service = pResolveContext->mMdnsService;
+    Dnssd::DnssdService & service  = pResolveContext->mMdnsService;
     Span<Inet::IPAddress> ipAddrs;
 
-    // Stop Address resolver, we have finished resolving the service. Ignore error as it will only happen if
-    // mMDS module is not initialized
-    (void) otMdnsStopIp6AddressResolver(ThreadStackMgrImpl().OTInstance(), &pResolveContext->mAddrInfo);
+    // Stop Address resolver, we have finished resolving the service
+    otMdnsStopIp6AddressResolver(ThreadStackMgrImpl().OTInstance(), &pResolveContext->mAddrInfo);
 
     if (service.mAddress.has_value())
     {
@@ -1017,9 +1008,6 @@ static void DispatchResolve(intptr_t context)
 
 static void DispatchResolveSrp(intptr_t context)
 {
-    // When processing this function, the context is valid and not added to the resolve list. The OpenThread service
-    // resolver was not started, and a call to NxpChipDnssdShutdown or NxpChipDnssdResolveNoLongerNeeded will have
-    // no effect on this context. The only place that the context is being freed is below.
     mDnsQueryCtx * pResolveContext = reinterpret_cast<mDnsQueryCtx *>(context);
     Dnssd::DnssdService & service  = pResolveContext->mMdnsService;
     Span<Inet::IPAddress> ipAddrs;
@@ -1039,9 +1027,6 @@ static void DispatchResolveSrp(intptr_t context)
 static void DispatchResolveError(intptr_t context)
 {
     mDnsQueryCtx * pResolveContext = reinterpret_cast<mDnsQueryCtx *>(context);
-
-    VerifyOrReturn(IsInResolveList(pResolveContext));
-
     Span<Inet::IPAddress> ipAddrs;
 
     // The context will be freed and the resolve operation is stopped. Matter will
@@ -1118,18 +1103,5 @@ static mDnsQueryCtx * GetResolveElement(const char * aName, NameType aType)
     return pResolveContext;
 }
 
-static bool IsInResolveList(const mDnsQueryCtx * pResolveContext)
-{
-    mDnsQueryCtx * pContextIterator = reinterpret_cast<mDnsQueryCtx *>(LIST_GetHead(&mResolveList));
-    while (pContextIterator)
-    {
-        if (pContextIterator == pResolveContext)
-        {
-            return true;
-        }
-        pContextIterator = reinterpret_cast<mDnsQueryCtx *>(LIST_GetNext(&pContextIterator->link));
-    }
-    return false;
-}
 } // namespace Dnssd
 } // namespace chip
