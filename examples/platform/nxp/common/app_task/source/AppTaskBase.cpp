@@ -189,12 +189,6 @@ void chip::NXP::App::AppTaskBase::InitServer(intptr_t arg)
     initParams.operationalKeystore = chip::NXP::App::OperationalKeystore::GetInstance();
 #endif
     (void) initParams.InitializeStaticResourcesBeforeServerInit();
-
-#if CONFIG_DEVICE_INFO_PROVIDER_IMPL
-    gExampleDeviceInfoProvider.SetStorageDelegate(initParams.persistentStorageDelegate);
-    chip::DeviceLayer::SetDeviceInfoProvider(&gExampleDeviceInfoProvider);
-#endif
-
     initParams.dataModelProvider = app::CodegenDataModelProviderInstance(initParams.persistentStorageDelegate);
 
 #if CONFIG_NET_L2_OPENTHREAD
@@ -207,10 +201,14 @@ void chip::NXP::App::AppTaskBase::InitServer(intptr_t arg)
 #endif
 
     VerifyOrDie((chip::Server::GetInstance().Init(initParams)) == CHIP_NO_ERROR);
-
-#if CONFIG_CHIP_APP_OPERATIONAL_KEYSTORE
     auto * persistentStorage = &Server::GetInstance().GetPersistentStorage();
+#if CONFIG_CHIP_APP_OPERATIONAL_KEYSTORE
     TEMPORARY_RETURN_IGNORED chip::NXP::App::OperationalKeystore::Init(persistentStorage);
+#endif
+
+#if CONFIG_DEVICE_INFO_PROVIDER_IMPL
+    gExampleDeviceInfoProvider.SetStorageDelegate(persistentStorage);
+    chip::DeviceLayer::SetDeviceInfoProvider(&gExampleDeviceInfoProvider);
 #endif
 
     GetAppTask().PostInitMatterServerInstance();
