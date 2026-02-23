@@ -35,7 +35,12 @@ config CHIP_NFC_ONBOARDING_PAYLOAD
 	default n
 	imply I2C
 	imply ST25DVXXKC
-	imply NFC
+	imply NFC		
+	imply NFC_NDEF
+	imply NFC_NDEF_MSG
+	imply NFC_NDEF_RECORD
+	imply NFC_NDEF_URI_REC
+	imply NFC_NDEF_URI_MSG
 	help
 	  Enables sharing the onboarding payload in the NFC tag.
 
