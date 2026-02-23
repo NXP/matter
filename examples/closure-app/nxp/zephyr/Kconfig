@@ -13,7 +13,7 @@
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
 #
-mainmenu "Matter NXP Closure Example Application"
+mainmenu "Matter NXP Thermostat Example Application"
 
 rsource "../../../../config/zephyr/chip-module/Kconfig.defaults"
 source "Kconfig.zephyr"
