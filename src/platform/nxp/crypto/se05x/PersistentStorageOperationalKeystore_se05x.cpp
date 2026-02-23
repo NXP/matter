@@ -32,24 +32,6 @@ using namespace chip::Crypto;
     }
 #define CHIP_SE05x_NODE_OP_KEY_ID_INDEX 11
 
-static CHIP_ERROR generate_node_oper_key()
-{
-    sss_object_t keyObject = { 0 };
-    sss_status_t status    = kStatus_SSS_Fail;
-
-    status = sss_key_object_init(&keyObject, &gex_sss_chip_ctx.ks);
-    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
-
-    status = sss_key_object_allocate_handle(&keyObject, CHIP_SE05x_NODE_OP_KEY_INDEX + 1, kSSS_KeyPart_Pair,
-                                            kSSS_CipherType_EC_NIST_P, 256, kKeyObject_Mode_Persistent);
-    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
-
-    status = sss_key_store_generate_key(&gex_sss_chip_ctx.ks, &keyObject, 256, 0);
-    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
-
-    return CHIP_NO_ERROR;
-}
-
 CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex fabricIndex,
                                                                    MutableByteSpan & outCertificateSigningRequest)
 {

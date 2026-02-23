@@ -230,7 +230,8 @@ CHIP_ERROR P256KeypairSE05x::ECDSA_sign_msg(const uint8_t * msg, size_t msg_leng
     error = EcdsaAsn1SignatureToRaw(kP256_FE_Length, ByteSpan{ signature_se05x, signature_se05x_len }, out_raw_sig_span);
     VerifyOrExit(error == CHIP_NO_ERROR, error = CHIP_ERROR_INTERNAL);
 
-    out_signature.SetLength(2 * kP256_FE_Length);
+    error = out_signature.SetLength(2 * kP256_FE_Length);
+    VerifyOrExit(error == CHIP_NO_ERROR, error = CHIP_ERROR_INTERNAL);
 
     error = CHIP_NO_ERROR;
 exit:
@@ -260,8 +261,7 @@ CHIP_ERROR P256KeypairSE05x::Serialize(P256SerializedKeypair & output) const
     bbuf.Put(mKeypair.mBytes, kP256_PrivateKey_Length);
 
     VerifyOrReturnError(bbuf.Fit(), CHIP_ERROR_BUFFER_TOO_SMALL);
-
-    output.SetLength(bbuf.Needed());
+    TEMPORARY_RETURN_IGNORED output.SetLength(bbuf.Needed());
 
     return CHIP_NO_ERROR;
 }
