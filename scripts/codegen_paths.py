@@ -15,11 +15,16 @@
 
 # py_matter_idl may not be installed in the pigweed venv.
 # Reference it directly from the source tree.
-from python_path import PythonPath
+import os
+import sys
 
-with PythonPath('py_matter_idl', relative_to=__file__):
-    from matter.idl.generators.path_resolution import expand_path_for_idl
-    from matter.idl.matter_idl_parser import CreateParser
+# Add py_matter_idl to sys.path
+_script_dir = os.path.dirname(os.path.realpath(__file__))
+_py_matter_idl_path = os.path.join(_script_dir, 'py_matter_idl')
+sys.path.insert(0, _py_matter_idl_path)
+
+from matter.idl.generators.path_resolution import expand_path_for_idl
+from matter.idl.matter_idl_parser import CreateParser
 
 import logging
 
