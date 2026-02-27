@@ -63,6 +63,8 @@ using namespace ::chip::Crypto;
 namespace chip {
 namespace DeviceLayer {
 
+FactoryDataProviderImpl FactoryDataProviderImpl::sInstance;
+
 CHIP_ERROR FactoryDataProviderImpl::SearchForId(uint8_t searchedType, uint8_t * pBuf, size_t bufLength, uint16_t & length,
                                                 uint32_t * contentAddr)
 {
@@ -258,13 +260,10 @@ CHIP_ERROR FactoryDataProviderImpl::Init(void)
     return CHIP_NO_ERROR;
 }
 
-#ifndef CONFIG_CHIP_FACTORY_DATA_PROVIDER_CUSTOM_SINGLETON_IMPL
 FactoryDataProvider & FactoryDataPrvdImpl()
 {
-    static FactoryDataProviderImpl sInstance;
-    return sInstance;
+    return FactoryDataProviderImpl::sInstance;
 }
-#endif
 
 } // namespace DeviceLayer
 } // namespace chip

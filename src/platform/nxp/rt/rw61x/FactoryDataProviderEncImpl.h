@@ -44,6 +44,8 @@ namespace DeviceLayer {
 class FactoryDataProviderImpl : public FactoryDataProvider
 {
 public:
+    static FactoryDataProviderImpl sInstance;
+
     FactoryDataProviderImpl();
     ~FactoryDataProviderImpl(){};
 
