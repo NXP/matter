@@ -341,4 +341,4 @@
 [submodule "third_party/imx-secure-enclave/repo"]
 	path = third_party/imx-secure-enclave/repo
 	url = ssh://git@bitbucket.sw.nxp.com/lfac/secure_enclave.git
-	branch = lf-6.12.49_2.2.0
+	branch = lf-6.18.2-1.0.0-rc2
