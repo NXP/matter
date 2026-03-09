@@ -289,6 +289,16 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
                 SUPPORTED_THREAD_FEATURES_NCC,
                 THREAD_VERSION_NCC,
             };
+
+            uint8_t buffer[512] = {0};
+            size_t buf_len = sizeof(buffer);
+
+            // read NCC to check what was the last network interface type set for NFC comm
+            err = se05x_get_certificate(SE051H_NCC_ID, buffer, &buf_len);
+            VerifyOrReturnError(err == CHIP_NO_ERROR, err);
+
+            ncc_buf[NETWORK_INTERFACE_BTYE_OFFSET] = buffer[NETWORK_INTERFACE_BTYE_OFFSET];
+
             err = se05x_set_binary_data(SE051H_NCC_ID, ncc_buf, sizeof(ncc_buf));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
         }

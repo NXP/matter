@@ -495,7 +495,7 @@ void se05x_setCryptoObjID(SE05x_CryptoObjectID_t objId, uint8_t status)
 CHIP_ERROR se05x_disable_nfc_commision()
 {
     CHIP_ERROR err      = CHIP_NO_ERROR;
-    const uint8_t buf[] = CHIP_SE05X_NFC_COMM_DESELECT_RSP_VAL;
+    const uint8_t buf[1] = {0x00};
 
     err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));
     VerifyOrReturnError(err == CHIP_NO_ERROR, err);
@@ -506,7 +506,7 @@ CHIP_ERROR se05x_disable_nfc_commision()
 CHIP_ERROR se05x_enable_nfc_commision()
 {
     CHIP_ERROR err      = CHIP_NO_ERROR;
-    const uint8_t buf[] = CHIP_SE05X_NFC_COMM_SELECT_RSP_VAL;
+    const uint8_t buf[1] = {0x01};
 
     err = se05x_set_binary_data(CHIP_SE05X_NFC_COMM_SELECT_RSP_BIN_ID, buf, sizeof(buf));
     VerifyOrReturnError(err == CHIP_NO_ERROR, err);
