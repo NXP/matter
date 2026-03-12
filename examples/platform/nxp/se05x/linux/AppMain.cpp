@@ -613,6 +613,8 @@ int ChipLinuxAppInit(int argc, char * const argv[], OptionSet * customOptions,
         SuccessOrExit(err = DeviceLayer::ThreadStackMgrImpl().InitThreadStack());
         ChipLogProgress(NotSpecified, "Thread initialized.");
     }
+
+    DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().se05x_connect_to_thread_network();
 #endif // CHIP_ENABLE_OPENTHREAD
 
 #if CHIP_CONFIG_ENABLE_ICD_SERVER

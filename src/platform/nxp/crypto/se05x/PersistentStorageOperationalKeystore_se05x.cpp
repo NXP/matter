@@ -127,7 +127,22 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
 #define SE05X_SET_BIN_DATA_TEMPLATE(keyid, buf)                                                                                    \
     {                                                                                                                              \
         const uint8_t buffer[] = { buf };                                                                                          \
-        err                    = se05x_set_binary_data(keyid, buffer, sizeof(buffer));                                             \
+        uint16_t seObjectSize = 0;                                                                                                 \
+        CHIP_ERROR getErr = se05x_read_object_size(keyid, &seObjectSize);                                                          \
+        if (getErr == CHIP_NO_ERROR)                                                                                               \
+        {                                                                                                                          \
+            if (seObjectSize != sizeof(buffer))                                                                                    \
+            {                                                                                                                      \
+                ChipLogProgress(Crypto, "SE05x: Size mismatch for keyid 0x%" PRIx32 " (existing: %u, new: %zu) - deleting old object", \
+                                keyid, seObjectSize, sizeof(buffer));                                                              \
+                se05x_delete_key(keyid);                                                                                           \
+            }                                                                                                                      \
+            else                                                                                                                   \
+            {                                                                                                                      \
+                ChipLogDetail(Crypto, "SE05x: Size matches for keyid 0x%" PRIx32 " (%zu bytes)", keyid, sizeof(buffer));          \
+            }                                                                                                                      \
+        }                                                                                                                          \
+        err = se05x_set_binary_data(keyid, buffer, sizeof(buffer));                                                                \
         VerifyOrReturnError(err == CHIP_NO_ERROR, err);                                                                            \
     }
 

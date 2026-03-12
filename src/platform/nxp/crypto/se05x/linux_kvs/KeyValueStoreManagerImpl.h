@@ -28,13 +28,44 @@
 #include <lib/core/TLV.h>
 #include <lib/core/TLVUtilities.h>
 #include <lib/support/Base64.h>
+#include <lib/support/ThreadOperationalDataset.h>
+#include <platform/CHIPDeviceLayer.h>
 #include <platform/Linux/CHIPLinuxStorage.h>
+#include <platform/Linux/NetworkCommissioningDriver.h>
 #include <unistd.h>
 #include <vector>
 
 namespace chip {
 namespace DeviceLayer {
 namespace PersistedStorage {
+
+static DeviceLayer::NetworkCommissioning::LinuxThreadDriver sLinuxThreadDriver;
+static char op_data_set[256]  = { 0 };
+static size_t op_data_set_len = sizeof(op_data_set);
+
+class ThreadConnectCallback : public DeviceLayer::NetworkCommissioning::Internal::WirelessDriver::ConnectCallback
+{
+public:
+    void OnResult(DeviceLayer::NetworkCommissioning::Status status, CharSpan debugText, int32_t connectStatus) override
+    {
+        if (status == DeviceLayer::NetworkCommissioning::Status::kSuccess)
+        {
+            ChipLogProgress(NotSpecified, "Thread ConnectNetwork succeeded, committing configuration");
+            CHIP_ERROR err = sLinuxThreadDriver.CommitConfiguration();
+            if (err != CHIP_NO_ERROR)
+            {
+                ChipLogError(NotSpecified, "Failed to commit Thread config: %" CHIP_ERROR_FORMAT, err.Format());
+            }
+        }
+        else
+        {
+            ChipLogError(NotSpecified, "Thread ConnectNetwork failed with status: %d", static_cast<int>(status));
+            sLinuxThreadDriver.RevertConfiguration();
+        }
+    }
+};
+
+static ThreadConnectCallback sThreadConnectCallback;
 
 class KeyValueStoreManagerImpl : public KeyValueStoreManager
 {
@@ -117,6 +148,64 @@ public:
                       kDefaultFailSafeTimeSeconds);
 
         return kDefaultFailSafeTimeSeconds;
+    }
+
+    /**
+     * @brief Connect to thread network using operational data set that is read from SE05x during NFC commissioning
+     * @param None
+     * @return CHIP_NO_ERROR on success, appropriate error code on failure
+     */
+    CHIP_ERROR se05x_connect_to_thread_network()
+    {
+        char debugTextBuffer[128];
+        MutableCharSpan debugText(debugTextBuffer);
+        uint8_t networkIndex = 0;
+
+        ReturnErrorOnFailure(SynchronizeNetworkCredentials());
+
+        if (op_data_set_len == 0)
+        {
+            ChipLogDetail(NotSpecified, "SE05x: No operational data set found from SE05x");
+            return CHIP_NO_ERROR;
+        }
+
+        CHIP_ERROR err = sLinuxThreadDriver.Init(nullptr);
+        if (err != CHIP_NO_ERROR)
+        {
+            ChipLogError(NotSpecified, "Failed to init LinuxThreadDriver: %" CHIP_ERROR_FORMAT, err.Format());
+            return err;
+        }
+
+        DeviceLayer::NetworkCommissioning::Status status =
+            sLinuxThreadDriver.AddOrUpdateNetwork(ByteSpan((uint8_t *) op_data_set, op_data_set_len), debugText, networkIndex);
+        if (status != DeviceLayer::NetworkCommissioning::Status::kSuccess)
+        {
+            ChipLogError(NotSpecified, "AddOrUpdateNetwork failed with status: %d", static_cast<int>(status));
+            return CHIP_ERROR_INTERNAL;
+        }
+
+        ChipLogProgress(NotSpecified, "AddOrUpdateNetwork succeeded, networkIndex=%u", networkIndex);
+
+        Thread::OperationalDataset dataset;
+        err = dataset.Init(ByteSpan((uint8_t *) op_data_set, op_data_set_len));
+        if (err != CHIP_NO_ERROR)
+        {
+            ChipLogError(NotSpecified, "Failed to init OperationalDataset: %" CHIP_ERROR_FORMAT, err.Format());
+            return err;
+        }
+
+        uint8_t extPanId[Thread::kSizeExtendedPanId];
+        err = dataset.GetExtendedPanId(extPanId);
+        if (err != CHIP_NO_ERROR)
+        {
+            ChipLogError(NotSpecified, "Failed to get ExtendedPanId: %" CHIP_ERROR_FORMAT, err.Format());
+            return err;
+        }
+
+        ChipLogProgress(NotSpecified, "Calling ConnectNetwork...");
+        sLinuxThreadDriver.ConnectNetwork(ByteSpan(extPanId, sizeof(extPanId)), &sThreadConnectCallback);
+
+        return CHIP_NO_ERROR;
     }
 
     /**
@@ -244,7 +333,7 @@ private:
 
         // Read and store Intermediate CA Certificate (if present)
         buffer_len = sizeof(buffer);
-        status = se05x_read_ICA(buffer, &buffer_len);
+        status     = se05x_read_ICA(buffer, &buffer_len);
         if (status == CHIP_NO_ERROR && buffer_len > 0)
         {
             VerifyOrReturnError(snprintf(key_name, sizeof(key_name), "f/%x/i", fabric_id) > 0, CHIP_ERROR_INTERNAL);
@@ -289,21 +378,20 @@ private:
     CHIP_ERROR SynchronizeNetworkCredentials()
     {
         constexpr size_t kMaxBufferSize = 512;
-
         uint8_t buffer[kMaxBufferSize];
         char password[DeviceLayer::Internal::kMaxWiFiKeyLength] = { 0 };
-        char op_data_set[256]                                   = { 0 };
+        uint32_t network_cred_id                                = 0;
         size_t ssid_len                                         = sizeof(op_data_set);
         size_t password_len                                     = sizeof(password);
-        size_t op_data_set_len                                  = sizeof(op_data_set);
-        uint32_t network_cred_id                                = 0;
 
         // Get network credential ID from network commissioning cluster
         ReturnErrorOnFailure(se05x_net_id_from_net_comm_cluster(&network_cred_id));
 
+        op_data_set_len = sizeof(op_data_set);
+
         // Read WiFi/Thread credentials
-        CHIP_ERROR status = se05x_read_wifi_and_thread_credentials(buffer, sizeof(buffer), op_data_set, &ssid_len, password, &password_len,
-                                                                   op_data_set, &op_data_set_len, &network_cred_id);
+        CHIP_ERROR status = se05x_read_wifi_and_thread_credentials(buffer, sizeof(buffer), op_data_set, &ssid_len, password,
+                                                                   &password_len, op_data_set, &op_data_set_len, &network_cred_id);
 
         if (status != CHIP_NO_ERROR)
         {
@@ -322,9 +410,7 @@ private:
         else if (op_data_set_len > 0)
         {
 #if CHIP_DEVICE_CONFIG_ENABLE_THREAD
-            ChipLogDetail(Crypto, "SE05x: Setting Thread operational data");
-            ByteSpan dataset(reinterpret_cast<const uint8_t *>(op_data_set), op_data_set_len);
-            DeviceLayer::ThreadStackMgrImpl().SetThreadProvision(dataset);
+            ChipLogDetail(Crypto, "SE05x: Operational data set read from SE05x");
 #else
             ChipLogDetail(Crypto, "SE05x: SE05x commissioned for Thread, but example is not built with Thread support");
 #endif
