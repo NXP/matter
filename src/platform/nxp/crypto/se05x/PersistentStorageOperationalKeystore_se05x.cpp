@@ -32,6 +32,42 @@ using namespace chip::Crypto;
     }
 #define CHIP_SE05x_NODE_OP_KEY_ID_INDEX 11
 
+/**
+ * @brief Set binary data in SE05x
+ *
+ * This function checks if an object with the given keyid already exists in the secure element.
+ * If it exists and the size differs from the new data, it deletes the old object before writing.
+ * This prevents errors when trying to overwrite objects with different sizes.
+ *
+ * @param[in] keyid - Key id of the object
+ * @param[in] buf - Buffer containing binary data
+ * @param[in] buflen - Buffer length
+ * @return CHIP_ERROR_INTERNAL on error, CHIP_NO_ERROR otherwise
+ */
+static CHIP_ERROR set_binary_data(uint32_t keyid, const uint8_t * buf, size_t buflen)
+{
+    uint16_t seObjectSize = 0;
+    CHIP_ERROR err = se05x_read_object_size(keyid, &seObjectSize);
+
+    if (err == CHIP_NO_ERROR)
+    {
+        if (seObjectSize != buflen)
+        {
+            ChipLogProgress(Crypto, "SE05x: Size mismatch for keyid 0x%" PRIx32 " (SE: %u bytes, new: %zu bytes) - deleting old object",
+                            keyid, seObjectSize, buflen);
+            se05x_delete_key(keyid);
+        }
+    }
+    else
+    {
+        ChipLogDetail(Crypto, "SE05x: No existing object found for keyid 0x%" PRIx32, keyid);
+    }
+
+    err = se05x_set_binary_data(keyid, buf, buflen);
+    return err;
+}
+
+
 static CHIP_ERROR generate_node_oper_key()
 {
     sss_object_t keyObject = { 0 };
@@ -127,22 +163,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
 #define SE05X_SET_BIN_DATA_TEMPLATE(keyid, buf)                                                                                    \
     {                                                                                                                              \
         const uint8_t buffer[] = { buf };                                                                                          \
-        uint16_t seObjectSize = 0;                                                                                                 \
-        CHIP_ERROR getErr = se05x_read_object_size(keyid, &seObjectSize);                                                          \
-        if (getErr == CHIP_NO_ERROR)                                                                                               \
-        {                                                                                                                          \
-            if (seObjectSize != sizeof(buffer))                                                                                    \
-            {                                                                                                                      \
-                ChipLogProgress(Crypto, "SE05x: Size mismatch for keyid 0x%" PRIx32 " (existing: %u, new: %zu) - deleting old object", \
-                                keyid, seObjectSize, sizeof(buffer));                                                              \
-                se05x_delete_key(keyid);                                                                                           \
-            }                                                                                                                      \
-            else                                                                                                                   \
-            {                                                                                                                      \
-                ChipLogDetail(Crypto, "SE05x: Size matches for keyid 0x%" PRIx32 " (%zu bytes)", keyid, sizeof(buffer));          \
-            }                                                                                                                      \
-        }                                                                                                                          \
-        err = se05x_set_binary_data(keyid, buffer, sizeof(buffer));                                                                \
+        err = set_binary_data(keyid, buffer, sizeof(buffer));                                               \
         VerifyOrReturnError(err == CHIP_NO_ERROR, err);                                                                            \
     }
 
@@ -252,7 +273,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
                           ATTESTATION_NONCE, TIMESTAMP,
                           STRUCTURE_END,     ATTESTATION_CHALLENGE};
 
-            err = se05x_set_binary_data(SE051H_ATTEST_TBS, attest_tbs, sizeof(attest_tbs));
+            err = set_binary_data(SE051H_ATTEST_TBS, attest_tbs, sizeof(attest_tbs));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
         }
 
@@ -276,7 +297,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
                 ARL_FILLER,
             };
 
-            err = se05x_set_binary_data(SE051H_ACC_ID, acl_data, sizeof(acl_data));
+            err = set_binary_data(SE051H_ACC_ID, acl_data, sizeof(acl_data));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
 
         }
@@ -314,7 +335,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
 
             ncc_buf[NETWORK_INTERFACE_BTYE_OFFSET] = buffer[NETWORK_INTERFACE_BTYE_OFFSET];
 
-            err = se05x_set_binary_data(SE051H_NCC_ID, ncc_buf, sizeof(ncc_buf));
+            err = set_binary_data(SE051H_NCC_ID, ncc_buf, sizeof(ncc_buf));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
         }
 
@@ -338,8 +359,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
                 TC_UPDATE_DEADLINE,
                 IS_COMM_WITHOUT_POWER,
             };
-            err =
-                se05x_set_binary_data(SE051H_GENERAL_COMM_CLUSTER_ID, Genaral_comm_cluster_data, sizeof(Genaral_comm_cluster_data));
+            err = set_binary_data(SE051H_GENERAL_COMM_CLUSTER_ID, Genaral_comm_cluster_data, sizeof(Genaral_comm_cluster_data));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
         }
 
@@ -374,7 +394,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
                 MAX_PATH_PER_INVOKE,
                 CONFIGURATION_VERSION};
 
-            err = se05x_set_binary_data(SE051H_BASIC_INFO_CLUSTER_ID, Basic_info_cluster_data, sizeof(Basic_info_cluster_data));
+            err = set_binary_data(SE051H_BASIC_INFO_CLUSTER_ID, Basic_info_cluster_data, sizeof(Basic_info_cluster_data));
             VerifyOrReturnError(err == CHIP_NO_ERROR, err);
         }
     }
