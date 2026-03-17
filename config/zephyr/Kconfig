@@ -181,31 +181,6 @@ config APP_LINK_WITH_CHIP
 	  Adds Matter directories to the 'app' target include paths and links the
 	  'app' target with Matter libraries.
 
-config CHIP_PW_RPC
-	bool "Pigweed RPC library"
-	default n
-	help
-	  Links the application with the libraries containing Pigweed RPC
-	  functionalities.
-
-config CHIP_BUILD_TESTS
-	bool "Build Matter unit tests"
-	default n
-	help
-	  Enables building Matter unit tests.
-
-config CHIP_BUILD_NL_FAULT_INJECTION
-	bool "Build Matter unit tests"
-	default y
-	depends on CHIP_BUILD_TESTS
-	help
-	  Enables nl fault injection Matter unit tests.
-
-config CHIP_OTA_IMAGE_BUILD
-	bool "Generate OTA image"
-	help
-	  Enables building Matter over-the-air (OTA) update image.
-
 if CHIP_OTA_IMAGE_BUILD
 
 config CHIP_OTA_IMAGE_FILE_NAME

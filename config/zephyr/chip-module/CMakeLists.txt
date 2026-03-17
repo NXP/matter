@@ -138,10 +138,6 @@ if(CONFIG_CHIP)
         matter_add_gn_arg("pw_build_LINK_DEPS" [\"${PIGWEED_DIR}/pw_assert:impl\",\ \"${PIGWEED_DIR}/pw_log:impl\"])
     endif()
 
-if (CONFIG_CHIP_BUILD_TESTS AND NOT CONFIG_CHIP_BUILD_NL_FAULT_INJECTION)
-    matter_add_gn_arg_bool("chip_with_nlfaultinjection" FALSE)
-endif() 
-
     matter_generate_args_tmp_file()
 
     # ==============================================================================
