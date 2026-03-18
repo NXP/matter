@@ -16,8 +16,8 @@
  */
 
 #include <lib/support/UnitTest.h>
-#include <pw_unit_test/framework.h>
 #include <platform/CHIPDeviceLayer.h>
+#include <pw_unit_test/framework.h>
 #include <zephyr/settings/settings.h>
 
 #include <zephyr/logging/log.h>
