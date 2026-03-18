@@ -28,15 +28,15 @@
 #if !CHIP_SYSTEM_CONFIG_NO_LOCKING
 using namespace chip::System;
 static Mutex se05x_p256_crypto_mutex;
-#define LOCK_P256_CRYPTO_MUTEX()                                                                                                      \
+#define LOCK_P256_CRYPTO_MUTEX()                                                                                                   \
     do                                                                                                                             \
     {                                                                                                                              \
-        se05x_p256_crypto_mutex.Lock();                                                                                                        \
+        se05x_p256_crypto_mutex.Lock();                                                                                            \
     } while (0);
-#define UNLOCK_P256_CRYPTO_MUTEX()                                                                                                    \
+#define UNLOCK_P256_CRYPTO_MUTEX()                                                                                                 \
     do                                                                                                                             \
     {                                                                                                                              \
-        se05x_p256_crypto_mutex.Unlock();                                                                                                      \
+        se05x_p256_crypto_mutex.Unlock();                                                                                          \
     } while (0);
 
 #else
@@ -156,7 +156,7 @@ CHIP_ERROR P256KeypairSE05x::Initialize(ECPKeyTarget key_target)
         return error;
     }
 
-    if(se05x_session_open() != CHIP_NO_ERROR)
+    if (se05x_session_open() != CHIP_NO_ERROR)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
@@ -249,12 +249,12 @@ CHIP_ERROR P256KeypairSE05x::ECDSA_sign_msg(const uint8_t * msg, size_t msg_leng
 
     LOCK_P256_CRYPTO_MUTEX();
 
-    if(se05x_session_open() != CHIP_NO_ERROR)
+    if (se05x_session_open() != CHIP_NO_ERROR)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
     }
-    if(gex_sss_chip_ctx.ks.session == NULL)
+    if (gex_sss_chip_ctx.ks.session == NULL)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
@@ -376,12 +376,12 @@ CHIP_ERROR P256KeypairSE05x::ECDH_derive_secret(const P256PublicKey & remote_pub
 
     LOCK_P256_CRYPTO_MUTEX();
 
-    if(se05x_session_open() != CHIP_NO_ERROR)
+    if (se05x_session_open() != CHIP_NO_ERROR)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
     }
-    if(gex_sss_chip_ctx.ks.session == NULL)
+    if (gex_sss_chip_ctx.ks.session == NULL)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
@@ -423,15 +423,15 @@ CHIP_ERROR SE05X_Set_ECDSA_Public_Key(sss_object_t * keyObject, const uint8_t * 
     /* ECC NIST-256 Public Key header */
     const uint8_t nist256_header[] = { 0x30, 0x59, 0x30, 0x13, 0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01,
                                        0x06, 0x08, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07, 0x03, 0x42, 0x00 };
-    
+
     LOCK_P256_CRYPTO_MUTEX();
 
-    if(se05x_session_open() != CHIP_NO_ERROR)
+    if (se05x_session_open() != CHIP_NO_ERROR)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
     }
-    if(gex_sss_chip_ctx.ks.session == NULL)
+    if (gex_sss_chip_ctx.ks.session == NULL)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
@@ -484,15 +484,15 @@ CHIP_ERROR P256PublicKeySE05x::ECDSA_validate_msg_signature(const uint8_t * msg,
     VerifyOrReturnError(msg_length > 0, CHIP_ERROR_INVALID_ARGUMENT);
 
     ChipLogDetail(Crypto, "ECDSA_validate_msg_signature: Using se05x for ECDSA verify (msg) !");
-    
+
     LOCK_P256_CRYPTO_MUTEX();
 
-    if(se05x_session_open() != CHIP_NO_ERROR)
+    if (se05x_session_open() != CHIP_NO_ERROR)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
     }
-    if(gex_sss_chip_ctx.ks.session == NULL)
+    if (gex_sss_chip_ctx.ks.session == NULL)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
@@ -555,12 +555,12 @@ CHIP_ERROR P256PublicKeySE05x::ECDSA_validate_hash_signature(const uint8_t * has
 
     LOCK_P256_CRYPTO_MUTEX()
 
-    if(se05x_session_open() != CHIP_NO_ERROR)
+    if (se05x_session_open() != CHIP_NO_ERROR)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
     }
-    if(gex_sss_chip_ctx.ks.session == NULL)
+    if (gex_sss_chip_ctx.ks.session == NULL)
     {
         UNLOCK_P256_CRYPTO_MUTEX();
         return CHIP_ERROR_INTERNAL;
@@ -694,7 +694,7 @@ CHIP_ERROR P256KeypairSE05x::NewCertificateSigningRequest(uint8_t * csr, size_t 
     ChipLogDetail(Crypto, "NewCertificateSigningRequest : Using se05x for CSR");
 
     LOCK_P256_CRYPTO_MUTEX();
-    
+
     VerifyOrExit(se05x_session_open() == CHIP_NO_ERROR, error = CHIP_ERROR_INTERNAL);
     VerifyOrExit(gex_sss_chip_ctx.ks.session != NULL, error = CHIP_ERROR_INTERNAL);
 

@@ -32,6 +32,25 @@ namespace Crypto {
 
 #if ENABLE_SE05X_RND_GEN
 
+#if !CHIP_SYSTEM_CONFIG_NO_LOCKING
+using namespace chip::System;
+static Mutex se05x_rng_crypto_mutex;
+#define LOCK_RNG_CRYPTO_MUTEX()                                                                                                    \
+    do                                                                                                                             \
+    {                                                                                                                              \
+        se05x_rng_crypto_mutex.Lock();                                                                                             \
+    } while (0);
+#define UNLOCK_RNG_CRYPTO_MUTEX()                                                                                                  \
+    do                                                                                                                             \
+    {                                                                                                                              \
+        se05x_rng_crypto_mutex.Unlock();                                                                                           \
+    } while (0);
+
+#else
+#define LOCK_RNG_CRYPTO_MUTEX()
+#define UNLOCK_RNG_CRYPTO_MUTEX()
+#endif // !CHIP_SYSTEM_CONFIG_NO_LOCKING
+
 CHIP_ERROR DRBG_get_bytes(uint8_t * out_buffer, const size_t out_length)
 {
     sss_status_t status;
@@ -42,16 +61,31 @@ CHIP_ERROR DRBG_get_bytes(uint8_t * out_buffer, const size_t out_length)
 
     ChipLogDetail(Crypto, "se05x::Random number generation using se05x");
 
-    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+    LOCK_RNG_CRYPTO_MUTEX();
+
+    if (se05x_session_open() != CHIP_NO_ERROR)
+    {
+        UNLOCK_RNG_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
 
     status = sss_rng_context_init(&ctx_rng, &gex_sss_chip_ctx.session /* Session */);
-    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+    if (status != kStatus_SSS_Success)
+    {
+        UNLOCK_RNG_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
 
     status = sss_rng_get_random(&ctx_rng, out_buffer, out_length);
-    VerifyOrReturnError(status == kStatus_SSS_Success, CHIP_ERROR_INTERNAL);
+    if (status != kStatus_SSS_Success)
+    {
+        UNLOCK_RNG_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
 
     sss_rng_context_free(&ctx_rng);
 
+    UNLOCK_RNG_CRYPTO_MUTEX();
     return CHIP_NO_ERROR;
 }
 

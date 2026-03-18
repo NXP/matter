@@ -32,6 +32,25 @@ using namespace chip::Crypto;
     }
 #define CHIP_SE05x_NODE_OP_KEY_ID_INDEX 11
 
+#if !CHIP_SYSTEM_CONFIG_NO_LOCKING
+using namespace chip::System;
+static Mutex se05x_ps_crypto_mutex;
+#define LOCK_PS_CRYPTO_MUTEX()                                                                                                     \
+    do                                                                                                                             \
+    {                                                                                                                              \
+        se05x_ps_crypto_mutex.Lock();                                                                                              \
+    } while (0);
+#define UNLOCK_PS_CRYPTO_MUTEX()                                                                                                   \
+    do                                                                                                                             \
+    {                                                                                                                              \
+        se05x_ps_crypto_mutex.Unlock();                                                                                            \
+    } while (0);
+
+#else
+#define LOCK_PS_CRYPTO_MUTEX()
+#define UNLOCK_PS_CRYPTO_MUTEX()
+#endif // !CHIP_SYSTEM_CONFIG_NO_LOCKING
+
 CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex fabricIndex,
                                                                    MutableByteSpan & outCertificateSigningRequest)
 {
@@ -46,21 +65,37 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
 
     VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(IsValidFabricIndex(fabricIndex), CHIP_ERROR_INVALID_FABRIC_INDEX);
-    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+
+    LOCK_PS_CRYPTO_MUTEX();
+
+    if (se05x_session_open() != CHIP_NO_ERROR)
+    {
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
 
     // If a key is pending, we cannot generate for a different fabric index until we commit or revert.
     if ((mPendingFabricIndex != kUndefinedFabricIndex) && (fabricIndex != mPendingFabricIndex))
     {
+        UNLOCK_PS_CRYPTO_MUTEX();
         return CHIP_ERROR_INVALID_FABRIC_INDEX;
     }
 
-    VerifyOrReturnError(outCertificateSigningRequest.size() >= Crypto::kMIN_CSR_Buffer_Size, CHIP_ERROR_BUFFER_TOO_SMALL);
+    if (outCertificateSigningRequest.size() < Crypto::kMIN_CSR_Buffer_Size)
+    {
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return CHIP_ERROR_BUFFER_TOO_SMALL;
+    }
 
     // Replace previous pending key pair, if any was previously allocated
     ResetPendingKey();
 
     mPendingKeypair = Platform::New<Crypto::P256KeypairSE05x>();
-    VerifyOrReturnError(mPendingKeypair != nullptr, CHIP_ERROR_NO_MEMORY);
+    if (mPendingKeypair == nullptr)
+    {
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return CHIP_ERROR_NO_MEMORY;
+    }
 
     hsmKeyId                                        = CHIP_SE05x_NODE_OP_KEY_INDEX + fabricIndex;
     privatekey[CHIP_SE05x_NODE_OP_KEY_ID_INDEX - 3] = (hsmKeyId >> 24) & 0xFF;
@@ -73,7 +108,11 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     TEMPORARY_RETURN_IGNORED serializedKeypair.SetLength(privatekey_len + pubkey_len);
 
     // This is required to ensure we pass the key id (mapping to fabric id) to CHIPCryptoPALHsm_se05x_p256.cpp NIST256 class.
-    ReturnErrorOnFailure(mPendingKeypair->Deserialize(serializedKeypair));
+    if (mPendingKeypair->Deserialize(serializedKeypair) != CHIP_NO_ERROR)
+    {
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
 
     ChipLogDetail(Crypto,
                   "PersistentStorageOpKeystorese05x::NewOpKeypairForFabric ::Create NIST256 key in SE05x (at id = 0x%" PRIx32 ")",
@@ -84,12 +123,14 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     if (err != CHIP_NO_ERROR)
     {
         ResetPendingKey();
+        UNLOCK_PS_CRYPTO_MUTEX();
         return err;
     }
 
     outCertificateSigningRequest.reduce_size(csrLength);
     mPendingFabricIndex = fabricIndex;
 
+    UNLOCK_PS_CRYPTO_MUTEX();
     return CHIP_NO_ERROR;
 }
 
@@ -97,7 +138,14 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
 {
     VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(IsValidFabricIndex(fabricIndex), CHIP_ERROR_INVALID_FABRIC_INDEX);
-    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+
+    LOCK_PS_CRYPTO_MUTEX();
+
+    if (se05x_session_open() != CHIP_NO_ERROR)
+    {
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
 
     uint32_t keyId = CHIP_SE05x_NODE_OP_KEY_INDEX + fabricIndex;
 
@@ -110,6 +158,8 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
     {
         ChipLogError(Crypto, "se05x::Error in se05x_close_session.");
     }
+
+    UNLOCK_PS_CRYPTO_MUTEX();
 
     // remove key from secure element
     if ((mPendingKeypair != nullptr) && (fabricIndex == mPendingFabricIndex))
@@ -129,41 +179,65 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
 CHIP_ERROR PersistentStorageOpKeystorese05x::SignWithOpKeypair(FabricIndex fabricIndex, const ByteSpan & message,
                                                                Crypto::P256ECDSASignature & outSignature) const
 {
+    CHIP_ERROR err = CHIP_NO_ERROR;
     VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(IsValidFabricIndex(fabricIndex), CHIP_ERROR_INVALID_FABRIC_INDEX);
-    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+
+    LOCK_PS_CRYPTO_MUTEX();
+
+    if (se05x_session_open() != CHIP_NO_ERROR)
+    {
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
 
     ChipLogDetail(Crypto, "PersistentStorageOpKeystorese05x::SignWithOpKeypair :: ECDSA Sign using SE05x ");
 
     if (mIsPendingKeypairActive && (fabricIndex == mPendingFabricIndex))
     {
-        VerifyOrReturnError(mPendingKeypair != nullptr, CHIP_ERROR_INTERNAL);
+        if (mPendingKeypair == nullptr)
+        {
+            UNLOCK_PS_CRYPTO_MUTEX();
+            return CHIP_ERROR_INTERNAL;
+        }
         // We have an override key: sign with it!
-        return mPendingKeypair->ECDSA_sign_msg(message.data(), message.size(), outSignature);
+        err = mPendingKeypair->ECDSA_sign_msg(message.data(), message.size(), outSignature);
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return err;
     }
 
     // Use ExportOpKeypairForFabric from base class directly
     auto transientOperationalKeypair = Platform::MakeUnique<P256KeypairSE05x>();
     if (!transientOperationalKeypair)
     {
+        UNLOCK_PS_CRYPTO_MUTEX();
         return CHIP_ERROR_NO_MEMORY;
     }
 
     P256SerializedKeypair serializedOpKey;
     // Call base class method directly using 'this'
-    CHIP_ERROR err = const_cast<PersistentStorageOpKeystorese05x *>(this)->ExportOpKeypairForFabric(fabricIndex, serializedOpKey);
+    err = const_cast<PersistentStorageOpKeystorese05x *>(this)->ExportOpKeypairForFabric(fabricIndex, serializedOpKey);
     if (err == CHIP_ERROR_PERSISTED_STORAGE_VALUE_NOT_FOUND)
     {
+        UNLOCK_PS_CRYPTO_MUTEX();
         return CHIP_ERROR_INVALID_FABRIC_INDEX;
     }
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(Crypto, "Failed to export keypair for fabric %u: %" CHIP_ERROR_FORMAT, fabricIndex, err.Format());
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return err;
     }
-    ReturnErrorOnFailure(err);
 
-    ReturnErrorOnFailure(transientOperationalKeypair->Deserialize(serializedOpKey));
-    return transientOperationalKeypair->ECDSA_sign_msg(message.data(), message.size(), outSignature);
+    if (transientOperationalKeypair->Deserialize(serializedOpKey) != CHIP_NO_ERROR)
+    {
+        UNLOCK_PS_CRYPTO_MUTEX();
+        return CHIP_ERROR_INTERNAL;
+    }
+
+    err = transientOperationalKeypair->ECDSA_sign_msg(message.data(), message.size(), outSignature);
+    UNLOCK_PS_CRYPTO_MUTEX();
+    return err;
 }
 
 } // namespace chip

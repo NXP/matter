@@ -33,15 +33,15 @@ namespace Crypto {
 #if CHIP_SYSTEM_CONFIG_NO_LOCKING
 using namespace chip::System;
 static Mutex se05x_hmac_crypto_mutex;
-#define LOCK_HMAC_CRYPTO_MUTEX()                                                                                                      \
-    do                                                                                                                             \
-    {                                                                                                                              \
-        se05x_hmac_crypto_mutex.Lock();                                                                                                        \
+#define LOCK_HMAC_CRYPTO_MUTEX()            \
+    do                                      \
+    {                                       \
+        se05x_hmac_crypto_mutex.Lock();     \
     } while (0);
-#define UNLOCK_HMAC_CRYPTO_MUTEX()                                                                                                    \
-    do                                                                                                                             \
-    {                                                                                                                              \
-        se05x_hmac_crypto_mutex.Unlock();                                                                                                      \
+#define UNLOCK_HMAC_CRYPTO_MUTEX()          \
+    do                                      \
+    {                                       \
+        se05x_hmac_crypto_mutex.Unlock();   \
     } while (0);
 
 #else
