@@ -30,6 +30,29 @@
 namespace chip {
 namespace Crypto {
 
+// Add mutex support
+#if CHIP_SYSTEM_CONFIG_USE_POSIX_LOCKING
+#include <pthread.h>
+static pthread_mutex_t se05x_hmac_crypto_mutex = PTHREAD_MUTEX_INITIALIZER;
+#define LOCK_HMAC_CRYPTO_MUTEX() pthread_mutex_lock(&se05x_hmac_crypto_mutex)
+#define UNLOCK_HMAC_CRYPTO_MUTEX() pthread_mutex_unlock(&se05x_hmac_crypto_mutex)
+#elif CHIP_SYSTEM_CONFIG_USE_FREERTOS_LOCKING
+#include <FreeRTOS.h>
+#include <semphr.h>
+static SemaphoreHandle_t se05x_hmac_crypto_mutex = NULL;
+static void init_crypto_mutex() {
+    if (se05x_hmac_crypto_mutex == NULL) {
+        se05x_hmac_crypto_mutex = xSemaphoreCreateMutex();
+    }
+}
+#define LOCK_HMAC_CRYPTO_MUTEX() do { init_crypto_mutex(); xSemaphoreTake(se05x_hmac_crypto_mutex, portMAX_DELAY); } while(0)
+#define UNLOCK_HMAC_CRYPTO_MUTEX() xSemaphoreGive(se05x_hmac_crypto_mutex)
+#else
+// No mutex support
+#define LOCK_HMAC_CRYPTO_MUTEX() do {} while(0)
+#define UNLOCK_HMAC_CRYPTO_MUTEX() do {} while(0)
+#endif
+
 CHIP_ERROR HMAC_sha_SE05x::HMAC_SHA256(const uint8_t * key, size_t key_length, const uint8_t * message, size_t message_length,
                                        uint8_t * out_buffer, size_t out_length)
 
@@ -56,7 +79,9 @@ CHIP_ERROR HMAC_sha_SE05x::HMAC_SHA256(const uint8_t * key, size_t key_length, c
 
     VerifyOrReturnError(keyid != kKeyId_NotInitialized, CHIP_ERROR_HSM);
 
-    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+    LOCK_HMAC_CRYPTO_MUTEX();
+
+    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, (UNLOCK_HMAC_CRYPTO_MUTEX, CHIP_ERROR_INTERNAL));
     VerifyOrExit(gex_sss_chip_ctx.ks.session != NULL, error = CHIP_ERROR_INTERNAL);
 
     status = sss_key_object_init(&keyObject, &gex_sss_chip_ctx.ks);
@@ -114,6 +139,7 @@ exit:
     {
         ChipLogError(Crypto, "se05x::Error in se05x_close_session.");
     }
+    UNLOCK_HMAC_CRYPTO_MUTEX();
     return error;
 }
 

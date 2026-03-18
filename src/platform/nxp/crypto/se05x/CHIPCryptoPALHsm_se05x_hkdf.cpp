@@ -24,9 +24,33 @@
 
 #include "CHIPCryptoPALHsm_se05x_utils.h"
 #include <lib/core/CHIPEncoding.h>
+#include <lib/support/CodeUtils.h>
 
 namespace chip {
 namespace Crypto {
+
+// Add mutex support
+#if CHIP_SYSTEM_CONFIG_USE_POSIX_LOCKING
+#include <pthread.h>
+static pthread_mutex_t se05x_hkdf_crypto_mutex = PTHREAD_MUTEX_INITIALIZER;
+#define LOCK_HKDF_CRYPTO_MUTEX() pthread_mutex_lock(&se05x_hkdf_crypto_mutex)
+#define UNLOCK_HKDF_CRYPTO_MUTEX() pthread_mutex_unlock(&se05x_hkdf_crypto_mutex)
+#elif CHIP_SYSTEM_CONFIG_USE_FREERTOS_LOCKING
+#include <FreeRTOS.h>
+#include <semphr.h>
+static SemaphoreHandle_t se05x_hkdf_crypto_mutex = NULL;
+static void init_crypto_mutex() {
+    if (se05x_hkdf_crypto_mutex == NULL) {
+        se05x_hkdf_crypto_mutex = xSemaphoreCreateMutex();
+    }
+}
+#define LOCK_HKDF_CRYPTO_MUTEX() do { init_crypto_mutex(); xSemaphoreTake(se05x_hkdf_crypto_mutex, portMAX_DELAY); } while(0)
+#define UNLOCK_HKDF_CRYPTO_MUTEX() xSemaphoreGive(se05x_hkdf_crypto_mutex)
+#else
+// No mutex support
+#define LOCK_HKDF_CRYPTO_MUTEX() do {} while(0)
+#define UNLOCK_HKDF_CRYPTO_MUTEX() do {} while(0)
+#endif
 
 CHIP_ERROR HKDF_sha_SE05x::HKDF_SHA256(const uint8_t * secret, const size_t secret_length, const uint8_t * salt,
                                        const size_t salt_length, const uint8_t * info, const size_t info_length,
@@ -57,7 +81,9 @@ CHIP_ERROR HKDF_sha_SE05x::HKDF_SHA256(const uint8_t * secret, const size_t secr
     VerifyOrReturnError(out_buffer != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
     VerifyOrReturnError(secret != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
 
-    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, CHIP_ERROR_INTERNAL);
+    LOCK_HKDF_CRYPTO_MUTEX();
+
+    VerifyOrReturnError(se05x_session_open() == CHIP_NO_ERROR, (UNLOCK_HKDF_CRYPTO_MUTEX(), CHIP_ERROR_INTERNAL));
     VerifyOrExit(gex_sss_chip_ctx.session.subsystem != kType_SSS_SubSystem_NONE, error = CHIP_ERROR_INTERNAL);
     VerifyOrExit(gex_sss_chip_ctx.ks.session != NULL, error = CHIP_ERROR_INTERNAL);
 
@@ -87,6 +113,7 @@ exit:
     {
         ChipLogError(Crypto, "se05x::Error in se05x_close_session.");
     }
+    UNLOCK_HKDF_CRYPTO_MUTEX();
     return error;
 }
 
