@@ -144,6 +144,7 @@ class NxpApp(Enum):
                 return os.path.join(root, 'src', 'test_driver', 'nxp')
             return os.path.join(root, 'examples', self.ExampleName(), 'nxp')
 
+
 class NxpLogLevel(Enum):
     DEFAULT = auto()  # default everything
     ALL = auto()  # enable all logging
