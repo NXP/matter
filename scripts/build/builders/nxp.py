@@ -143,6 +143,7 @@ class NxpApp(Enum):
             if (self.ExampleName() == "unit-test"):
                 return os.path.join(root, 'src', 'test_driver', 'nxp')
             return os.path.join(root, 'examples', self.ExampleName(), 'nxp')
+        return os.path.join(root, 'examples', self.ExampleName(), 'nxp', board.FolderName(os_env))
 
 
 class NxpLogLevel(Enum):
