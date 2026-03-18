@@ -30,7 +30,7 @@ zephyr_include_directories(${CHIP_ROOT}/src)
 #
 # See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80635
 target_compile_options(app PRIVATE -Werror -Wno-error=maybe-uninitialized)
-target_compile_options(app PRIVATE -Werror PRIVATE -Wno-error=format)
+target_compile_options(app PRIVATE -Werror -Wno-error=format)
 
 set(CONFIG_ZEPHYR_PIGWEED_MODULE 1)
 set(CONFIG_PIGWEED_ASSERT 1)
