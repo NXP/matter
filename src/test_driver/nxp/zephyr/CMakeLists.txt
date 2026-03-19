@@ -18,12 +18,8 @@ cmake_minimum_required(VERSION 3.13.1)
 get_filename_component(CHIP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/third_party/connectedhomeip REALPATH)
 
 list(APPEND ZEPHYR_EXTRA_MODULES ${CHIP_ROOT}/config/zephyr/chip-module)
+list(APPEND ZEPHYR_EXTRA_MODULES ${CHIP_ROOT}/third_party/pigweed/repo)
 find_package(Zephyr HINTS $ENV{ZEPHYR_BASE})
-
-# This is required to include Mbedtls user config file for NXP platform.
-# We use zephyr_include_directories to ensure the include is propagated to
-# the Zephyr Mbedtls module.
-zephyr_include_directories(${CHIP_ROOT}/src)
 
 # -Wmaybe-uninitialized has too many false positives, including on std::optional
 # and chip::Optional.  Make it nonfatal.
@@ -32,11 +28,10 @@ zephyr_include_directories(${CHIP_ROOT}/src)
 target_compile_options(app PRIVATE -Werror -Wno-error=maybe-uninitialized)
 target_compile_options(app PRIVATE -Werror -Wno-error=format)
 
-set(CONFIG_ZEPHYR_PIGWEED_MODULE 1)
-set(CONFIG_PIGWEED_ASSERT 1)
-set(PIGWEED_ROOT "${CHIP_ROOT}/third_party/pigweed/repo")
-add_subdirectory(${PIGWEED_ROOT} "${CMAKE_BINARY_DIR}/pigweed")
-
+pw_set_backend(pw_log pw_log_basic)
+pw_set_backend(pw_assert.check pw_assert_log.check_backend)
+pw_set_backend(pw_assert.assert pw_assert.assert_compatibility_backend)
+pw_set_backend(pw_sys_io pw_sys_io.zephyr)
 
 project(chip-nxp-test-driver-app)
 
