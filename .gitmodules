@@ -32,12 +32,12 @@
 	path = third_party/ot-br-posix/repo
 	url = https://github.com/openthread/ot-br-posix.git
 	branch  = main
-	platforms = linux
+	platforms = linux,imx
 [submodule "cirque"]
 	path = third_party/cirque/repo
 	url = https://github.com/openweave/cirque.git
 	branch  = master
-	platforms = linux
+	platforms = linux,imx
 [submodule "nanopb"]
 	path = third_party/nanopb/repo
 	url = https://github.com/nanopb/nanopb.git
@@ -230,11 +230,11 @@
 	path = third_party/libwebsockets/repo
 	url = https://github.com/warmcat/libwebsockets
 	branch = v4.4-stable
-	platforms = linux,darwin,tizen
+	platforms = linux,darwin,tizen,imx
 [submodule "third_party/imgui/repo"]
 	path = third_party/imgui/repo
 	url = https://github.com/ocornut/imgui
-	platforms = linux
+	platforms = linux,imx
 [submodule "third_party/asr/asr582x/asr_sdk"]
 	path = third_party/asr/asr582x/asr_sdk
 	url = https://github.com/asriot/ASR582X_Freertos.git
@@ -249,7 +249,7 @@
 	path = third_party/perfetto/repo
 	url = https://github.com/google/perfetto.git
 	branch = master
-	platforms = linux,android,darwin
+	platforms = linux,android,darwin,imx
 [submodule "third_party/asr/components"]
 	path = third_party/asr/components
 	url = https://github.com/asriot/asriot_components.git
@@ -306,19 +306,19 @@
 [submodule "third_party/abseil-cpp/src"]
 	path = third_party/abseil-cpp/src
 	url = https://github.com/abseil/abseil-cpp.git
-	platforms = linux,darwin
+	platforms = linux,darwin,imx
 [submodule "third_party/fuzztest"]
 	path = third_party/fuzztest
 	url = https://github.com/google/fuzztest.git
-	platforms = linux,darwin
+	platforms = linux,darwin,imx
 [submodule "third_party/googletest"]
 	path = third_party/googletest
 	url = https://github.com/google/googletest
-	platforms = linux,android,darwin,tizen
+	platforms = linux,android,darwin,tizen,imx
 [submodule "third_party/libdatachannel/repo"]
 	path = third_party/libdatachannel/repo
 	url = https://github.com/paullouisageneau/libdatachannel.git
-	platforms = linux,darwin
+	platforms = linux,darwin,imx
 	recursive = true
 [submodule "third_party/openthread/ot-realtek"]
 	path = third_party/openthread/ot-realtek
@@ -328,7 +328,7 @@
 [submodule "third_party/libtrustymatter/repo"]
 	path = third_party/libtrustymatter/repo
 	url = https://github.com/nxp-imx/libtrustymatter
-	platforms = nxp
+	platforms = imx
 [submodule "third_party/amazon-kinesis-video-streams-webrtc-sdk-c/repo"]
 	path = third_party/amazon-kinesis-video-streams-webrtc-sdk-c/repo
 	url = https://github.com/awslabs/amazon-kinesis-video-streams-webrtc-sdk-c
