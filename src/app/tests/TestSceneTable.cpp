@@ -38,13 +38,6 @@
 #include <lib/core/StringBuilderAdapters.h>
 #include <pw_unit_test/framework.h>
 
-// This test suite uses complex nested object initialization (MockNodeConfig with multiple
-// endpoint/cluster configurations) which creates many temporary objects on the stack during
-// static initialization. Combined with large test buffers for serialization testing, this
-// results in elevated stack usage. This is acceptable for test code. Hence, disable stack
-// warning.
-#pragma GCC diagnostic ignored "-Wstack-usage="
-
 using namespace chip;
 using namespace chip::Testing;
 using namespace chip::app::Clusters;
