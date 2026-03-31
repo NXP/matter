@@ -18,6 +18,8 @@
 #include "config/asio_no_tls_client.hpp"
 #include <json/json.h>
 #include <iostream>
+#include <queue>
+#include <mutex>
 
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::placeholders::_2;
@@ -25,10 +27,10 @@ using websocketpp::lib::bind;
 
 typedef websocketpp::client<websocketpp::config::asio_client> WsClient;
 
-static std::queue<Json::Value> reportQueue;
-static std::queue<Json::Value> subscribeReportQueue;
-static std::mutex reportQueueMutex;
-static std::mutex subscribeReportQueueMutex;
+extern std::queue<Json::Value> reportQueue;
+extern std::queue<Json::Value> subscribeReportQueue;
+extern std::mutex reportQueueMutex;
+extern std::mutex subscribeReportQueueMutex;
 
 class WebSocketClient {
 public:

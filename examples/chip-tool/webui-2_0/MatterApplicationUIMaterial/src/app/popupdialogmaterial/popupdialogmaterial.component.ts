@@ -16,11 +16,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Dialog, DialogModule, DialogRef } from '@angular/cdk/dialog';
 import { MatRipple, MatRippleModule } from '@angular/material/core';
 import { MatChip, MatChipsModule } from '@angular/material/chips';
+import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
+@Pipe({ name: 'newlineToBr', standalone: true })
+export class NewlineToBrPipe implements PipeTransform {
+  constructor(private sanitizer: DomSanitizer) {}
+  transform(value: string): SafeHtml {
+    if (!value) return value;
+    const escaped = value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return this.sanitizer.bypassSecurityTrustHtml(escaped.replace(/\n/g, '<br>'));
+  }
+}
 
 @Component({
   selector: 'app-popupdialogmaterial',
   standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatRippleModule, MatDialogClose, MatDialogTitle, MatDialogContent, MatIcon, NgIf, CommonModule, DialogModule, MatChip, MatChipsModule],
+  imports: [MatButtonModule, MatDialogActions, MatRippleModule, MatDialogClose, MatDialogTitle, MatDialogContent, MatIcon, NgIf, CommonModule, DialogModule, MatChip, MatChipsModule, NewlineToBrPipe],
   templateUrl: './popupdialogmaterial.component.html',
   styleUrl: './popupdialogmaterial.component.css'
 })

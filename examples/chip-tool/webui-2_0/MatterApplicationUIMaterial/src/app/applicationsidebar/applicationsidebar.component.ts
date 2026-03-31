@@ -106,6 +106,11 @@ export class ApplicationsidebarComponent {
       name: 'Network Graph',
       icon: 'device_hub',
       linkRoute: 'network_graph'
+    },
+    {
+      name: 'MSR Control',
+      icon: 'smart_toy',
+      linkRoute: 'msr_control'
     }
   ];
 

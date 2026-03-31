@@ -1196,4 +1196,143 @@ export class PostRequestsService {
     }
   }
 
+  sendMSRRunModeChangeCommand(nodeId: string, nodeAlias: string, endpointId: string, newMode: number): Observable<string> {
+    const data = {
+      nodeId: nodeId,
+      nodeAlias: nodeAlias || 'No Value',
+      endPointId: endpointId,
+      cluster: 'rvcrunmode',
+      type: 'change-to-mode',
+      newMode: newMode
+    };
+    console.log(`Sending MSR run mode change to ${this.serverUrl}/rvc_control with data: ${JSON.stringify(data)}`);
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/rvc_control`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending MSR run mode change command', error);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  sendMSRCleanModeChangeCommand(nodeId: string, nodeAlias: string, endpointId: string, newMode: number): Observable<string> {
+    const data = {
+      nodeId: nodeId,
+      nodeAlias: nodeAlias || 'No Value',
+      endPointId: endpointId,
+      cluster: 'rvccleanmode',
+      type: 'change-to-mode',
+      newMode: newMode
+    };
+    console.log(`Sending MSR clean mode change to ${this.serverUrl}/rvc_control with data: ${JSON.stringify(data)}`);
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/rvc_control`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending MSR clean mode change command', error);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  sendMSROperationalStateCommand(nodeId: string, nodeAlias: string, endpointId: string, command: string): Observable<string> {
+    const data = {
+      nodeId: nodeId,
+      nodeAlias: nodeAlias || 'No Value',
+      endPointId: endpointId,
+      cluster: 'rvcoperationalstate',
+      type: command
+    };
+    console.log(`Sending MSR operational state command to ${this.serverUrl}/rvc_control with data: ${JSON.stringify(data)}`);
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/rvc_control`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending MSR operational state command', error);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  sendMSRReadCommand(nodeId: string, nodeAlias: string, endpointId: string, cluster: string, attribute: string): Observable<string> {
+    const data = {
+      nodeId: nodeId,
+      nodeAlias: nodeAlias || 'No Value',
+      endPointId: endpointId,
+      cluster: cluster,
+      type: 'read',
+      attribute: attribute
+    };
+    console.log(`Sending MSR read command to ${this.serverUrl}/rvc_read with data: ${JSON.stringify(data)}`);
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/rvc_read`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending MSR read command', error);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  sendMSRSubscribeCommand(nodeId: string, nodeAlias: string, endpointId: string, cluster: string, attribute: string): Observable<string> {
+    const data = {
+      nodeId: nodeId,
+      nodeAlias: nodeAlias || 'No Value',
+      endPointId: endpointId,
+      cluster: cluster,
+      type: 'subscribe',
+      attribute: attribute
+    };
+    console.log(`Sending MSR subscribe command to ${this.serverUrl}/rvc_subscribe with data: ${JSON.stringify(data)}`);
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/rvc_subscribe`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending MSR subscribe command', error);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  sendServiceAreaSelectCommand(nodeId: string, nodeAlias: string, endpointId: string, areaId: string): Observable<string> {
+    const data = {
+      nodeId: nodeId,
+      nodeAlias: nodeAlias || 'No Value',
+      endPointId: endpointId,
+      cluster: 'servicearea',
+      type: 'select-areas',
+      areaId: areaId
+    };
+    console.log(`Sending service area select command to ${this.serverUrl}/rvc_control with data: ${JSON.stringify(data)}`);
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/rvc_control`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending service area select command', error);
+        return throwError(error.message);
+      })
+    );
+  }
+
+  sendServiceAreaSkipCommand(nodeId: string, nodeAlias: string, endpointId: string, areaId: string): Observable<string> {
+    const data = {
+      nodeId: nodeId,
+      nodeAlias: nodeAlias || 'No Value',
+      endPointId: endpointId,
+      cluster: 'servicearea',
+      type: 'skip-area',
+      areaId: areaId
+    };
+    console.log(`Sending service area skip command to ${this.serverUrl}/rvc_control with data: ${JSON.stringify(data)}`);
+    return this.httpClient.post<string>(
+      `${this.serverUrl}/rvc_control`, JSON.stringify(data)
+    ).pipe(
+      catchError((error: any) => {
+        console.error('Error sending service area skip command', error);
+        return throwError(error.message);
+      })
+    );
+  }
+
 }
