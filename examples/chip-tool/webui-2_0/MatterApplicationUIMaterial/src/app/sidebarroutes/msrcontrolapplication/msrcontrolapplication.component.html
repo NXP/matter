@@ -1,0 +1,273 @@
+<mat-card class="main-content-card">
+  <mat-card-content class="content-section">
+    
+    <div class="form-section">
+      <h3 class="mat-h3">Device Configuration</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>Device Alias</mat-label>
+          <input matInput [(ngModel)]="nodeAlias" placeholder="Enter device alias">
+          <mat-icon matPrefix>badge</mat-icon>
+          <mat-hint>Alias for the MSR device</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Device ID</mat-label>
+          <input matInput [(ngModel)]="nodeId" placeholder="Enter device ID" required>
+          <mat-icon matPrefix>devices</mat-icon>
+          <mat-hint>The node ID of the MSR device</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Endpoint ID</mat-label>
+          <input matInput [(ngModel)]="endpointId" type="number" required>
+          <mat-icon matPrefix>tag</mat-icon>
+          <mat-hint>Endpoint identifier (default: 1)</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <mat-tab-group animationDuration="300ms" class="msr-tabs">
+      
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>play_circle</mat-icon>
+          <span class="tab-label-text">Run Mode</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <div class="form-grid">
+            <mat-form-field class="form-field">
+              <mat-label>Select Run Mode</mat-label>
+              <mat-select [(ngModel)]="selectedRunMode">
+                <mat-option *ngFor="let mode of runModes" [value]="mode.value">
+                  {{mode.label}}
+                </mat-option>
+              </mat-select>
+              <mat-icon matPrefix>play_circle</mat-icon>
+              <mat-hint>Choose the run mode for the MSR</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="action-buttons">
+            <button mat-raised-button class="action-button" (click)="changeRunMode()">
+              <mat-icon>swap_horiz</mat-icon>
+              Change Run Mode
+            </button>
+          </div>
+
+          <div class="status-subsection">
+            <h4 class="mat-h4">Read Run Mode</h4>
+            <div class="action-buttons">
+              <button mat-raised-button class="status-button" (click)="readRunModeCurrentMode()">
+                <mat-icon>info</mat-icon>
+                Current Mode
+              </button>
+              <button mat-raised-button class="status-button" (click)="readRunModeSupportedModes()">
+                <mat-icon>list</mat-icon>
+                Supported Modes
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>flash_on</mat-icon>
+          <span class="tab-label-text">Action Mode</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <div class="form-grid">
+            <mat-form-field class="form-field">
+              <mat-label>Select Action Mode</mat-label>
+              <mat-select [(ngModel)]="selectedCleanMode">
+                <mat-option *ngFor="let mode of cleanModes" [value]="mode.value">
+                  {{mode.label}}
+                </mat-option>
+              </mat-select>
+              <mat-icon matPrefix>flash_on</mat-icon>
+              <mat-hint>Choose the action mode for the MSR</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="action-buttons">
+            <button mat-raised-button class="action-button" (click)="changeCleanMode()">
+              <mat-icon>swap_horiz</mat-icon>
+              Change Action Mode
+            </button>
+          </div>
+
+          <div class="status-subsection">
+            <h4 class="mat-h4">Read Action Mode</h4>
+            <div class="action-buttons">
+              <button mat-raised-button class="status-button" (click)="readCleanModeCurrentMode()">
+                <mat-icon>info</mat-icon>
+                Current Mode
+              </button>
+              <button mat-raised-button class="status-button" (click)="readCleanModeSupportedModes()">
+                <mat-icon>list</mat-icon>
+                Supported Modes
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>settings</mat-icon>
+          <span class="tab-label-text">Operational State</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <div class="action-buttons">
+            <button mat-raised-button class="action-button" (click)="operationalStateGoHome()">
+              <mat-icon>home</mat-icon>
+              Go Home
+            </button>
+            <button mat-raised-button class="action-button" (click)="operationalStateResume()">
+              <mat-icon>play_arrow</mat-icon>
+              Resume
+            </button>
+            <button mat-raised-button class="action-button" (click)="operationalStatePause()">
+              <mat-icon>pause</mat-icon>
+              Pause
+            </button>
+          </div>
+
+          <div class="status-subsection">
+            <h4 class="mat-h4">Read Operational State</h4>
+            <div class="action-buttons">
+              <button mat-raised-button class="status-button" (click)="readOperationalState()">
+                <mat-icon>info</mat-icon>
+                Operational State
+              </button>
+              <button mat-raised-button class="status-button" (click)="readOperationalError()">
+                <mat-icon>error_outline</mat-icon>
+                Operational Error
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>location_on</mat-icon>
+          <span class="tab-label-text">Service Area</span>
+        </ng-template>
+        
+        <div class="tab-content">
+          <div class="form-grid">
+            <mat-form-field class="form-field">
+              <mat-label>Area ID</mat-label>
+              <input matInput [(ngModel)]="selectedAreaId" placeholder="Enter area ID">
+              <mat-icon matPrefix>location_on</mat-icon>
+              <mat-hint>Area identifier for select/skip commands</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div class="action-buttons">
+            <button mat-raised-button class="action-button" (click)="selectAreas()">
+              <mat-icon>check_circle</mat-icon>
+              Select Areas
+            </button>
+            <button mat-raised-button class="action-button" (click)="skipArea()">
+              <mat-icon>skip_next</mat-icon>
+              Skip Area
+            </button>
+          </div>
+
+          <div class="status-subsection">
+            <h4 class="mat-h4">Read Service Area</h4>
+            <div class="action-buttons">
+              <button mat-raised-button class="status-button" (click)="readSupportedMaps()">
+                <mat-icon>map</mat-icon>
+                Supported Maps
+              </button>
+              <button mat-raised-button class="status-button" (click)="readSupportedAreas()">
+                <mat-icon>grid_on</mat-icon>
+                Supported Areas
+              </button>
+              <button mat-raised-button class="status-button" (click)="readSelectedAreas()">
+                <mat-icon>check_box</mat-icon>
+                Selected Areas
+              </button>
+              <button mat-raised-button class="status-button" (click)="readCurrentArea()">
+                <mat-icon>my_location</mat-icon>
+                Current Area
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+
+    <!-- Subscribe Status Section - Commented out for now
+    <div class="content-info-divider"></div>
+
+    <div class="form-section">
+      <h3 class="mat-h3">Subscribe Status</h3>
+      
+      <div class="action-buttons">
+        <button mat-raised-button 
+                class="action-button" 
+                [class.subscribe-active]="isRunModeSubscribed"
+                (click)="toggleRunModeSubscription()">
+          <mat-icon>{{ isRunModeSubscribed ? 'notifications_active' : 'notifications' }}</mat-icon>
+          {{ isRunModeSubscribed ? 'Unsubscribe Run Mode' : 'Subscribe Run Mode' }}
+        </button>
+        <button mat-raised-button 
+                class="action-button"
+                [class.subscribe-active]="isCleanModeSubscribed"
+                (click)="toggleCleanModeSubscription()">
+          <mat-icon>{{ isCleanModeSubscribed ? 'notifications_active' : 'notifications' }}</mat-icon>
+          {{ isCleanModeSubscribed ? 'Unsubscribe Clean Mode' : 'Subscribe Clean Mode' }}
+        </button>
+      </div>
+
+      <div class="subscribe-panels-container" *ngIf="hasSubscriptionLogs">
+        <div class="subscribe-status-panel" *ngIf="runModeLogs.length > 0">
+          <div class="subscribe-status-header run-mode-header">
+            <mat-icon>play_circle</mat-icon>
+            <span>Run Mode Updates</span>
+          </div>
+          <div class="subscribe-status-content">
+            <div class="subscribe-log-item run-mode-log" *ngFor="let log of runModeLogs">
+              <span class="log-timestamp">{{ log.timestamp }}</span>
+              <span class="log-value">{{ log.value }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="subscribe-status-panel" *ngIf="cleanModeLogs.length > 0">
+          <div class="subscribe-status-header clean-mode-header">
+            <mat-icon>flash_on</mat-icon>
+            <span>Action Mode Updates</span>
+          </div>
+          <div class="subscribe-status-content">
+            <div class="subscribe-log-item clean-mode-log" *ngFor="let log of cleanModeLogs">
+              <span class="log-timestamp">{{ log.timestamp }}</span>
+              <span class="log-value">{{ log.value }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subscribe-status-empty" *ngIf="!hasSubscriptionLogs">
+        <mat-icon>notifications_none</mat-icon>
+        <span>No subscription data. Click subscribe buttons above to start monitoring.</span>
+      </div>
+    </div>
+    -->
+
+  </mat-card-content>
+</mat-card>
+
+<app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>

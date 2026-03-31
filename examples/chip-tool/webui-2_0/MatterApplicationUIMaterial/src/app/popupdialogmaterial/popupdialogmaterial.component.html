@@ -38,7 +38,7 @@
   <mat-dialog-content style="overflow-y: scroll;">
     <div class="container-fluid">
       <div class="row">
-          <p>{{ dialogContent }}</p>
+          <p [innerHTML]="dialogContent | newlineToBr"></p>
           <!-- QR Code Image Section -->
           <div *ngIf="qrCodeImage" class="qr-code-container">
             <img [src]="qrCodeImage.src" [alt]="qrCodeImage.alt" class="qr-code-image">

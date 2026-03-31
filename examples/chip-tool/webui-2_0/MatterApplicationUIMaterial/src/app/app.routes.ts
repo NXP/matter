@@ -11,6 +11,7 @@ import { EasyevseapplicationComponent } from './sidebarroutes/easyevseapplicatio
 import { TbrmappcomponentComponent } from './sidebarroutes/tbrmappcomponent/tbrmappcomponent.component';
 import { OtaapplicationComponent } from './sidebarroutes/otaapplication/otaapplication.component';
 import { NetworkgraphComponent } from './sidebarroutes/networkgraph/networkgraph.component';
+import { MsrcontrolapplicationComponent } from './sidebarroutes/msrcontrolapplication/msrcontrolapplication.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -26,4 +27,5 @@ export const routes: Routes = [
   {path: 'tbrm', component: TbrmappcomponentComponent},
   {path: 'ota', component: OtaapplicationComponent},
   {path: 'network_graph', component: NetworkgraphComponent},
+  {path: 'msr_control', component: MsrcontrolapplicationComponent},
 ];
