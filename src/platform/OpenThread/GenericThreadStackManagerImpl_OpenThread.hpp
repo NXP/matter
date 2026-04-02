@@ -712,6 +712,7 @@ CHIP_ERROR GenericThreadStackManagerImpl_OpenThread<ImplClass>::ConfigureThreadS
     otError otErr  = OT_ERROR_NONE;
 
     mOTInst = otInst;
+    Impl()->LockThreadStack();
 
     // Arrange for OpenThread to call the OnOpenThreadStateChange method whenever a
     // state change occurs.  Note that we reference the OnOpenThreadStateChange method
@@ -747,7 +748,8 @@ CHIP_ERROR GenericThreadStackManagerImpl_OpenThread<ImplClass>::ConfigureThreadS
 #endif
 
 exit:
-
+    
+    Impl()->UnlockThreadStack();
     ChipLogProgress(DeviceLayer, "OpenThread started: %s", otThreadErrorToString(otErr));
     return err;
 }
