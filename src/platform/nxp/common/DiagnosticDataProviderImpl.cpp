@@ -504,18 +504,17 @@ CHIP_ERROR DiagnosticDataProviderImpl::GetWiFiCurrentMaxRate(uint64_t & currentM
         24000, 36000, 48000, 54000  /* 11a/g: 24, 36, 48, 54 Mbps */
     };
 
-    if (datarate != nullptr && datarate->tx_rate_format == MLAN_RATE_FORMAT_LG &&
+    if (datarate->tx_rate_format == MLAN_RATE_FORMAT_LG &&
         datarate->tx_data_rate < (sizeof(lg_rate_kbps) / sizeof(lg_rate_kbps[0])))
     {
         /* Legacy rates (in bps) */
         currentMaxRate = lg_rate_kbps[datarate->tx_data_rate] * 1000U;
     }
-    else if (datarate != nullptr &&
-             datarate->tx_rate_format <=
-                 3 /* MLAN_RATE_FORMAT_HE=3 but use hardcoded value as in some condition MLAN_RATE_FORMAT_HE may not be defined  */)
+    else if (datarate->tx_rate_format <=
+             3 /* MLAN_RATE_FORMAT_HE=3 but use hardcoded value as in some condition MLAN_RATE_FORMAT_HE may not be defined  */)
     {
         /* HT, VHT, HE rates - tx_data_rate is in 0.5 Mbps units transform it in bps */
-        currentMaxRate = (static_cast<uint64_t>(datarate->tx_data_rate) >> 1) * 1000000ULL;
+        currentMaxRate = static_cast<uint64_t>(datarate->tx_data_rate) * 500000ULL;
     }
     else
     {
