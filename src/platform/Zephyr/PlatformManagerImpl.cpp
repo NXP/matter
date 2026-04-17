@@ -126,7 +126,7 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
     !defined(CONFIG_MBEDTLS_PSA_DRIVER_GET_ENTROPY)
     // Minimum required from source before entropy is released ( with mbedtls_entropy_func() ) (in bytes)
     const size_t kThreshold = 16;
-#endif // !defined(CONFIG_NRF_SECURITY) && !defined(CONFIG_MBEDTLS_ZEPHYR_ENTROPY) && !defined(CONFIG_MBEDTLS_ENTROPY_POLL_ZEPHYR)
+#endif // !defined(CONFIG_NRF_SECURITY) && !defined(CONFIG_MBEDTLS_ZEPHYR_ENTROPY) && !defined(CONFIG_MBEDTLS_ENTROPY_POLL_ZEPHYR) && !defined(CONFIG_MBEDTLS_PSA_DRIVER_GET_ENTROPY)
 
     // Initialize the configuration system.
     err = Internal::ZephyrConfig::Init();
@@ -141,7 +141,7 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
         SuccessOrExit(err);
         sChipStackEntropySourceAdded = true;
     }
-#endif // !defined(CONFIG_NRF_SECURITY) && !defined(CONFIG_MBEDTLS_ZEPHYR_ENTROPY) && !defined(CONFIG_MBEDTLS_ENTROPY_POLL_ZEPHYR)
+#endif // !defined(CONFIG_NRF_SECURITY) && !defined(CONFIG_MBEDTLS_ZEPHYR_ENTROPY) && !defined(CONFIG_MBEDTLS_ENTROPY_POLL_ZEPHYR) && !defined(CONFIG_MBEDTLS_PSA_DRIVER_GET_ENTROPY)
 
     // Call _InitChipStack() on the generic implementation base class to finish the initialization process.
     err = Internal::GenericPlatformManagerImpl_Zephyr<PlatformManagerImpl>::_InitChipStack();

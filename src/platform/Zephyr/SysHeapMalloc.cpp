@@ -191,7 +191,7 @@ EXTERNALLY_VISIBLE void WRAP(_free_r)(_reent *, void * mem)
     WRAP(free)(mem);
 }
 
-#endif /* CONFIG_NEWLIB_LIBC */
+#endif // CONFIG_NEWLIB_LIBC
 
 } // extern "C"
 
