@@ -168,7 +168,6 @@ EXTERNALLY_VISIBLE void * WRAP(calloc)(size_t num, size_t size) ALIAS("_ZN4chip1
 EXTERNALLY_VISIBLE void * WRAP(realloc)(void * mem, size_t size) ALIAS("_ZN4chip11DeviceLayer6Malloc7ReallocEPvj");
 EXTERNALLY_VISIBLE void WRAP(free)(void * mem) ALIAS("_ZN4chip11DeviceLayer6Malloc4FreeEPv");
 
-
 #if defined(CONFIG_NEWLIB_LIBC)
 /* Newlib-only reentrant hooks */
 
