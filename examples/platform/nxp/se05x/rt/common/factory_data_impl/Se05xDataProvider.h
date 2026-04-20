@@ -41,6 +41,7 @@ public:
     CHIP_ERROR GetSpake2pSalt(MutableByteSpan & saltBuf) override;
     CHIP_ERROR GetSetupPasscode(uint32_t & setupPasscode) override;
     CHIP_ERROR GetSpake2pIterationCount(uint32_t & iterationCount) override;
+    CHIP_ERROR GetSpake2pVerifier(MutableByteSpan & verifierBuf, size_t & verifierLen) override;
 };
 
 Se05xDataProviderImpl & Se05xDataPrvdImpl();

@@ -112,6 +112,21 @@ CHIP_ERROR Se05xDataProviderImpl::GetSpake2pIterationCount(uint32_t & iterationC
     return CHIP_NO_ERROR;
 }
 
+CHIP_ERROR Se05xDataProviderImpl::GetSpake2pVerifier(MutableByteSpan & verifierBuf, size_t & verifierLen)
+{
+    char verifierB64[kSpake2pSerializedVerifier_MaxBase64Len] = { 0 };
+    uint16_t verifierB64Len                                   = 0;
+    ReturnErrorOnFailure(SearchForId(FactoryDataId::kVerifierId, (uint8_t *) &verifierB64[0], sizeof(verifierB64), verifierB64Len));
+
+    verifierLen = chip::Base64Decode32(verifierB64, verifierB64Len, reinterpret_cast<uint8_t *>(verifierB64));
+    VerifyOrReturnError(verifierLen <= verifierBuf.size(), CHIP_ERROR_BUFFER_TOO_SMALL);
+    // Set verifier buffer to zero - the actual verifier remains in SE05x secure element
+    memset(verifierBuf.data(), 0, verifierLen);
+    verifierBuf.reduce_size(verifierLen);
+
+    return CHIP_NO_ERROR;
+}
+
 Se05xDataProviderImpl & Se05xDataPrvdImpl()
 {
     return sInstance;
