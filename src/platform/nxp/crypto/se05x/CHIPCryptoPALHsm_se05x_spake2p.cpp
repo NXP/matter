@@ -373,8 +373,7 @@ CHIP_ERROR Spake2pHSM_P256_SHA256_HKDF_HMAC::BeginVerifier(const uint8_t * my_id
     {
         ChipLogProgress(Crypto, "SE05x: ECM active with TP enabled - using software SPAKE2+ (TP values not applicable)");
         usingSE05x = false;
-        return Spake2p::BeginVerifier(my_identity, my_identity_len, peer_identity, peer_identity_len,
-                                       w0in, w0in_len, Lin, Lin_len);
+        return Spake2p::BeginVerifier(my_identity, my_identity_len, peer_identity, peer_identity_len, w0in, w0in_len, Lin, Lin_len);
     }
 #endif
 
