@@ -17,4 +17,5 @@ mainmenu "Matter NXP EVSE Example Application"
 
 source "$(CHIP_ROOT)/config/nxp/chip-cmake-freertos/Kconfig.defaults"
 source "$(CHIP_ROOT)/examples/platform/nxp/common/Kconfig"
+source "middleware/edgefast_bluetooth/Kconfig"
 source "Kconfig.mcuxpresso"
