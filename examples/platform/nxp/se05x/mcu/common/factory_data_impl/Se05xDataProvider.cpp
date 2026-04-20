@@ -143,6 +143,7 @@ CHIP_ERROR Se05xDataProviderImpl::GetSpake2pVerifier(MutableByteSpan & verifierB
     ReturnErrorOnFailure(SearchForId(FactoryDataId::kVerifierId, (uint8_t *) &verifierB64[0], sizeof(verifierB64), verifierB64Len));
 
     verifierLen = chip::Base64Decode32(verifierB64, verifierB64Len, reinterpret_cast<uint8_t *>(verifierB64));
+    VerifyOrReturnError(verifierLen > 0, CHIP_ERROR_INVALID_ARGUMENT);
     VerifyOrReturnError(verifierLen <= verifierBuf.size(), CHIP_ERROR_BUFFER_TOO_SMALL);
     // Set verifier buffer to zero - the actual verifier remains in SE05x secure element
     memset(verifierBuf.data(), 0, verifierLen);

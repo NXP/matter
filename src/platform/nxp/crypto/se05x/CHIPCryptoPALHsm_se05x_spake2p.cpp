@@ -369,7 +369,7 @@ CHIP_ERROR Spake2pHSM_P256_SHA256_HKDF_HMAC::BeginVerifier(const uint8_t * my_id
     uint8_t zero_w0[32] = { 0 };
 
     // If w0in contains any non-zero bytes, use software fallback in ECM mode
-    if (memcmp(w0in, zero_w0, sizeof(zero_w0)) != 0)
+     if (w0in_len != sizeof(zero_w0) || memcmp(w0in, zero_w0, sizeof(zero_w0)) != 0)
     {
         ChipLogProgress(Crypto, "SE05x: ECM active with TP enabled - using software SPAKE2+ (TP values not applicable)");
         usingSE05x = false;
