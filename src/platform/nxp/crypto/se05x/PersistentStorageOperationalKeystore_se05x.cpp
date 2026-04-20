@@ -17,9 +17,9 @@
 
 #include "PersistentStorageOperationalKeystore_se05x.h"
 #include "CHIPCryptoPALHsm_se05x_utils.h"
-#include <lib/support/DefaultStorageKeyAllocator.h>
 #include <lib/core/TLV.h>
 #include <lib/support/CodeUtils.h>
+#include <lib/support/DefaultStorageKeyAllocator.h>
 #include <lib/support/SafeInt.h>
 
 namespace chip {
@@ -28,7 +28,7 @@ using namespace chip::Crypto;
 
 #define CHIP_SE05x_NODE_OP_KEY_INDEX (SE051H_NODE_OP_KEY_ID - 1)
 
-#define CHIP_SE05x_NODE_OP_SLOT_B_OFFSET 0x2000  // Slot B: BASE + 0x2000 + fabricIndex
+#define CHIP_SE05x_NODE_OP_SLOT_B_OFFSET 0x2000 // Slot B: BASE + 0x2000 + fabricIndex
 #define KEYPAIR_KEYID_OFFSET 8
 #define NUM_NODE_OP_KEY_INDEXES (5)
 
@@ -40,7 +40,7 @@ using namespace chip::Crypto;
 
 constexpr TLV::Tag kOpKeyVersionTag = TLV::ContextTag(0);
 constexpr TLV::Tag kOpKeyDataTag    = TLV::ContextTag(1);
-constexpr uint16_t kOpKeyVersion = 1;
+constexpr uint16_t kOpKeyVersion    = 1;
 
 constexpr size_t OpKeyTLVMaxSize()
 {
@@ -58,9 +58,9 @@ static uint32_t GetSlotBKeyId(FabricIndex fabricIndex)
     return CHIP_SE05x_NODE_OP_KEY_INDEX + CHIP_SE05x_NODE_OP_SLOT_B_OFFSET + fabricIndex;
 }
 
-CHIP_ERROR PersistentStorageOpKeystorese05x::ExtractKeyIdFromSerializedKeypair(
-    const Crypto::P256SerializedKeypair & serializedKeypair,
-    uint32_t & outKeyId) const
+CHIP_ERROR
+PersistentStorageOpKeystorese05x::ExtractKeyIdFromSerializedKeypair(const Crypto::P256SerializedKeypair & serializedKeypair,
+                                                                    uint32_t & outKeyId) const
 {
 
     const uint8_t * privKeyRef = serializedKeypair.ConstBytes() + kP256_PublicKey_Length;
@@ -77,10 +77,8 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::ExtractKeyIdFromSerializedKeypair(
     }
 
     // Extract KeyID (big-endian, 4 bytes)
-    outKeyId = (privKeyRef[KEYPAIR_KEYID_OFFSET] << 24) |
-               (privKeyRef[KEYPAIR_KEYID_OFFSET + 1] << 16) |
-               (privKeyRef[KEYPAIR_KEYID_OFFSET + 2] << 8) |
-               (privKeyRef[KEYPAIR_KEYID_OFFSET + 3]);
+    outKeyId = (privKeyRef[KEYPAIR_KEYID_OFFSET] << 24) | (privKeyRef[KEYPAIR_KEYID_OFFSET + 1] << 16) |
+        (privKeyRef[KEYPAIR_KEYID_OFFSET + 2] << 8) | (privKeyRef[KEYPAIR_KEYID_OFFSET + 3]);
 
     return CHIP_NO_ERROR;
 }
@@ -91,17 +89,17 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     P256SerializedKeypair serializedKeypair;
     uint8_t privatekey[32] = CHIP_SE05x_NODE_OP_REF_KEY_TEMPLATE;
     uint8_t publickey[65]  = { 0x00 };
-    size_t privatekey_len = sizeof(privatekey);
-    size_t pubkey_len     = sizeof(publickey);
-    uint32_t newKeyId     = 0;
+    size_t privatekey_len  = sizeof(privatekey);
+    size_t pubkey_len      = sizeof(publickey);
+    uint32_t newKeyId      = 0;
     uint32_t existingKeyId = 0;
-    bool hasExistingKey = false;
-    CHIP_ERROR err = CHIP_NO_ERROR;
-    uint32_t slotAKeyId = 0;
-    uint32_t slotBKeyId = 0;
-    uint16_t tlvBufSize = 0;
+    bool hasExistingKey    = false;
+    CHIP_ERROR err         = CHIP_NO_ERROR;
+    uint32_t slotAKeyId    = 0;
+    uint32_t slotBKeyId    = 0;
+    uint16_t tlvBufSize    = 0;
     Crypto::SensitiveDataBuffer<OpKeyTLVMaxSize()> tlvBuf;
-    CHIP_ERROR kvsErr   = CHIP_NO_ERROR;
+    CHIP_ERROR kvsErr = CHIP_NO_ERROR;
 
     VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(IsValidFabricIndex(fabricIndex), CHIP_ERROR_INVALID_FABRIC_INDEX);
@@ -125,17 +123,12 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     slotAKeyId = GetSlotAKeyId(fabricIndex);
     slotBKeyId = GetSlotBKeyId(fabricIndex);
 
-    ChipLogProgress(Crypto,
-        "Fabric %u: Slot A = 0x%" PRIx32 ", Slot B = 0x%" PRIx32,
-        fabricIndex, slotAKeyId, slotBKeyId);
+    ChipLogProgress(Crypto, "Fabric %u: Slot A = 0x%" PRIx32 ", Slot B = 0x%" PRIx32, fabricIndex, slotAKeyId, slotBKeyId);
 
     // Check KVS to see if there's an existing committed key for this fabric
     tlvBufSize = static_cast<uint16_t>(tlvBuf.Capacity());
 
-    kvsErr = mStorage->SyncGetKeyValue(
-        DefaultStorageKeyAllocator::FabricOpKey(fabricIndex).KeyName(),
-        tlvBuf.Bytes(),
-        tlvBufSize);
+    kvsErr = mStorage->SyncGetKeyValue(DefaultStorageKeyAllocator::FabricOpKey(fabricIndex).KeyName(), tlvBuf.Bytes(), tlvBufSize);
 
     if (kvsErr == CHIP_NO_ERROR)
     {
@@ -178,32 +171,24 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
         if (err == CHIP_NO_ERROR)
         {
             hasExistingKey = true;
-            ChipLogProgress(Crypto,
-                "Fabric %u: Found existing key in KVS at slot 0x%" PRIx32,
-                fabricIndex, existingKeyId);
+            ChipLogProgress(Crypto, "Fabric %u: Found existing key in KVS at slot 0x%" PRIx32, fabricIndex, existingKeyId);
         }
         else
         {
-            ChipLogError(Crypto,
-                "Fabric %u: Failed to extract key ID from KVS: %" CHIP_ERROR_FORMAT,
-                fabricIndex, err.Format());
+            ChipLogError(Crypto, "Fabric %u: Failed to extract key ID from KVS: %" CHIP_ERROR_FORMAT, fabricIndex, err.Format());
             // Treat as no existing key - continue with first commission
             hasExistingKey = false;
-            err = CHIP_NO_ERROR;
+            err            = CHIP_NO_ERROR;
         }
     }
     else if (kvsErr == CHIP_ERROR_PERSISTED_STORAGE_VALUE_NOT_FOUND)
     {
-        ChipLogProgress(Crypto,
-            "Fabric %u: No existing key found in KVS - first commission",
-            fabricIndex);
+        ChipLogProgress(Crypto, "Fabric %u: No existing key found in KVS - first commission", fabricIndex);
         hasExistingKey = false;
     }
     else
     {
-        ChipLogError(Crypto,
-            "Fabric %u: Error reading from KVS: %" CHIP_ERROR_FORMAT,
-            fabricIndex, kvsErr.Format());
+        ChipLogError(Crypto, "Fabric %u: Error reading from KVS: %" CHIP_ERROR_FORMAT, fabricIndex, kvsErr.Format());
         ExitNow(err = kvsErr);
     }
 
@@ -211,9 +196,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     {
         // First time commissioning - use Slot A
         newKeyId = slotAKeyId;
-        ChipLogProgress(Crypto,
-            "Fabric %u: Using Slot A (0x%" PRIx32 ")",
-            fabricIndex, newKeyId);
+        ChipLogProgress(Crypto, "Fabric %u: Using Slot A (0x%" PRIx32 ")", fabricIndex, newKeyId);
     }
     else
     {
@@ -221,23 +204,20 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
         if (existingKeyId == slotAKeyId)
         {
             newKeyId = slotBKeyId;
-            ChipLogProgress(Crypto,
-                "Fabric %u: Using Slot B (0x%" PRIx32 ")",
-                fabricIndex, newKeyId);
+            ChipLogProgress(Crypto, "Fabric %u: Using Slot B (0x%" PRIx32 ")", fabricIndex, newKeyId);
         }
         else if (existingKeyId == slotBKeyId)
         {
             newKeyId = slotAKeyId;
-            ChipLogProgress(Crypto,
-                "Fabric %u: Using Slot A (0x%" PRIx32 ")",
-                fabricIndex, newKeyId);
+            ChipLogProgress(Crypto, "Fabric %u: Using Slot A (0x%" PRIx32 ")", fabricIndex, newKeyId);
         }
         else
         {
             // Unexpected key ID - this shouldn't happen, but handle it gracefully
             ChipLogError(Crypto,
-                "Fabric %u: Unexpected existing key ID 0x%" PRIx32 " (expected 0x%" PRIx32 " or 0x%" PRIx32 ") - using Slot A",
-                fabricIndex, existingKeyId, slotAKeyId, slotBKeyId);
+                         "Fabric %u: Unexpected existing key ID 0x%" PRIx32 " (expected 0x%" PRIx32 " or 0x%" PRIx32
+                         ") - using Slot A",
+                         fabricIndex, existingKeyId, slotAKeyId, slotBKeyId);
             newKeyId = slotAKeyId;
         }
     }
@@ -257,21 +237,17 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     err = mPendingKeypair->Deserialize(serializedKeypair);
     SuccessOrExit(err);
 
-    ChipLogProgress(Crypto,
-        "Fabric %u: Generating NIST P-256 key in SE05x at slot 0x%" PRIx32,
-        fabricIndex, newKeyId);
+    ChipLogProgress(Crypto, "Fabric %u: Generating NIST P-256 key in SE05x at slot 0x%" PRIx32, fabricIndex, newKeyId);
 
     err = mPendingKeypair->Initialize(Crypto::ECPKeyTarget::ECDSA);
     SuccessOrExit(err);
 
     {
         size_t csrLength = outCertificateSigningRequest.size();
-        err = mPendingKeypair->NewCertificateSigningRequest(outCertificateSigningRequest.data(), csrLength);
+        err              = mPendingKeypair->NewCertificateSigningRequest(outCertificateSigningRequest.data(), csrLength);
         if (err != CHIP_NO_ERROR)
         {
-            ChipLogError(Crypto,
-                "Fabric %u: Failed to generate CSR: %" CHIP_ERROR_FORMAT,
-                fabricIndex, err.Format());
+            ChipLogError(Crypto, "Fabric %u: Failed to generate CSR: %" CHIP_ERROR_FORMAT, fabricIndex, err.Format());
             se05x_delete_key(newKeyId);
             ExitNow();
         }
@@ -280,9 +256,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
 
     mPendingFabricIndex = fabricIndex;
 
-    ChipLogProgress(Crypto,
-        "Fabric %u: Successfully generated new operational key at slot 0x%" PRIx32,
-        fabricIndex, newKeyId);
+    ChipLogProgress(Crypto, "Fabric %u: Successfully generated new operational key at slot 0x%" PRIx32, fabricIndex, newKeyId);
 
     err = CHIP_NO_ERROR;
 
@@ -302,12 +276,12 @@ exit:
 
 CHIP_ERROR PersistentStorageOpKeystorese05x::CommitOpKeypairForFabric(FabricIndex fabricIndex)
 {
-    CHIP_ERROR err = CHIP_NO_ERROR;
-    uint32_t slotAKeyId = 0;
-    uint32_t slotBKeyId = 0;
+    CHIP_ERROR err        = CHIP_NO_ERROR;
+    uint32_t slotAKeyId   = 0;
+    uint32_t slotBKeyId   = 0;
     uint32_t pendingKeyId = 0;
-    uint32_t oldKeyId = 0;
-    auto opKeyLength = 0;
+    uint32_t oldKeyId     = 0;
+    auto opKeyLength      = 0;
 
     VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(mPendingKeypair != nullptr, CHIP_ERROR_INVALID_FABRIC_INDEX);
@@ -328,30 +302,25 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::CommitOpKeypairForFabric(FabricInde
     err = mPendingKeypair->Serialize(newKeyRef);
     if (err != CHIP_NO_ERROR)
     {
-        ChipLogError(Crypto,
-            "Fabric %u: Failed to serialize pending keypair: %" CHIP_ERROR_FORMAT,
-            fabricIndex, err.Format());
+        ChipLogError(Crypto, "Fabric %u: Failed to serialize pending keypair: %" CHIP_ERROR_FORMAT, fabricIndex, err.Format());
         ExitNow();
     }
 
     err = ExtractKeyIdFromSerializedKeypair(newKeyRef, pendingKeyId);
     if (err != CHIP_NO_ERROR)
     {
-        ChipLogError(Crypto,
-            "Fabric %u: Failed to extract key ID from pending keypair: %" CHIP_ERROR_FORMAT,
-            fabricIndex, err.Format());
+        ChipLogError(Crypto, "Fabric %u: Failed to extract key ID from pending keypair: %" CHIP_ERROR_FORMAT, fabricIndex,
+                     err.Format());
         ExitNow();
     }
 
     // Verify the new key exists in SE05x
     {
         bool pendingKeyExists = false;
-        err = se05x_check_object_exists(pendingKeyId, &pendingKeyExists);
+        err                   = se05x_check_object_exists(pendingKeyId, &pendingKeyExists);
         if (err != CHIP_NO_ERROR || !pendingKeyExists)
         {
-            ChipLogError(Crypto,
-                "Fabric %u: New key does not exist at slot 0x%" PRIx32,
-                fabricIndex, pendingKeyId);
+            ChipLogError(Crypto, "Fabric %u: New key does not exist at slot 0x%" PRIx32, fabricIndex, pendingKeyId);
             ExitNow(err = CHIP_ERROR_INVALID_FABRIC_INDEX);
         }
     }
@@ -383,15 +352,11 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::CommitOpKeypairForFabric(FabricInde
     }
 
     // Store the new key reference in persistent storage
-    err = mStorage->SyncSetKeyValue(
-        DefaultStorageKeyAllocator::FabricOpKey(fabricIndex).KeyName(),
-        tlvBuf.ConstBytes(),
-        static_cast<uint16_t>(opKeyLength));
+    err = mStorage->SyncSetKeyValue(DefaultStorageKeyAllocator::FabricOpKey(fabricIndex).KeyName(), tlvBuf.ConstBytes(),
+                                    static_cast<uint16_t>(opKeyLength));
     SuccessOrExit(err);
 
-    ChipLogProgress(Crypto,
-        "Fabric %u: Successfully stored new key reference key in KVS",
-        fabricIndex);
+    ChipLogProgress(Crypto, "Fabric %u: Successfully stored new key reference key in KVS", fabricIndex);
 
     // Delete the OLD key from the other slot
     oldKeyId = (pendingKeyId == slotAKeyId) ? slotBKeyId : slotAKeyId;
@@ -422,9 +387,8 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
     uint32_t slotAKeyId = GetSlotAKeyId(fabricIndex);
     uint32_t slotBKeyId = GetSlotBKeyId(fabricIndex);
 
-    ChipLogDetail(Crypto,
-        "Fabric %u: Removing operational keys - Slot A: 0x%" PRIx32 ", Slot B: 0x%" PRIx32,
-        fabricIndex, slotAKeyId, slotBKeyId);
+    ChipLogDetail(Crypto, "Fabric %u: Removing operational keys - Slot A: 0x%" PRIx32 ", Slot B: 0x%" PRIx32, fabricIndex,
+                  slotAKeyId, slotBKeyId);
 
     // Delete both Slot A and Slot B keys
     se05x_delete_key(slotAKeyId);

@@ -41,10 +41,9 @@ public:
     CHIP_ERROR CommitOpKeypairForFabric(FabricIndex fabricIndex) override;
 
 private:
-    //Extract SE05x key ID from a serialized keypair
+    // Extract SE05x key ID from a serialized keypair
     CHIP_ERROR ExtractKeyIdFromSerializedKeypair(const Crypto::P256SerializedKeypair & serializedKeypair,
                                                  uint32_t & outKeyId) const;
-
 };
 
 } // namespace chip
