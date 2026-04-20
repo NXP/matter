@@ -136,12 +136,6 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
         P256SerializedKeypair existingKeyRef;
         ByteSpan existingKeyData;
 
-        if (tlvBufSize > tlvBuf.Capacity())
-        {
-            ChipLogError(Crypto, "Fabric %u: Invalid TLV size from storage: %u", fabricIndex, tlvBufSize);
-            ExitNow(err = CHIP_ERROR_INVALID_ARGUMENT);
-        }
-
         reader.Init(tlvBuf.Bytes(), tlvBufSize);
 
         err = reader.Next(TLV::kTLVType_Structure, TLV::AnonymousTag());
@@ -153,6 +147,10 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
 
         err = reader.Next(kOpKeyVersionTag);
         SuccessOrExit(err);
+        uint16_t version;
+        err = reader.Get(version);
+        SuccessOrExit(err);
+        VerifyOrExit(version == kOpKeyVersion, err = CHIP_ERROR_VERSION_MISMATCH);
 
         err = reader.Next(kOpKeyDataTag);
         SuccessOrExit(err);
@@ -281,7 +279,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::CommitOpKeypairForFabric(FabricInde
     uint32_t slotBKeyId   = 0;
     uint32_t pendingKeyId = 0;
     uint32_t oldKeyId     = 0;
-    auto opKeyLength      = 0;
+    uint32_t opKeyLength  = 0;
 
     VerifyOrReturnError(mStorage != nullptr, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(mPendingKeypair != nullptr, CHIP_ERROR_INVALID_FABRIC_INDEX);
@@ -356,7 +354,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::CommitOpKeypairForFabric(FabricInde
                                     static_cast<uint16_t>(opKeyLength));
     SuccessOrExit(err);
 
-    ChipLogProgress(Crypto, "Fabric %u: Successfully stored new key reference key in KVS", fabricIndex);
+    ChipLogProgress(Crypto, "Fabric %u: Successfully stored new key reference in KVS", fabricIndex);
 
     // Delete the OLD key from the other slot
     oldKeyId = (pendingKeyId == slotAKeyId) ? slotBKeyId : slotAKeyId;
