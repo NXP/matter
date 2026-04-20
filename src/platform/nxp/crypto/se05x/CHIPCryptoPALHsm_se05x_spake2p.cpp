@@ -366,7 +366,7 @@ CHIP_ERROR Spake2pHSM_P256_SHA256_HKDF_HMAC::BeginVerifier(const uint8_t * my_id
     ChipLogProgress(Crypto, "SE05x: HSM - BeginVerifier");
 
 #if ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
-    uint8_t zero_w0[32] = {0};
+    uint8_t zero_w0[32] = { 0 };
 
     // If w0in contains any non-zero bytes, use software fallback in ECM mode
     if (memcmp(w0in, zero_w0, sizeof(zero_w0)) != 0)
