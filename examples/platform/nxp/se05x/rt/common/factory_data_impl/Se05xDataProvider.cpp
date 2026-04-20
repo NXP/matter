@@ -34,6 +34,9 @@ using namespace chip::DeviceLayer::PersistedStorage;
 namespace chip {
 namespace DeviceLayer {
 
+static constexpr size_t kSpake2pSerializedVerifier_MaxBase64Len =
+    BASE64_ENCODED_LEN(chip::Crypto::kSpake2p_VerifierSerialized_Length) + 1;
+
 static Se05xDataProviderImpl sInstance;
 static constexpr size_t kSpake2pSalt_MaxBase64Len = BASE64_ENCODED_LEN(chip::Crypto::kSpake2p_Max_PBKDF_Salt_Length) + 1;
 
