@@ -136,6 +136,11 @@ CHIP_ERROR Se05xDataProviderImpl::GetSpake2pIterationCount(uint32_t & iterationC
     return CHIP_NO_ERROR;
 }
 
+/*
+ * The function will set the verifiers to zero (The trust provisioned verifiers from SE05x are used).
+ * In the SE05x spake implementation, the values of verifiers (zeros and non-zero) are used to decide if
+ * SE05x or host to be used for spake.
+ */
 CHIP_ERROR Se05xDataProviderImpl::GetSpake2pVerifier(MutableByteSpan & verifierBuf, size_t & verifierLen)
 {
     char verifierB64[kSpake2pSerializedVerifier_MaxBase64Len] = { 0 };
