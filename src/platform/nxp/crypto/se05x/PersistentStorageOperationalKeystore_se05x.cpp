@@ -309,31 +309,18 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::NewOpKeypairForFabric(FabricIndex f
     mPendingFabricIndex = fabricIndex;
     ChipLogProgress(Crypto, "Fabric %u: Successfully generated new operational key at slot 0x%" PRIx32, fabricIndex, newKeyId);
 
-    if (se05x_disable_nfc_commision() != CHIP_NO_ERROR)
-    {
-        ChipLogError(Crypto, "Failed to disable NFC commissioning");
-    }
-    else
-    {
-        ChipLogProgress(Crypto, "NOTE: NFC commissioning disabled");
-    }
-
     err = CHIP_NO_ERROR;
 
 exit:
-    /* De initializing the task or thread which is monitoring the GPIO */
-    se05x_host_gpio_notification_monitor_deinit();
 
     if (se05x_close_session() != CHIP_NO_ERROR)
     {
         ChipLogError(Crypto, "SE05x: Error closing session during cleanup");
     }
-
     if (err != CHIP_NO_ERROR)
     {
         ResetPendingKey();
     }
-
     return err;
 }
 
@@ -426,6 +413,22 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::CommitOpKeypairForFabric(FabricInde
 
     ChipLogProgress(Crypto, "Fabric %u: Deleting old key (0x%" PRIx32 ")", fabricIndex, oldKeyId);
     se05x_delete_key(oldKeyId);
+
+    err = se05x_disable_nfc_commision();
+    if (err != CHIP_NO_ERROR)
+    {
+        ChipLogError(Crypto,
+            "Fabric %u: Failed to disable NFC commissioning: %" CHIP_ERROR_FORMAT,
+            fabricIndex, err.Format());
+    }
+    else
+    {
+        ChipLogProgress(Crypto,
+            "Fabric %u: NFC commissioning disabled after successful commit",
+            fabricIndex);
+    }
+
+    se05x_host_gpio_notification_monitor_deinit();
 
     // Reset pending key state
     ResetPendingKey();
