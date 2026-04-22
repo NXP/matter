@@ -104,8 +104,8 @@ static CHIP_ERROR se05x_reset_binary_data(uint32_t keyid, const uint8_t * buf, s
     {
         if (seObjectSize != buflen)
         {
-            ChipLogProgress(Crypto, "SE05x: Size mismatch for keyid 0x%" PRIx32 " (SE: %" PRIu16 " bytes, new: %zu bytes) - deleting old object",
-                keyid, seObjectSize, buflen);
+            ChipLogProgress(Crypto, "SE05x: Size mismatch for keyid 0x%" PRIx32 " (SE: %" PRIu16 " bytes, new: %" PRIu16 " bytes) - deleting old object",
+                keyid, seObjectSize, static_cast<uint16_t>(buflen));
             se05x_delete_key(keyid);
         }
     }
@@ -503,12 +503,7 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
         {
             ChipLogProgress(Crypto, "NOTE: All node OP keys deleted — NFC commissioning enabled.");
         }
-    }
 
-    /* Create a dummy key pair at node operational key location,
-    so that if the NFC commissioned data is provisioned, user can do the NFC commission. */
-    if (slotAKeyId == CHIP_SE05x_NODE_OP_KEY_INDEX + 1)
-    {
         err = generate_node_oper_key();
         if (err != CHIP_NO_ERROR)
         {
@@ -521,6 +516,8 @@ CHIP_ERROR PersistentStorageOpKeystorese05x::RemoveOpKeypairForFabric(FabricInde
                             (uint32_t) (CHIP_SE05x_NODE_OP_KEY_INDEX + 1));
         }
 
+        /* Create a dummy key pair at node operational key location,
+        so that if the NFC commissioned data is provisioned, user can do the NFC commission. */
         err = se05xResetNFCCommData();
         if (err != CHIP_NO_ERROR)
         {
@@ -673,12 +670,25 @@ static CHIP_ERROR se05xResetNFCCommData()
         size_t buf_len = sizeof(buffer);
 
         // read NCC to check what was the last network interface type set for NFC comm
-        err = se05x_get_certificate(SE051H_NCC_ID, buffer, &buf_len);
-        VerifyOrReturnError(err == CHIP_NO_ERROR, err);
+        smStatus_t smstatus = SM_NOT_OK;
+        SE05x_Result_t exists = kSE05x_Result_NA;
 
-        VerifyOrReturnError(buf_len > NETWORK_INTERFACE_BTYE_OFFSET, CHIP_ERROR_BUFFER_TOO_SMALL);
+        smstatus = Se05x_API_CheckObjectExists(
+        &((sss_se05x_session_t *)&gex_sss_chip_ctx.session)->s_ctx, SE051H_NCC_ID,
+        &exists);
+        if (smstatus == SM_OK) {
+            if (exists == kSE05x_Result_SUCCESS) {
+                err = se05x_get_certificate(SE051H_NCC_ID, buffer, &buf_len);
+                VerifyOrReturnError(err == CHIP_NO_ERROR, err);
 
-        ncc_buf[NETWORK_INTERFACE_BTYE_OFFSET] = buffer[NETWORK_INTERFACE_BTYE_OFFSET];
+                VerifyOrReturnError(buf_len > NETWORK_INTERFACE_BTYE_OFFSET, CHIP_ERROR_BUFFER_TOO_SMALL);
+
+                ncc_buf[NETWORK_INTERFACE_BTYE_OFFSET] = buffer[NETWORK_INTERFACE_BTYE_OFFSET];
+            }
+        }
+        else {
+            ChipLogError(Crypto, "Se05x_API_CheckObjectExists Failed");
+        }
 
         err = se05x_reset_binary_data(SE051H_NCC_ID, ncc_buf, sizeof(ncc_buf));
         VerifyOrReturnError(err == CHIP_NO_ERROR, err);
