@@ -368,16 +368,15 @@ CHIP_ERROR Spake2pHSM_P256_SHA256_HKDF_HMAC::BeginVerifier(const uint8_t * my_id
 #if ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
     uint8_t zero_w0[32] = { 0 };
 
-    // If w0in contains any non-zero bytes, use software fallback in ECM mode
+    // If w0in contains any non-zero bytes, it means the verifiers are calculated on host using
+    // pass-code generated for enhanced commissioning. So we use the host spake2p implementation.
     if (w0in_len != sizeof(zero_w0) || memcmp(w0in, zero_w0, sizeof(zero_w0)) != 0)
     {
-        ChipLogProgress(Crypto, "SE05x: ECM active with TP enabled - using software SPAKE2+ (TP values not applicable)");
+        ChipLogProgress(Crypto, "SE05x: Verifiers are on host. Using software SPAKE2+");
         usingSE05x = false;
         return Spake2p::BeginVerifier(my_identity, my_identity_len, peer_identity, peer_identity_len, w0in, w0in_len, Lin, Lin_len);
     }
-#endif
-
-#if !ENABLE_SE05X_SPAKE_VERIFIER_USE_TP_VALUES
+#else
     ReturnErrorOnFailure(FELoad(w0in, w0in_len, w0));
     ReturnErrorOnFailure(FEWrite(w0, w0in_mod, w0in_mod_len));
 #endif
