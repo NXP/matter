@@ -164,7 +164,7 @@ CHIP_ERROR NxpChipDnssdInit(DnssdAsyncReturnCallback initCallback, DnssdAsyncRet
 {
     struct netif * extNetif = (ConnectivityManagerImpl().GetExternalInterface()).GetPlatformInterface();
     VerifyOrReturnError(extNetif != nullptr, CHIP_ERROR_INCORRECT_STATE);
-    mNetifIndex             = netif_get_index(extNetif);
+    mNetifIndex = netif_get_index(extNetif);
 
     if (!mListIsInit)
     {
