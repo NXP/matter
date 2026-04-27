@@ -105,6 +105,7 @@ template("ncp_host_sdk") {
     sources += [
       "${ncp_host_sdk_root}/drivers/gpio/gpio_driver.c",
       "${ncp_host_sdk_root}/drivers/gpio/gpio_ncp_adapter.c",
+      "${ncp_host_sdk_root}/src/common/ncp_common.c",
       "${ncp_host_sdk_root}/src/common/crc/ncp_crc_sw.c",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/ncp_pm_action.c",
       "${ncp_host_sdk_root}/src/common/ncp_adapter/ncp_pm/ncp_pm_sm.c",
