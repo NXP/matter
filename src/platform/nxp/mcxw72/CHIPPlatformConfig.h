@@ -62,7 +62,7 @@
 #endif // CONFIG_NXP_USE_POWER_DOWN
 
 #ifdef CONFIG_CHIP_CRYPTO_PSA
-#define CHIP_CONFIG_SHA256_CONTEXT_SIZE (32U) /* sizeof(psa_hash_operation_t) */
+#define CHIP_CONFIG_SHA256_CONTEXT_SIZE (444U) /* sizeof(psa_hash_operation_t) */
 #endif
 
 // Include default nxp platform configurations
