@@ -163,7 +163,8 @@ static uint32_t mServiceListFreeIndex;
 CHIP_ERROR NxpChipDnssdInit(DnssdAsyncReturnCallback initCallback, DnssdAsyncReturnCallback errorCallback, void * context)
 {
     struct netif * extNetif = (ConnectivityManagerImpl().GetExternalInterface()).GetPlatformInterface();
-    VerifyOrReturnError(extNetif != nullptr, CHIP_ERROR_INCORRECT_STATE, ChipLogError(DeviceLayer, "External interface not set, DNS-SD init failed"));
+    VerifyOrReturnError(extNetif != nullptr, CHIP_ERROR_INCORRECT_STATE,
+                        ChipLogError(DeviceLayer, "External interface not set, DNS-SD init failed"));
     mNetifIndex = netif_get_index(extNetif);
 
     if (!mListIsInit)
