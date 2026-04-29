@@ -1,0 +1,11 @@
+<mat-nav-list class="sidebar-nav-list">
+  <mat-list-item 
+    *ngFor="let s of sidebarNavigationItems; let i = index;"
+    (click)="onClick(i)"
+    [activated]="activeItemFromList === i"
+    class="sidebar-list-item"
+  >
+    <mat-icon matListItemIcon>{{s.icon}}</mat-icon>
+    <span matListItemTitle>{{s.name}}</span>
+  </mat-list-item>
+</mat-nav-list>

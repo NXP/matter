@@ -1,0 +1,56 @@
+<app-loaderoverlay></app-loaderoverlay>
+
+<div class="app-wrapper">
+  <mat-drawer-container class="app-drawer-container" autosize>
+    
+    <!-- Sidebar Drawer -->
+    <mat-drawer #drawer 
+                class="app-sidebar-drawer" 
+                [ngClass]="{'drawer-open': getIsDrawerOpen(), 'drawer-closed': !getIsDrawerOpen()}"
+                mode="over">
+      <div class="sidebar-content">
+        <app-applicationsidebar 
+          [isDrawerOpen]="getIsDrawerOpen()" 
+          (isCollapsedChange)="onSidebarColapsedEventCatch($event)">
+        </app-applicationsidebar>
+      </div>
+    </mat-drawer>
+
+    <!-- Main Content Area -->
+    <mat-drawer-content class="app-main-content">
+      <!-- Header Section -->
+      <header class="app-header-section">
+        <mat-card class="header-card">
+          <!--mat-card-content -->
+            <app-applicationheader 
+              [sidebarStatus]="getIsDrawerOpen()" 
+              (SidebarCollapsed)="onSidebarColapsedEventCatch($event)">
+            </app-applicationheader>
+          <!--mat-card-content -->
+        </mat-card>
+      </header>
+
+      <!-- Body Content Section -->
+      <main class="app-body-section">
+        <div class="content-container">
+          <router-outlet></router-outlet>
+        </div>
+      </main>
+
+      <!-- Footer Section -->
+      <footer class="app-footer-section">
+        <mat-card class="footer-card">
+          <mat-card-content>
+            <app-footercomponent></app-footercomponent>
+          </mat-card-content>
+        </mat-card>
+      </footer>
+
+    </mat-drawer-content>
+  </mat-drawer-container>
+
+  <!-- Loading Overlay -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <app-loaderoverlay></app-loaderoverlay>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<mat-card class="main-content-card">
+
+  <!-- Content Section -->
+  <mat-card-content class="content-section">
+    
+    <!-- Device Configuration Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">Device Configuration</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>Device ID</mat-label>
+          <input matInput id="nodeid-input" placeholder="Enter device ID" required>
+          <mat-icon matPrefix>devices</mat-icon>
+          <mat-hint>The node ID of the target device</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Commissioning Method</mat-label>
+          <mat-select [(ngModel)]="commissioningMethod">
+            <mat-option [value]="'0'">BCM</mat-option>
+            <mat-option [value]="'1'">ECM</mat-option>
+          </mat-select>
+          <mat-icon matPrefix>settings</mat-icon>
+          <mat-hint>Select the commissioning method</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Window Timeout</mat-label>
+          <input matInput id="window-timeout-input" type="number" value="300" required>
+          <mat-icon matPrefix>timer</mat-icon>
+          <mat-hint>Window Timeout (default: 300)</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Iteration</mat-label>
+          <input matInput id="iteration-input" type="number" value="1000" required>
+          <mat-icon matPrefix>loop</mat-icon>
+          <mat-hint>PBKDF iteration count (default: 1000)</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field class="form-field">
+          <mat-label>Discriminator</mat-label>
+          <input matInput id="discriminator-input" type="number" value="3840" required>
+          <mat-icon matPrefix>label_important</mat-icon>
+          <mat-hint>Discriminator to use for advertising (default: 3840)</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- Commissioning Window Control Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">Commissioning Window Control</h3>
+      
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="openCommissioningWindowWithBCM()">
+          <mat-icon>vpn_key</mat-icon>
+          Open Window with BCM
+        </button>
+
+        <button mat-raised-button class="action-button" (click)="openCommissioningWindowWithECM()">
+          <mat-icon>qr_code_2</mat-icon>
+          Open Window with ECM
+        </button>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+<app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>

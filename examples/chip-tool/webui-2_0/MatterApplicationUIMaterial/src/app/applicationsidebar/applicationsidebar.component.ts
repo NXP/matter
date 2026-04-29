@@ -1,0 +1,112 @@
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import {
+  MatDrawer,
+  MatSidenav,
+  MatSidenavContainer,
+  MatSidenavModule,
+} from '@angular/material/sidenav';
+import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgFor, NgStyle } from '@angular/common';
+import { MatSidenavContent } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChip, MatChipsModule } from '@angular/material/chips';
+import { MatListModule } from '@angular/material/list';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-applicationsidebar',
+  standalone: true,
+  imports: [
+    MatSidenavModule,
+    MatCheckboxModule,
+    FormsModule,
+    NgFor,
+    MatSidenavContent,
+    NgClass,
+    MatSidenav,
+    MatIconModule,
+    NgStyle,
+    MatChip,
+    MatChipsModule,
+    MatListModule
+  ],
+  templateUrl: './applicationsidebar.component.html',
+  styleUrl: './applicationsidebar.component.css',
+})
+export class ApplicationsidebarComponent {
+  constructor(private router: Router) {}
+
+  @Input() public isDrawerOpen!: boolean;
+  @Output() public isCollapsedChange = new EventEmitter<boolean>();
+  @ViewChild('drawer') drawer!: MatDrawer;
+  @ViewChild('listgroup_item') listgroupitem!: ElementRef;
+
+  public activeItemFromList!: number;
+
+  public onClick(index : number) : void {
+    console.log('Clicked on item: ', index);
+    this.activeItemFromList = index;
+    this.router.navigate([this.sidebarNavigationItems[index].linkRoute]);
+    // Auto-collapse the sidebar after navigation.
+    this.isCollapsedChange.emit(false);
+  }
+
+  public sidebarNavigationItems = [
+    {
+      name: 'Dashboard',
+      icon: 'dashboard',
+      linkRoute: 'dashboard',
+    },
+    {
+      name: 'Devices',
+      icon: 'devices',
+      linkRoute: 'devices',
+    },
+    {
+      name: 'Subscriptions',
+      icon: 'subscriptions',
+      linkRoute: 'subscriptions',
+    },
+    {
+      name: 'Media',
+      icon: 'audiotrack',
+      linkRoute: 'audio'
+    },
+    {
+      name: 'Multi-Admin',
+      icon: 'person',
+      linkRoute: 'multiadmin'
+    },
+    {
+      name: 'Binding',
+      icon: 'link',
+      linkRoute: 'binding'
+    },
+    {
+      name: 'Energy EVSE',
+      icon: 'ev_station',
+      linkRoute: 'energy_evse'
+    },
+    {
+      name: 'OTA Updates',
+      icon: 'download',
+      linkRoute: 'ota'
+    },
+    {
+      name: 'Network Graph',
+      icon: 'device_hub',
+      linkRoute: 'network_graph'
+    }
+  ];
+
+}
