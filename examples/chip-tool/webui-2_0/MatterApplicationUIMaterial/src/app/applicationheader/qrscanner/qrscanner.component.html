@@ -1,0 +1,45 @@
+<div class="qr-scanner-container">
+    <h2>Scan QR Code</h2>
+  
+    <!-- Video Element for Scanner - THIS IS THE CAMERA AREA -->
+    <div class="video-container">
+      <video #scannerVideo playsinline [class.scanning]="isScanning"></video>
+      <div class="scan-region-highlight" *ngIf="isScanning || isLoading"></div>
+    </div>
+    <!-- End of Camera Area -->
+  
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="loading-indicator">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Starting camera...</p>
+    </div>
+  
+    <!-- Status/Error Messages -->
+    <div *ngIf="scanError" class="error-message">
+      <mat-icon fontSet="material-icons-outlined">warning</mat-icon>
+      <span>{{ scanError }}</span>
+    </div>
+    <div *ngIf="!scanError && !isScanning && !isLoading" class="info-message">
+      Click "Start Scan" to begin.
+    </div>
+  
+    <!-- Action Buttons Area -->
+    <div class="actions">
+      <!-- ADD THIS WRAPPER: This div will get the grey background, rounded corners, shadow -->
+      <div class="button-wrapper">
+        <!-- Start Scan Button -->
+        <button mat-button class="action-button start-button" matRipple (click)="startScanner()"
+          [disabled]="isScanning || isLoading || !!scanError">
+          <mat-icon>qr_code_scanner</mat-icon>
+          <span>{{ isScanning ? 'Scanning...' : 'Start Scan' }}</span>
+        </button>
+  
+        <!-- Cancel Button -->
+        <button mat-button class="action-button cancel-button" matRipple (click)="cancelScan()">
+          <mat-icon>cancel</mat-icon>
+          <span>Cancel</span>
+        </button>
+      </div> <!-- End of button-wrapper -->
+    </div> <!-- End of .actions div -->
+  
+  </div>

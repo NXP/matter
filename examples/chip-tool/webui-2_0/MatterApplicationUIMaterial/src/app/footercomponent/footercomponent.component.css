@@ -1,0 +1,32 @@
+/*
+  Footer Styles
+*/
+
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  text-align: center;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: black;
+}
+
+body {
+  margin: 0;
+}
+
+.container_1 {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #FFCCCC;
+}
+
+.content {
+  background-color: #CCFFCC;
+}

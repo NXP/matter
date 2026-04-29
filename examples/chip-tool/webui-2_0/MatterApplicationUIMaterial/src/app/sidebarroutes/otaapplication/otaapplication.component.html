@@ -1,0 +1,143 @@
+<mat-card class="main-content-card">
+
+  <!-- Content Section -->
+  <mat-card-content class="content-section">
+
+    <!-- Upload OTA File Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">Upload OTA File</h3>
+      
+      <form enctype="multipart/form-data" (ngSubmit)="onUploadOTASubmitted($event)" id="form" class="upload-form">
+        <div class="upload-area">
+          <div class="file-input-wrapper">
+            <label for="file-upload" class="file-upload-label">
+              <div class="upload-icon-container">
+                <mat-icon class="upload-icon">cloud_upload</mat-icon>
+              </div>
+              <p class="upload-text">Click to select OTA file</p>
+              <p class="upload-subtext">Supported formats: .ota</p>
+            </label>
+            <input type="file" class="file-input" id="file-upload" 
+                   (change)="onFileSelected($event)" #fileUpload accept=".ota">
+          </div>
+          
+          <div class="file-info" *ngIf="fileName">
+            <mat-icon class="file-icon">insert_drive_file</mat-icon>
+            <span class="file-name">{{ fileName }}</span>
+          </div>
+          
+          <div class="file-info placeholder" *ngIf="!fileName">
+            <mat-icon class="file-icon-placeholder">description</mat-icon>
+            <span class="file-name-placeholder">No file selected</span>
+          </div>
+        </div>
+
+        <div class="progress-container" *ngIf="uploadProgress !== undefined">
+          <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+          <span class="progress-text">{{ uploadProgress }}%</span>
+        </div>
+
+        <div class="action-buttons">
+          <button mat-raised-button type="submit" class="action-button" [disabled]="!fileName">
+            <mat-icon>upload</mat-icon>
+            Upload File
+          </button>
+        </div>
+      </form>
+
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- Run Chip-OTA-Provider Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">Run Chip-OTA-Provider</h3>
+
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>Command</mat-label>
+          <input matInput id="command" value="ota provider" required>
+          <mat-icon matPrefix>terminal</mat-icon>
+          <mat-hint>OTA provider command</mat-hint>
+        </mat-form-field>
+        
+        <mat-form-field class="form-field">
+          <mat-label>Discriminator</mat-label>
+          <input matInput id="discriminator" value="22" required type="number">
+          <mat-icon matPrefix>label_important</mat-icon>
+          <mat-hint>Device discriminator value</mat-hint>
+        </mat-form-field>
+        
+        <mat-form-field class="form-field">
+          <mat-label>File Name</mat-label>
+          <input matInput id="file-path" value="firmware.ota" required>
+          <mat-icon matPrefix>folder</mat-icon>
+          <mat-hint>OTA firmware file name</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="onRunChipOTAProvider()">
+          <mat-icon>terminal</mat-icon>
+          chip-ota-provider-app
+        </button>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- Write ACL (OTA) Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">Write ACL (OTA)</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>OTA Provider Device ID</mat-label>
+          <input matInput id="chip-ota-provider-device-nodeid" required type="number">
+          <mat-icon matPrefix>cloud</mat-icon>
+          <mat-hint>Enter the node ID of the OTA provider device</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="onRunACLOTAProvider()">
+          <mat-icon>security</mat-icon>
+          Send Write ACL Command
+        </button>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- OTA Software Update Requestor Section -->
+    <div class="form-section">
+      <h3 class="mat-h3">OTA Software Update Requestor</h3>
+      
+      <div class="form-grid">
+        <mat-form-field class="form-field">
+          <mat-label>OTA Provider Device ID</mat-label>
+          <input matInput id="ota-provider-node-id" required type="number">
+          <mat-icon matPrefix>cloud</mat-icon>
+          <mat-hint>Provider node ID</mat-hint>
+        </mat-form-field>
+        
+        <mat-form-field class="form-field">
+          <mat-label>OTA Requestor Device ID</mat-label>
+          <input matInput id="ota-requestor-node-id" required type="number">
+          <mat-icon matPrefix>devices</mat-icon>
+          <mat-hint>Requestor node ID</mat-hint>
+        </mat-form-field>
+      </div>      
+    
+      <div class="action-buttons">
+        <button mat-raised-button class="action-button" (click)="onRunOTASoftwareUpdateRequestor()">
+          <mat-icon>system_update</mat-icon>
+          Trigger OTA Update
+        </button>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+
+<app-floatingactionarea (buttonPressedEvent)="onButtonPressedEventCatch($any($event))"></app-floatingactionarea>

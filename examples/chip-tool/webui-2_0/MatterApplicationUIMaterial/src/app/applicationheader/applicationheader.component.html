@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light modal-header px-2 mt-n1" id="navbar">
+  <div class="container-fluid" id="maindiv">
+    <div class="main-upwards-division" id="top"></div>
+    <div class="navbar-brand">
+      <mat-toolbar class="toolbar-padding">
+        <!-- Menu button with MDC styling -->
+        <button mat-mini-fab 
+          color="primary"
+          class="menu-button" 
+          aria-label="menu" 
+          (click)="toggleSidebar()">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <img id="nxp-logo" 
+          ngSrc="../../assets/matter-logo-transparent.png" 
+          priority 
+          class="px-2 logo-image" 
+          width="100" 
+          height="100"
+          alt="Matter Logo" />
+      </mat-toolbar>
+    </div>
+    <div class="span container-fluid navbar-content" id="navbarSupportedContent">
+      <app-buttonpanel 
+        (buttonPressedEvent)="onButtonPressedEvent($any($event))" 
+        class="button-panel-container">
+      </app-buttonpanel>
+    </div>
+  </div>
+</nav>

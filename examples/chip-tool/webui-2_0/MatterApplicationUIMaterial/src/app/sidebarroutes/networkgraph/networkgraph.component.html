@@ -1,0 +1,32 @@
+<mat-card class="main-content-card">
+
+  <!-- Content Section -->
+  <mat-card-content class="content-section">
+    
+    <!-- Header Section -->
+    <div class="header-section">
+      <h3 class="mat-h3">Network Graph</h3>
+    </div>
+
+    <!-- Graph Container Section -->
+    <div class="graph-section">
+      <div id="networkgraph-container" class="graph-container">
+        <svg #svgContainer width="100%" height="600px"></svg>
+      </div>
+    </div>
+
+    <div class="content-info-divider"></div>
+
+    <!-- Control Section -->
+    <div class="form-section">
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" class="action-button" (click)="onPressedNetworkRefreshButton()">
+          <mat-icon>refresh</mat-icon>
+          Refresh Network Graph
+        </button>
+      </div>
+
+    </div>
+
+  </mat-card-content>
+</mat-card>
