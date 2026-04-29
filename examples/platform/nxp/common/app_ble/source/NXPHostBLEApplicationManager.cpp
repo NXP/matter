@@ -54,7 +54,7 @@ void app_gatt_callback(deviceId_t id, gattServerEvent_t * event)
     }
 }
 
-void BLEApplicationManager::Init(void)
+void BLEApplicationManager::BLEApplicationManager_PreMatterStackInit(void)
 {
     CHIP_ERROR err    = CHIP_NO_ERROR;
     auto * bleManager = &chip::DeviceLayer::Internal::BLEMgrImpl();
@@ -71,6 +71,12 @@ void BLEApplicationManager::Init(void)
     btSettingsInit();
 #endif
 }
+
+void BLEApplicationManager::BLEApplicationManager_PostMatterStackInit(void)
+{
+    /*Empty implementation. Intentionally left blank */
+}
+
 
 void BLEApplicationManager::EnableMultipleConnectionsHandler(void)
 {

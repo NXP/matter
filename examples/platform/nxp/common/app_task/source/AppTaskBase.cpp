@@ -265,6 +265,11 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
     TEMPORARY_RETURN_IGNORED chip::NXP::App::LowPower::Init();
 #endif
 
+#if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
+    /* BLEApplicationManager implemented per platform or left blank */
+    chip::NXP::App::BleAppMgr().BLEApplicationManager_PreMatterStackInit();
+#endif
+
     /* Initialize Matter factory data before initializing the Matter stack */
     err = AppFactoryData_PreMatterStackInit();
 
@@ -345,6 +350,11 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
 #if CONFIG_CHIP_SE05X
     err = chip::NXP::App::Se05x::Init();
     SuccessOrExit(err);
+#endif
+
+#if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
+    /* BLEApplicationManager implemented per platform or left blank */
+    chip::NXP::App::BleAppMgr().BLEApplicationManager_PostMatterStackInit();
 #endif
 
 #if CONFIG_CHIP_WIFI || CHIP_DEVICE_CONFIG_ENABLE_WPA
