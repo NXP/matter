@@ -33,15 +33,16 @@ using namespace chip::app::Clusters::TimeSynchronization::Attributes;
 using chip::ArgParser::OptionDef;
 using chip::ArgParser::OptionSet;
 using chip::ArgParser::PrintArgError;
+using chip::Protocols::InteractionModel::Status;
 using chip::System::Clock::ClockBase;
 using chip::System::Clock::Microseconds64;
 using chip::System::Clock::Milliseconds64;
 
-constexpr uint16_t kOptionMinCommissioningTimeout    = 0xFF02;
-constexpr uint16_t kOptionEndUserSupportFilePath     = 0xFF03;
-constexpr uint16_t kOptionNetworkDiagnosticsFilePath = 0xFF04;
-constexpr uint16_t kOptionCrashFilePath              = 0xFF05;
-constexpr uint16_t kOptionUseMockClock               = 0xFF06;
+constexpr uint16_t kOptionMinCommissioningTimeout    = 0xE002;
+constexpr uint16_t kOptionEndUserSupportFilePath     = 0xE003;
+constexpr uint16_t kOptionNetworkDiagnosticsFilePath = 0xE004;
+constexpr uint16_t kOptionCrashFilePath              = 0xE005;
+constexpr uint16_t kOptionUseMockClock               = 0xE006;
 
 namespace {
 struct MockClock : public ClockBase
@@ -110,13 +111,21 @@ bool AppOptions::IsEmptyString(const char * value)
 
 bool AppOptions::HandleOptions(const char * program, OptionSet * options, int identifier, const char * name, const char * value)
 {
-    bool retval = true;
+    bool retval     = true;
+    long timeoutSec = 0;
+    char * endptr   = nullptr;
+
     switch (identifier)
     {
     case kOptionMinCommissioningTimeout: {
         auto & commissionMgr = chip::Server::GetInstance().GetCommissioningWindowManager();
-        // NOLINTNEXTLINE(bugprone-unchecked-string-to-number-conversion)
-        commissionMgr.OverrideMinCommissioningTimeout(chip::System::Clock::Seconds16(static_cast<uint16_t>(atoi(value))));
+        timeoutSec           = strtol(value, &endptr, 10);
+        if (endptr == value || *endptr != '\0' || timeoutSec > UINT16_MAX || timeoutSec < 0)
+        {
+            retval = false;
+            break;
+        }
+        commissionMgr.OverrideMinCommissioningTimeout(chip::System::Clock::Seconds16(static_cast<uint16_t>(timeoutSec)));
         break;
     }
     case kOptionEndUserSupportFilePath: {
@@ -144,15 +153,18 @@ bool AppOptions::HandleOptions(const char * program, OptionSet * options, int id
         if (!sMockClock.HasValue())
         {
             sMockClock.Emplace();
-
-            // This ensures that the UTCTime attribute will be reported to have a value.
             using namespace chip::app::Clusters::TimeSynchronization;
             ForceTimeSource(TimeSourceEnum::kUnknown);
         }
-        long longValue = atol(value); // NOLINT(bugprone-unchecked-string-to-number-conversion)
-        if (longValue >= 0)
+        timeoutSec = strtol(value, &endptr, 10);
+        if (endptr == value || *endptr != '\0')
         {
-            uint64_t override = uint64_t(longValue) * chip::kMicrosecondsPerSecond;
+            retval = false;
+            break;
+        }
+        if (timeoutSec >= 0)
+        {
+            uint64_t override = uint64_t(timeoutSec) * chip::kMicrosecondsPerSecond;
             retval            = chip::ChipEpochToUnixEpochMicros(override, override);
             sMockClock.Value().SetUTCTime(Microseconds64(override));
         }
