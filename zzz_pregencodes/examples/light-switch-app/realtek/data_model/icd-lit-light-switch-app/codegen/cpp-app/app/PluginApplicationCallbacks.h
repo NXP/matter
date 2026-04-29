@@ -1,0 +1,97 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterBindingPluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDiagnosticLogsPluginServerInitCallback();
+void MatterFixedLabelPluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterGroupsPluginServerInitCallback();
+void MatterIcdManagementPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterLocalizationConfigurationPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterSoftwareDiagnosticsPluginServerInitCallback();
+void MatterSwitchPluginServerInitCallback();
+void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
+void MatterTimeFormatLocalizationPluginServerInitCallback();
+void MatterTimeSynchronizationPluginServerInitCallback();
+void MatterUserLabelPluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterBindingPluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDiagnosticLogsPluginServerShutdownCallback();
+void MatterFixedLabelPluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterGroupsPluginServerShutdownCallback();
+void MatterIcdManagementPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterLocalizationConfigurationPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
+void MatterSwitchPluginServerShutdownCallback();
+void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
+void MatterTimeFormatLocalizationPluginServerShutdownCallback();
+void MatterTimeSynchronizationPluginServerShutdownCallback();
+void MatterUserLabelPluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterBindingPluginServerInitCallback();                                                                                       \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
+    MatterFixedLabelPluginServerInitCallback();                                                                                    \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterGroupsPluginServerInitCallback();                                                                                        \
+    MatterIcdManagementPluginServerInitCallback();                                                                                 \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterLocalizationConfigurationPluginServerInitCallback();                                                                     \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
+    MatterSoftwareDiagnosticsPluginServerInitCallback();                                                                           \
+    MatterSwitchPluginServerInitCallback();                                                                                        \
+    MatterThreadNetworkDiagnosticsPluginServerInitCallback();                                                                      \
+    MatterTimeFormatLocalizationPluginServerInitCallback();                                                                        \
+    MatterTimeSynchronizationPluginServerInitCallback();                                                                           \
+    MatterUserLabelPluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterBindingPluginServerShutdownCallback();                                                                                   \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
+    MatterFixedLabelPluginServerShutdownCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterGroupsPluginServerShutdownCallback();                                                                                    \
+    MatterIcdManagementPluginServerShutdownCallback();                                                                             \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterLocalizationConfigurationPluginServerShutdownCallback();                                                                 \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
+    MatterSoftwareDiagnosticsPluginServerShutdownCallback();                                                                       \
+    MatterSwitchPluginServerShutdownCallback();                                                                                    \
+    MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();                                                                  \
+    MatterTimeFormatLocalizationPluginServerShutdownCallback();                                                                    \
+    MatterTimeSynchronizationPluginServerShutdownCallback();                                                                       \
+    MatterUserLabelPluginServerShutdownCallback();

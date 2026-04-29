@@ -1,0 +1,93 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterColorControlPluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDiagnosticLogsPluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterGroupsPluginServerInitCallback();
+void MatterIcdManagementPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterLevelControlPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterOnOffPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
+void MatterScenesManagementPluginServerInitCallback();
+void MatterSoftwareDiagnosticsPluginServerInitCallback();
+void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
+void MatterUserLabelPluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterColorControlPluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDiagnosticLogsPluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterGroupsPluginServerShutdownCallback();
+void MatterIcdManagementPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterLevelControlPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterOnOffPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
+void MatterScenesManagementPluginServerShutdownCallback();
+void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
+void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
+void MatterUserLabelPluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterColorControlPluginServerInitCallback();                                                                                  \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterGroupsPluginServerInitCallback();                                                                                        \
+    MatterIcdManagementPluginServerInitCallback();                                                                                 \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterLevelControlPluginServerInitCallback();                                                                                  \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOnOffPluginServerInitCallback();                                                                                         \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
+    MatterPowerSourcePluginServerInitCallback();                                                                                   \
+    MatterScenesManagementPluginServerInitCallback();                                                                              \
+    MatterSoftwareDiagnosticsPluginServerInitCallback();                                                                           \
+    MatterThreadNetworkDiagnosticsPluginServerInitCallback();                                                                      \
+    MatterUserLabelPluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterColorControlPluginServerShutdownCallback();                                                                              \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterGroupsPluginServerShutdownCallback();                                                                                    \
+    MatterIcdManagementPluginServerShutdownCallback();                                                                             \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterLevelControlPluginServerShutdownCallback();                                                                              \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOnOffPluginServerShutdownCallback();                                                                                     \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
+    MatterPowerSourcePluginServerShutdownCallback();                                                                               \
+    MatterScenesManagementPluginServerShutdownCallback();                                                                          \
+    MatterSoftwareDiagnosticsPluginServerShutdownCallback();                                                                       \
+    MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();                                                                  \
+    MatterUserLabelPluginServerShutdownCallback();

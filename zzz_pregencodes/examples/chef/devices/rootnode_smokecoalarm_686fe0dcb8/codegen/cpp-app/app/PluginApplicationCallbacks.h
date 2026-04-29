@@ -1,0 +1,73 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterCarbonMonoxideConcentrationMeasurementPluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDiagnosticLogsPluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterGroupsPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
+void MatterRelativeHumidityMeasurementPluginServerInitCallback();
+void MatterSmokeCoAlarmPluginServerInitCallback();
+void MatterTemperatureMeasurementPluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterCarbonMonoxideConcentrationMeasurementPluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDiagnosticLogsPluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterGroupsPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
+void MatterRelativeHumidityMeasurementPluginServerShutdownCallback();
+void MatterSmokeCoAlarmPluginServerShutdownCallback();
+void MatterTemperatureMeasurementPluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterCarbonMonoxideConcentrationMeasurementPluginServerInitCallback();                                                        \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterGroupsPluginServerInitCallback();                                                                                        \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterPowerSourcePluginServerInitCallback();                                                                                   \
+    MatterRelativeHumidityMeasurementPluginServerInitCallback();                                                                   \
+    MatterSmokeCoAlarmPluginServerInitCallback();                                                                                  \
+    MatterTemperatureMeasurementPluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterCarbonMonoxideConcentrationMeasurementPluginServerShutdownCallback();                                                    \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterGroupsPluginServerShutdownCallback();                                                                                    \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterPowerSourcePluginServerShutdownCallback();                                                                               \
+    MatterRelativeHumidityMeasurementPluginServerShutdownCallback();                                                               \
+    MatterSmokeCoAlarmPluginServerShutdownCallback();                                                                              \
+    MatterTemperatureMeasurementPluginServerShutdownCallback();

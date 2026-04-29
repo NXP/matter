@@ -1,0 +1,105 @@
+#pragma once
+void MatterAccessControlPluginServerInitCallback();
+void MatterAdministratorCommissioningPluginServerInitCallback();
+void MatterApplicationBasicPluginServerInitCallback();
+void MatterApplicationLauncherPluginServerInitCallback();
+void MatterAudioOutputPluginServerInitCallback();
+void MatterBasicInformationPluginServerInitCallback();
+void MatterChannelPluginServerInitCallback();
+void MatterContentLauncherPluginServerInitCallback();
+void MatterDescriptorPluginServerInitCallback();
+void MatterDiagnosticLogsPluginServerInitCallback();
+void MatterGeneralCommissioningPluginServerInitCallback();
+void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupKeyManagementPluginServerInitCallback();
+void MatterIdentifyPluginServerInitCallback();
+void MatterKeypadInputPluginServerInitCallback();
+void MatterLowPowerPluginServerInitCallback();
+void MatterMediaInputPluginServerInitCallback();
+void MatterMediaPlaybackPluginServerInitCallback();
+void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterOnOffPluginServerInitCallback();
+void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterSoftwareDiagnosticsPluginServerInitCallback();
+void MatterTargetNavigatorPluginServerInitCallback();
+void MatterWakeOnLanPluginServerInitCallback();
+void MatterAccessControlPluginServerShutdownCallback();
+void MatterAdministratorCommissioningPluginServerShutdownCallback();
+void MatterApplicationBasicPluginServerShutdownCallback();
+void MatterApplicationLauncherPluginServerShutdownCallback();
+void MatterAudioOutputPluginServerShutdownCallback();
+void MatterBasicInformationPluginServerShutdownCallback();
+void MatterChannelPluginServerShutdownCallback();
+void MatterContentLauncherPluginServerShutdownCallback();
+void MatterDescriptorPluginServerShutdownCallback();
+void MatterDiagnosticLogsPluginServerShutdownCallback();
+void MatterGeneralCommissioningPluginServerShutdownCallback();
+void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupKeyManagementPluginServerShutdownCallback();
+void MatterIdentifyPluginServerShutdownCallback();
+void MatterKeypadInputPluginServerShutdownCallback();
+void MatterLowPowerPluginServerShutdownCallback();
+void MatterMediaInputPluginServerShutdownCallback();
+void MatterMediaPlaybackPluginServerShutdownCallback();
+void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterOnOffPluginServerShutdownCallback();
+void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
+void MatterTargetNavigatorPluginServerShutdownCallback();
+void MatterWakeOnLanPluginServerShutdownCallback();
+
+#define MATTER_PLUGINS_INIT                                                                                                        \
+    MatterAccessControlPluginServerInitCallback();                                                                                 \
+    MatterAdministratorCommissioningPluginServerInitCallback();                                                                    \
+    MatterApplicationBasicPluginServerInitCallback();                                                                              \
+    MatterApplicationLauncherPluginServerInitCallback();                                                                           \
+    MatterAudioOutputPluginServerInitCallback();                                                                                   \
+    MatterBasicInformationPluginServerInitCallback();                                                                              \
+    MatterChannelPluginServerInitCallback();                                                                                       \
+    MatterContentLauncherPluginServerInitCallback();                                                                               \
+    MatterDescriptorPluginServerInitCallback();                                                                                    \
+    MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
+    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
+    MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
+    MatterIdentifyPluginServerInitCallback();                                                                                      \
+    MatterKeypadInputPluginServerInitCallback();                                                                                   \
+    MatterLowPowerPluginServerInitCallback();                                                                                      \
+    MatterMediaInputPluginServerInitCallback();                                                                                    \
+    MatterMediaPlaybackPluginServerInitCallback();                                                                                 \
+    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterOnOffPluginServerInitCallback();                                                                                         \
+    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
+    MatterSoftwareDiagnosticsPluginServerInitCallback();                                                                           \
+    MatterTargetNavigatorPluginServerInitCallback();                                                                               \
+    MatterWakeOnLanPluginServerInitCallback();
+
+#define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
+    MatterAccessControlPluginServerShutdownCallback();                                                                             \
+    MatterAdministratorCommissioningPluginServerShutdownCallback();                                                                \
+    MatterApplicationBasicPluginServerShutdownCallback();                                                                          \
+    MatterApplicationLauncherPluginServerShutdownCallback();                                                                       \
+    MatterAudioOutputPluginServerShutdownCallback();                                                                               \
+    MatterBasicInformationPluginServerShutdownCallback();                                                                          \
+    MatterChannelPluginServerShutdownCallback();                                                                                   \
+    MatterContentLauncherPluginServerShutdownCallback();                                                                           \
+    MatterDescriptorPluginServerShutdownCallback();                                                                                \
+    MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
+    MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
+    MatterIdentifyPluginServerShutdownCallback();                                                                                  \
+    MatterKeypadInputPluginServerShutdownCallback();                                                                               \
+    MatterLowPowerPluginServerShutdownCallback();                                                                                  \
+    MatterMediaInputPluginServerShutdownCallback();                                                                                \
+    MatterMediaPlaybackPluginServerShutdownCallback();                                                                             \
+    MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterOnOffPluginServerShutdownCallback();                                                                                     \
+    MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
+    MatterSoftwareDiagnosticsPluginServerShutdownCallback();                                                                       \
+    MatterTargetNavigatorPluginServerShutdownCallback();                                                                           \
+    MatterWakeOnLanPluginServerShutdownCallback();
