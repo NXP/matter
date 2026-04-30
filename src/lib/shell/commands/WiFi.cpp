@@ -36,15 +36,15 @@ namespace Shell {
 {
 public:
     void OnFinished(Status status, CharSpan debugText, WiFiScanResponseIterator * networks) override
-    {       
+    {
         if (status != Status::kSuccess)
         {
             ChipLogProgress(Shell, "WiFi scan failed");
             return;
         }
-        
+
         ChipLogProgress(Shell, "WiFi scan completed");
-        
+
         if (networks != nullptr)
         {
             WiFiScanResponse scanResponse;
