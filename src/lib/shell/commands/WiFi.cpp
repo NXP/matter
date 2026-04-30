@@ -32,7 +32,7 @@ using namespace chip::DeviceLayer::NetworkCommissioning;
 namespace chip {
 namespace Shell {
 
-    class ShellScanCallback : public WiFiDriver::ScanCallback
+class ShellScanCallback : public WiFiDriver::ScanCallback
 {
 public:
     void OnFinished(Status status, CharSpan debugText, WiFiScanResponseIterator * networks) override
@@ -50,9 +50,7 @@ public:
             WiFiScanResponse scanResponse;
             while (networks->Next(scanResponse))
             {
-                ChipLogProgress(Shell, "SSID: %.*s",
-                               static_cast<int>(scanResponse.ssidLen),
-                               scanResponse.ssid);
+                ChipLogProgress(Shell, "SSID: %.*s", static_cast<int>(scanResponse.ssidLen), scanResponse.ssid);
             }
             networks->Release();
         }
