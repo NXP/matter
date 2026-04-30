@@ -32,6 +32,35 @@ using namespace chip::DeviceLayer::NetworkCommissioning;
 namespace chip {
 namespace Shell {
 
+    class ShellScanCallback : public WiFiDriver::ScanCallback
+{
+public:
+    void OnFinished(Status status, CharSpan debugText, WiFiScanResponseIterator * networks) override
+    {       
+        if (status != Status::kSuccess)
+        {
+            ChipLogProgress(Shell, "WiFi scan failed");
+            return;
+        }
+        
+        ChipLogProgress(Shell, "WiFi scan completed");
+        
+        if (networks != nullptr)
+        {
+            WiFiScanResponse scanResponse;
+            while (networks->Next(scanResponse))
+            {
+                ChipLogProgress(Shell, "SSID: %.*s",
+                               static_cast<int>(scanResponse.ssidLen),
+                               scanResponse.ssid);
+            }
+            networks->Release();
+        }
+    }
+};
+
+static ShellScanCallback sScanCallback;
+
 static DeviceLayer::NetworkCommissioning::WiFiDriver * sDriver;
 
 static CHIP_ERROR PrintWiFiMode()
@@ -137,7 +166,15 @@ static CHIP_ERROR WiFiConnectHandler(int argc, char ** argv)
 
     return error;
 }
+static CHIP_ERROR WiFiScanHandler(int argc, char ** argv)
+{
+    VerifyOrReturnError(GetWiFiDriver() != nullptr, CHIP_ERROR_NOT_IMPLEMENTED);
 
+    ByteSpan ssidSpan;
+    GetWiFiDriver()->ScanNetworks(ssidSpan, &sScanCallback);
+
+    return CHIP_NO_ERROR;
+}
 static CHIP_ERROR WiFiDisconnectHandler(int argc, char ** argv)
 {
     VerifyOrReturnError((argc == 0), CHIP_ERROR_INVALID_ARGUMENT);
@@ -161,6 +198,7 @@ void RegisterWiFiCommands()
         { &WiFiModeHandler, "mode", "Get/Set wifi mode. Usage: wifi mode [disable|ap|sta]" },
         { &WiFiConnectHandler, "connect", "Connect to AP. Usage: wifi connect <ssid> [<psk>]" },
         { &WiFiDisconnectHandler, "disconnect", "Disconnect device from AP. Usage: wifi disconnect" },
+        { &WiFiScanHandler, "scan", "Scan networks. Usage: wifi scan" },
     };
 
     static constexpr Command wifiCommand = { &SubShellCommand<MATTER_ARRAY_SIZE(subCommands), subCommands>, "wifi",
