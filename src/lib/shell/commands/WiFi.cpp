@@ -41,12 +41,12 @@ namespace Shell {
 {
 public:
     void OnFinished(Status status, CharSpan debugText, WiFiScanResponseIterator * networks) override
-    {   
-        DEFER_AUTO_RELEASE(networks);    
+    {
+        DEFER_AUTO_RELEASE(networks);
         VerifyOrReturn(status == Status::kSuccess, ChipLogError(Shell, "WiFi scan failed with status: %d", static_cast<int>(status)));
-        
+
         ChipLogProgress(Shell, "WiFi scan completed");
-        
+
         if (networks != nullptr)
         {
             WiFiScanResponse scanResponse;
