@@ -17,5 +17,6 @@
 if SOC_FAMILY_NXP_RW
 
 rsource "../cmake/Kconfig.matter.nxp"
+rsource "../cmake/Kconfig.se05x"
 
 endif # SOC_FAMILY_NXP_RW

@@ -116,6 +116,9 @@
 
 #if CONFIG_CHIP_SE05X
 #include "AppSe05x.h"
+#if !CONFIG_APP_FREERTOS_OS
+#include <platform/nxp/crypto/se05x/PersistentStorageOperationalKeystore_se05x.h>
+#endif
 #endif
 
 #if CONFIG_NXP_USE_POWER_DOWN
@@ -193,8 +196,14 @@ void chip::NXP::App::AppTaskBase::InitServer(intptr_t arg)
 
 #endif
 
+#if CONFIG_CHIP_SE05X && !CONFIG_APP_FREERTOS_OS
+static chip::PersistentStorageOpKeystorese05x se05xprovider;
+#endif
+
 #if CONFIG_CHIP_APP_OPERATIONAL_KEYSTORE
     initParams.operationalKeystore = chip::NXP::App::OperationalKeystore::GetInstance();
+#elif CONFIG_CHIP_SE05X && !CONFIG_APP_FREERTOS_OS
+    initParams.operationalKeystore = &se05xprovider;
 #endif
     (void) initParams.InitializeStaticResourcesBeforeServerInit();
 
@@ -215,6 +224,11 @@ void chip::NXP::App::AppTaskBase::InitServer(intptr_t arg)
 #endif
 
     VerifyOrDie((chip::Server::GetInstance().Init(initParams)) == CHIP_NO_ERROR);
+
+#if CONFIG_CHIP_SE05X && !CONFIG_APP_FREERTOS_OS
+    auto * persistentStorage = &Server::GetInstance().GetPersistentStorage();
+    TEMPORARY_RETURN_IGNORED se05xprovider.Init(persistentStorage);
+#endif
 
 #if CONFIG_CHIP_APP_OPERATIONAL_KEYSTORE
     auto * persistentStorage = &Server::GetInstance().GetPersistentStorage();
