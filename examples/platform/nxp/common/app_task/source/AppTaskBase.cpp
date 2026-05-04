@@ -265,19 +265,20 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
     TEMPORARY_RETURN_IGNORED chip::NXP::App::LowPower::Init();
 #endif
 
-#if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
-    /* BLEApplicationManager implemented per platform or left blank */
-    chip::NXP::App::BleAppMgr().BLEApplicationManager_PreMatterStackInit();
-#endif
-
     /* Initialize Matter factory data before initializing the Matter stack */
     err = AppFactoryData_PreMatterStackInit();
+
 
     if (err != CHIP_NO_ERROR)
     {
         ChipLogError(DeviceLayer, "Pre Factory Data Provider init failed");
         goto exit;
     }
+
+#if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
+    /* BLEApplicationManager implemented per platform or left blank */
+    chip::NXP::App::BleAppMgr().BLEApplicationManager_PreMatterStackInit();
+#endif
 
     /*
      * Initialize the CHIP stack.
