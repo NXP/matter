@@ -3,5 +3,5 @@ Sphinx==8.2.3
 sphinx-book-theme
 myst-parser>=2.0.0
 breathe>=4.34
-pydata-sphinx-theme==0.16.1
+pydata-sphinx-theme==0.17.1
 pydoc-markdown>=4.8.2
