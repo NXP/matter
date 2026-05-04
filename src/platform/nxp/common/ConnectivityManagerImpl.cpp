@@ -591,7 +591,7 @@ void ConnectivityManagerImpl::_NetifExtCallback(struct netif * netif, netif_nsc_
 
 void ConnectivityManagerImpl::StartWiFiManagement()
 {
-    if (mWifiManagerInit == false)
+    if (!mWifiManagerInit)
     {
         struct netif * netif = nullptr;
         int32_t result;
@@ -687,7 +687,7 @@ CHIP_ERROR ConnectivityManagerImpl::ProvisionWiFiNetwork(const char * ssid, uint
     // Need to enable the WIFI interface here when Thread is enabled as a secondary network interface. We don't want to enable
     // WIFI from the init phase anymore and we will only do it in case the commissioner is provisioning the device with
     // the WIFI credentials.
-    /* If already done, will do nothing */
+    // If already done, will do nothing
     StartWiFiManagement();
 
     memset(pNetworkData, 0, sizeof(struct wlan_network));

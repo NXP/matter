@@ -169,6 +169,7 @@ static CHIP_ERROR WiFiConnectHandler(int argc, char ** argv)
 }
 static CHIP_ERROR WiFiScanHandler(int argc, char ** argv)
 {
+    VerifyOrReturnError((argc == 0), CHIP_ERROR_INVALID_ARGUMENT);
     VerifyOrReturnError(GetWiFiDriver() != nullptr, CHIP_ERROR_NOT_IMPLEMENTED);
 
     ByteSpan ssidSpan;
