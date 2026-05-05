@@ -200,7 +200,7 @@ void RegisterWiFiCommands()
         { &WiFiModeHandler, "mode", "Get/Set wifi mode. Usage: wifi mode [disable|ap|sta]" },
         { &WiFiConnectHandler, "connect", "Connect to AP. Usage: wifi connect <ssid> [<psk>]" },
         { &WiFiDisconnectHandler, "disconnect", "Disconnect device from AP. Usage: wifi disconnect" },
-        { &WiFiScanHandler, "scan", "Scan networks. Usage: wifi scan" },
+        { &WiFiScanHandler, "scan", "Scan networks (concurrent scans are not suported). Usage: wifi scan" },
     };
 
     static constexpr Command wifiCommand = { &SubShellCommand<MATTER_ARRAY_SIZE(subCommands), subCommands>, "wifi",
