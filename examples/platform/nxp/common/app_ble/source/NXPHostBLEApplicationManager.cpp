@@ -54,6 +54,7 @@ void app_gatt_callback(deviceId_t id, gattServerEvent_t * event)
     }
 }
 
+/* This function have to be called before Matter init in order to register callbacks */
 void BLEApplicationManager::BLEApplicationManager_PreMatterStackInit(void)
 {
     CHIP_ERROR err    = CHIP_NO_ERROR;
