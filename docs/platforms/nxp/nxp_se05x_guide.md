@@ -387,6 +387,10 @@ When running the example, pass the iteration count via command line:
 ./thermostat-app --spake2p-iterations 1000
 ```
 
+> **Important Notes:**
+>
+> The crypto object (kSE05x_CryptoObject_PAKE_NFC_COMM = 42135) used for NFC commissioning is reused for spake2p during BLE commissioning also.
+
 <a name="se051h_nfc_unpowered_commissioning"></a>
 
 ## SE051H NFC / Unpowered Commissioning
