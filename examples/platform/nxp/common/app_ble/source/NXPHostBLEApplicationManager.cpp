@@ -55,7 +55,7 @@ void app_gatt_callback(deviceId_t id, gattServerEvent_t * event)
 }
 
 /* This function have to be called before Matter init in order to register callbacks */
-void BLEApplicationManager::BLEApplicationManager_PreMatterStackInit(void)
+void BLEApplicationManager::PreMatterStackInit(void)
 {
     CHIP_ERROR err    = CHIP_NO_ERROR;
     auto * bleManager = &chip::DeviceLayer::Internal::BLEMgrImpl();
@@ -73,7 +73,7 @@ void BLEApplicationManager::BLEApplicationManager_PreMatterStackInit(void)
 #endif
 }
 
-void BLEApplicationManager::BLEApplicationManager_PostMatterStackInit(void)
+void BLEApplicationManager::PostMatterStackInit(void)
 {
     /*Empty implementation. Intentionally left blank */
 }

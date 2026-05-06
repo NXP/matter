@@ -54,7 +54,7 @@ uint8_t manuf_data[ADV_LEN] = {
 bt_uuid_16 UUID16_CHIPoBLEService = BT_UUID_INIT_16(0xFFF6);
 
 
-void BLEApplicationManager::BLEApplicationManager_PreMatterStackInit(void)
+void BLEApplicationManager::PreMatterStackInit(void)
 {
     /* Nothing to do */
 }
@@ -87,7 +87,7 @@ void BLEApplicationManager::BLEApplicationManager_PreMatterStackInit(void)
  *
  * @note This function have to be called after Matter init to be able to get correct factory data values.
  */
-void BLEApplicationManager::BLEApplicationManager_PostMatterStackInit(void)
+void BLEApplicationManager::PostMatterStackInit(void)
 {
     /* Register Matter adv data + custom adv data */
     static_assert(sizeof(serviceData) == 10, "Unexpected size of BLE advertising data!");

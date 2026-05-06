@@ -277,7 +277,7 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
 
 #if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
     /* BLEApplicationManager implemented per platform or left blank */
-    chip::NXP::App::BleAppMgr().BLEApplicationManager_PreMatterStackInit();
+    chip::NXP::App::BleAppMgr().PreMatterStackInit();
 #endif
 
     /*
@@ -355,7 +355,7 @@ CHIP_ERROR chip::NXP::App::AppTaskBase::Init()
 
 #if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
     /* BLEApplicationManager implemented per platform or left blank */
-    chip::NXP::App::BleAppMgr().BLEApplicationManager_PostMatterStackInit();
+    chip::NXP::App::BleAppMgr().PostMatterStackInit();
 #endif
 
 #if CONFIG_CHIP_WIFI || CHIP_DEVICE_CONFIG_ENABLE_WPA

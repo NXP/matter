@@ -31,8 +31,8 @@ namespace chip::NXP::App {
 class BLEApplicationManager
 {
 public:
-    void BLEApplicationManager_PreMatterStackInit();
-    void BLEApplicationManager_PostMatterStackInit();
+    void PreMatterStackInit();
+    void PostMatterStackInit();
     void EnableMultipleConnectionsHandler();
     void FactoryReset();
 
