@@ -37,7 +37,7 @@ else()
     if(se_index EQUAL -1)
         message(FATAL_ERROR "ZEPHYR MODULES must include ${CHIP_ROOT}/third_party/simw-top-mini/repo/matter in the application when CONFIG_CHIP_SE05X is enabled")
     endif()
-    
+
     target_include_directories(app PRIVATE
         ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_se05x/include/
         ${CHIP_ROOT}/src/platform/nxp/crypto/se05x/
@@ -45,9 +45,7 @@ else()
 
 # GN platform abstraction layer is platform-agnostic for Zephyr, se05x based nxp crypto lib file added here.
     target_sources(app PRIVATE
-        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_se05x/source/AppSe05xCustom.cpp
-        ${CHIP_ROOT}/src/platform/nxp/crypto/se05x/mcu_kvs/NFCDataRetrievalInfo.cpp
-        ${CHIP_ROOT}/src/platform/nxp/crypto/se05x/kvs_utilities/CHIPCryptoPALHsm_se05x_readClusters.cpp
+        ${EXAMPLE_PLATFORM_NXP_COMMON_DIR}/app_se05x/source/AppSe05x.cpp
         ${CHIP_ROOT}/src/platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_utils.cpp
         ${CHIP_ROOT}/src/platform/nxp/crypto/se05x/PersistentStorageOperationalKeystore_se05x.cpp
         ${CHIP_ROOT}/src/platform/nxp/crypto/se05x/CHIPCryptoPALHsm_se05x_hkdf.cpp
