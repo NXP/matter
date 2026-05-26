@@ -180,6 +180,8 @@ fi
 
 chip_with_web2=${NXP_CHIPTOOL_WITH_WEB2:-0}
 additional_gn_args=""
+additional_gn_args+=" matter_enable_tracing_support=false"
+additional_gn_args+=" matter_commandline_enable_perfetto_tracing=false"
 if [ "$chip_with_web2" = 1 ]; then
     additional_gn_args+=" enable_rtti=true chip_with_web2=$chip_with_web2"
 fi

@@ -19,7 +19,7 @@ import("${chip_root}/build/chip/buildconfig_header.gni")
 import("${chip_root}/src/lib/lib.gni")
 
 declare_args() {
-  matter_commandline_enable_perfetto_tracing = current_os == "linux"
+  matter_commandline_enable_perfetto_tracing = false
 }
 
 config("default_config") {

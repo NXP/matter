@@ -31,8 +31,6 @@ source_set("tracing") {
   deps = [
     "${chip_root}/src/lib/support",
     "${chip_root}/src/tracing",
-    "${chip_root}/src/tracing/perfetto:event_storage",
-    "${chip_root}/src/tracing/perfetto:simple_initialization",
   ]
 }
 

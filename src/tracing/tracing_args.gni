@@ -46,7 +46,7 @@ declare_args() {
   # set up.
   #
   if (current_os == "linux" || current_os == "android") {
-    matter_trace_config = "${chip_root}/src/tracing/perfetto:perfetto_tracing"
+    matter_trace_config = "${chip_root}/src/tracing/none"
   } else if (chip_device_platform == "darwin") {
     matter_trace_config = "${chip_root}/src/tracing/darwin:darwin_tracing"
   } else {
