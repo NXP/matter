@@ -856,7 +856,6 @@ namespace crow // NOTE: Already documented in "crow/app.h"
             //if the function was called on a node at the end of the string (the last recursion), return the nodes rule index, and whatever params were passed to the function
             if (pos == req_url.size())
             {
-                found_BP = std::move(*blueprints);
                 return routing_handle_result{node.rule_index, *blueprints, *params};
             }
 
@@ -999,7 +998,7 @@ namespace crow // NOTE: Already documented in "crow/app.h"
 
             bool has_blueprint = bp_prefix_length != 0 && blueprint_index != INVALID_BP_ID;
 
-            for (unsigned i = 0; i < url.size(); i++)
+            for (size_t i = 0; i < url.size(); i++)
             {
                 char c = url[i];
                 if (c == '<')

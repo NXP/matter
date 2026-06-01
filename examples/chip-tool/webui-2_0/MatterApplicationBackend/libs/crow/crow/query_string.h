@@ -420,14 +420,14 @@ namespace crow
             const size_t name_len = name.length();
             if (!ret.empty())
             {
-                for (unsigned int i = 0; i < key_value_pairs_.size(); i++)
+                for (size_t i = 0; i < key_value_pairs_.size(); i++)
                 {
                     std::string str_item(key_value_pairs_[i]);
                     if (str_item.find(name)==0) {
                       if (use_brackets && str_item.find("[]=",name_len)==name_len) {
-                        key_value_pairs_.erase(key_value_pairs_.begin() + i--);
+                        key_value_pairs_.erase(key_value_pairs_.begin() + static_cast<std::ptrdiff_t>(i--));
                       } else if (!use_brackets && str_item.find('=',name_len)==name_len ) {
-                           key_value_pairs_.erase(key_value_pairs_.begin() + i--);
+                           key_value_pairs_.erase(key_value_pairs_.begin() + static_cast<std::ptrdiff_t>(i--));
                        }
                     }
                 }
@@ -463,12 +463,12 @@ namespace crow
             std::unordered_map<std::string, std::string> ret = get_dict(name);
             if (!ret.empty())
             {
-                for (unsigned int i = 0; i < key_value_pairs_.size(); i++)
+                for (size_t i = 0; i < key_value_pairs_.size(); i++)
                 {
                     std::string str_item(key_value_pairs_[i]);
                     if (str_item.find(name_value)==0)
                     {
-                        key_value_pairs_.erase(key_value_pairs_.begin() + i--);
+                        key_value_pairs_.erase(key_value_pairs_.begin() + static_cast<std::ptrdiff_t>(i--));
                     }
                 }
             }

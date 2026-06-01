@@ -75,7 +75,7 @@ namespace crow // NOTE: Already documented in "crow/app.h"
             rendered_template():
               returnable("text/html") {}
 
-            rendered_template(std::string& body):
+            rendered_template(std::string body):
               returnable("text/html"), body_(std::move(body)) {}
 
             std::string body_;

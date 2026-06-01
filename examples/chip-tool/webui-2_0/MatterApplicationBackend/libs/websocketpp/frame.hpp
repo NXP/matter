@@ -29,6 +29,7 @@
 #define WEBSOCKETPP_FRAME_HPP
 
 #include <algorithm>
+#include <cstring>
 #include <string>
 
 #include "common/system_error.hpp"
@@ -267,6 +268,7 @@ private:
         }
 
         uint64_converter temp64;
+        memset(temp64.c, 0, sizeof(temp64.c));
         temp64.i = lib::net::_htonll(payload_size);
         std::copy(temp64.c+payload_offset,temp64.c+8,bytes);
 
