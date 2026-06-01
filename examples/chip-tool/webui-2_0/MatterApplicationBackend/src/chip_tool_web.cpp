@@ -193,7 +193,7 @@ void wsClientConecting()
 
 Json::Value getStorageKeyNodeID()
 {
-    Json::Value storageNodes;
+    Json::Value storageNodes(Json::arrayValue);
     const char * storageWebDirectory = webCommissionerStorage.GetDirectory();
     std::string storageWebFile = std::string(storageWebDirectory) + "/chip_tool_config.web.ini";
     std::ifstream ifs(storageWebFile, std::ios::in);
@@ -211,7 +211,7 @@ Json::Value getStorageKeyNodeID()
         {
             std::string storageNodeAlias = line.substr(0, equalsPos);
             chip::NodeId storageNodeId =  webCommissionerStorage.GetLocalKeyNodeId(storageNodeAlias.c_str());
-            Json::Value storageNode;
+            Json::Value storageNode(Json::objectValue);
             storageNode["storageNodeAlias"] = storageNodeAlias.c_str();
             storageNode["storageNodeId"]    = static_cast<int>(storageNodeId);
             storageNodes.append(storageNode);
@@ -320,9 +320,8 @@ void generateOtaMessage(WsServer* s, websocketpp::connection_hdl hdl, message_pt
             {
                 ChipLogError(NotSpecified, "WebSocket server send ota report msg failed because %s", e.what());
             }
-            if (killProcesses(cmd)) {
-                pclose(pipe);
-            }
+            killProcesses(cmd);
+            pclose(pipe);
             return;
         }
         if (result.find(expectedStartLog) != std::string::npos)
@@ -389,9 +388,8 @@ void generateOtaMessage(WsServer* s, websocketpp::connection_hdl hdl, message_pt
             break;
         }
     }
-    if (killProcesses(cmd)) {
-        pclose(pipe);
-    }
+    killProcesses(cmd);
+    pclose(pipe);
     return;
 }
 
@@ -400,7 +398,7 @@ void on_message(WsServer* s, websocketpp::connection_hdl hdl, message_ptr msg)
 {
     ChipLogError(NotSpecified, "WebSocket server receive message: %s", msg->get_payload().c_str());
     std::string command = msg->get_payload();
-    Json::Value jsonObject;
+    Json::Value jsonObject(Json::objectValue);
     Json::Reader reader;
     if (reader.parse(command, jsonObject))
     {
@@ -1019,17 +1017,17 @@ int main()
     CROW_ROUTE(crowApplication, "/api/get_status").methods("GET"_method)([]() {
         try
         {
-            Json::Value root;
+            Json::Value root(Json::objectValue);
             ChipLogError(NotSpecified, "Received GET request for get status");
             try{
                 Json::Value storageNodes = getStorageKeyNodeID();
-                Json::Value nodeList;
+                Json::Value nodeList(Json::arrayValue);
                 for (const auto& storageNode : storageNodes)
                 {
                     std::string storageNodeAlias = storageNode["storageNodeAlias"].asString();
                     std::string storageNodeId    = storageNode["storageNodeId"].asString();
                     std::string command          = "descriptor read device-type-list " + storageNodeId + " 0xFFFF";
-                    Json::Value nodeInfo;
+                    Json::Value nodeInfo(Json::objectValue);
                     nodeInfo["nodeAlias"] = storageNodeAlias;
                     nodeInfo["nodeId"]    = storageNodeId;
 
@@ -1043,14 +1041,14 @@ int main()
                     }
                     if (!reportQueue.empty()) {
                         Json::Value resultsReport = wsClient.dequeueReport();
-                        Json::Value endpointInfo;
+                        Json::Value endpointInfo(Json::objectValue);
                         for (const auto& report : resultsReport) {
                             if (!report.isMember("endpointId") || !report.isMember("value")) {
                                 continue;
                             }
                             std::string endpointId = report["endpointId"].asString();
                             const auto& values = report["value"];
-                            Json::Value endpointClusters;
+                            Json::Value endpointClusters(Json::arrayValue);
                             for (const auto& value : values) {
                                 if (!value.isMember("0")) {
                                     continue;
@@ -1089,20 +1087,20 @@ int main()
     CROW_ROUTE(crowApplication, "/api/get_network").methods("GET"_method)([]() {
         try
         {
-            Json::Value root;
+            Json::Value root(Json::objectValue);
             ChipLogError(NotSpecified, "Received GET request for get network");
             try{
                 string output = exec_cmd("cat /sys/devices/soc0/machine");
                 string machine = extractMachineName(output);
                 root["machine"] = machine;
                 Json::Value storageNodes = getStorageKeyNodeID();
-                Json::Value nodeList;
+                Json::Value nodeList(Json::arrayValue);
                 for (const auto& storageNode : storageNodes)
                 {
                     std::string storageNodeAlias = storageNode["storageNodeAlias"].asString();
                     std::string storageNodeId    = storageNode["storageNodeId"].asString();
                     std::string command          = "networkcommissioning read feature-map " + storageNodeId + " 0";
-                    Json::Value nodeInfo;
+                    Json::Value nodeInfo(Json::objectValue);
                     nodeInfo["nodeAlias"] = storageNodeAlias;
                     nodeInfo["nodeId"]    = storageNodeId;
                     wsClient.sendMessage(command);

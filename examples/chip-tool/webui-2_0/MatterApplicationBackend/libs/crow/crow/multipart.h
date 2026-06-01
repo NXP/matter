@@ -206,7 +206,7 @@ namespace crow
 
             part parse_section(std::string& section)
             {
-                struct part to_return;
+                struct part to_return{};
 
                 size_t found = section.find(crlf + crlf);
                 std::string head_line = section.substr(0, found + 2);

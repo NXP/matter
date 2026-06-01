@@ -281,11 +281,11 @@ namespace crow // NOTE: Already documented in "crow/app.h"
 
         public:
             rvalue() noexcept:
-              option_{error_bit}
+              start_{nullptr}, end_{nullptr}, lsize_{}, lremain_{}, t_{type::Null}, option_{error_bit}
             {
             }
             rvalue(type t) noexcept:
-              lsize_{}, lremain_{}, t_{t}
+              start_{nullptr}, end_{nullptr}, lsize_{}, lremain_{}, t_{t}
             {
             }
             rvalue(type t, char* s, char* e) noexcept:

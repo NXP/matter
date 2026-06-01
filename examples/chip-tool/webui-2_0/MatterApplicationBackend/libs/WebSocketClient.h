@@ -150,7 +150,8 @@ private:
     void onMessage(websocketpp::connection_hdl hdl, websocketpp::config::asio_client::message_type::ptr msg) {
         m_recieve_message = msg->get_payload();
         Json::Reader reader;
-        Json::Value recieveMessage, resultsReport;
+        Json::Value recieveMessage(Json::objectValue);
+        Json::Value resultsReport(Json::arrayValue);
         if (reader.parse(m_recieve_message, recieveMessage))
         {
             if (recieveMessage.isMember("subscribe_results"))

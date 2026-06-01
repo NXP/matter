@@ -237,7 +237,9 @@ public:
         lib::auto_ptr<lib::asio::io_context> context(new lib::asio::io_context());
 #endif
         init_asio(context.get(), ec);
-        if( !ec ) context.release(); // Call was successful, transfer ownership
+        if( !ec ) {
+            context.release(); // Call was successful, transfer ownership
+        }
         m_external_io_context = false;
     }
 
