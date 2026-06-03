@@ -992,7 +992,7 @@ namespace crow // NOTE: Already documented in "crow/app.h"
         }
 
         //This functions assumes any blueprint info passed is valid
-        void add(const std::string& url, uint16_t rule_index, unsigned bp_prefix_length = 0, uint16_t blueprint_index = INVALID_BP_ID)
+        void add(const std::string& url, unsigned int rule_index, unsigned bp_prefix_length = 0, uint16_t blueprint_index = INVALID_BP_ID)
         {
             auto idx = &head_;
 
@@ -1074,7 +1074,7 @@ namespace crow // NOTE: Already documented in "crow/app.h"
             //check if the last node already has a value (exact url already in Trie)
             if (idx->rule_index)
                 throw std::runtime_error("handler already exists for " + url);
-            idx->rule_index = rule_index;
+            idx->rule_index = static_cast<uint16_t>(rule_index);
         }
 
     private:
