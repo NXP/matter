@@ -159,11 +159,6 @@
     0x00000062, /* Cluster: Scenes Management, Command: RemoveAllScenes, Privilege: manage */ \
     0x00000062, /* Cluster: Scenes Management, Command: StoreScene, Privilege: manage */ \
     0x00000062, /* Cluster: Scenes Management, Command: CopyScene, Privilege: manage */ \
-    0x00000065, /* Cluster: Groupcast, Command: JoinGroup, Privilege: manage */ \
-    0x00000065, /* Cluster: Groupcast, Command: LeaveGroup, Privilege: manage */ \
-    0x00000065, /* Cluster: Groupcast, Command: UpdateGroupKey, Privilege: manage */ \
-    0x00000065, /* Cluster: Groupcast, Command: ConfigureAuxiliaryACL, Privilege: administer */ \
-    0x00000065, /* Cluster: Groupcast, Command: GroupcastTesting, Privilege: administer */ \
 }
 
 // Parallel array data (cluster, *command*, privilege) for invoke command
@@ -207,11 +202,6 @@
     0x00000003, /* Cluster: Scenes Management, Command: RemoveAllScenes, Privilege: manage */ \
     0x00000004, /* Cluster: Scenes Management, Command: StoreScene, Privilege: manage */ \
     0x00000040, /* Cluster: Scenes Management, Command: CopyScene, Privilege: manage */ \
-    0x00000000, /* Cluster: Groupcast, Command: JoinGroup, Privilege: manage */ \
-    0x00000001, /* Cluster: Groupcast, Command: LeaveGroup, Privilege: manage */ \
-    0x00000003, /* Cluster: Groupcast, Command: UpdateGroupKey, Privilege: manage */ \
-    0x00000004, /* Cluster: Groupcast, Command: ConfigureAuxiliaryACL, Privilege: administer */ \
-    0x00000005, /* Cluster: Groupcast, Command: GroupcastTesting, Privilege: administer */ \
 }
 
 // Parallel array data (cluster, command, *privilege*) for invoke command
@@ -255,11 +245,6 @@
     chip::Access::Privilege::kManage, /* Cluster: Scenes Management, Command: RemoveAllScenes, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Scenes Management, Command: StoreScene, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Scenes Management, Command: CopyScene, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Groupcast, Command: JoinGroup, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Groupcast, Command: LeaveGroup, Privilege: manage */ \
-    chip::Access::Privilege::kManage, /* Cluster: Groupcast, Command: UpdateGroupKey, Privilege: manage */ \
-    chip::Access::Privilege::kAdminister, /* Cluster: Groupcast, Command: ConfigureAuxiliaryACL, Privilege: administer */ \
-    chip::Access::Privilege::kAdminister, /* Cluster: Groupcast, Command: GroupcastTesting, Privilege: administer */ \
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -270,7 +255,6 @@
     0x0000001F, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     0x0000001F, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
     0x0000001F, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
-    0x00000065, /* Cluster: Groupcast, Event: GroupcastTesting, Privilege: administer */ \
 }
 
 // Parallel array data (cluster, *event*, privilege) for read event
@@ -279,7 +263,6 @@
     0x00000001, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     0x00000002, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
     0x00000003, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
-    0x00000000, /* Cluster: Groupcast, Event: GroupcastTesting, Privilege: administer */ \
 }
 
 // Parallel array data (cluster, event, *privilege*) for read event
@@ -288,7 +271,6 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AccessControlExtensionChanged, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: FabricRestrictionReviewUpdate, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Access Control, Event: AuxiliaryAccessUpdated, Privilege: administer */ \
-    chip::Access::Privilege::kAdminister, /* Cluster: Groupcast, Event: GroupcastTesting, Privilege: administer */ \
 }
 
 ////////////////////////////////////////////////////////////////////////////////

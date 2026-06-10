@@ -630,10 +630,10 @@
         { ZAP_SIMPLE_DEFAULT(0x0009), 0x0000FFFD, 2, ZAP_TYPE(INT16U), ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */       \
                                                                                                                                    \
         /* Endpoint: 1, Cluster: Joint Fabric Datastore (server) */                                                                \
-        { ZAP_EMPTY_DEFAULT(), 0x00000000, 255, ZAP_TYPE(OCTET_STRING), ZAP_ATTRIBUTE_MASK(READABLE) }, /* AnchorRootCA */         \
-        { ZAP_LONG_DEFAULTS_INDEX(0), 0x00000001, 8, ZAP_TYPE(NODE_ID), ZAP_ATTRIBUTE_MASK(READABLE) }, /* AnchorNodeID */         \
-        { ZAP_EMPTY_DEFAULT(), 0x00000002, 2, ZAP_TYPE(VENDOR_ID), ZAP_ATTRIBUTE_MASK(READABLE) },      /* AnchorVendorID */       \
-        { ZAP_EMPTY_DEFAULT(), 0x00000003, 33, ZAP_TYPE(CHAR_STRING), ZAP_ATTRIBUTE_MASK(READABLE) },   /* FriendlyName */         \
+        { ZAP_EMPTY_DEFAULT(), 0x00000000, 402, ZAP_TYPE(LONG_OCTET_STRING), ZAP_ATTRIBUTE_MASK(READABLE) }, /* AnchorRootCA */    \
+        { ZAP_LONG_DEFAULTS_INDEX(0), 0x00000001, 8, ZAP_TYPE(NODE_ID), ZAP_ATTRIBUTE_MASK(READABLE) },      /* AnchorNodeID */    \
+        { ZAP_EMPTY_DEFAULT(), 0x00000002, 2, ZAP_TYPE(VENDOR_ID), ZAP_ATTRIBUTE_MASK(READABLE) },           /* AnchorVendorID */  \
+        { ZAP_EMPTY_DEFAULT(), 0x00000003, 33, ZAP_TYPE(CHAR_STRING), ZAP_ATTRIBUTE_MASK(READABLE) },        /* FriendlyName */    \
         { ZAP_EMPTY_DEFAULT(), 0x00000004, 0, ZAP_TYPE(ARRAY),                                                                     \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* GroupKeySetList */                             \
         { ZAP_EMPTY_DEFAULT(), 0x00000005, 0, ZAP_TYPE(ARRAY),                                                                     \
@@ -1233,7 +1233,7 @@
       .clusterId = 0x00000752, \
       .attributes = ZAP_ATTRIBUTE_INDEX(250), \
       .attributeCount = 16, \
-      .clusterSize = 304, \
+      .clusterSize = 451, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
       .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 117 ), \
@@ -1264,11 +1264,11 @@
 #define GENERATED_ENDPOINT_TYPES                                                                                                   \
     {                                                                                                                              \
         { ZAP_CLUSTER_INDEX(0), 18, 65 },                                                                                          \
-        { ZAP_CLUSTER_INDEX(18), 8, 392 },                                                                                         \
+        { ZAP_CLUSTER_INDEX(18), 8, 539 },                                                                                         \
     }
 
 // Largest attribute size is needed for various buffers
-#define ATTRIBUTE_LARGEST (259)
+#define ATTRIBUTE_LARGEST (403)
 
 static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE, "ATTRIBUTE_LARGEST larger than expected");
 
@@ -1276,7 +1276,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (0)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (457)
+#define ATTRIBUTE_MAX_SIZE (604)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (2)
@@ -1289,7 +1289,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define FIXED_PROFILE_IDS { 0x0103, 0x0103 }
 
 // Array of device types
-#define FIXED_DEVICE_TYPES { { 0x00000012, 1 }, { 0x00000016, 5 }, { 0x0000010C, 4 } }
+#define FIXED_DEVICE_TYPES { { 0x00000012, 1 }, { 0x00000016, 4 }, { 0x0000010C, 4 } }
 
 // Array of device type offsets
 #define FIXED_DEVICE_TYPE_OFFSETS { 0, 2 }

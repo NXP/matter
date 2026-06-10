@@ -82,9 +82,6 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::ScenesManagement::Id:
         MatterScenesManagementClusterInitCallback(endpoint);
         break;
-    case app::Clusters::Groupcast::Id:
-        MatterGroupcastClusterInitCallback(endpoint);
-        break;
     }
 }
 
@@ -145,9 +142,6 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::ScenesManagement::Id:
         MatterScenesManagementClusterShutdownCallback(endpoint, shutdownType);
-        break;
-    case app::Clusters::Groupcast::Id:
-        MatterGroupcastClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }
