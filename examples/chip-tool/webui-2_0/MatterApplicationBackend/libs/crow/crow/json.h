@@ -300,7 +300,8 @@ namespace crow // NOTE: Already documented in "crow/app.h"
                 copy_l(r);
             }
 
-            rvalue(rvalue&& r) noexcept
+            rvalue(rvalue&& r) noexcept:
+              start_{nullptr}, end_{nullptr}, lsize_{}, lremain_{}, t_{type::Null}
             {
                 *this = std::move(r);
             }

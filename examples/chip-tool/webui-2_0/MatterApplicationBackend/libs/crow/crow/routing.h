@@ -1074,6 +1074,8 @@ namespace crow // NOTE: Already documented in "crow/app.h"
             //check if the last node already has a value (exact url already in Trie)
             if (idx->rule_index)
                 throw std::runtime_error("handler already exists for " + url);
+            if (rule_index > UINT16_MAX)
+                throw std::runtime_error("too many handlers registered for " + url);
             idx->rule_index = static_cast<uint16_t>(rule_index);
         }
 

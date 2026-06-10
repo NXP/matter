@@ -195,7 +195,17 @@ public:
 
         m_io_context = ptr;
         m_external_io_context = true;
-        m_acceptor.reset(new lib::asio::ip::tcp::acceptor(*m_io_context));
+        try {
+            m_acceptor.reset(new lib::asio::ip::tcp::acceptor(*m_io_context));
+        } catch (...) {
+            // Roll back partial initialization so the caller-owned io_context
+            // is not left referenced by a half-initialized endpoint.
+            m_io_context = NULL;
+            m_external_io_context = false;
+            using websocketpp::error::make_error_code;
+            ec = make_error_code(websocketpp::error::general);
+            return;
+        }
 
         m_state = READY;
         ec = lib::error_code();
