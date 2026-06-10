@@ -267,6 +267,11 @@ private:
             payload_offset = 6;
         }
 
+        // payload_offset is always within [0,8]; clamp defensively so the
+        // copy source range below is provably in-bounds for temp64.c (8 bytes).
+        if (payload_offset < 0) { payload_offset = 0; }
+        if (payload_offset > 8) { payload_offset = 8; }
+
         uint64_converter temp64;
         memset(temp64.c, 0, sizeof(temp64.c));
         temp64.i = lib::net::_htonll(payload_size);
