@@ -6,7 +6,6 @@ void MatterColorControlPluginServerInitCallback();
 void MatterDescriptorPluginServerInitCallback();
 void MatterGeneralCommissioningPluginServerInitCallback();
 void MatterGeneralDiagnosticsPluginServerInitCallback();
-void MatterGroupcastPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
 void MatterGroupsPluginServerInitCallback();
 void MatterIdentifyPluginServerInitCallback();
@@ -24,7 +23,6 @@ void MatterColorControlPluginServerShutdownCallback();
 void MatterDescriptorPluginServerShutdownCallback();
 void MatterGeneralCommissioningPluginServerShutdownCallback();
 void MatterGeneralDiagnosticsPluginServerShutdownCallback();
-void MatterGroupcastPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
 void MatterGroupsPluginServerShutdownCallback();
 void MatterIdentifyPluginServerShutdownCallback();
@@ -44,7 +42,6 @@ void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
     MatterDescriptorPluginServerInitCallback();                                                                                    \
     MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
     MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
-    MatterGroupcastPluginServerInitCallback();                                                                                     \
     MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
     MatterGroupsPluginServerInitCallback();                                                                                        \
     MatterIdentifyPluginServerInitCallback();                                                                                      \
@@ -64,7 +61,6 @@ void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
     MatterDescriptorPluginServerShutdownCallback();                                                                                \
     MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
     MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
-    MatterGroupcastPluginServerShutdownCallback();                                                                                 \
     MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
     MatterGroupsPluginServerShutdownCallback();                                                                                    \
     MatterIdentifyPluginServerShutdownCallback();                                                                                  \

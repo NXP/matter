@@ -8,7 +8,6 @@ void MatterDiagnosticLogsPluginServerInitCallback();
 void MatterEthernetNetworkDiagnosticsPluginServerInitCallback();
 void MatterGeneralCommissioningPluginServerInitCallback();
 void MatterGeneralDiagnosticsPluginServerInitCallback();
-void MatterGroupcastPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
 void MatterGroupsPluginServerInitCallback();
 void MatterIcdManagementPluginServerInitCallback();
@@ -31,7 +30,6 @@ void MatterDiagnosticLogsPluginServerShutdownCallback();
 void MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterGeneralCommissioningPluginServerShutdownCallback();
 void MatterGeneralDiagnosticsPluginServerShutdownCallback();
-void MatterGroupcastPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
 void MatterGroupsPluginServerShutdownCallback();
 void MatterIcdManagementPluginServerShutdownCallback();
@@ -56,7 +54,6 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterEthernetNetworkDiagnosticsPluginServerInitCallback();                                                                    \
     MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
     MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
-    MatterGroupcastPluginServerInitCallback();                                                                                     \
     MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
     MatterGroupsPluginServerInitCallback();                                                                                        \
     MatterIcdManagementPluginServerInitCallback();                                                                                 \
@@ -81,7 +78,6 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();                                                                \
     MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
     MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
-    MatterGroupcastPluginServerShutdownCallback();                                                                                 \
     MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
     MatterGroupsPluginServerShutdownCallback();                                                                                    \
     MatterIcdManagementPluginServerShutdownCallback();                                                                             \

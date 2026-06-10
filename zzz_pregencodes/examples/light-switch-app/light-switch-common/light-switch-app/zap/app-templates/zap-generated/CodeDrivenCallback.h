@@ -103,7 +103,3 @@ void MatterUserLabelClusterShutdownCallback(chip::EndpointId endpointId, MatterC
 void MatterIcdManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterIcdManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
-
-void MatterGroupcastClusterInitCallback(chip::EndpointId endpointId);
-
-void MatterGroupcastClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

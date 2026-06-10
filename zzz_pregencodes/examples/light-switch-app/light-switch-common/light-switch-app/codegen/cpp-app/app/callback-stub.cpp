@@ -91,16 +91,6 @@ void __attribute__((weak)) emberAfGeneralDiagnosticsClusterShutdownCallback(Endp
     // To prevent warning
     (void) endpoint;
 }
-void __attribute__((weak)) emberAfGroupcastClusterInitCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
-void __attribute__((weak)) emberAfGroupcastClusterShutdownCallback(EndpointId endpoint)
-{
-    // To prevent warning
-    (void) endpoint;
-}
 void __attribute__((weak)) emberAfGroupKeyManagementClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning
