@@ -321,7 +321,7 @@
 	platforms = imx
 [submodule "third_party/imx-secure-enclave/repo"]
 	path = third_party/imx-secure-enclave/repo
-	url = ssh://git@bitbucket.sw.nxp.com/lfac/secure_enclave.git
+	url = https://github.com/nxp-imx/imx-secure-enclave.git
 	platforms = imx
 [submodule "third_party/amazon-kinesis-video-streams-webrtc-sdk-c/repo"]
 	path = third_party/amazon-kinesis-video-streams-webrtc-sdk-c/repo
