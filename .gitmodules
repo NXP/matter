@@ -317,7 +317,7 @@
 	platforms = realtek
 [submodule "third_party/libtrustymatter/repo"]
 	path = third_party/libtrustymatter/repo
-	url = http://androidsource.nxp.com/project/a/libtrustymatter
+	url = https://github.com/nxp-imx/libtrustymatter.git
 	platforms = imx
 [submodule "third_party/imx-secure-enclave/repo"]
 	path = third_party/imx-secure-enclave/repo
