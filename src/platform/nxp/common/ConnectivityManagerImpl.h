@@ -146,6 +146,14 @@ private:
 
 #if CHIP_DEVICE_CONFIG_ENABLE_WPA || CONFIG_CHIP_ETHERNET
     void UpdateInternetConnectivityState(void);
+#if CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
+    // State for the routable-IPv6 gate: mRoutableIPv6WaitArmed tracks the one-shot timer;
+    // mAcceptLinkLocalIPv6 lets link-local satisfy connectivity once the wait times out.
+    static void RoutableIPv6WaitHandler(::chip::System::Layer * aLayer, void * context);
+    bool mRoutableIPv6WaitArmed                  = false;
+    bool mAcceptLinkLocalIPv6                    = false;
+    static constexpr uint32_t kRoutableIPv6WaitMs = CHIP_DEVICE_CONFIG_NXP_ROUTABLE_IPV6_WAIT_MS;
+#endif // CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
 #endif
 
 #if CHIP_DEVICE_CONFIG_ENABLE_WPA

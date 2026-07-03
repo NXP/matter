@@ -237,19 +237,84 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState()
             }
 #endif
 
-            // Search among the IPv6 addresses assigned to the interface for an
-            // address that is in the valid state. Search goes backwards because
-            // the link-local address is in the first slot and we prefer to report
-            // other than the link-local address value if there are multiple addresses.
+            // Classify each valid IPv6 address as routable (global/ULA) or link-local (FE80::).
+            // Iterate backwards so a routable address is preferred over the link-local in slot 0.
+            const ip6_addr_t * routableAddr6 = nullptr;
+            const ip6_addr_t * llAddr6       = nullptr;
             for (int i = (LWIP_IPV6_NUM_ADDRESSES - 1); i >= 0; i--)
             {
-                if (ip6_addr_isvalid(netif_ip6_addr_state(netif, i)))
+                if (!ip6_addr_isvalid(netif_ip6_addr_state(netif, i)))
                 {
-                    haveIPv6Conn = true;
-                    addr6        = netif_ip6_addr(netif, i);
-                    break;
+                    continue;
+                }
+                const ip6_addr_t * a = netif_ip6_addr(netif, i);
+                if (ip6_addr_islinklocal(a))
+                {
+                    llAddr6 = (llAddr6 == nullptr) ? a : llAddr6;
+                }
+                else if (routableAddr6 == nullptr)
+                {
+                    routableAddr6 = a;
                 }
             }
+
+#if CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
+            // Gate "IPv6 ESTABLISHED" on a routable address: reporting on link-local only can
+            // trigger sends before SLAAC installs the route, which fail with a missing-route error.
+            if (routableAddr6 != nullptr)
+            {
+                // Routable address present: report now.
+                haveIPv6Conn = true;
+                addr6        = routableAddr6;
+                if (mRoutableIPv6WaitArmed)
+                {
+                    DeviceLayer::SystemLayer().CancelTimer(RoutableIPv6WaitHandler, this);
+                    mRoutableIPv6WaitArmed = false;
+                }
+                mAcceptLinkLocalIPv6 = false;
+            }
+            else if (llAddr6 != nullptr)
+            {
+                // Link-local only: wait a bounded time for a routable address; on timeout accept
+                // link-local so link-local-only / isolated networks still proceed.
+                if (mAcceptLinkLocalIPv6)
+                {
+                    haveIPv6Conn = true;
+                    addr6        = llAddr6;
+                }
+                else if (!mRoutableIPv6WaitArmed)
+                {
+                    CHIP_ERROR timerErr = DeviceLayer::SystemLayer().StartTimer(
+                        System::Clock::Milliseconds32(kRoutableIPv6WaitMs), RoutableIPv6WaitHandler, this);
+                    if (timerErr == CHIP_NO_ERROR)
+                    {
+                        mRoutableIPv6WaitArmed = true;
+                    }
+                    else
+                    {
+                        // Timer could not be armed: accept link-local now so we never get stuck.
+                        ChipLogError(DeviceLayer, "Failed to arm routable-IPv6 wait timer: %" CHIP_ERROR_FORMAT
+                                     "; accepting link-local IPv6 immediately", timerErr.Format());
+                        mAcceptLinkLocalIPv6 = true;
+                        haveIPv6Conn         = true;
+                        addr6                = llAddr6;
+                    }
+                }
+            }
+#else
+            // Legacy behaviour: first valid address wins.
+            if (routableAddr6 != nullptr)
+            {
+                haveIPv6Conn = true;
+                addr6        = routableAddr6;
+            }
+            else if (llAddr6 != nullptr)
+            {
+                haveIPv6Conn = true;
+                addr6        = llAddr6;
+            }
+#endif // CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
+
         }
 #if CHIP_DEVICE_CONFIG_ENABLE_WPA
     }
@@ -296,6 +361,17 @@ void ConnectivityManagerImpl::UpdateInternetConnectivityState()
         ChipLogProgress(DeviceLayer, "%s Internet connectivity %s", "IPv6", (haveIPv6Conn) ? "ESTABLISHED" : "LOST");
     }
 }
+
+#if CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
+// Wait timeout: accept link-local so isolated networks are not blocked, then re-evaluate.
+void ConnectivityManagerImpl::RoutableIPv6WaitHandler(System::Layer *, void * ctx)
+{
+    auto * self                  = static_cast<ConnectivityManagerImpl *>(ctx);
+    self->mRoutableIPv6WaitArmed = false;
+    self->mAcceptLinkLocalIPv6   = true;
+    self->UpdateInternetConnectivityState();
+}
+#endif // CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
 #endif // CHIP_DEVICE_CONFIG_ENABLE_WPA || CONFIG_CHIP_ETHERNET
 
 #if CHIP_DEVICE_CONFIG_ENABLE_WPA

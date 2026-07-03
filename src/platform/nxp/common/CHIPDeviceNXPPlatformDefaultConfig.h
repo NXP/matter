@@ -210,6 +210,26 @@
 #define CHIP_DEVICE_CONFIG_WIFI_STATION_RECONNECT_INTERVAL 300
 #endif // CHIP_DEVICE_CONFIG_WIFI_STATION_RECONNECT_INTERVAL in Milliseconds
 
+/*
+ * Gate "IPv6 ESTABLISHED" on a routable (global/ULA) address instead of link-local, so the stack
+ * does not send before SLAAC installs the route (which fails with a missing-route error). A
+ * bounded one-shot fallback still accepts link-local so link-local-only networks proceed.
+ * Only enabled for the Wi-Fi + Thread (border-router) build, whose DNS-SD resolver keeps a single
+ * address per peer and cannot retry; other builds keep the legacy "first valid address wins".
+ */
+#ifndef CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
+#if CHIP_DEVICE_CONFIG_ENABLE_THREAD && CHIP_DEVICE_CONFIG_ENABLE_WPA
+#define CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6 1
+#else
+#define CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6 0
+#endif
+#endif // CHIP_DEVICE_CONFIG_NXP_WAIT_FOR_ROUTABLE_IPV6
+
+/* Bounded wait (ms) for a routable IPv6 address before falling back to link-local. */
+#ifndef CHIP_DEVICE_CONFIG_NXP_ROUTABLE_IPV6_WAIT_MS
+#define CHIP_DEVICE_CONFIG_NXP_ROUTABLE_IPV6_WAIT_MS 9000
+#endif // CHIP_DEVICE_CONFIG_NXP_ROUTABLE_IPV6_WAIT_MS
+
 #ifdef CONFIG_DIAG_LOGS_DEMO
 #ifndef CHIP_CONFIG_ENABLE_BDX_LOG_TRANSFER
 #define CHIP_CONFIG_ENABLE_BDX_LOG_TRANSFER 1
