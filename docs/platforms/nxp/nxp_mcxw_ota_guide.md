@@ -1,179 +1,274 @@
-# NXP MCXW OTA guide
+# NXP MCXW OTA Guide
 
-### Convert `srec` into `sb3` file
+## Overview
 
-The OTA image files must be encrypted using Over The Air Programming Tool
-([OTAP](https://www.nxp.com/design/microcontrollers-developer-resources/connectivity-tool-suite:CONNECTIVITY-TOOL-SUITE?#downloads)).
-Bootloader will load the new OTA image only if it detects that the file was
-encrypted with the `OTAP` correct keys.
+This guide describes the Over-The-Air (OTA) update procedure for NXP
+MCXW71/MCXW72 Matter applications. The process involves:
 
-`.srec` file is input for Over The air Programming (`OTAP`) application
-(unencrypted) and it's converted to `.sb3` format (encrypted).
+1. Building two firmware images (requestor and provider) with OTA support
+   enabled
+2. Converting the provider `.bin`/`.srec` file into an encrypted `.sb3` file
+   using the OTAP tool
+3. Generating a `.ota` image using the NXP OTA image tool
+4. Running the OTA transfer using chip-tool, an OTA Provider application, and an
+   OpenThread Border Router
 
-In `OTAP` application
+---
 
--   select OTA protocol => `OTAP` Matter
--   Browse File
--   follow default options (Preserve NVM)
--   image information: will update "Application Core (MCU)" - this will generate
-    the image only for the CM33 core
--   keep other settings at default values
+## Step 1: Build Firmware Images with OTA Support
 
-### Generate `ota` file
+Two images are required:
 
-In order to build an OTA image, use the NXP wrapper over the standard tool
-`src/app/ota_image_tool.py`:
+| Image             | Role                        | Notes                                   |
+| ----------------- | --------------------------- | --------------------------------------- |
+| **OTA Requestor** | Runs on the target device   | Current firmware that will be updated   |
+| **OTA Provider**  | The new firmware to deliver | Must have a **higher software version** |
 
--   `scripts/tools/nxp/ota/ota_image_tool.py`
+Both images must be built with a configuration that enables the OTA Requestor
+flag. Use one of the following Kconfig overlay files (or any custom config with
+`CONFIG_CHIP_OTA_REQUESTOR=y`):
 
-The tool can be used to generate an OTA image with the following format:
+- `examples/platform/nxp/config/prj_thread_mtd_ota.conf` (MTD + OTA + ICD/SED)
+- `examples/platform/nxp/config/prj_thread_ftd_ota.conf` (FTD + OTA)
+
+Images are built with `west build`. A typical command line looks like:
+
+```bash
+west build -d <output_directory> -b <board> <application> \
+  --config debug \
+  -DCONF_FILE_NAME=prj_thread_mtd_ota.conf \
+  -DCONFIG_MCUX_COMPONENT_middleware.freertos-kernel.config=n \
+  -Dcore_id=cm33_core0 \
+  -DCONFIG_CHIP_DEVICE_DISCRIMINATOR=3840 
+```
+
+The **OTA Provider image** (the new version to be delivered) must additionally
+set the software version to a value higher than the requestor. Pass the
+Kconfig symbols as `-D` defines on the `west build` command line (or add them to
+your overlay `.conf`):
 
 ```
-    | OTA image header | TLV1 | TLV2 | ... | TLVn |
+-DCONFIG_CHIP_DEVICE_SOFTWARE_VERSION=2 -DCONFIG_CHIP_DEVICE_SOFTWARE_VERSION_STRING="2.0"
+```
+
+> **Important:** The OTA header version (`-vn` in the OTA image tool) must match
+> the embedded software version of the provider binary.
+
+---
+
+## Step 2: Convert `.bin` / `.srec` into `.sb3` File
+
+The OTA image must be encrypted using the **Over The Air Programming Tool**
+([OTAP](https://www.nxp.com/design/microcontrollers-developer-resources/connectivity-tool-suite:CONNECTIVITY-TOOL-SUITE?#downloads)).
+The bootloader will only load the new image if it was encrypted with the correct
+OTAP keys.
+
+In the **OTAP** application:
+
+1. Select OTA protocol → **OTAP Matter**
+2. Browse and select the `.bin` file (provider image)
+3. Follow default options (**Preserve NVM**)
+4. Image information: select **"Application Core (MCU)"** — this generates the
+   image only for the CM33 core
+5. In the **JSON file configurator for SB3 generation** window, scroll down to
+   the **Commands** section and press the **Enable** button:
+    - **In the `erase` command, replace the size `0x1F6000` with
+      `0x1F2000`** (Any changes to the flash layout require adjusting this value; for this change the NVM was expanded from `0x1F8000` to `0x1F4000`and so the change must also be reflected in this number)
+6. Keep all other settings at default values
+
+Output: encrypted `.sb3` file.
+
+---
+
+## Step 3: Generate `.ota` File
+
+Use the NXP wrapper over the standard OTA image tool:
+
+```
+scripts/tools/nxp/ota/ota_image_tool.py
+```
+
+The tool generates an OTA image with the following format:
+
+```
+| OTA image header | TLV1 | TLV2 | ... | TLVn |
 ```
 
 where each TLV is in the form `|tag|length|value|`.
 
-Note that "standard" TLV format is used. Matter TLV format is only used for
-factory data TLV value.
+### Usage
 
-Please see more in the
-[OTA image tool guide](../../../scripts/tools/nxp/ota/README.md).
+**Linux:**
 
-Here is an example that generates an OTA image with application update TLV from
-an `.sb3` file:
-
-```
-./scripts/tools/nxp/ota/ota_image_tool.py create -v 0xDEAD -p 0xBEEF -vn 2 -vs "2.0" -da sha256 --app-input-file ~/binaries/chip-mcxw71-app.sb3 ~/binaries/chip-mcxw71-app.ota
-
+```bash
+./scripts/tools/nxp/ota/ota_image_tool.py create -v 0xDEAD -p 0xBEEF -vn 2 -vs "2.0" -da sha256 --app-input-file <sb3_path> <output_ota_path>
 ```
 
-A note regarding OTA image header version (`-vn` option). An application binary
-has its own software version (given by
-`CHIP_DEVICE_CONFIG_DEVICE_SOFTWARE_VERSION`, which can be overwritten). In
-order to have a correct OTA process, the OTA header version should be the same
-as the binary embedded software version. A user can set a custom software
-version in the gn build args by setting `nxp_software_version` to the wanted
-version.
+**Windows:**
 
-### OTA factory data
+```cmd
+python scripts\tools\nxp\ota\ota_image_tool.py create -v 0xDEAD -p 0xBEEF -vn 2 -vs "2.0" -da sha256 --app-input-file <sb3_path> <output_ota_path>
+```
 
-A user can update the factory data through OTA, at the same time the application
-firmware is updated by enabling the following processor in the `gn args`:
+### Example
 
--   `nxp_enable_ota_factory_data_processor=true` to enable default factory data
-    update processor (disabled by default).
+```bash
+./scripts/tools/nxp/ota/ota_image_tool.py create -v 0xDEAD -p 0xBEEF -vn 2 -vs "2.0" -da sha256 \
+  --app-input-file ~/binaries/chip-mcxw72-app.sb3 \
+  ~/binaries/chip-mcxw72-app.ota
+```
 
-The OTA image used must be updated to include the new factory data.
+### Custom Options
 
-[OTA image tool guide](../../../scripts/tools/nxp/ota/README.md).
+| Option             | Description                                        |
+| ------------------ | -------------------------------------------------- |
+| `--app-input-file` | Path to the application `.sb3` binary              |
+| `--app-version`    | Application version (can differ from `-vn`)        |
+| `--bl-input-file`  | Path to the SSBL binary                            |
+| `--factory-data`   | Enable generation of factory data TLV              |
+| `--json`           | Path to a JSON file following `ota_payload.schema` |
 
-### Running OTA
+See the full [OTA image tool guide](../../../scripts/tools/nxp/ota/README.md)
+for all options.
 
-The OTA topology used for OTA testing is illustrated in the figure below.
-Topology is similar with the one used for Matter Test Events.
+---
+
+## Step 4: Running OTA
+
+### Topology
 
 ![OTA_TOPOLOGY](../../../examples/platform/nxp/mcxw72/doc/images/ota_topology.JPG)
 
-The concept for OTA is the next one:
+- **OTA Provider Application** — Linux application holding the `.ota` image
+- **OTA Requestor** — embedded in the reference application on the MCXW device
+- **chip-tool** — Linux controller used to commission both the device and the
+  OTA Provider
+- **OTBR** — OpenThread Border Router providing Thread network connectivity
 
--   there is an OTA Provider Application that holds the OTA image. In our case,
-    this is a Linux application running on an Ubuntu based-system;
--   the OTA Requestor functionality is embedded inside the reference
-    application. It will be used for requesting OTA blocks from the OTA
-    Provider;
--   the controller (a linux application called chip-tool) will be used for
-    commissioning both the device and the OTA Provider App. The device will be
-    commissioned using the standard Matter flow (BLE + IEEE 802.15.4) while the
-    OTA Provider Application will be commissioned using the `onnetwork` option
-    of `chip-tool`;
--   during commissioning, each device is assigned a node id by the chip-tool
-    (can be specified manually by the user). Using the node id of the device and
-    of the reference application, chip-tool triggers the OTA transfer by
-    invoking the `announce-otaprovider` command - basically, the OTA Requestor
-    is informed of the node id of the OTA Provider Application.
+### Obtaining the host tools (chip-tool, chip-ota-provider-app)
 
-_Computer #1_ can be any system running an Ubuntu distribution. We recommand
-using CSA official instructions from
-[here](https://groups.csa-iot.org/wg/matter-csg/document/28566), where RPi 4 are
-proposed. Also, CSA official instructions document point to the OS/Docker images
-that should be used on the RPis. For compatibility reasons, we recommand
-compiling chip-tool and OTA Provider applications with the same commit id that
-was used for compiling the reference application. Also, please note that there
-is a single controller (chip-tool) running on Computer #1 which is used for
-commissioning both the device and the OTA Provider Application. If needed,
-[these instructions](https://itsfoss.com/connect-wifi-terminal-ubuntu/) could be
-used for connecting the RPis to WiFi.
+The `chip-tool` and `chip-ota-provider-app` binaries are Linux host
+applications. They are **not** part of the MCXW firmware build; they are built
+from source in the `connectedhomeip` repo (they are also the same tools bundled
+with the Matter Test Harness setup on the RPi/Ubuntu host):
 
-Build the Linux OTA provider application:
+```bash
+# Build the Linux OTA Provider application (produces chip-ota-provider-app)
+./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ota-provider-app chip_config_network_layer_ble=false
 
-```
-user@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ota-provider-app chip_config_network_layer_ble=false
+# Build the Linux chip-tool (produces chip-tool)
+./scripts/examples/gn_build_example.sh examples/chip-tool out/chip-tool-app
 ```
 
-Build Linux `chip-tool`:
+> **Recommendation:** For compatibility, compile `chip-tool` and the OTA
+> Provider application from the **same commit id** used to build the reference
+> (requestor) firmware. In the commands below, `chip-apps/chip-tool` and
+> `chip-apps/chip-ota-provider-app` refer to these built binaries — substitute
+> the actual output paths (e.g. `out/chip-tool-app/chip-tool` and
+> `out/ota-provider-app/chip-ota-provider-app`) if they differ in your setup.
 
+### About the OTBR helper scripts
+
+The `otbr/otbr_start.sh` and `otbr/otbr_srp_restart.sh` scripts referenced below
+are **not** part of the `connectedhomeip` repo. They are helper wrappers
+(distributed as part of the Test Harness / OTBR setup tooling on the RPi/Ubuntu
+host) around the upstream OpenThread Border Router Docker image
+(`connectedhomeip/otbr`) and its `ot-ctl` commands:
+
+- `otbr_start.sh` — pulls/launches the OTBR Docker container, forms the Thread
+  network, and prints the operational dataset.
+- `otbr_srp_restart.sh` — restarts the SRP server (`ot-ctl srp server disable`
+  → `ot-ctl srp server enable`) to work around mDNS/SRP caching issues.
+
+For setting up the RPi/OTBR host and obtaining these scripts, follow the CSA
+official Matter test-setup instructions
+([CSA matter-csg document 28566](https://groups.csa-iot.org/wg/matter-csg/document/28566)).
+If you do not have the helper scripts, you can run the equivalent `ot-ctl` /
+`docker` commands manually (see **Known Issues** below).
+
+### Procedure (Two-Terminal Workflow)
+
+#### Terminal 1 — OTBR + OTA Provider
+
+```bash
+# Clean state
+rm -rf /tmp/chip_*
+
+# Start the OpenThread Border Router and save the dataset
+otbr/otbr_start.sh
+# Note: save the operational dataset printed by this script for later use
+
+# Restart SRP server (avoids mDNS issues)
+otbr/otbr_srp_restart.sh
+
+# Start the OTA Provider Application
+chip-apps/chip-ota-provider-app -f <path_to_ota_image>
 ```
-user@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/chip-tool out/chip-tool-app
+
+#### Terminal 2 — chip-tool (Commissioning & OTA Trigger)
+
+```bash
+# Clean state
+rm -rf /tmp/chip_*
+
+# Restart SRP to avoid mDNS issues before commissioning OTA Provider
+otbr/otbr_srp_restart.sh
+
+# Commission OTA Provider on the network (node ID 1)
+chip-apps/chip-tool pairing onnetwork 1 20202021
+
+# Grant ACL entries to allow any OTA requestor to query the provider
+chip-apps/chip-tool accesscontrol write acl '[{"fabricIndex": 1, "privilege": 5, "authMode": 2, "subjects": [112233], "targets": null}, {"fabricIndex": 1, "privilege": 3, "authMode": 2, "subjects": null, "targets": null}]' 1 0
+
+# Put the device into commissioning mode (press SW2 on the board)
+
+# Restart SRP before commissioning the device
+otbr/otbr_srp_restart.sh
+
+# Commission the device via BLE+Thread (node ID 2)
+# Use the operational dataset saved from otbr_start.sh
+chip-apps/chip-tool pairing ble-thread 2 hex:<operationalDataset> 20202021 3840
+
+# Trigger OTA transfer
+chip-apps/chip-tool otasoftwareupdaterequestor announce-otaprovider 1 0 0 0 2 0
 ```
 
-Start the OTA Provider Application:
+> **Note:** The discriminator value `3840` (0x0F00) is the default. Adjust if
+> your application uses a different discriminator.
 
-```
-user@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
-user@computer1:~/connectedhomeip$ : ./out/ota-provider-app/chip-ota-provider-app -f chip-mcxw71-app.ota
-```
+---
 
-Provision the OTA provider application and assign node id _1_. Also, grant ACL
-entries to allow OTA requestors:
+## Known Issues
 
-```
-user@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
-user@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool pairing onnetwork 1 20202021
-user@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool accesscontrol write acl '[{"fabricIndex": 1, "privilege": 5, "authMode": 2, "subjects": [112233], "targets": null}, {"fabricIndex": 1, "privilege": 3, "authMode": 2, "subjects": null, "targets": null}]' 1 0
-```
+- **SRP cache must be flushed** before each new commissioning attempt. Use
+  `otbr/otbr_srp_restart.sh` or manually run:
 
-Provision the device and assign node id _2_:
-
-```
-user@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool pairing ble-thread 2 hex:<operationalDataset> 20202021 3840
-```
-
-Start the OTA process:
-
-```
-user@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool otasoftwareupdaterequestor announce-otaprovider 1 0 0 0 2 0
-```
-
-### Known issues
-
--   SRP cache on the openthread border router needs to flushed each time a new
-    commissioning process is attempted. For this, factory reset the device, then
-    execute `ot-ctl server disable` followed by `ot-ctl server enable`. After
-    this step, the commissioning process of the device can start;
--   Due to some MDNS issues, the commissioning of the OTA Provider Application
-    may fail. Please make sure that the SRP cache is disabled
-    (`ot-ctl srp server disable`) on the openthread border router while
-    commissioning the OTA Provider Application;
--   No other Docker image should be running (e.g.: Docker image needed by Test
-    Harness) except the OTBR one. A docker image can be killed using the
-    command:
-
+    ```bash
+    ot-ctl srp server disable
+    ot-ctl srp server enable
     ```
-    user@computer1:~/connectedhomeip$ : sudo docker kill $container_id
+
+- **mDNS commissioning failures:** Ensure SRP server is restarted
+  (`ot-ctl srp server disable` → `ot-ctl srp server enable`) on the OTBR before
+  commissioning the OTA Provider Application.
+
+- **No other Docker containers** should be running (e.g., Test Harness) except
+  the OTBR container:
+
+    ```bash
+    sudo docker kill $container_id
     ```
 
--   In order to avoid MDNS issues, only one interface should be active at one
-    time. E.g.: if WiFi is used then disable the Ethernet interface and also
-    disable multicast on that interface:
+- **Single network interface:** To avoid mDNS issues, only one interface should
+  be active. If WiFi is used, disable Ethernet:
 
+    ```bash
+    sudo ip link set dev eth0 down
+    sudo ip link set dev eth0 multicast off
     ```
-    user@computer1:~/connectedhomeip$ sudo ip link set dev eth0 down
-    user@computer1:~/connectedhomeip$ sudo ifconfig eth0 -multicast
-    ```
 
--   If OTBR Docker image is used, then the "-B" parameter should point to the
-    interface used for the backbone.
+- If the **OTBR Docker image** is used, the `-B` parameter must point to the
+  backbone interface.
 
--   If Wi-Fi is used on a RPI4, then a 5Ghz network should be selected.
-    Otherwise, issues related to BLE-WiFi combo may appear.
+- If **Wi-Fi is used on RPi4**, select a 5 GHz network to avoid BLE-WiFi
+  coexistence issues.
