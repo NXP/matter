@@ -29,7 +29,7 @@
 #include <app/clusters/device-energy-management-server/DeviceEnergyManagementTestEventTriggerHandler.h>
 #include <app/server/Server.h>
 #include <DEMConfig.h>
-#include <DEMManufacturerDelegate.h>
+#include <ElectricalSensorManager.h>
 #include <EnergyEvseMain.h>
 #include <EVSEManufacturerImpl.h>
 #include "UserInterfaceFeedback.h"
@@ -132,7 +132,11 @@ static CHIP_ERROR energyReadingHandler(int argc, char * argv[])
     voltage = (uint16_t) strtoul(argv[1], nullptr, 10);
     current = (uint16_t) strtoul(argv[2], nullptr, 10);
 
-    TEMPORARY_RETURN_IGNORED GetDEMDelegate()->GetDEMManufacturerDelegate()->SendPowerReading(1, power, voltage, current);
+    ElectricalSensorManager * esManager = GetESManager();
+    if (esManager != nullptr)
+    {
+        TEMPORARY_RETURN_IGNORED esManager->SendPowerReading(power, voltage, current);
+    }
 
     ChipLogProgress(DeviceLayer, "Set power to: %d mW, voltage to: %d wV, current to: %d wA", static_cast<uint16_t>(power), static_cast<uint16_t>(voltage), static_cast<uint16_t>(current));
 
@@ -268,7 +272,11 @@ void EVSEApp::AppTask::UpdateChargingInternal(intptr_t arg)
     int64_t current = (static_cast<int64_t>(rand()) % (2 * gCurrentRandomness_mA)) - gCurrentRandomness_mA;
     current += gCurrent_mA; // add in the base current
 	
-    TEMPORARY_RETURN_IGNORED GetDEMDelegate()->GetDEMManufacturerDelegate()->SendPowerReading(kEvseEndpoint, power, voltage, current);
+    ElectricalSensorManager * esManager = GetESManager();
+    if (esManager != nullptr)
+    {
+        TEMPORARY_RETURN_IGNORED esManager->SendPowerReading(power, voltage, current);
+    }
     
 	
     // update the energy meter - we'll assume that the power has been constant during the previous interval
@@ -287,11 +295,14 @@ void EVSEApp::AppTask::UpdateChargingInternal(intptr_t arg)
         gTotalEnergyExported += gPeriodicEnergyExported;
     }
 	
-    TEMPORARY_RETURN_IGNORED GetDEMDelegate()->GetDEMManufacturerDelegate()->SendPeriodicEnergyReading(kEvseEndpoint, gPeriodicEnergyImported,
-                                                                              gPeriodicEnergyExported);
-	
-    TEMPORARY_RETURN_IGNORED GetDEMDelegate()->GetDEMManufacturerDelegate()->SendCumulativeEnergyReading(kEvseEndpoint, gTotalEnergyImported,
-                                                                            gTotalEnergyExported);
+    if (esManager != nullptr)
+    {
+        esManager->SetPeriodicEnergyImported(gPeriodicEnergyImported);
+        esManager->SetPeriodicEnergyExported(gPeriodicEnergyExported);
+        esManager->SetCumulativeEnergyImported(gTotalEnergyImported);
+        esManager->SetCumulativeEnergyExported(gTotalEnergyExported);
+        esManager->GenerateEEMReport();
+    }
 
     if(gStateOfCharge <= 100)
     {

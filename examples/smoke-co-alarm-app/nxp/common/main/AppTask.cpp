@@ -33,6 +33,8 @@ using namespace chip::Shell;
 #endif /* ENABLE_CHIP_SHELL */
 
 using namespace chip;
+using namespace chip::app;
+using namespace chip::app::Clusters;
 
 static CHIP_ERROR cliSelfTest(int argc, char * argv[])
 {
