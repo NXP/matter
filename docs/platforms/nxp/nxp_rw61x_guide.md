@@ -188,6 +188,64 @@ added to the _gn gen_ command
 `ELS` contain concurrent access risks. They must be fixed before enabling it by
 default.
 
+### DAC private key blob generation
+
+The RW61x platform provides a mechanism to protect the DAC (Device Attestation
+Certificate) private key at rest by converting it from a plain 32-byte key
+stored in the factory data partition into a 48-byte ELS (EdgeLock Subsystem)
+hardware-wrapped blob. The wrapped blob is device-unique and can only be
+unwrapped by the same S50 hardware instance that created it, preventing the key
+from being extracted from flash.
+
+This is a provisioning-time operation. It requires a dedicated intermediate
+binary to be flashed on the device. Once the conversion is done and the blob is
+written back to the factory data partition, the real Matter application binary
+(without the blob generation option) is flashed and uses the wrapped key
+directly.
+
+> **Note**: This step requires the factory data binary to already be programmed
+> in flash before proceeding. Refer to the
+> [Manufacturing data](#manufacturing-data) section above for instructions on
+> how to generate and flash the factory data binary. This conversion only needs
+> to be done **once**, unless the factory data partition is overridden.
+
+#### Step-by-step procedure
+
+**Step 1 - Build the blob generation binary**
+
+Build a dedicated Matter application binary with
+`CONFIG_NXP_FACTORY_DAC_BLOB_GENERATION` enabled.
+
+CMake build example:
+
+```
+west build -d build_matter_blob -b frdmrw612 examples/all-clusters-app/nxp \
+    -DCONF_FILE_NAME=prj_wifi_fdata.conf \
+    -DCONFIG_NXP_FACTORY_DAC_BLOB_GENERATION=y
+```
+
+**Step 2 - Flash and run the blob generation binary**
+
+Flash the blob generation binary to the application region of the device (do not
+erase the factory data partition). Boot the device.
+
+The UART log will show the following sequence:
+
+```
+SSS: convert DAC private key to blob
+SSS: extracted blob from DAC private key
+SSS: replaced DAC private key with secured blob
+SSS: updated factory data
+```
+
+**Step 3 - Flash the real Matter application binary**
+
+Flash the final Matter application binary built **without**
+`CONFIG_NXP_FACTORY_DAC_BLOB_GENERATION`. The factory data partition already
+contains the wrapped blob, so no conversion will take place. The application
+uses the S50 hardware to unwrap the blob and perform DAC signing operations
+without the plain key ever being held in accessible memory.
+
 <a name="flashing-and-debugging"></a>
 
 ## Flashing and debugging
@@ -284,33 +342,32 @@ The complete Border Router guide is located [here](./nxp_otbr_guide.md).
 
 ### Hardware Connections for GPIO Notification
 
-- Connections using SE051ARD switch and DUT board :
+-   Connections using SE051ARD switch and DUT board :
 
-| Source                               | Destination                     |
-| -------------------------------------| ------------------------------- |
-| RW612 3.3V (J3-8)                    | SE051ARD (DUT) 3v3 (J8-4)       |
-| RW612 GND  (J3-14)                   | SE051ARD (DUT) GND (J8-7)       |
-| RW612 I2C_SCL (J1-4)                 | SE051ARD (DUT) SCL (J2-10)      |
-| RW612 I2C_SDA (J1-2)                 | SE051ARD (DUT) SDA (J2-9)       |
-| RW612 3.3V (J2-16)                   | SE051ARD (switch) Vin (J16-2)   |
-| RW612 J1-10                          | SE051ARD (DUT) IO2 (J11-8)      |
-| RW612 J1-12                          | SE051ARD (switch) Enable (J13-2)|
-| SE051ARD (switch) Vout (J11-5)       | SE051ARD (DUT) SE_VDD (J14-2)   |
-| SE051ARD (switch) GND (J2-7)         | SE051ARD (DUT) GND (J2-7)       |
-| SE051ARD (DUT) ENA (J13-2)           | SE051ARD (DUT) VDD (J11-1)      |
+| Source                         | Destination                      |
+| ------------------------------ | -------------------------------- |
+| RW612 3.3V (J3-8)              | SE051ARD (DUT) 3v3 (J8-4)        |
+| RW612 GND (J3-14)              | SE051ARD (DUT) GND (J8-7)        |
+| RW612 I2C_SCL (J1-4)           | SE051ARD (DUT) SCL (J2-10)       |
+| RW612 I2C_SDA (J1-2)           | SE051ARD (DUT) SDA (J2-9)        |
+| RW612 3.3V (J2-16)             | SE051ARD (switch) Vin (J16-2)    |
+| RW612 J1-10                    | SE051ARD (DUT) IO2 (J11-8)       |
+| RW612 J1-12                    | SE051ARD (switch) Enable (J13-2) |
+| SE051ARD (switch) Vout (J11-5) | SE051ARD (DUT) SE_VDD (J14-2)    |
+| SE051ARD (switch) GND (J2-7)   | SE051ARD (DUT) GND (J2-7)        |
+| SE051ARD (DUT) ENA (J13-2)     | SE051ARD (DUT) VDD (J11-1)       |
 
-- Connections using SE051H2 DUT board :
+-   Connections using SE051H2 DUT board :
 
-| Source                                  | Destination                     |
-| --------------------------------------- | ------------------------------- |
-| RW612 3.3V (J3-8)                       | SE051H2 3v3 (J8-4)              |
-| RW612 GND  (J3-14)                      | SE051H2 GND (J8-7)              |
-| RW612 I2C_SCL (J1-4)                    | SE051H2 SCL (J2-10)             |
-| RW612 I2C_SDA (J1-2)                    | SE051H2 SDA (J2-9)              |
-| RW612 J1-10                             | SE051H2 IO2 (J11-5)             |
-| RW612 J1-12                             | SE051H2 IO/MOSI (J2-4)          |
-| RW612 3.3V (J2-16) (HIGH)               | SE051H2 Enable(J1-6)            |
-
+| Source                    | Destination            |
+| ------------------------- | ---------------------- |
+| RW612 3.3V (J3-8)         | SE051H2 3v3 (J8-4)     |
+| RW612 GND (J3-14)         | SE051H2 GND (J8-7)     |
+| RW612 I2C_SCL (J1-4)      | SE051H2 SCL (J2-10)    |
+| RW612 I2C_SDA (J1-2)      | SE051H2 SDA (J2-9)     |
+| RW612 J1-10               | SE051H2 IO2 (J11-5)    |
+| RW612 J1-12               | SE051H2 IO/MOSI (J2-4) |
+| RW612 3.3V (J2-16) (HIGH) | SE051H2 Enable(J1-6)   |
 
 ### Provision SE05x with required keys (One time step)
 
@@ -320,29 +377,45 @@ Build the provision example as -
 user@ubuntu:~/Desktop/git/connectedhomeip$ west build -d <out_dir> -b frdmrw612 third_party/simw-top-mini/repo/demos/se051h_nfc_comm_prov/mcu -DCONFIG_CHIP_SE05X=y
 ```
 
-**NOTE**: By default, the provision example will provision for nfc-wifi interface. Build the example with `-DCONFIG_SE05X_DEVICE_NETWORK_TYPE_THREAD=y` for thread interface.
+**NOTE**: By default, the provision example will provision for nfc-wifi
+interface. Build the example with `-DCONFIG_SE05X_DEVICE_NETWORK_TYPE_THREAD=y`
+for thread interface.
 
-Refer [SE051H Provision Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se051h_nfc_comm_prov/readme.md) for more details on provisioning SE05x with required keys for powered and unpowered commissioning.
+Refer
+[SE051H Provision Example](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se051h_nfc_comm_prov/readme.md)
+for more details on provisioning SE05x with required keys for powered and
+unpowered commissioning.
 
-**NOTE** For ease of use, the provision example can also be used from Linux machine. Refer [SE051H Provision Example on Linux](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se051h_nfc_comm_prov/vcom_prov_readme.md)
+**NOTE** For ease of use, the provision example can also be used from Linux
+machine. Refer
+[SE051H Provision Example on Linux](https://github.com/NXP/plug-and-trust/blob/int/CHIPSE_Release/demos/se051h_nfc_comm_prov/vcom_prov_readme.md)
 
-By default some objects in SE05x are trust provisioned with secure messaging policy enabled (Meaning - the objects can be accessed only in a session with SE05x).
-The secure messaging policies can be removed using the following steps for ease of use / testing (Not recommended for product deployment). Build and run provision example in the below sequence -
+By default some objects in SE05x are trust provisioned with secure messaging
+policy enabled (Meaning - the objects can be accessed only in a session with
+SE05x). The secure messaging policies can be removed using the following steps
+for ease of use / testing (Not recommended for product deployment). Build and
+run provision example in the below sequence -
 
 Provision AES session Key ==>
+
 ```
 user@ubuntu:~/Desktop/git/connectedhomeip$ west build -d <out_dir> -b frdmrw612 third_party/simw-top-mini/repo/demos/se051h_nfc_comm_prov/mcu -DCONFIG_CHIP_SE05X=y -DCONFIG_SE05X_DO_AES_KEY_PROVISION=y
 ```
+
 Open AES session and delete all objects ==>
+
 ```
 user@ubuntu:~/Desktop/git/connectedhomeip$ west build -d <out_dir> -b frdmrw612 third_party/simw-top-mini/repo/demos/se051h_nfc_comm_prov/mcu -DCONFIG_CHIP_SE05X=y -DCONFIG_SE05X_AES_KEY=y -DCONFIG_SE05X_DO_RESET=y
 ```
+
 Open Plain session and re-provision all objects ==>
+
 ```
 user@ubuntu:~/Desktop/git/connectedhomeip$ west build -d <out_dir> -b frdmrw612 third_party/simw-top-mini/repo/demos/se051h_nfc_comm_prov/mcu -DCONFIG_CHIP_SE05X=y
 ```
 
-**NOTE : REMOVING SECURE MESSAGING POLICY IS NOT RECOMMENDED FOR PRODUCT DEPLOYMENT.**
+**NOTE : REMOVING SECURE MESSAGING POLICY IS NOT RECOMMENDED FOR PRODUCT
+DEPLOYMENT.**
 
 ### Build options for example
 
@@ -361,13 +434,13 @@ ubuntu@ubuntu-Latitude-5420:~/matter/connectedhomeip$ west build -d <out_dir> -b
 
 > [!NOTE]
 >
-> 1.   To control secure element using enable pin, ensure to connect
-> jumper J14 on OM-SE051ARD board to 3-4 pins. Also build the example with
-> -DCONFIG_SE05X_HOST_GPIO=y option to allow RW61x GPIO to control the
-> enable pin as required.
->
-> 2.  If the SE05x has crypto objects that are enabled with secure
-> messaging policy, the example needs to be built with secure session support enabled.
-> For example to build with AES applet session support, build with -DCONFIG_SE05X_AES_KEY=y.
+> 1.  To control secure element using enable pin, ensure to connect jumper J14
+>     on OM-SE051ARD board to 3-4 pins. Also build the example with
+>     -DCONFIG_SE05X_HOST_GPIO=y option to allow RW61x GPIO to control the
+>     enable pin as required.
+> 2.  If the SE05x has crypto objects that are enabled with secure messaging
+>     policy, the example needs to be built with secure session support enabled.
+>     For example to build with AES applet session support, build with
+>     -DCONFIG_SE05X_AES_KEY=y.
 
 Refer [SE05x](nxp_se05x_guide.md) for more details on configurations of SE05x.
