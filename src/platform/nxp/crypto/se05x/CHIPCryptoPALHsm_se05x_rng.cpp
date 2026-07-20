@@ -24,6 +24,7 @@
 
 #include "CHIPCryptoPALHsm_se05x_utils.h"
 #include <lib/core/CHIPEncoding.h>
+#include <mbedtls/version.h>
 
 #if MBEDTLS_VERSION_NUMBER < 0x04000000
 #if ENABLE_SE05X_RND_GEN
