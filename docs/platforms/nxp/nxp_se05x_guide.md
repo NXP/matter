@@ -5,7 +5,7 @@
 -   [SE05x Crypto Configurations](#se05x_crypto_configurations)
 -   [SE05x Type Configurations](#se05x_type_configurations)
 -   [Device Attestation](#device_attestation)
--   [SCP03 Authentication](#scp03)
+-   [SE05x Authentication Configurations](#se05x_authentication)
 -   [Using Trust Provisioned Verifiers of SE051H for SPAKE2+](#trust_prov_verifiers_se051h)
 -   [SE051H NFC / Unpowered Commissioning](#se051h_nfc_unpowered_commissioning)
 -   [GPIO Notification on NFC Commissioning Complete](#gpio_noti_on_nfc_comm_complete)
@@ -129,9 +129,9 @@ west build -d <out_dir> -b frdmrw612 examples/thermostat/nxp/ -DCONF_FILE_NAME=p
 west build -d <out_dir> -b frdmrw612 examples/thermostat/nxp/ -DCONF_FILE_NAME=prj_wifi_onnetwork.conf -DCONFIG_CHIP_SE05X=y -DCONFIG_CHIP_APP_WIFI_SSID=\"<wifi_ssid>\" -DCONFIG_CHIP_APP_WIFI_PASSWORD=\"<password>\"
 ```
 
-### RT1060 EVKB
+### RT1060 EVKC
 
-Integration of SE05x with RT1060 EVKB board is demonstrated using the thermostat
+Integration of SE05x with RT1060 EVKC board is demonstrated using the thermostat
 and all-clusters-app examples.
 
 **Prerequisites:** Refer to [RT1060](nxp_rt1060_guide.md) to set up the build
@@ -326,19 +326,33 @@ ninja -C out se05x_dev_attest_key_prov
 **Reference:**
 [SE05x Device Attestation Example](https://github.com/NXP/plug-and-trust/blob/int/matter_1_6_se05x/demos/se05x_dev_attest_key_prov/readme.md)
 
-<a name="scp03"></a>
+<a name="se05x_authentication"></a>
 
-## SCP03 Authentication
+## SE05x Authentication Configurations
+
+SE05x supports the following types of authentications
+
+| Authentication         | GN Build Option    | CMAKE Option                   |
+| ---------------------- | ------------------ | -------------------------------|
+| SCP03                  | scp03              | CONFIG_SE05X_SCP03             |
+| EC Key                 | ec_key             | CONFIG_SE05X_EC_KEY            |
+| AES Key                | aes_key            | CONFIG_SE05X_AES_KEY           |
+| User ID                | user_id            | CONFIG_SE05X_USER_ID           |
+| SCP03 + AES Key        | scp03_aes_key      | CONFIG_SE05X_SCP03_AES_KEY     |
+| SCP03 + EC Key         | scp03_ec_key       | CONFIG_SE05X_SCP03_EC_KEY      |
+| SCP03 + User ID        | scp03_user_id      | CONFIG_SE05X_SCP03_USER_ID     |
+
+### SCP03 Authentication
 
 To enable SCP03 (Secure Channel Protocol 03) authentication with SE05x:
 
-### GN Build
+#### GN Build
 
 ```bash
 gn gen out --args="chip_se05x_auth=\"scp03\""
 ```
 
-### CMake Build
+#### CMake Build
 
 ```bash
 west build -d <out_dir> -b <board> <example_path> -DCONFIG_SE05X_SCP03=y
@@ -346,6 +360,70 @@ west build -d <out_dir> -b <board> <example_path> -DCONFIG_SE05X_SCP03=y
 
 > **Important:** Ensure CMAC (`MBEDTLS_CMAC_C`) is enabled in your mbedTLS
 > configuration file.
+
+> **Note:** To run the application with SCP03 enabled, update the 
+> `third_party/simw-top-mini/repo/sss/ex/inc/ex_sss_auth.h` with 
+> the correct SCP keys.
+
+
+### EC KEY Authentication
+
+To enable EC KEY authentication with SE05x:
+
+#### GN Build
+
+```bash
+gn gen out --args="chip_se05x_auth=\"ec_key\""
+```
+
+#### CMake Build
+
+```bash
+west build -d <out_dir> -b <board> <example_path> -DCONFIG_SE05X_EC_KEY=y
+```
+
+
+### AES KEY Authentication
+
+To enable AES KEY authentication with SE05x:
+
+#### GN Build
+
+```bash
+gn gen out --args="chip_se05x_auth=\"aes_key\""
+```
+
+#### CMake Build
+
+```bash
+west build -d <out_dir> -b <board> <example_path> -DCONFIG_SE05X_AES_KEY=y
+```
+
+
+### User ID Authentication
+
+To enable User ID authentication with SE05x:
+
+#### GN Build
+
+```bash
+gn gen out --args="chip_se05x_auth=\"user_id\""
+```
+
+#### CMake Build
+
+```bash
+west build -d <out_dir> -b <board> <example_path> -DCONFIG_SE05X_USER_ID=y
+```
+
+
+> **Note:** When using multiple authentications, use the corresponding macro
+> with the appropriate cmake/gn build option
+
+
+> **Important:** When multiple authentications are enabled, ensure that SE05x has sufficient
+> stack and heap memory to handle the operations. The configs are user configurable.
+
 
 <a name="trust_prov_verifiers_se051h"></a>
 
@@ -727,7 +805,7 @@ third_party/simw-top-mini/repo/demos/se05x_host_gpio/se05x_host_gpio_rw61x.c
 
 **Pin Assignments:**
 
-| Function                  | RT1060 EVKB Pin |
+| Function                  | RT1060 EVKC Pin |
 | ------------------------- | --------------- |
 | Enable Pin                | J17_1           |
 | GPIO Notification Pin     | J17_2           |
