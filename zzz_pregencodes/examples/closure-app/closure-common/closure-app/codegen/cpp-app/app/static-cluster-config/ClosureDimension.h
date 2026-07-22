@@ -26,6 +26,8 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint2EnabledCommands[] = {
+    Commands::GroupedSetTarget::Id,
+    Commands::GroupedStep::Id,
     Commands::SetTarget::Id,
     Commands::Step::Id,
 };
@@ -39,6 +41,8 @@ inline constexpr AttributeId kEndpoint3EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint3EnabledCommands[] = {
+    Commands::GroupedSetTarget::Id,
+    Commands::GroupedStep::Id,
     Commands::SetTarget::Id,
     Commands::Step::Id,
 };
@@ -93,6 +97,8 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
 {
     switch (commandId)
     {
+    case Commands::GroupedSetTarget::Id:
+    case Commands::GroupedStep::Id:
     case Commands::SetTarget::Id:
     case Commands::Step::Id:
         return true;

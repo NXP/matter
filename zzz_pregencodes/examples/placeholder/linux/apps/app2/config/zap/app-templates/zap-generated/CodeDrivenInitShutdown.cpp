@@ -64,6 +64,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::EthernetNetworkDiagnostics::Id:
         MatterEthernetNetworkDiagnosticsClusterInitCallback(endpoint);
         break;
+    case app::Clusters::BridgedDeviceBasicInformation::Id:
+        MatterBridgedDeviceBasicInformationClusterInitCallback(endpoint);
+        break;
     case app::Clusters::Switch::Id:
         MatterSwitchClusterInitCallback(endpoint);
         break;
@@ -90,6 +93,15 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::TemperatureMeasurement::Id:
         MatterTemperatureMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::PressureMeasurement::Id:
+        MatterPressureMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::FlowMeasurement::Id:
+        MatterFlowMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::RelativeHumidityMeasurement::Id:
+        MatterRelativeHumidityMeasurementClusterInitCallback(endpoint);
         break;
     case app::Clusters::OccupancySensing::Id:
         MatterOccupancySensingClusterInitCallback(endpoint);
@@ -137,6 +149,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
     case app::Clusters::EthernetNetworkDiagnostics::Id:
         MatterEthernetNetworkDiagnosticsClusterShutdownCallback(endpoint, shutdownType);
         break;
+    case app::Clusters::BridgedDeviceBasicInformation::Id:
+        MatterBridgedDeviceBasicInformationClusterShutdownCallback(endpoint, shutdownType);
+        break;
     case app::Clusters::Switch::Id:
         MatterSwitchClusterShutdownCallback(endpoint, shutdownType);
         break;
@@ -163,6 +178,15 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::TemperatureMeasurement::Id:
         MatterTemperatureMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::PressureMeasurement::Id:
+        MatterPressureMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::FlowMeasurement::Id:
+        MatterFlowMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::RelativeHumidityMeasurement::Id:
+        MatterRelativeHumidityMeasurementClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::OccupancySensing::Id:
         MatterOccupancySensingClusterShutdownCallback(endpoint, shutdownType);

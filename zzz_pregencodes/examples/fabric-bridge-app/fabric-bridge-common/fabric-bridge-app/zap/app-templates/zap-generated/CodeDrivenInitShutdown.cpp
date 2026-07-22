@@ -70,6 +70,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::CommissionerControl::Id:
+        MatterCommissionerControlClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -118,6 +121,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::CommissionerControl::Id:
+        MatterCommissionerControlClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

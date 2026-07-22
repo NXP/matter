@@ -73,6 +73,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::LowPower::Id:
         emberAfLowPowerClusterInitCallback(endpoint);
         break;
+    case app::Clusters::MediaFileManagement::Id:
+        emberAfMediaFileManagementClusterInitCallback(endpoint);
+        break;
     case app::Clusters::MediaInput::Id:
         emberAfMediaInputClusterInitCallback(endpoint);
         break;
@@ -194,6 +197,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::LowPower::Id:
         emberAfLowPowerClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::MediaFileManagement::Id:
+        emberAfMediaFileManagementClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::MediaInput::Id:
         emberAfMediaInputClusterShutdownCallback(endpoint);

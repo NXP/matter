@@ -29,13 +29,9 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
-    Commands::AddOrUpdateThreadNetwork::Id,
-    Commands::AddOrUpdateWiFiNetwork::Id,
-    Commands::ConnectNetwork::Id,
-    Commands::QueryIdentity::Id,
-    Commands::RemoveNetwork::Id,
-    Commands::ReorderNetwork::Id,
-    Commands::ScanNetworks::Id,
+    Commands::AddOrUpdateThreadNetwork::Id, Commands::AddOrUpdateWiFiNetwork::Id,
+    Commands::ConnectNetwork::Id,           Commands::RemoveNetwork::Id,
+    Commands::ReorderNetwork::Id,           Commands::ScanNetworks::Id,
 };
 
 } // namespace detail
@@ -85,7 +81,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     case Commands::AddOrUpdateThreadNetwork::Id:
     case Commands::AddOrUpdateWiFiNetwork::Id:
     case Commands::ConnectNetwork::Id:
-    case Commands::QueryIdentity::Id:
     case Commands::RemoveNetwork::Id:
     case Commands::ReorderNetwork::Id:
     case Commands::ScanNetworks::Id:

@@ -64,6 +64,12 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::OvenCavityOperationalState::Id:
+        MatterOvenCavityOperationalStateClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::OvenMode::Id:
+        MatterOvenModeClusterInitCallback(endpoint);
+        break;
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterInitCallback(endpoint);
         break;
@@ -112,6 +118,12 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OvenCavityOperationalState::Id:
+        MatterOvenCavityOperationalStateClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OvenMode::Id:
+        MatterOvenModeClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterShutdownCallback(endpoint, shutdownType);

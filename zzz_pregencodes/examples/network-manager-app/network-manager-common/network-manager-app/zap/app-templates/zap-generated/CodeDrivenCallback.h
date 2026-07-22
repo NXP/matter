@@ -60,6 +60,14 @@ void MatterGroupKeyManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
+void MatterNetworkIdentityManagementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterNetworkIdentityManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
 void MatterWiFiNetworkManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterWiFiNetworkManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterThreadBorderRouterManagementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterThreadBorderRouterManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

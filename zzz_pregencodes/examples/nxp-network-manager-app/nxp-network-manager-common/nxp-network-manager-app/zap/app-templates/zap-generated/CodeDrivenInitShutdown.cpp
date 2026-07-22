@@ -64,6 +64,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::WiFiNetworkManagement::Id:
         MatterWiFiNetworkManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::ThreadBorderRouterManagement::Id:
+        MatterThreadBorderRouterManagementClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -106,6 +109,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::WiFiNetworkManagement::Id:
         MatterWiFiNetworkManagementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::ThreadBorderRouterManagement::Id:
+        MatterThreadBorderRouterManagementClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

@@ -68,6 +68,14 @@ void MatterGroupKeyManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
+void MatterSmokeCoAlarmClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterSmokeCoAlarmClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
 void MatterTemperatureMeasurementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterTemperatureMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterRelativeHumidityMeasurementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterRelativeHumidityMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

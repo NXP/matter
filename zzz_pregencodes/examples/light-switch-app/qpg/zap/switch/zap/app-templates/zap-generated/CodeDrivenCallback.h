@@ -48,6 +48,10 @@ void MatterBasicInformationClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterBasicInformationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
+void MatterOtaSoftwareUpdateRequestorClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterOtaSoftwareUpdateRequestorClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
 void MatterGeneralCommissioningClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGeneralCommissioningClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

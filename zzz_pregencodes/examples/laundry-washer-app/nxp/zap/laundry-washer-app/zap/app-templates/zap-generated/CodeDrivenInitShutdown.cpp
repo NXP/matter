@@ -46,6 +46,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterInitCallback(endpoint);
         break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        MatterOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
+        break;
     case app::Clusters::LocalizationConfiguration::Id:
         MatterLocalizationConfigurationClusterInitCallback(endpoint);
         break;
@@ -79,8 +82,17 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::UserLabel::Id:
         MatterUserLabelClusterInitCallback(endpoint);
         break;
+    case app::Clusters::LaundryWasherMode::Id:
+        MatterLaundryWasherModeClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::LaundryWasherControls::Id:
+        MatterLaundryWasherControlsClusterInitCallback(endpoint);
+        break;
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::OperationalState::Id:
+        MatterOperationalStateClusterInitCallback(endpoint);
         break;
     }
 }
@@ -106,6 +118,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        MatterOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::LocalizationConfiguration::Id:
         MatterLocalizationConfigurationClusterShutdownCallback(endpoint, shutdownType);
@@ -140,8 +155,17 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
     case app::Clusters::UserLabel::Id:
         MatterUserLabelClusterShutdownCallback(endpoint, shutdownType);
         break;
+    case app::Clusters::LaundryWasherMode::Id:
+        MatterLaundryWasherModeClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::LaundryWasherControls::Id:
+        MatterLaundryWasherControlsClusterShutdownCallback(endpoint, shutdownType);
+        break;
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OperationalState::Id:
+        MatterOperationalStateClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

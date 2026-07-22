@@ -81,6 +81,14 @@ void MatterActivatedCarbonFilterMonitoringClusterInitCallback(chip::EndpointId e
 void MatterActivatedCarbonFilterMonitoringClusterShutdownCallback(chip::EndpointId endpointId,
                                                                   MatterClusterShutdownType shutdownType);
 
+void MatterFanControlClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterFanControlClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
 void MatterTemperatureMeasurementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterTemperatureMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterRelativeHumidityMeasurementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterRelativeHumidityMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

@@ -18,11 +18,23 @@ namespace MediaPlayback {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id, Attributes::ActiveAudioTrack::Id,     Attributes::ActiveTextTrack::Id,
-    Attributes::AttributeList::Id,       Attributes::AvailableAudioTracks::Id, Attributes::AvailableTextTracks::Id,
-    Attributes::ClusterRevision::Id,     Attributes::CurrentState::Id,         Attributes::Duration::Id,
-    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id, Attributes::PlaybackSpeed::Id,
-    Attributes::SampledPosition::Id,     Attributes::SeekRangeEnd::Id,         Attributes::SeekRangeStart::Id,
+    Attributes::AcceptedCommandList::Id,
+    Attributes::ActiveAudioTrack::Id,
+    Attributes::ActiveTextTrack::Id,
+    Attributes::AttributeList::Id,
+    Attributes::AvailableAudioTracks::Id,
+    Attributes::AvailableCommands::Id,
+    Attributes::AvailableTextTracks::Id,
+    Attributes::ClusterRevision::Id,
+    Attributes::ContentInfo::Id,
+    Attributes::CurrentState::Id,
+    Attributes::Duration::Id,
+    Attributes::FeatureMap::Id,
+    Attributes::GeneratedCommandList::Id,
+    Attributes::PlaybackSpeed::Id,
+    Attributes::SampledPosition::Id,
+    Attributes::SeekRangeEnd::Id,
+    Attributes::SeekRangeStart::Id,
     Attributes::StartTime::Id,
 };
 
@@ -44,19 +56,11 @@ inline constexpr CommandId kEndpoint1EnabledCommands[] = {
 };
 
 inline constexpr AttributeId kEndpoint3EnabledAttributes[] = {
-    Attributes::ActiveAudioTrack::Id,
-    Attributes::ActiveTextTrack::Id,
-    Attributes::AvailableAudioTracks::Id,
-    Attributes::AvailableTextTracks::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::CurrentState::Id,
-    Attributes::Duration::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::PlaybackSpeed::Id,
-    Attributes::SampledPosition::Id,
-    Attributes::SeekRangeEnd::Id,
-    Attributes::SeekRangeStart::Id,
-    Attributes::StartTime::Id,
+    Attributes::ActiveAudioTrack::Id,  Attributes::ActiveTextTrack::Id,     Attributes::AvailableAudioTracks::Id,
+    Attributes::AvailableCommands::Id, Attributes::AvailableTextTracks::Id, Attributes::ClusterRevision::Id,
+    Attributes::ContentInfo::Id,       Attributes::CurrentState::Id,        Attributes::Duration::Id,
+    Attributes::FeatureMap::Id,        Attributes::PlaybackSpeed::Id,       Attributes::SampledPosition::Id,
+    Attributes::SeekRangeEnd::Id,      Attributes::SeekRangeStart::Id,      Attributes::StartTime::Id,
 };
 
 inline constexpr CommandId kEndpoint3EnabledCommands[] = {
@@ -85,8 +89,11 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .endpointNumber = 1,
         .featureMap =
             BitFlags<FeatureBitmapType>{
-                FeatureBitmapType::kAdvancedSeek, // feature bit 0x1
-                FeatureBitmapType::kVariableSpeed // feature bit 0x2
+                FeatureBitmapType::kAdvancedSeek,  // feature bit 0x1
+                FeatureBitmapType::kVariableSpeed, // feature bit 0x2
+                FeatureBitmapType::kTextTracks,    // feature bit 0x4
+                FeatureBitmapType::kAudioTracks,   // feature bit 0x8
+                FeatureBitmapType::kAudioAdvance   // feature bit 0x10
             },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
@@ -95,8 +102,11 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .endpointNumber = 3,
         .featureMap =
             BitFlags<FeatureBitmapType>{
-                FeatureBitmapType::kAdvancedSeek, // feature bit 0x1
-                FeatureBitmapType::kVariableSpeed // feature bit 0x2
+                FeatureBitmapType::kAdvancedSeek,  // feature bit 0x1
+                FeatureBitmapType::kVariableSpeed, // feature bit 0x2
+                FeatureBitmapType::kTextTracks,    // feature bit 0x4
+                FeatureBitmapType::kAudioTracks,   // feature bit 0x8
+                FeatureBitmapType::kAudioAdvance   // feature bit 0x10
             },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint3EnabledCommands),
@@ -113,8 +123,10 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::ActiveTextTrack::Id:
     case Attributes::AttributeList::Id:
     case Attributes::AvailableAudioTracks::Id:
+    case Attributes::AvailableCommands::Id:
     case Attributes::AvailableTextTracks::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::ContentInfo::Id:
     case Attributes::CurrentState::Id:
     case Attributes::Duration::Id:
     case Attributes::FeatureMap::Id:

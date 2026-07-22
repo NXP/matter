@@ -301,6 +301,16 @@ void __attribute__((weak)) emberAfHepaFilterMonitoringClusterShutdownCallback(En
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfHumidistatClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfHumidistatClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfIdentifyClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning
@@ -707,6 +717,16 @@ void __attribute__((weak)) emberAfTemperatureMeasurementClusterInitCallback(Endp
     (void) endpoint;
 }
 void __attribute__((weak)) emberAfTemperatureMeasurementClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfTestHiddenManufacturerSpecificClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfTestHiddenManufacturerSpecificClusterShutdownCallback(EndpointId endpoint)
 {
     // To prevent warning
     (void) endpoint;

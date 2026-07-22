@@ -20,6 +20,7 @@ void MatterKeypadInputPluginServerInitCallback();
 void MatterLevelControlPluginServerInitCallback();
 void MatterLocalizationConfigurationPluginServerInitCallback();
 void MatterLowPowerPluginServerInitCallback();
+void MatterMediaFileManagementPluginServerInitCallback();
 void MatterMediaInputPluginServerInitCallback();
 void MatterMediaPlaybackPluginServerInitCallback();
 void MatterMessagesPluginServerInitCallback();
@@ -57,6 +58,7 @@ void MatterKeypadInputPluginServerShutdownCallback();
 void MatterLevelControlPluginServerShutdownCallback();
 void MatterLocalizationConfigurationPluginServerShutdownCallback();
 void MatterLowPowerPluginServerShutdownCallback();
+void MatterMediaFileManagementPluginServerShutdownCallback();
 void MatterMediaInputPluginServerShutdownCallback();
 void MatterMediaPlaybackPluginServerShutdownCallback();
 void MatterMessagesPluginServerShutdownCallback();
@@ -96,6 +98,7 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterLevelControlPluginServerInitCallback();                                                                                  \
     MatterLocalizationConfigurationPluginServerInitCallback();                                                                     \
     MatterLowPowerPluginServerInitCallback();                                                                                      \
+    MatterMediaFileManagementPluginServerInitCallback();                                                                           \
     MatterMediaInputPluginServerInitCallback();                                                                                    \
     MatterMediaPlaybackPluginServerInitCallback();                                                                                 \
     MatterMessagesPluginServerInitCallback();                                                                                      \
@@ -135,6 +138,7 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterLevelControlPluginServerShutdownCallback();                                                                              \
     MatterLocalizationConfigurationPluginServerShutdownCallback();                                                                 \
     MatterLowPowerPluginServerShutdownCallback();                                                                                  \
+    MatterMediaFileManagementPluginServerShutdownCallback();                                                                       \
     MatterMediaInputPluginServerShutdownCallback();                                                                                \
     MatterMediaPlaybackPluginServerShutdownCallback();                                                                             \
     MatterMessagesPluginServerShutdownCallback();                                                                                  \

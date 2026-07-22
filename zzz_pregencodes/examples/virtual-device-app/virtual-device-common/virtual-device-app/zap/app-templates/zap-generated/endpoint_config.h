@@ -77,7 +77,7 @@
 #define GENERATED_DEFAULTS_COUNT (2)
 
 // This is an array of EmberAfAttributeMinMaxValue structures.
-#define GENERATED_MIN_MAX_DEFAULT_COUNT 8
+#define GENERATED_MIN_MAX_DEFAULT_COUNT 7
 #define GENERATED_MIN_MAX_DEFAULTS                                                                                                 \
     {                                                                                                                              \
                                                                                                                                    \
@@ -88,7 +88,6 @@
         { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0x2 }, /* StartUpOnOff */                                                     \
                                                                                                                                    \
         /* Endpoint: 1, Cluster: Door Lock (server) */                                                                             \
-        { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0x3 },  /* SoundVolume */                                                     \
         { (uint16_t) 0x0, (uint16_t) 0x0, (uint16_t) 0x4 },  /* OperatingMode */                                                   \
         { (uint16_t) 0x3, (uint16_t) 0x1, (uint16_t) 0xFF }, /* WrongCodeEntryLimit */                                             \
         { (uint16_t) 0xA, (uint16_t) 0x1, (uint16_t) 0xFF }, /* UserCodeTemporaryDisableTime */                                    \
@@ -657,9 +656,9 @@
           ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* Language */                                            \
         { ZAP_SIMPLE_DEFAULT(60), 0x00000023, 4, ZAP_TYPE(INT32U),                                                                 \
           ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* AutoRelockTime */                                      \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(2), 0x00000024, 1, ZAP_TYPE(INT8U),                                                           \
-          ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SoundVolume */           \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(3), 0x00000025, 1, ZAP_TYPE(ENUM8),                                                           \
+        { ZAP_SIMPLE_DEFAULT(0), 0x00000024, 1, ZAP_TYPE(INT8U),                                                                   \
+          ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* SoundVolume */                                         \
+        { ZAP_MIN_MAX_DEFAULTS_INDEX(2), 0x00000025, 1, ZAP_TYPE(ENUM8),                                                           \
           ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* OperatingMode */         \
         { ZAP_SIMPLE_DEFAULT(0xFFF6), 0x00000026, 2, ZAP_TYPE(BITMAP16),                                                           \
           ZAP_ATTRIBUTE_MASK(READABLE) }, /* SupportedOperatingModes */                                                            \
@@ -667,9 +666,9 @@
           ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* EnableOneTouchLocking */                               \
         { ZAP_SIMPLE_DEFAULT(0), 0x0000002B, 1, ZAP_TYPE(BOOLEAN),                                                                 \
           ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* EnablePrivacyModeButton */                             \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(4), 0x00000030, 1, ZAP_TYPE(INT8U),                                                           \
+        { ZAP_MIN_MAX_DEFAULTS_INDEX(3), 0x00000030, 1, ZAP_TYPE(INT8U),                                                           \
           ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* WrongCodeEntryLimit */   \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(5), 0x00000031, 1, ZAP_TYPE(INT8U),                                                           \
+        { ZAP_MIN_MAX_DEFAULTS_INDEX(4), 0x00000031, 1, ZAP_TYPE(INT8U),                                                           \
           ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(WRITABLE) |                                                             \
               ZAP_ATTRIBUTE_MASK(READABLE) }, /* UserCodeTemporaryDisableTime */                                                   \
         { ZAP_SIMPLE_DEFAULT(1), 0x00000033, 1, ZAP_TYPE(BOOLEAN),                                                                 \
@@ -714,7 +713,7 @@
           ZAP_ATTRIBUTE_MASK(READABLE) }, /* InstalledOpenLimitTilt */                                                             \
         { ZAP_SIMPLE_DEFAULT(0xFFFF), 0x00000013, 2, ZAP_TYPE(INT16U),                                                             \
           ZAP_ATTRIBUTE_MASK(READABLE) }, /* InstalledClosedLimitTilt */                                                           \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(6), 0x00000017, 1, ZAP_TYPE(BITMAP8),                                                         \
+        { ZAP_MIN_MAX_DEFAULTS_INDEX(5), 0x00000017, 1, ZAP_TYPE(BITMAP8),                                                         \
           ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) },   /* Mode */                \
         { ZAP_SIMPLE_DEFAULT(0x0000), 0x0000001A, 2, ZAP_TYPE(BITMAP16), ZAP_ATTRIBUTE_MASK(READABLE) }, /* SafetyStatus */        \
         { ZAP_SIMPLE_DEFAULT(0), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32), ZAP_ATTRIBUTE_MASK(READABLE) },      /* FeatureMap */          \
@@ -730,7 +729,7 @@
         { ZAP_SIMPLE_DEFAULT(0x00FA), 0x00000007, 2, ZAP_TYPE(INT16U),                                                             \
           ZAP_ATTRIBUTE_MASK(READABLE) },                                                           /* ColorTemperatureMireds */   \
         { ZAP_SIMPLE_DEFAULT(0x01), 0x00000008, 1, ZAP_TYPE(ENUM8), ZAP_ATTRIBUTE_MASK(READABLE) }, /* ColorMode */                \
-        { ZAP_MIN_MAX_DEFAULTS_INDEX(7), 0x0000000F, 1, ZAP_TYPE(BITMAP8),                                                         \
+        { ZAP_MIN_MAX_DEFAULTS_INDEX(6), 0x0000000F, 1, ZAP_TYPE(BITMAP8),                                                         \
           ZAP_ATTRIBUTE_MASK(MIN_MAX) | ZAP_ATTRIBUTE_MASK(WRITABLE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* Options */               \
         { ZAP_EMPTY_DEFAULT(), 0x00000010, 1, ZAP_TYPE(INT8U),                                                                     \
           ZAP_ATTRIBUTE_MASK(READABLE) | ZAP_ATTRIBUTE_MASK(NULLABLE) },                                 /* NumberOfPrimaries */   \
@@ -1399,7 +1398,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define FIXED_PROFILE_IDS { 0x0103, 0x0103 }
 
 // Array of device types
-#define FIXED_DEVICE_TYPES { { 0x00000016, 4 }, { 0x00000100, 3 } }
+#define FIXED_DEVICE_TYPES { { 0x00000016, 5 }, { 0x00000100, 4 } }
 
 // Array of device type offsets
 #define FIXED_DEVICE_TYPE_OFFSETS { 0, 1 }

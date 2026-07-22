@@ -48,10 +48,6 @@ void MatterBasicInformationClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterBasicInformationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
-void MatterUnitLocalizationClusterInitCallback(chip::EndpointId endpointId);
-
-void MatterUnitLocalizationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
-
 void MatterGeneralCommissioningClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGeneralCommissioningClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
@@ -59,18 +55,6 @@ void MatterGeneralCommissioningClusterShutdownCallback(chip::EndpointId endpoint
 void MatterGeneralDiagnosticsClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGeneralDiagnosticsClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
-
-void MatterSoftwareDiagnosticsClusterInitCallback(chip::EndpointId endpointId);
-
-void MatterSoftwareDiagnosticsClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
-
-void MatterWiFiNetworkDiagnosticsClusterInitCallback(chip::EndpointId endpointId);
-
-void MatterWiFiNetworkDiagnosticsClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
-
-void MatterEthernetNetworkDiagnosticsClusterInitCallback(chip::EndpointId endpointId);
-
-void MatterEthernetNetworkDiagnosticsClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
 void MatterAdministratorCommissioningClusterInitCallback(chip::EndpointId endpointId);
 

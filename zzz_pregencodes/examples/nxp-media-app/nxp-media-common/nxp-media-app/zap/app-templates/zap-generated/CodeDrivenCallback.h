@@ -99,3 +99,7 @@ void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId
 void MatterUserLabelClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterUserLabelClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterRelativeHumidityMeasurementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterRelativeHumidityMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

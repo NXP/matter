@@ -25,7 +25,9 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
-    Commands::ConfigureAuxiliaryACL::Id, Commands::GroupcastTesting::Id, Commands::JoinGroup::Id, Commands::LeaveGroup::Id,
+    Commands::GroupcastTesting::Id,
+    Commands::JoinGroup::Id,
+    Commands::LeaveGroup::Id,
     Commands::UpdateGroupKey::Id,
 };
 
@@ -38,7 +40,8 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .endpointNumber = 0,
         .featureMap =
             BitFlags<FeatureBitmapType>{
-                FeatureBitmapType::kSender // feature bit 0x2
+                FeatureBitmapType::kSender,  // feature bit 0x2
+                FeatureBitmapType::kPerGroup // feature bit 0x4
             },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
@@ -71,7 +74,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
 {
     switch (commandId)
     {
-    case Commands::ConfigureAuxiliaryACL::Id:
     case Commands::GroupcastTesting::Id:
     case Commands::JoinGroup::Id:
     case Commands::LeaveGroup::Id:

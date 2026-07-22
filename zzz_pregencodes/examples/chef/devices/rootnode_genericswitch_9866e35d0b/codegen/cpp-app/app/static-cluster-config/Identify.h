@@ -39,11 +39,22 @@ inline constexpr CommandId kEndpoint2EnabledCommands[] = {
     Commands::TriggerEffect::Id,
 };
 
+inline constexpr AttributeId kEndpoint3EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id,        Attributes::ClusterRevision::Id,
+    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id, Attributes::IdentifyTime::Id,
+    Attributes::IdentifyType::Id,
+};
+
+inline constexpr CommandId kEndpoint3EnabledCommands[] = {
+    Commands::Identify::Id,
+    Commands::TriggerEffect::Id,
+};
+
 } // namespace detail
 
 using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 3> kFixedClusterConfig = { {
     {
         .endpointNumber    = 1,
         .featureMap        = BitFlags<FeatureBitmapType>{},
@@ -55,6 +66,12 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
+    },
+    {
+        .endpointNumber    = 3,
+        .featureMap        = BitFlags<FeatureBitmapType>{},
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint3EnabledCommands),
     },
 } };
 

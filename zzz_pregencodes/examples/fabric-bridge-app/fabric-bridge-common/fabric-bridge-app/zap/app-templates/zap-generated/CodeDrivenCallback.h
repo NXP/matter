@@ -79,3 +79,7 @@ void MatterOperationalCredentialsClusterShutdownCallback(chip::EndpointId endpoi
 void MatterGroupKeyManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterCommissionerControlClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterCommissionerControlClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

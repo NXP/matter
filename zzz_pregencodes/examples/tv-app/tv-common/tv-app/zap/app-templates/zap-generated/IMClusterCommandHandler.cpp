@@ -443,6 +443,25 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
             }
             break;
         }
+        case Commands::ContentReplicationRequest::Id: {
+            Commands::ContentReplicationRequest::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled =
+                    emberAfContentLauncherClusterContentReplicationRequestCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::PlayPreset::Id: {
+            Commands::PlayPreset::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfContentLauncherClusterPlayPresetCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
         default: {
             // Unrecognized command ID, error status will apply.
             ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
@@ -650,6 +669,83 @@ Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCom
 }
 
 } // namespace LowPower
+
+namespace MediaFileManagement {
+
+Protocols::InteractionModel::Status DispatchServerCommand(CommandHandler * apCommandObj, const ConcreteCommandPath & aCommandPath,
+                                                          TLV::TLVReader & aDataTlv)
+{
+    CHIP_ERROR TLVError = CHIP_NO_ERROR;
+    bool wasHandled     = false;
+    {
+        switch (aCommandPath.mCommandId)
+        {
+        case Commands::AddFile::Id: {
+            Commands::AddFile::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfMediaFileManagementClusterAddFileCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::DeleteFile::Id: {
+            Commands::DeleteFile::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfMediaFileManagementClusterDeleteFileCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::RequestSharedFiles::Id: {
+            Commands::RequestSharedFiles::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfMediaFileManagementClusterRequestSharedFilesCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::GetSharedFile::Id: {
+            Commands::GetSharedFile::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfMediaFileManagementClusterGetSharedFileCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        case Commands::OfferFile::Id: {
+            Commands::OfferFile::DecodableType commandData;
+            TLVError = DataModel::Decode(aDataTlv, commandData);
+            if (TLVError == CHIP_NO_ERROR)
+            {
+                wasHandled = emberAfMediaFileManagementClusterOfferFileCallback(apCommandObj, aCommandPath, commandData);
+            }
+            break;
+        }
+        default: {
+            // Unrecognized command ID, error status will apply.
+            ChipLogError(Zcl, "Unknown command " ChipLogFormatMEI " for cluster " ChipLogFormatMEI,
+                         ChipLogValueMEI(aCommandPath.mCommandId), ChipLogValueMEI(aCommandPath.mClusterId));
+            return Protocols::InteractionModel::Status::UnsupportedCommand;
+        }
+        }
+    }
+
+    if (CHIP_NO_ERROR != TLVError || !wasHandled)
+    {
+        ChipLogProgress(Zcl, "Failed to dispatch command, TLVError=%" CHIP_ERROR_FORMAT, TLVError.Format());
+        return Protocols::InteractionModel::Status::InvalidCommand;
+    }
+
+    // We use success as a marker that no special handling is required
+    // This is to avoid having a std::optional which uses slightly more code.
+    return Protocols::InteractionModel::Status::Success;
+}
+
+} // namespace MediaFileManagement
 
 namespace MediaInput {
 
@@ -1061,6 +1157,9 @@ void DispatchSingleClusterCommand(const ConcreteCommandPath & aCommandPath, TLV:
         break;
     case Clusters::LowPower::Id:
         errorStatus = Clusters::LowPower::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
+        break;
+    case Clusters::MediaFileManagement::Id:
+        errorStatus = Clusters::MediaFileManagement::DispatchServerCommand(apCommandObj, aCommandPath, aReader);
         break;
     case Clusters::MediaInput::Id:
         errorStatus = Clusters::MediaInput::DispatchServerCommand(apCommandObj, aCommandPath, aReader);

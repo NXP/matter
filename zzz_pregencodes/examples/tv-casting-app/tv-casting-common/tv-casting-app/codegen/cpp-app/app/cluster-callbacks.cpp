@@ -28,9 +28,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterInitCallback(endpoint);
         break;
-    case app::Clusters::EthernetNetworkDiagnostics::Id:
-        emberAfEthernetNetworkDiagnosticsClusterInitCallback(endpoint);
-        break;
     case app::Clusters::GeneralCommissioning::Id:
         emberAfGeneralCommissioningClusterInitCallback(endpoint);
         break;
@@ -51,15 +48,6 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::SoftwareDiagnostics::Id:
-        emberAfSoftwareDiagnosticsClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::UnitLocalization::Id:
-        emberAfUnitLocalizationClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        emberAfWiFiNetworkDiagnosticsClusterInitCallback(endpoint);
         break;
     default:
         // Unrecognized cluster ID
@@ -90,9 +78,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::Descriptor::Id:
         emberAfDescriptorClusterShutdownCallback(endpoint);
         break;
-    case app::Clusters::EthernetNetworkDiagnostics::Id:
-        emberAfEthernetNetworkDiagnosticsClusterShutdownCallback(endpoint);
-        break;
     case app::Clusters::GeneralCommissioning::Id:
         emberAfGeneralCommissioningClusterShutdownCallback(endpoint);
         break;
@@ -113,15 +98,6 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::SoftwareDiagnostics::Id:
-        emberAfSoftwareDiagnosticsClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::UnitLocalization::Id:
-        emberAfUnitLocalizationClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        emberAfWiFiNetworkDiagnosticsClusterShutdownCallback(endpoint);
         break;
     default:
         // Unrecognized cluster ID

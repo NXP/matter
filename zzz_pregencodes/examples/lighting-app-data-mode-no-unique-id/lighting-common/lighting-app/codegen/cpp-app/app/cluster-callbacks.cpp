@@ -37,6 +37,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::GeneralDiagnostics::Id:
         emberAfGeneralDiagnosticsClusterInitCallback(endpoint);
         break;
+    case app::Clusters::Groupcast::Id:
+        emberAfGroupcastClusterInitCallback(endpoint);
+        break;
     case app::Clusters::GroupKeyManagement::Id:
         emberAfGroupKeyManagementClusterInitCallback(endpoint);
         break;
@@ -116,6 +119,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::GeneralDiagnostics::Id:
         emberAfGeneralDiagnosticsClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::Groupcast::Id:
+        emberAfGroupcastClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::GroupKeyManagement::Id:
         emberAfGroupKeyManagementClusterShutdownCallback(endpoint);

@@ -47,7 +47,7 @@
     }
 
 // This is an array of EmberAfAttributeMetadata structures.
-#define GENERATED_ATTRIBUTE_COUNT 127
+#define GENERATED_ATTRIBUTE_COUNT 132
 #define GENERATED_ATTRIBUTES                                                                                                       \
     {                                                                                                                              \
                                                                                                                                    \
@@ -306,6 +306,18 @@
         { ZAP_EMPTY_DEFAULT(), 0x0000FFFD, 2, ZAP_TYPE(INT16U),                                                                    \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */                             \
                                                                                                                                    \
+        /* Endpoint: 1, Cluster: Network Identity Management (server) */                                                           \
+        { ZAP_EMPTY_DEFAULT(), 0x00000000, 0, ZAP_TYPE(ARRAY),                                                                     \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ActiveNetworkIdentities */                     \
+        { ZAP_EMPTY_DEFAULT(), 0x00000001, 0, ZAP_TYPE(ARRAY),                                                                     \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* Clients */                                     \
+        { ZAP_EMPTY_DEFAULT(), 0x00000002, 2, ZAP_TYPE(INT16U),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClientTableSize */                             \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFC, 4, ZAP_TYPE(BITMAP32),                                                                  \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* FeatureMap */                                  \
+        { ZAP_EMPTY_DEFAULT(), 0x0000FFFD, 2, ZAP_TYPE(INT16U),                                                                    \
+          ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) }, /* ClusterRevision */                             \
+                                                                                                                                   \
         /* Endpoint: 1, Cluster: Wi-Fi Network Management (server) */                                                              \
         { ZAP_EMPTY_DEFAULT(), 0x00000000, 33, ZAP_TYPE(OCTET_STRING),                                                             \
           ZAP_ATTRIBUTE_MASK(EXTERNAL_STORAGE) | ZAP_ATTRIBUTE_MASK(READABLE) | ZAP_ATTRIBUTE_MASK(NULLABLE) }, /* SSID */         \
@@ -435,30 +447,43 @@
   0x00000002 /* KeySetReadResponse */, \
   0x00000005 /* KeySetReadAllIndicesResponse */, \
   chip::kInvalidCommandId /* end of list */, \
-  /* Endpoint: 1, Cluster: Wi-Fi Network Management (server) */\
+  /* Endpoint: 1, Cluster: Network Identity Management (server) */\
   /*   AcceptedCommandList (index=45) */ \
+  0x00000000 /* AddClient */, \
+  0x00000002 /* RemoveClient */, \
+  0x00000003 /* QueryIdentity */, \
+  0x00000040 /* ImportAdminSecret */, \
+  0x00000041 /* ExportAdminSecret */, \
+  chip::kInvalidCommandId /* end of list */, \
+  /*   GeneratedCommandList (index=51)*/ \
+  0x00000001 /* AddClientResponse */, \
+  0x00000004 /* QueryIdentityResponse */, \
+  0x00000042 /* ExportAdminSecretResponse */, \
+  chip::kInvalidCommandId /* end of list */, \
+  /* Endpoint: 1, Cluster: Wi-Fi Network Management (server) */\
+  /*   AcceptedCommandList (index=55) */ \
   0x00000000 /* NetworkPassphraseRequest */, \
   chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=47)*/ \
+  /*   GeneratedCommandList (index=57)*/ \
   0x00000001 /* NetworkPassphraseResponse */, \
   chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: Thread Border Router Management (server) */\
-  /*   AcceptedCommandList (index=49) */ \
+  /*   AcceptedCommandList (index=59) */ \
   0x00000000 /* GetActiveDatasetRequest */, \
   0x00000001 /* GetPendingDatasetRequest */, \
   0x00000003 /* SetActiveDatasetRequest */, \
   0x00000004 /* SetPendingDatasetRequest */, \
   chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=54)*/ \
+  /*   GeneratedCommandList (index=64)*/ \
   0x00000002 /* DatasetResponse */, \
   chip::kInvalidCommandId /* end of list */, \
   /* Endpoint: 1, Cluster: Thread Network Directory (server) */\
-  /*   AcceptedCommandList (index=56) */ \
+  /*   AcceptedCommandList (index=66) */ \
   0x00000000 /* AddNetwork */, \
   0x00000001 /* RemoveNetwork */, \
   0x00000002 /* GetOperationalDataset */, \
   chip::kInvalidCommandId /* end of list */, \
-  /*   GeneratedCommandList (index=60)*/ \
+  /*   GeneratedCommandList (index=70)*/ \
   0x00000003 /* OperationalDatasetResponse */, \
   chip::kInvalidCommandId /* end of list */, \
 }
@@ -466,7 +491,7 @@
 // clang-format on
 
 // This is an array of EmberAfCluster structures.
-#define GENERATED_CLUSTER_COUNT 14
+#define GENERATED_CLUSTER_COUNT 15
 // clang-format off
 #define GENERATED_CLUSTERS { \
   { \
@@ -613,41 +638,54 @@
       .eventCount = 0, \
     },\
   { \
+      /* Endpoint: 1, Cluster: Network Identity Management (server) */ \
+      .clusterId = 0x00000450, \
+      .attributes = ZAP_ATTRIBUTE_INDEX(110), \
+      .attributeCount = 5, \
+      .clusterSize = 0, \
+      .mask = ZAP_CLUSTER_MASK(SERVER), \
+      .functions = NULL, \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 45 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 51 ), \
+      .eventList = nullptr, \
+      .eventCount = 0, \
+    },\
+  { \
       /* Endpoint: 1, Cluster: Wi-Fi Network Management (server) */ \
       .clusterId = 0x00000451, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(110), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(115), \
       .attributeCount = 4, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 45 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 47 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 55 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 57 ), \
       .eventList = nullptr, \
       .eventCount = 0, \
     },\
   { \
       /* Endpoint: 1, Cluster: Thread Border Router Management (server) */ \
       .clusterId = 0x00000452, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(114), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(119), \
       .attributeCount = 8, \
       .clusterSize = 2, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 49 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 54 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 59 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 64 ), \
       .eventList = nullptr, \
       .eventCount = 0, \
     },\
   { \
       /* Endpoint: 1, Cluster: Thread Network Directory (server) */ \
       .clusterId = 0x00000453, \
-      .attributes = ZAP_ATTRIBUTE_INDEX(122), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(127), \
       .attributeCount = 5, \
       .clusterSize = 6, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
       .functions = NULL, \
-      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 56 ), \
-      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 60 ), \
+      .acceptedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 66 ), \
+      .generatedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 70 ), \
       .eventList = nullptr, \
       .eventCount = 0, \
     },\
@@ -655,13 +693,13 @@
 
 // clang-format on
 
-#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 14
+#define ZAP_FIXED_ENDPOINT_DATA_VERSION_COUNT 15
 
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES                                                                                                   \
     {                                                                                                                              \
         { ZAP_CLUSTER_INDEX(0), 9, 4 },                                                                                            \
-        { ZAP_CLUSTER_INDEX(9), 5, 18 },                                                                                           \
+        { ZAP_CLUSTER_INDEX(9), 6, 18 },                                                                                           \
     }
 
 // Largest attribute size is needed for various buffers
@@ -686,7 +724,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define FIXED_PROFILE_IDS { 0x0103, 0x0103 }
 
 // Array of device types
-#define FIXED_DEVICE_TYPES { { 0x00000016, 4 }, { 0x00000090, 2 } }
+#define FIXED_DEVICE_TYPES { { 0x00000016, 5 }, { 0x00000090, 2 } }
 
 // Array of device type offsets
 #define FIXED_DEVICE_TYPE_OFFSETS { 0, 1 }

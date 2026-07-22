@@ -61,6 +61,15 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::RvcRunMode::Id:
+        MatterRvcRunModeClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::RvcCleanMode::Id:
+        MatterRvcCleanModeClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::RvcOperationalState::Id:
+        MatterRvcOperationalStateClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -100,6 +109,15 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::RvcRunMode::Id:
+        MatterRvcRunModeClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::RvcCleanMode::Id:
+        MatterRvcCleanModeClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::RvcOperationalState::Id:
+        MatterRvcOperationalStateClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

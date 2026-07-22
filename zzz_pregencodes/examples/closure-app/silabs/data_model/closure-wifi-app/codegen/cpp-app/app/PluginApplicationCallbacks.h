@@ -7,6 +7,7 @@ void MatterClosureDimensionPluginServerInitCallback();
 void MatterDescriptorPluginServerInitCallback();
 void MatterGeneralCommissioningPluginServerInitCallback();
 void MatterGeneralDiagnosticsPluginServerInitCallback();
+void MatterGroupcastPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
 void MatterIcdManagementPluginServerInitCallback();
 void MatterIdentifyPluginServerInitCallback();
@@ -24,6 +25,7 @@ void MatterClosureDimensionPluginServerShutdownCallback();
 void MatterDescriptorPluginServerShutdownCallback();
 void MatterGeneralCommissioningPluginServerShutdownCallback();
 void MatterGeneralDiagnosticsPluginServerShutdownCallback();
+void MatterGroupcastPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
 void MatterIcdManagementPluginServerShutdownCallback();
 void MatterIdentifyPluginServerShutdownCallback();
@@ -43,6 +45,7 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterDescriptorPluginServerInitCallback();                                                                                    \
     MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
     MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
+    MatterGroupcastPluginServerInitCallback();                                                                                     \
     MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
     MatterIcdManagementPluginServerInitCallback();                                                                                 \
     MatterIdentifyPluginServerInitCallback();                                                                                      \
@@ -62,6 +65,7 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterDescriptorPluginServerShutdownCallback();                                                                                \
     MatterGeneralCommissioningPluginServerShutdownCallback();                                                                      \
     MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
+    MatterGroupcastPluginServerShutdownCallback();                                                                                 \
     MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
     MatterIcdManagementPluginServerShutdownCallback();                                                                             \
     MatterIdentifyPluginServerShutdownCallback();                                                                                  \

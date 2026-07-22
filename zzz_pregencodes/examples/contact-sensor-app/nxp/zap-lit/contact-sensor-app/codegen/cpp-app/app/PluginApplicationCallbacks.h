@@ -13,6 +13,8 @@ void MatterIdentifyPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
+void MatterPowerSourcePluginServerInitCallback();
+void MatterPowerSourceConfigurationPluginServerInitCallback();
 void MatterSoftwareDiagnosticsPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 void MatterAccessControlPluginServerShutdownCallback();
@@ -29,6 +31,8 @@ void MatterIdentifyPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
+void MatterPowerSourcePluginServerShutdownCallback();
+void MatterPowerSourceConfigurationPluginServerShutdownCallback();
 void MatterSoftwareDiagnosticsPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
 
@@ -47,6 +51,8 @@ void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
     MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
     MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
     MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
+    MatterPowerSourcePluginServerInitCallback();                                                                                   \
+    MatterPowerSourceConfigurationPluginServerInitCallback();                                                                      \
     MatterSoftwareDiagnosticsPluginServerInitCallback();                                                                           \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback();
 
@@ -65,5 +71,7 @@ void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
     MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
     MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
     MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
+    MatterPowerSourcePluginServerShutdownCallback();                                                                               \
+    MatterPowerSourceConfigurationPluginServerShutdownCallback();                                                                  \
     MatterSoftwareDiagnosticsPluginServerShutdownCallback();                                                                       \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();

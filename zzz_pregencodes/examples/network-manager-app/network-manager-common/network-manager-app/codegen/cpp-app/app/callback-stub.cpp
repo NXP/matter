@@ -81,6 +81,16 @@ void __attribute__((weak)) emberAfNetworkCommissioningClusterShutdownCallback(En
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfNetworkIdentityManagementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfNetworkIdentityManagementClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfOperationalCredentialsClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning

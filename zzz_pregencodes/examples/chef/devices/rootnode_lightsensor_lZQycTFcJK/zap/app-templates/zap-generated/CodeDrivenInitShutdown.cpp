@@ -40,6 +40,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterInitCallback(endpoint);
         break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        MatterOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
+        break;
     case app::Clusters::GeneralCommissioning::Id:
         MatterGeneralCommissioningClusterInitCallback(endpoint);
         break;
@@ -82,6 +85,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        MatterOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::GeneralCommissioning::Id:
         MatterGeneralCommissioningClusterShutdownCallback(endpoint, shutdownType);

@@ -100,6 +100,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::HepaFilterMonitoring::Id:
         emberAfHepaFilterMonitoringClusterInitCallback(endpoint);
         break;
+    case app::Clusters::Humidistat::Id:
+        emberAfHumidistatClusterInitCallback(endpoint);
+        break;
     case app::Clusters::Identify::Id:
         emberAfIdentifyClusterInitCallback(endpoint);
         break;
@@ -222,6 +225,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::TemperatureMeasurement::Id:
         emberAfTemperatureMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::TestHiddenManufacturerSpecific::Id:
+        emberAfTestHiddenManufacturerSpecificClusterInitCallback(endpoint);
         break;
     case app::Clusters::Thermostat::Id:
         emberAfThermostatClusterInitCallback(endpoint);
@@ -369,6 +375,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::HepaFilterMonitoring::Id:
         emberAfHepaFilterMonitoringClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::Humidistat::Id:
+        emberAfHumidistatClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::Identify::Id:
         emberAfIdentifyClusterShutdownCallback(endpoint);
         break;
@@ -491,6 +500,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::TemperatureMeasurement::Id:
         emberAfTemperatureMeasurementClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::TestHiddenManufacturerSpecific::Id:
+        emberAfTestHiddenManufacturerSpecificClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::Thermostat::Id:
         emberAfThermostatClusterShutdownCallback(endpoint);

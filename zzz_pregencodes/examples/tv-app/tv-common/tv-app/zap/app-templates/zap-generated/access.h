@@ -39,6 +39,10 @@
     0x0000003E, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
     0x0000050D, /* Cluster: Application Basic, Attribute: AllowedVendorList, Privilege: administer */ \
+    0x00000511, /* Cluster: Media File Management, Attribute: TotalStorage, Privilege: manage */ \
+    0x00000511, /* Cluster: Media File Management, Attribute: AvailableStorage, Privilege: manage */ \
+    0x00000511, /* Cluster: Media File Management, Attribute: AvailableFiles, Privilege: manage */ \
+    0x00000511, /* Cluster: Media File Management, Attribute: SupportedMimeTypes, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, *attribute*, privilege) for read attribute
@@ -53,6 +57,10 @@
     0x00000000, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     0x00000004, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
     0x00000007, /* Cluster: Application Basic, Attribute: AllowedVendorList, Privilege: administer */ \
+    0x00000000, /* Cluster: Media File Management, Attribute: TotalStorage, Privilege: manage */ \
+    0x00000001, /* Cluster: Media File Management, Attribute: AvailableStorage, Privilege: manage */ \
+    0x00000002, /* Cluster: Media File Management, Attribute: AvailableFiles, Privilege: manage */ \
+    0x00000003, /* Cluster: Media File Management, Attribute: SupportedMimeTypes, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, attribute, *privilege*) for read attribute
@@ -67,6 +75,10 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Application Basic, Attribute: AllowedVendorList, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Media File Management, Attribute: TotalStorage, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Media File Management, Attribute: AvailableStorage, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Media File Management, Attribute: AvailableFiles, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Media File Management, Attribute: SupportedMimeTypes, Privilege: manage */ \
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -176,6 +188,8 @@
     0x0000050F, /* Cluster: Content Control, Command: UnblockUnratedContent, Privilege: manage */ \
     0x0000050F, /* Cluster: Content Control, Command: SetOnDemandRatingThreshold, Privilege: manage */ \
     0x0000050F, /* Cluster: Content Control, Command: SetScheduledContentRatingThreshold, Privilege: manage */ \
+    0x00000511, /* Cluster: Media File Management, Command: AddFile, Privilege: manage */ \
+    0x00000511, /* Cluster: Media File Management, Command: DeleteFile, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, *command*, privilege) for invoke command
@@ -221,6 +235,8 @@
     0x00000008, /* Cluster: Content Control, Command: UnblockUnratedContent, Privilege: manage */ \
     0x00000009, /* Cluster: Content Control, Command: SetOnDemandRatingThreshold, Privilege: manage */ \
     0x0000000A, /* Cluster: Content Control, Command: SetScheduledContentRatingThreshold, Privilege: manage */ \
+    0x00000000, /* Cluster: Media File Management, Command: AddFile, Privilege: manage */ \
+    0x00000002, /* Cluster: Media File Management, Command: DeleteFile, Privilege: manage */ \
 }
 
 // Parallel array data (cluster, command, *privilege*) for invoke command
@@ -266,6 +282,8 @@
     chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: UnblockUnratedContent, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: SetOnDemandRatingThreshold, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: SetScheduledContentRatingThreshold, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Media File Management, Command: AddFile, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Media File Management, Command: DeleteFile, Privilege: manage */ \
 }
 
 ////////////////////////////////////////////////////////////////////////////////

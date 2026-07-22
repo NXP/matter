@@ -29,6 +29,7 @@ void MatterGeneralDiagnosticsPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
 void MatterGroupsPluginServerInitCallback();
 void MatterHepaFilterMonitoringPluginServerInitCallback();
+void MatterHumidistatPluginServerInitCallback();
 void MatterIdentifyPluginServerInitCallback();
 void MatterIlluminanceMeasurementPluginServerInitCallback();
 void MatterLaundryDryerControlsPluginServerInitCallback();
@@ -70,6 +71,7 @@ void MatterSoilMeasurementPluginServerInitCallback();
 void MatterSwitchPluginServerInitCallback();
 void MatterTemperatureControlPluginServerInitCallback();
 void MatterTemperatureMeasurementPluginServerInitCallback();
+void MatterTestHiddenManufacturerSpecificPluginServerInitCallback();
 void MatterThermostatPluginServerInitCallback();
 void MatterThermostatUserInterfaceConfigurationPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
@@ -115,6 +117,7 @@ void MatterGeneralDiagnosticsPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
 void MatterGroupsPluginServerShutdownCallback();
 void MatterHepaFilterMonitoringPluginServerShutdownCallback();
+void MatterHumidistatPluginServerShutdownCallback();
 void MatterIdentifyPluginServerShutdownCallback();
 void MatterIlluminanceMeasurementPluginServerShutdownCallback();
 void MatterLaundryDryerControlsPluginServerShutdownCallback();
@@ -156,6 +159,7 @@ void MatterSoilMeasurementPluginServerShutdownCallback();
 void MatterSwitchPluginServerShutdownCallback();
 void MatterTemperatureControlPluginServerShutdownCallback();
 void MatterTemperatureMeasurementPluginServerShutdownCallback();
+void MatterTestHiddenManufacturerSpecificPluginServerShutdownCallback();
 void MatterThermostatPluginServerShutdownCallback();
 void MatterThermostatUserInterfaceConfigurationPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
@@ -203,6 +207,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
     MatterGroupsPluginServerInitCallback();                                                                                        \
     MatterHepaFilterMonitoringPluginServerInitCallback();                                                                          \
+    MatterHumidistatPluginServerInitCallback();                                                                                    \
     MatterIdentifyPluginServerInitCallback();                                                                                      \
     MatterIlluminanceMeasurementPluginServerInitCallback();                                                                        \
     MatterLaundryDryerControlsPluginServerInitCallback();                                                                          \
@@ -244,6 +249,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterSwitchPluginServerInitCallback();                                                                                        \
     MatterTemperatureControlPluginServerInitCallback();                                                                            \
     MatterTemperatureMeasurementPluginServerInitCallback();                                                                        \
+    MatterTestHiddenManufacturerSpecificPluginServerInitCallback();                                                                \
     MatterThermostatPluginServerInitCallback();                                                                                    \
     MatterThermostatUserInterfaceConfigurationPluginServerInitCallback();                                                          \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback();                                                                      \
@@ -291,6 +297,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
     MatterGroupsPluginServerShutdownCallback();                                                                                    \
     MatterHepaFilterMonitoringPluginServerShutdownCallback();                                                                      \
+    MatterHumidistatPluginServerShutdownCallback();                                                                                \
     MatterIdentifyPluginServerShutdownCallback();                                                                                  \
     MatterIlluminanceMeasurementPluginServerShutdownCallback();                                                                    \
     MatterLaundryDryerControlsPluginServerShutdownCallback();                                                                      \
@@ -332,6 +339,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterSwitchPluginServerShutdownCallback();                                                                                    \
     MatterTemperatureControlPluginServerShutdownCallback();                                                                        \
     MatterTemperatureMeasurementPluginServerShutdownCallback();                                                                    \
+    MatterTestHiddenManufacturerSpecificPluginServerShutdownCallback();                                                            \
     MatterThermostatPluginServerShutdownCallback();                                                                                \
     MatterThermostatUserInterfaceConfigurationPluginServerShutdownCallback();                                                      \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();                                                                  \

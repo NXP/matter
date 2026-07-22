@@ -34,6 +34,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::NetworkCommissioning::Id:
         emberAfNetworkCommissioningClusterInitCallback(endpoint);
         break;
+    case app::Clusters::NetworkIdentityManagement::Id:
+        emberAfNetworkIdentityManagementClusterInitCallback(endpoint);
+        break;
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterInitCallback(endpoint);
         break;
@@ -83,6 +86,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::NetworkCommissioning::Id:
         emberAfNetworkCommissioningClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::NetworkIdentityManagement::Id:
+        emberAfNetworkIdentityManagementClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterShutdownCallback(endpoint);

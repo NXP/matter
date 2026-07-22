@@ -37,6 +37,8 @@
     0x00000031, /* Cluster: Network Commissioning, Attribute: LastConnectErrorValue, Privilege: administer */ \
     0x0000003E, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
+    0x00000450, /* Cluster: Network Identity Management, Attribute: ActiveNetworkIdentities, Privilege: manage */ \
+    0x00000450, /* Cluster: Network Identity Management, Attribute: Clients, Privilege: manage */ \
     0x00000451, /* Cluster: Wi-Fi Network Management, Attribute: PassphraseSurrogate, Privilege: manage */ \
 }
 
@@ -50,6 +52,8 @@
     0x00000007, /* Cluster: Network Commissioning, Attribute: LastConnectErrorValue, Privilege: administer */ \
     0x00000000, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     0x00000004, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
+    0x00000000, /* Cluster: Network Identity Management, Attribute: ActiveNetworkIdentities, Privilege: manage */ \
+    0x00000001, /* Cluster: Network Identity Management, Attribute: Clients, Privilege: manage */ \
     0x00000001, /* Cluster: Wi-Fi Network Management, Attribute: PassphraseSurrogate, Privilege: manage */ \
 }
 
@@ -63,6 +67,8 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Network Commissioning, Attribute: LastConnectErrorValue, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Network Identity Management, Attribute: ActiveNetworkIdentities, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Network Identity Management, Attribute: Clients, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Wi-Fi Network Management, Attribute: PassphraseSurrogate, Privilege: manage */ \
 }
 
@@ -132,6 +138,11 @@
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    0x00000450, /* Cluster: Network Identity Management, Command: AddClient, Privilege: manage */ \
+    0x00000450, /* Cluster: Network Identity Management, Command: RemoveClient, Privilege: manage */ \
+    0x00000450, /* Cluster: Network Identity Management, Command: QueryIdentity, Privilege: manage */ \
+    0x00000450, /* Cluster: Network Identity Management, Command: ImportAdminSecret, Privilege: administer */ \
+    0x00000450, /* Cluster: Network Identity Management, Command: ExportAdminSecret, Privilege: administer */ \
     0x00000451, /* Cluster: Wi-Fi Network Management, Command: NetworkPassphraseRequest, Privilege: manage */ \
     0x00000452, /* Cluster: Thread Border Router Management, Command: GetActiveDatasetRequest, Privilege: manage */ \
     0x00000452, /* Cluster: Thread Border Router Management, Command: GetPendingDatasetRequest, Privilege: manage */ \
@@ -165,6 +176,11 @@
     0x00000001, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     0x00000003, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     0x00000004, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    0x00000000, /* Cluster: Network Identity Management, Command: AddClient, Privilege: manage */ \
+    0x00000002, /* Cluster: Network Identity Management, Command: RemoveClient, Privilege: manage */ \
+    0x00000003, /* Cluster: Network Identity Management, Command: QueryIdentity, Privilege: manage */ \
+    0x00000040, /* Cluster: Network Identity Management, Command: ImportAdminSecret, Privilege: administer */ \
+    0x00000041, /* Cluster: Network Identity Management, Command: ExportAdminSecret, Privilege: administer */ \
     0x00000000, /* Cluster: Wi-Fi Network Management, Command: NetworkPassphraseRequest, Privilege: manage */ \
     0x00000000, /* Cluster: Thread Border Router Management, Command: GetActiveDatasetRequest, Privilege: manage */ \
     0x00000001, /* Cluster: Thread Border Router Management, Command: GetPendingDatasetRequest, Privilege: manage */ \
@@ -198,6 +214,11 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetRead, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetRemove, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Command: KeySetReadAllIndices, Privilege: administer */ \
+    chip::Access::Privilege::kManage, /* Cluster: Network Identity Management, Command: AddClient, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Network Identity Management, Command: RemoveClient, Privilege: manage */ \
+    chip::Access::Privilege::kManage, /* Cluster: Network Identity Management, Command: QueryIdentity, Privilege: manage */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: Network Identity Management, Command: ImportAdminSecret, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: Network Identity Management, Command: ExportAdminSecret, Privilege: administer */ \
     chip::Access::Privilege::kManage, /* Cluster: Wi-Fi Network Management, Command: NetworkPassphraseRequest, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Thread Border Router Management, Command: GetActiveDatasetRequest, Privilege: manage */ \
     chip::Access::Privilege::kManage, /* Cluster: Thread Border Router Management, Command: GetPendingDatasetRequest, Privilege: manage */ \

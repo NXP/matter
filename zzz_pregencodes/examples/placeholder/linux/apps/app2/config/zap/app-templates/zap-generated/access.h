@@ -37,24 +37,6 @@
     0x00000031, /* Cluster: Network Commissioning, Attribute: LastConnectErrorValue, Privilege: administer */ \
     0x0000003E, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     0x0000003F, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
-    /* Cluster: Door Lock, Attribute: DoorOpenEvents, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: DoorClosedEvents, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: OpenPeriod, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: Language, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: LEDSettings, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: AutoRelockTime, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: SoundVolume, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: OperatingMode, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableLocalProgramming, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableOneTouchLocking, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableInsideStatusLED, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnablePrivacyModeButton, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: LocalProgrammingFeatures, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: WrongCodeEntryLimit, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: UserCodeTemporaryDisableTime, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: SendPINOverTheAir, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: RequirePINforRemoteOperation, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: ExpiringUserTimeout, Privilege: view */ \
     /* Cluster: Color Control, Attribute: WhitePointX, Privilege: view */ \
     /* Cluster: Color Control, Attribute: WhitePointY, Privilege: view */ \
     /* Cluster: Color Control, Attribute: ColorPointRX, Privilege: view */ \
@@ -79,24 +61,6 @@
     0x00000007, /* Cluster: Network Commissioning, Attribute: LastConnectErrorValue, Privilege: administer */ \
     0x00000000, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     0x00000004, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
-    /* Cluster: Door Lock, Attribute: DoorOpenEvents, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: DoorClosedEvents, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: OpenPeriod, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: Language, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: LEDSettings, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: AutoRelockTime, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: SoundVolume, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: OperatingMode, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableLocalProgramming, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableOneTouchLocking, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableInsideStatusLED, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnablePrivacyModeButton, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: LocalProgrammingFeatures, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: WrongCodeEntryLimit, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: UserCodeTemporaryDisableTime, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: SendPINOverTheAir, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: RequirePINforRemoteOperation, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: ExpiringUserTimeout, Privilege: view */ \
     /* Cluster: Color Control, Attribute: WhitePointX, Privilege: view */ \
     /* Cluster: Color Control, Attribute: WhitePointY, Privilege: view */ \
     /* Cluster: Color Control, Attribute: ColorPointRX, Privilege: view */ \
@@ -121,24 +85,6 @@
     chip::Access::Privilege::kAdminister, /* Cluster: Network Commissioning, Attribute: LastConnectErrorValue, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Operational Credentials, Attribute: NOCs, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Group Key Management, Attribute: GroupcastAdoption, Privilege: administer */ \
-    /* Cluster: Door Lock, Attribute: DoorOpenEvents, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: DoorClosedEvents, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: OpenPeriod, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: Language, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: LEDSettings, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: AutoRelockTime, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: SoundVolume, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: OperatingMode, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableLocalProgramming, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableOneTouchLocking, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnableInsideStatusLED, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: EnablePrivacyModeButton, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: LocalProgrammingFeatures, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: WrongCodeEntryLimit, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: UserCodeTemporaryDisableTime, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: SendPINOverTheAir, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: RequirePINforRemoteOperation, Privilege: view */ \
-    /* Cluster: Door Lock, Attribute: ExpiringUserTimeout, Privilege: view */ \
     /* Cluster: Color Control, Attribute: WhitePointX, Privilege: view */ \
     /* Cluster: Color Control, Attribute: WhitePointY, Privilege: view */ \
     /* Cluster: Color Control, Attribute: ColorPointRX, Privilege: view */ \

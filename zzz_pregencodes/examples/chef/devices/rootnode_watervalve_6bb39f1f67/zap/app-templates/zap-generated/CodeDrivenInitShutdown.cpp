@@ -61,6 +61,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::ValveConfigurationAndControl::Id:
         MatterValveConfigurationAndControlClusterInitCallback(endpoint);
         break;
+    case app::Clusters::FlowMeasurement::Id:
+        MatterFlowMeasurementClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -100,6 +103,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::ValveConfigurationAndControl::Id:
         MatterValveConfigurationAndControlClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::FlowMeasurement::Id:
+        MatterFlowMeasurementClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

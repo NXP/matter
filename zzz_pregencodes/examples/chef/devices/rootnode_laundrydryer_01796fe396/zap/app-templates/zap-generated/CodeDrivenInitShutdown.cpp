@@ -64,8 +64,14 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::LaundryWasherMode::Id:
+        MatterLaundryWasherModeClusterInitCallback(endpoint);
+        break;
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::OperationalState::Id:
+        MatterOperationalStateClusterInitCallback(endpoint);
         break;
     }
 }
@@ -110,8 +116,14 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
     case app::Clusters::GroupKeyManagement::Id:
         MatterGroupKeyManagementClusterShutdownCallback(endpoint, shutdownType);
         break;
+    case app::Clusters::LaundryWasherMode::Id:
+        MatterLaundryWasherModeClusterShutdownCallback(endpoint, shutdownType);
+        break;
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OperationalState::Id:
+        MatterOperationalStateClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

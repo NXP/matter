@@ -79,3 +79,11 @@ void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId
 void MatterDeviceEnergyManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterDeviceEnergyManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterWaterHeaterModeClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterWaterHeaterModeClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterDeviceEnergyManagementModeClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterDeviceEnergyManagementModeClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

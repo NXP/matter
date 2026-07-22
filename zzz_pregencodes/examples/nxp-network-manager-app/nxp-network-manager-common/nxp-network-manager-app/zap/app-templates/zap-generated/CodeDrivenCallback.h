@@ -71,3 +71,7 @@ void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId
 void MatterWiFiNetworkManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterWiFiNetworkManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterThreadBorderRouterManagementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterThreadBorderRouterManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

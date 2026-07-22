@@ -72,6 +72,11 @@ void MatterEthernetNetworkDiagnosticsClusterInitCallback(chip::EndpointId endpoi
 
 void MatterEthernetNetworkDiagnosticsClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
+void MatterBridgedDeviceBasicInformationClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterBridgedDeviceBasicInformationClusterShutdownCallback(chip::EndpointId endpointId,
+                                                                MatterClusterShutdownType shutdownType);
+
 void MatterSwitchClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterSwitchClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
@@ -107,6 +112,18 @@ void MatterIlluminanceMeasurementClusterShutdownCallback(chip::EndpointId endpoi
 void MatterTemperatureMeasurementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterTemperatureMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterPressureMeasurementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterPressureMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterFlowMeasurementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterFlowMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterRelativeHumidityMeasurementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterRelativeHumidityMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
 void MatterOccupancySensingClusterInitCallback(chip::EndpointId endpointId);
 

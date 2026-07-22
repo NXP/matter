@@ -70,6 +70,12 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::DeviceEnergyManagement::Id:
         MatterDeviceEnergyManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::WaterHeaterMode::Id:
+        MatterWaterHeaterModeClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::DeviceEnergyManagementMode::Id:
+        MatterDeviceEnergyManagementModeClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -118,6 +124,12 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::DeviceEnergyManagement::Id:
         MatterDeviceEnergyManagementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::WaterHeaterMode::Id:
+        MatterWaterHeaterModeClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::DeviceEnergyManagementMode::Id:
+        MatterDeviceEnergyManagementModeClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

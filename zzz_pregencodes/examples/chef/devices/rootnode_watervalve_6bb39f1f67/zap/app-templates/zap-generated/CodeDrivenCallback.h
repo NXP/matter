@@ -67,3 +67,7 @@ void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId
 void MatterValveConfigurationAndControlClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterValveConfigurationAndControlClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterFlowMeasurementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterFlowMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

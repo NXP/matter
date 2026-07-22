@@ -7,6 +7,7 @@ void MatterGeneralCommissioningPluginServerInitCallback();
 void MatterGeneralDiagnosticsPluginServerInitCallback();
 void MatterGroupKeyManagementPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
+void MatterNetworkIdentityManagementPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
 void MatterThreadBorderRouterManagementPluginServerInitCallback();
 void MatterThreadNetworkDiagnosticsPluginServerInitCallback();
@@ -20,6 +21,7 @@ void MatterGeneralCommissioningPluginServerShutdownCallback();
 void MatterGeneralDiagnosticsPluginServerShutdownCallback();
 void MatterGroupKeyManagementPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
+void MatterNetworkIdentityManagementPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
 void MatterThreadBorderRouterManagementPluginServerShutdownCallback();
 void MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();
@@ -35,6 +37,7 @@ void MatterWiFiNetworkManagementPluginServerShutdownCallback();
     MatterGeneralDiagnosticsPluginServerInitCallback();                                                                            \
     MatterGroupKeyManagementPluginServerInitCallback();                                                                            \
     MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
+    MatterNetworkIdentityManagementPluginServerInitCallback();                                                                     \
     MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
     MatterThreadBorderRouterManagementPluginServerInitCallback();                                                                  \
     MatterThreadNetworkDiagnosticsPluginServerInitCallback();                                                                      \
@@ -50,6 +53,7 @@ void MatterWiFiNetworkManagementPluginServerShutdownCallback();
     MatterGeneralDiagnosticsPluginServerShutdownCallback();                                                                        \
     MatterGroupKeyManagementPluginServerShutdownCallback();                                                                        \
     MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
+    MatterNetworkIdentityManagementPluginServerShutdownCallback();                                                                 \
     MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
     MatterThreadBorderRouterManagementPluginServerShutdownCallback();                                                              \
     MatterThreadNetworkDiagnosticsPluginServerShutdownCallback();                                                                  \

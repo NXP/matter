@@ -49,6 +49,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterInitCallback(endpoint);
         break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        MatterOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
+        break;
     case app::Clusters::LocalizationConfiguration::Id:
         MatterLocalizationConfigurationClusterInitCallback(endpoint);
         break;
@@ -106,11 +109,23 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::ScenesManagement::Id:
         MatterScenesManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::FanControl::Id:
+        MatterFanControlClusterInitCallback(endpoint);
+        break;
     case app::Clusters::IlluminanceMeasurement::Id:
         MatterIlluminanceMeasurementClusterInitCallback(endpoint);
         break;
     case app::Clusters::TemperatureMeasurement::Id:
         MatterTemperatureMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::PressureMeasurement::Id:
+        MatterPressureMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::FlowMeasurement::Id:
+        MatterFlowMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::RelativeHumidityMeasurement::Id:
+        MatterRelativeHumidityMeasurementClusterInitCallback(endpoint);
         break;
     case app::Clusters::OccupancySensing::Id:
         MatterOccupancySensingClusterInitCallback(endpoint);
@@ -142,6 +157,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        MatterOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::LocalizationConfiguration::Id:
         MatterLocalizationConfigurationClusterShutdownCallback(endpoint, shutdownType);
@@ -200,11 +218,23 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
     case app::Clusters::ScenesManagement::Id:
         MatterScenesManagementClusterShutdownCallback(endpoint, shutdownType);
         break;
+    case app::Clusters::FanControl::Id:
+        MatterFanControlClusterShutdownCallback(endpoint, shutdownType);
+        break;
     case app::Clusters::IlluminanceMeasurement::Id:
         MatterIlluminanceMeasurementClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::TemperatureMeasurement::Id:
         MatterTemperatureMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::PressureMeasurement::Id:
+        MatterPressureMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::FlowMeasurement::Id:
+        MatterFlowMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::RelativeHumidityMeasurement::Id:
+        MatterRelativeHumidityMeasurementClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::OccupancySensing::Id:
         MatterOccupancySensingClusterShutdownCallback(endpoint, shutdownType);

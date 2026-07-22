@@ -67,3 +67,15 @@ void MatterOperationalCredentialsClusterShutdownCallback(chip::EndpointId endpoi
 void MatterGroupKeyManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGroupKeyManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterRvcRunModeClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterRvcRunModeClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterRvcCleanModeClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterRvcCleanModeClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterRvcOperationalStateClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterRvcOperationalStateClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

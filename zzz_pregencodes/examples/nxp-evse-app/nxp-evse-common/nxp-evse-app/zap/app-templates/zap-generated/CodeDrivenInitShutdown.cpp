@@ -79,6 +79,12 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::PowerTopology::Id:
         MatterPowerTopologyClusterInitCallback(endpoint);
         break;
+    case app::Clusters::EnergyEvseMode::Id:
+        MatterEnergyEvseModeClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::DeviceEnergyManagementMode::Id:
+        MatterDeviceEnergyManagementModeClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -136,6 +142,12 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::PowerTopology::Id:
         MatterPowerTopologyClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::EnergyEvseMode::Id:
+        MatterEnergyEvseModeClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::DeviceEnergyManagementMode::Id:
+        MatterDeviceEnergyManagementModeClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

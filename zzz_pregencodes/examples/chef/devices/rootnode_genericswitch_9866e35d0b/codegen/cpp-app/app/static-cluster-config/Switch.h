@@ -27,11 +27,16 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::CurrentPosition::Id,     Attributes::FeatureMap::Id,    Attributes::GeneratedCommandList::Id,
     Attributes::NumberOfPositions::Id,
 };
+inline constexpr AttributeId kEndpoint3EnabledAttributes[] = {
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id,     Attributes::ClusterRevision::Id,
+    Attributes::CurrentPosition::Id,     Attributes::FeatureMap::Id,        Attributes::GeneratedCommandList::Id,
+    Attributes::MultiPressMax::Id,       Attributes::NumberOfPositions::Id,
+};
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 3> kFixedClusterConfig = { {
     {
         .endpointNumber = 1,
         .featureMap =
@@ -51,6 +56,17 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
                 FeatureBitmapType::kMomentarySwitch // feature bit 0x2
             },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
+        .enabledCommands   = Span<const CommandId>(),
+    },
+    {
+        .endpointNumber = 3,
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kMomentarySwitch,          // feature bit 0x2
+                FeatureBitmapType::kMomentarySwitchRelease,   // feature bit 0x4
+                FeatureBitmapType::kMomentarySwitchMultiPress // feature bit 0x10
+            },
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(),
     },
 } };

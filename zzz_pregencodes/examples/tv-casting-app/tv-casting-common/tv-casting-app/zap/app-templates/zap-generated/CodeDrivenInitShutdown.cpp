@@ -46,23 +46,11 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterInitCallback(endpoint);
         break;
-    case app::Clusters::UnitLocalization::Id:
-        MatterUnitLocalizationClusterInitCallback(endpoint);
-        break;
     case app::Clusters::GeneralCommissioning::Id:
         MatterGeneralCommissioningClusterInitCallback(endpoint);
         break;
     case app::Clusters::GeneralDiagnostics::Id:
         MatterGeneralDiagnosticsClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::SoftwareDiagnostics::Id:
-        MatterSoftwareDiagnosticsClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        MatterWiFiNetworkDiagnosticsClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::EthernetNetworkDiagnostics::Id:
-        MatterEthernetNetworkDiagnosticsClusterInitCallback(endpoint);
         break;
     case app::Clusters::AdministratorCommissioning::Id:
         MatterAdministratorCommissioningClusterInitCallback(endpoint);
@@ -98,23 +86,11 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
     case app::Clusters::BasicInformation::Id:
         MatterBasicInformationClusterShutdownCallback(endpoint, shutdownType);
         break;
-    case app::Clusters::UnitLocalization::Id:
-        MatterUnitLocalizationClusterShutdownCallback(endpoint, shutdownType);
-        break;
     case app::Clusters::GeneralCommissioning::Id:
         MatterGeneralCommissioningClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::GeneralDiagnostics::Id:
         MatterGeneralDiagnosticsClusterShutdownCallback(endpoint, shutdownType);
-        break;
-    case app::Clusters::SoftwareDiagnostics::Id:
-        MatterSoftwareDiagnosticsClusterShutdownCallback(endpoint, shutdownType);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        MatterWiFiNetworkDiagnosticsClusterShutdownCallback(endpoint, shutdownType);
-        break;
-    case app::Clusters::EthernetNetworkDiagnostics::Id:
-        MatterEthernetNetworkDiagnosticsClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::AdministratorCommissioning::Id:
         MatterAdministratorCommissioningClusterShutdownCallback(endpoint, shutdownType);

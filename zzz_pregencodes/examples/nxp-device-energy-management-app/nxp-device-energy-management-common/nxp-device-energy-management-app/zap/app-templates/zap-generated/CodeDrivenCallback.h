@@ -44,6 +44,10 @@ void MatterBasicInformationClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterBasicInformationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
+void MatterOtaSoftwareUpdateRequestorClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterOtaSoftwareUpdateRequestorClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
 void MatterLocalizationConfigurationClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterLocalizationConfigurationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
@@ -115,3 +119,15 @@ void MatterEnergyEvseClusterShutdownCallback(chip::EndpointId endpointId, Matter
 void MatterPowerTopologyClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterPowerTopologyClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterEnergyEvseModeClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterEnergyEvseModeClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterWaterHeaterModeClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterWaterHeaterModeClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterDeviceEnergyManagementModeClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterDeviceEnergyManagementModeClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

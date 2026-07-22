@@ -70,8 +70,14 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::ActivatedCarbonFilterMonitoring::Id:
         MatterActivatedCarbonFilterMonitoringClusterInitCallback(endpoint);
         break;
+    case app::Clusters::FanControl::Id:
+        MatterFanControlClusterInitCallback(endpoint);
+        break;
     case app::Clusters::TemperatureMeasurement::Id:
         MatterTemperatureMeasurementClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::RelativeHumidityMeasurement::Id:
+        MatterRelativeHumidityMeasurementClusterInitCallback(endpoint);
         break;
     }
 }
@@ -122,8 +128,14 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
     case app::Clusters::ActivatedCarbonFilterMonitoring::Id:
         MatterActivatedCarbonFilterMonitoringClusterShutdownCallback(endpoint, shutdownType);
         break;
+    case app::Clusters::FanControl::Id:
+        MatterFanControlClusterShutdownCallback(endpoint, shutdownType);
+        break;
     case app::Clusters::TemperatureMeasurement::Id:
         MatterTemperatureMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::RelativeHumidityMeasurement::Id:
+        MatterRelativeHumidityMeasurementClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

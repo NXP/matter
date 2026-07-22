@@ -211,6 +211,16 @@ void __attribute__((weak)) emberAfLowPowerClusterShutdownCallback(EndpointId end
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfMediaFileManagementClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfMediaFileManagementClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfMediaInputClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning

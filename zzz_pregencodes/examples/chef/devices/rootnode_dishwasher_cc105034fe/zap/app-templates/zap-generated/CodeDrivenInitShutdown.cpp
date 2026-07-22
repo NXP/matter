@@ -67,6 +67,12 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterInitCallback(endpoint);
         break;
+    case app::Clusters::DishwasherMode::Id:
+        MatterDishwasherModeClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::OperationalState::Id:
+        MatterOperationalStateClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -112,6 +118,12 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::TemperatureControl::Id:
         MatterTemperatureControlClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::DishwasherMode::Id:
+        MatterDishwasherModeClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::OperationalState::Id:
+        MatterOperationalStateClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

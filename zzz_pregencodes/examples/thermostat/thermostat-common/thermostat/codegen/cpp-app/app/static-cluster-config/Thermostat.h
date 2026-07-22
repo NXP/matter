@@ -48,6 +48,7 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::SystemMode::Id,
     Attributes::TemperatureSetpointHold::Id,
     Attributes::TemperatureSetpointHoldDuration::Id,
+    Attributes::ThermostatRunningMode::Id,
     Attributes::ThermostatSuggestionNotFollowingReason::Id,
     Attributes::ThermostatSuggestions::Id,
 };
@@ -71,6 +72,7 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
                 FeatureBitmapType::kAutoMode,                    // feature bit 0x20
                 FeatureBitmapType::kMatterScheduleConfiguration, // feature bit 0x80
                 FeatureBitmapType::kPresets,                     // feature bit 0x100
+                FeatureBitmapType::kEvents,                      // feature bit 0x200
                 FeatureBitmapType::kThermostatSuggestions        // feature bit 0x400
             },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
@@ -113,6 +115,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::SystemMode::Id:
     case Attributes::TemperatureSetpointHold::Id:
     case Attributes::TemperatureSetpointHoldDuration::Id:
+    case Attributes::ThermostatRunningMode::Id:
     case Attributes::ThermostatSuggestionNotFollowingReason::Id:
     case Attributes::ThermostatSuggestions::Id:
         return true;
