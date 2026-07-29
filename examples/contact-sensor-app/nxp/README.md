@@ -1,12 +1,12 @@
 # Matter NXP Contact Sensor Example Application
 
--   [Overview](#overview)
--   [Supported Platforms](#supported-platforms)
--   [Environment Setup, Building, and Testing](#build)
--   [Data Model](#data-model)
--   [Manufacturing Data](#factory-data)
--   [Long Idle Time ICD Support](#long-idle-time-icd-support)
--   [Low Power](#low-power)
+- [Overview](#overview)
+- [Supported Platforms](#supported-platforms)
+- [Environment Setup, Building, and Testing](#build)
+- [Data Model](#data-model)
+- [Manufacturing Data](#factory-data)
+- [Long Idle Time ICD Support](#long-idle-time-icd-support)
+- [Low Power](#low-power)
 
 <a name="overview"></a>
 
@@ -43,12 +43,15 @@ a QR code or printed to the device's UART console.
 
 The Contact Sensor example is supported on the following platforms:
 
-| NXP platform | Dedicated readme                                                    |
-| ------------ | ------------------------------------------------------------------- |
-| MCXW72       | [NXP MCXW72 Guide](../../../docs/platforms/nxp/nxp_mcxw72_guide.md) |
+| NXP platform          | Dedicated readme                                                    |
+| --------------------- | ------------------------------------------------------------------- |
+| MCXW72 (FreeRTOS)     | [NXP MCXW72 Guide](../../../docs/platforms/nxp/nxp_mcxw72_guide.md) |
+| MCXW72 (Zephyr, exp.) | [NXP Zephyr Guide](../../../docs/platforms/nxp/nxp_zephyr_guide.md) |
 
 For details on platform-specific requirements and configurations, please refer
 to the respective platform's readme.
+
+> **Note**: MCXW72 support under the Zephyr build flow is **experimental**.
 
 A list of popular standard contact sensor app build targets is presented below.
 These targets can be used with the `build_example.py` tool.
@@ -71,8 +74,10 @@ where `device` is one of the [supported platforms](#supported-platforms).
 All the information required to set up the environment, build the application,
 and test it can be found in the common readme for NXP platforms:
 
--   NXP FreeRTOS Platforms : Refer to the
-    [CHIP NXP Examples Guide for FreeRTOS platforms](../../../docs/platforms/nxp/nxp_examples_freertos_platforms.md)
+- NXP FreeRTOS Platforms : Refer to the
+  [CHIP NXP Examples Guide for FreeRTOS platforms](../../../docs/platforms/nxp/nxp_examples_freertos_platforms.md)
+- NXP Zephyr Platform (experimental, MCXW72) : Refer to the
+  [NXP Examples Guide for Zephyr platform](../../../docs/platforms/nxp/nxp_zephyr_guide.md)
 
 <a name="data-model"></a>
 

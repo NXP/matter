@@ -10,15 +10,15 @@ commissioning and different cluster control.
 
 <hr>
 
--   [Introduction](#introduction)
--   [Building](#building)
--   [Flashing and debugging](#flashing-and-debugging)
--   [Factory data](#factory-data)
--   [Manufacturing data](#generate-factory-data)
--   [DAC private key blob generation](#dac-private-key-blob-generation)
--   [OTA Software Update](#ota-software-update)
--   [Testing the example](#testing-the-example)
--   [Using Matter CLI in NXP Zephyr examples](#using-matter-cli-in-nxp-zephyr-examples)
+- [Introduction](#introduction)
+- [Building](#building)
+- [Flashing and debugging](#flashing-and-debugging)
+- [Factory data](#factory-data)
+- [Manufacturing data](#generate-factory-data)
+- [DAC private key blob generation](#dac-private-key-blob-generation)
+- [OTA Software Update](#ota-software-update)
+- [Testing the example](#testing-the-example)
+- [Using Matter CLI in NXP Zephyr examples](#using-matter-cli-in-nxp-zephyr-examples)
 
 <hr>
 
@@ -32,14 +32,21 @@ NXP/Zephyr SDK.
 
 The example supports:
 
--   Matter over Wi-Fi with BLE commissioning
--   Matter OTA requestor
--   Matter Factory Data
+- Matter over Wi-Fi with BLE commissioning
+- Matter over Thread with BLE commissioning (MCXW72 only)
+- Matter OTA requestor
+- Matter Factory Data
 
 The supported boards are:
 
--   `rd_rw612_bga`
--   `frdm_rw612`
+- `rd_rw612_bga`
+- `frdm_rw612`
+- `frdm_mcxw72` (experimental)
+
+> **Note**: `frdm_mcxw72` support under the Zephyr build flow is
+> **experimental**. On MCXW72, Matter runs over Thread, and only the
+> contact-sensor-app example is supported. OTA Software Update is **not**
+> supported on MCXW72 under the Zephyr flow.
 
 <a name="building"></a>
 
@@ -50,12 +57,12 @@ distribution (the demo-application was compiled on Ubuntu 20.04).
 
 Prerequisites:
 
--   Follow instruction from [BUILDING.md](../../guides/BUILDING.md) to setup the
-    Matter environment
--   Follow instruction from
-    [Getting Started Guide](https://docs.zephyrproject.org/4.3.0/develop/getting_started/index.html)
-    to setup a Zephyr workspace, however, the west init command to use is as
-    follows:
+- Follow instruction from [BUILDING.md](../../guides/BUILDING.md) to setup the
+  Matter environment
+- Follow instruction from
+  [Getting Started Guide](https://docs.zephyrproject.org/4.3.0/develop/getting_started/index.html)
+  to setup a Zephyr workspace, however, the west init command to use is as
+  follows:
 
 ```shell
 $ west init zephyrproject -m https://github.com/nxp-zephyr/nxp-zsdk.git --mr nxp-v4.4.1.1
@@ -95,7 +102,15 @@ As an example with the `frdm_rw612` board:
 west build -b frdm_rw612 -p auto -d build_zephyr examples/all-clusters-app/nxp/zephyr
 ```
 
+As an example with the `frdm_mcxw72` board (experimental), building the
+contact-sensor-app (Matter over Thread):
+
+```shell
+west build -b frdm_mcxw72 -p auto -d build_zephyr examples/contact-sensor-app/nxp/zephyr
+```
+
 A folder `build_zephyr` will be created in the same folder you run the command
+
 from. The binaries will be created in `build_zephyr/zephyr` with the name
 `zephyr.elf` and `zephyr.bin`. We recommend using the `-d build_zephyr` if you
 are building from Matter repo root folder as a build folder already exists and
@@ -122,13 +137,19 @@ You can get more details on `west flash` with
 > **Note**: `west flash` will not start a debug session, it will only flash and
 > reset the device
 
+> **Note (experimental - MCXW72)**: On `frdm_mcxw72`, the `NBU` (radio) firmware
+> must already be present on the board before running the Matter application.
+> Refer to the `Flashing the NBU firmware` section of the
+> [NXP MCXW72 Guide](./nxp_mcxw72_guide.md#flashing-and-debugging) for the
+> procedure.
+
 ### Flash and debug
 
 To debug a Matter with Zephyr application, you could use several methods:
 
--   [MCUXpresso IDE (version >= 11.6.0)](https://www.nxp.com/design/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-integrated-development-environment-ide:MCUXpresso-IDE)
--   `west debug`
-    [Zephyr's debugging guide](https://docs.zephyrproject.org/3.7.0/develop/west/build-flash-debug.html#id29)
+- [MCUXpresso IDE (version >= 11.6.0)](https://www.nxp.com/design/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-integrated-development-environment-ide:MCUXpresso-IDE)
+- `west debug`
+  [Zephyr's debugging guide](https://docs.zephyrproject.org/3.7.0/develop/west/build-flash-debug.html#id29)
 
 > **Note**: As the build provides an elf file, any compatible debugging tool can
 > be used.
