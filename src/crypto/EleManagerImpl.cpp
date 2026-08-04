@@ -61,10 +61,16 @@ EleManagerKeystore::EleManagerKeystore()
 {
     hsm_err_t err;
 
+    // All service-open argument structs are declared and zero-initialized up front so that the
+    // shared cleanup labels below are not jumped into across a variable initialization (C++ rule).
+    open_session_args_t open_session_args             = { 0 };
+    open_svc_key_store_args_t open_svc_key_store_args = { 0 };
+    open_svc_key_management_args_t key_mgmt_args       = { 0 };
+    open_svc_data_storage_args_t data_storage_args    = { 0 };
+
     // Step 1: open session
-    open_session_args_t open_session_args = { 0 };
-    open_session_args.mu_type             = HSM1;
-    err                                   = hsm_open_session(&open_session_args, &hsm_session_hdl);
+    open_session_args.mu_type = HSM1;
+    err                       = hsm_open_session(&open_session_args, &hsm_session_hdl);
     if (err != HSM_NO_ERROR)
     {
         ChipLogDetail(Crypto, "ELE keystore session open failed: 0x%x\n", err);
@@ -73,9 +79,8 @@ EleManagerKeystore::EleManagerKeystore()
     ChipLogDetail(Crypto, "ELE keystore session open successfully.\n");
 
     // Step 2: open keystore
-    open_svc_key_store_args_t open_svc_key_store_args = { 0 };
-    open_svc_key_store_args.key_store_identifier      = kKeyStoreId;
-    open_svc_key_store_args.authentication_nonce      = kAuthenNonce;
+    open_svc_key_store_args.key_store_identifier = kKeyStoreId;
+    open_svc_key_store_args.authentication_nonce = kAuthenNonce;
     // try to create a new keystore, if it already exist, open it
     open_svc_key_store_args.flags = (HSM_SVC_KEY_STORE_FLAGS_CREATE | HSM_SVC_KEY_STORE_FLAGS_STRICT_OPERATION);
     err                           = hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl);
@@ -90,48 +95,79 @@ EleManagerKeystore::EleManagerKeystore()
         if (hsm_open_key_store_service(hsm_session_hdl, &open_svc_key_store_args, &key_store_hdl) != HSM_NO_ERROR)
         {
             ChipLogDetail(Crypto, "ELE keystore service load failed.\n");
-            hsm_close_session(hsm_session_hdl);
-            hsm_session_hdl = 0;
-            return;
+            goto close_session;
         }
         ChipLogDetail(Crypto, "ELE keystore service load successfully.\n");
     }
     else
     {
         ChipLogDetail(Crypto, "ELE keystore service open failed. ret:0x%x\n", err);
-        return;
+        goto close_session;
     }
 
     // Step 3: open key managerment service
-    open_svc_key_management_args_t key_mgmt_args = { 0 };
-    err                                          = hsm_open_key_management_service(key_store_hdl, &key_mgmt_args, &key_mgmt_hdl);
+    err = hsm_open_key_management_service(key_store_hdl, &key_mgmt_args, &key_mgmt_hdl);
     if (err != HSM_NO_ERROR)
     {
         ChipLogDetail(Crypto, "ELE key management service open failed. ret:0x%x\n", err);
-        hsm_close_key_store_service(key_store_hdl);
-        hsm_close_session(hsm_session_hdl);
-        key_store_hdl   = 0;
-        hsm_session_hdl = 0;
-        return;
+        goto close_key_store;
     }
     ChipLogDetail(Crypto, "ELE key management service open successfully.\n");
 
+    // Step 4: open data storage service (used to persist the fabricIndex->keyId table in NVM)
+    err = hsm_open_data_storage_service(key_store_hdl, &data_storage_args, &data_storage_hdl);
+    if (err != HSM_NO_ERROR)
+    {
+        ChipLogDetail(Crypto, "ELE data storage service open failed. ret:0x%x\n", err);
+        goto close_key_mgmt;
+    }
+    ChipLogDetail(Crypto, "ELE data storage service open successfully.\n");
+
     ele_service_ready = true;
+    return;
+
+close_key_mgmt:
+    hsm_close_key_management_service(key_mgmt_hdl);
+    key_mgmt_hdl = 0;
+close_key_store:
+    hsm_close_key_store_service(key_store_hdl);
+    key_store_hdl = 0;
+close_session:
+    hsm_close_session(hsm_session_hdl);
+    hsm_session_hdl = 0;
 }
 
 EleManagerKeystore::~EleManagerKeystore()
 {
-    hsm_close_key_management_service(key_mgmt_hdl);
-    ChipLogDetail(Crypto, "Close key management service.\n");
-    key_mgmt_hdl = 0;
+    // Construction may fail partway (goto cleanup leaves later handles at 0) yet getInstance()
+    // still returns the object, so the destructor can run on a partially constructed instance.
+    if (data_storage_hdl != 0)
+    {
+        hsm_close_data_storage_service(data_storage_hdl);
+        ChipLogDetail(Crypto, "Close data storage service.\n");
+        data_storage_hdl = 0;
+    }
 
-    hsm_close_key_store_service(key_store_hdl);
-    ChipLogDetail(Crypto, "Close keystore service.\n");
-    key_store_hdl = 0;
+    if (key_mgmt_hdl != 0)
+    {
+        hsm_close_key_management_service(key_mgmt_hdl);
+        ChipLogDetail(Crypto, "Close key management service.\n");
+        key_mgmt_hdl = 0;
+    }
 
-    hsm_close_session(hsm_session_hdl);
-    ChipLogDetail(Crypto, "Close keystore session.\n");
-    hsm_session_hdl = 0;
+    if (key_store_hdl != 0)
+    {
+        hsm_close_key_store_service(key_store_hdl);
+        ChipLogDetail(Crypto, "Close keystore service.\n");
+        key_store_hdl = 0;
+    }
+
+    if (hsm_session_hdl != 0)
+    {
+        hsm_close_session(hsm_session_hdl);
+        ChipLogDetail(Crypto, "Close keystore session.\n");
+        hsm_session_hdl = 0;
+    }
 
     ele_service_ready = false;
 }
@@ -146,7 +182,12 @@ std::shared_ptr<EleManagerKeystore> EleManagerKeystore::getInstance()
         };
         shared_EleManager = std::make_shared<make_shared_enabler>();
         if (shared_EleManager->ele_service_ready)
+        {
             mWeakInstance = shared_EleManager;
+            // Reclaim a pending key orphaned by a power loss in a previous session, now that the data
+            // storage service is open. Only on first construction, not on every getInstance() call.
+            shared_EleManager->ReconcilePendingKey();
+        }
         else
             ChipLogDetail(Crypto, "Ele keystore service open failed, continue...\n");
     }
@@ -239,7 +280,7 @@ std::shared_ptr<EleManagerAttestation> EleManagerAttestation::getInstance()
     return shared_EleManager;
 }
 
-hsm_err_t EleManagerImpl::EleDeleteKey(uint32_t keyId)
+hsm_err_t EleManagerImpl::DeleteKeyInternal(uint32_t keyId, hsm_op_delete_key_flags_t flags, const char * logSuffix)
 {
     if (!ele_service_ready)
     {
@@ -247,23 +288,126 @@ hsm_err_t EleManagerImpl::EleDeleteKey(uint32_t keyId)
         return HSM_GENERAL_ERROR;
     }
 
-    hsm_err_t err;
     op_delete_key_args_t del_args;
-
     memset(&del_args, 0, sizeof(del_args));
     del_args.key_identifier = keyId;
-    del_args.flags          = 0;
+    del_args.flags          = flags;
 
-    err = hsm_delete_key(key_mgmt_hdl, &del_args);
+    hsm_err_t err = hsm_delete_key(key_mgmt_hdl, &del_args);
     if (err != HSM_NO_ERROR)
     {
-        ChipLogDetail(Crypto, "Delete key %d failed. ret:0x%x\n", keyId, err);
+        ChipLogDetail(Crypto, "Delete key 0x%x%s failed. ret:0x%x\n", keyId, logSuffix, err);
     }
     else
     {
-        ChipLogDetail(Crypto, "Delete key %d successfully.\n", keyId);
+        ChipLogDetail(Crypto, "Delete key 0x%x%s successfully.\n", keyId, logSuffix);
     }
 
+    return err;
+}
+
+hsm_err_t EleManagerImpl::EleDeleteKey(uint32_t keyId)
+{
+    return DeleteKeyInternal(keyId, 0, "");
+}
+
+hsm_err_t EleManagerImpl::EleDeleteKeySync(uint32_t keyId)
+{
+    return DeleteKeyInternal(keyId, HSM_OP_DEL_KEY_FLAGS_STRICT_OPERATION, " (sync)");
+}
+
+hsm_err_t EleManagerKeystore::EleStoreData(uint32_t dataId, const uint8_t * data, size_t dataSize)
+{
+    if (!ele_service_ready)
+    {
+        ChipLogDetail(Crypto, "Ele service has not been instantiated yet.\n");
+        return HSM_GENERAL_ERROR;
+    }
+
+    // dataSize is narrowed to uint32_t for the ELE API; reject 0, null, and any value that would
+    // truncate on 64-bit host/simulator builds, since a truncated size silently corrupts the table.
+    if ((data == nullptr) || (dataSize == 0) || (dataSize > UINT32_MAX))
+    {
+        return HSM_INVALID_PARAM;
+    }
+
+    op_data_storage_args_t args;
+    memset(&args, 0, sizeof(args));
+    args.data      = const_cast<uint8_t *>(data);
+    args.data_size = static_cast<uint32_t>(dataSize);
+    args.data_id   = dataId;
+    args.flags     = HSM_OP_DATA_STORAGE_FLAGS_STORE;
+
+    hsm_err_t err = hsm_data_storage(data_storage_hdl, &args);
+    if (err != HSM_NO_ERROR)
+    {
+        ChipLogDetail(Crypto, "Store data 0x%x failed. ret:0x%x\n", dataId, err);
+    }
+    return err;
+}
+
+hsm_err_t EleManagerKeystore::EleRetrieveData(uint32_t dataId, uint8_t * data, size_t & dataSize)
+{
+    if (!ele_service_ready)
+    {
+        ChipLogDetail(Crypto, "Ele service has not been instantiated yet.\n");
+        return HSM_GENERAL_ERROR;
+    }
+
+    // dataSize is narrowed to uint32_t for the ELE API; reject 0, null, and any value that would
+    // truncate on 64-bit host/simulator builds.
+    if ((data == nullptr) || (dataSize == 0) || (dataSize > UINT32_MAX))
+    {
+        return HSM_INVALID_PARAM;
+    }
+    size_t capacity = dataSize;
+
+    op_data_storage_args_t args;
+    memset(&args, 0, sizeof(args));
+    args.data      = data;
+    args.data_size = static_cast<uint32_t>(dataSize);
+    args.data_id   = dataId;
+    args.flags     = HSM_OP_DATA_STORAGE_FLAGS_RETRIEVE;
+
+    hsm_err_t err = hsm_data_storage(data_storage_hdl, &args);
+    if (err != HSM_NO_ERROR)
+    {
+        ChipLogDetail(Crypto, "Retrieve data 0x%x failed. ret:0x%x\n", dataId, err);
+        return err;
+    }
+#ifdef PSA_COMPLIANT
+    // PSA_COMPLIANT builds return the retrieved byte count in exp_output_size; data_size is left
+    // unchanged (still the input buffer capacity), so it cannot be used to report the actual size.
+    if (args.exp_output_size > capacity)
+    {
+        ChipLogError(Crypto, "Retrieved data 0x%x (%u bytes) exceeds buffer (%u bytes)\n", dataId,
+                     static_cast<unsigned>(args.exp_output_size), static_cast<unsigned>(capacity));
+        return HSM_OUT_TOO_SMALL;
+    }
+    dataSize = args.exp_output_size;
+#else
+#error "EleRetrieveData relies on op_data_storage_args_t::exp_output_size, which only exists in PSA_COMPLIANT builds (see BUILD.gn)."
+#endif
+    return err;
+}
+
+hsm_err_t EleManagerKeystore::EleDeleteData(uint32_t dataId)
+{
+    if (!ele_service_ready)
+    {
+        ChipLogDetail(Crypto, "Ele service has not been instantiated yet.\n");
+        return HSM_GENERAL_ERROR;
+    }
+
+    op_data_storage_delete_args_t args;
+    memset(&args, 0, sizeof(args));
+    args.data_id = dataId;
+
+    hsm_err_t err = hsm_data_storage_delete(data_storage_hdl, &args);
+    if (err != HSM_NO_ERROR)
+    {
+        ChipLogDetail(Crypto, "Delete data 0x%x failed. ret:0x%x\n", dataId, err);
+    }
     return err;
 }
 
