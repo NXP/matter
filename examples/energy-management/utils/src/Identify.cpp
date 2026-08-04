@@ -29,7 +29,7 @@ IdentifyDelegateImpl sIdentifyDelegate;
 
 RegisteredServerCluster<Clusters::IdentifyCluster>
     gIdentifyCluster1(Clusters::IdentifyCluster::Config(GetIdentifyEndpointId(), sTimerDelegate)
-                          .WithIdentifyType(Clusters::Identify::IdentifyTypeEnum::kVisibleIndicator)
+                          .WithIdentifyType(Clusters::Identify::IdentifyTypeEnum::kNone)
                           .WithDelegate(&sIdentifyDelegate));
 
 } // namespace
