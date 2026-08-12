@@ -156,7 +156,23 @@ CHIP_ERROR LinuxWiFiDriver::CommitConfiguration()
 
 CHIP_ERROR LinuxWiFiDriver::RevertConfiguration()
 {
+    bool isSameAP = mSavedNetwork.Matches(ByteSpan(mStagingNetwork.ssid, mStagingNetwork.ssidLen));
+
     mStagingNetwork = mSavedNetwork;
+    // Fix TC-CNET-4.11
+    // While arm-fail-safe expired, DUT should not only restore the last good setting, but also need to connect back to last good ap if it exists
+    ChipLogProgress(NetworkProvisioning, "RevertConfiguration(): Connect back last good ap if it exists");
+
+    // If there's a saved network to revert to, reconnect to it
+    if (!isSameAP && (mSavedNetwork.ssidLen != 0))
+    {
+        ReturnErrorOnFailure(ConnectivityMgrImpl().ConnectWiFiNetworkAsync(
+            ByteSpan(mSavedNetwork.ssid, mSavedNetwork.ssidLen),
+            ByteSpan(mSavedNetwork.credentials, mSavedNetwork.credentialsLen),
+            &mRevertConnectCallback
+        ));
+    }
+    // -----------------------------
     return CHIP_NO_ERROR;
 }
 

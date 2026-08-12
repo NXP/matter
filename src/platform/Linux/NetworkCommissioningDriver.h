@@ -73,6 +73,17 @@ public:
         LinuxWiFiDriver * driver;
         bool exhausted = false;
     };
+    
+    class RevertConnectCallback : public NetworkCommissioning::Internal::WirelessDriver::ConnectCallback
+    {
+    public:
+        void OnResult(NetworkCommissioning::Status status, CharSpan, int32_t) override
+        {
+            ChipLogProgress(NetworkProvisioning,
+                            "LinuxWiFiDriver::RevertConfiguration: reconnect finished, status=%u",
+                            to_underlying(status));
+        }
+    } mRevertConnectCallback;
 
     void Set5gSupport(bool is5gSupported) { mIs5gSupported = is5gSupported; }
 
