@@ -143,6 +143,16 @@ IdentifyCluster * FindIdentifyClusterOnEndpoint(EndpointId endpointId)
     {
         return &legacyInstance->mCluster.Cluster();
     }
+
+    // Check the CodegenDataModelProvider registry for apps that register
+    // an IdentifyCluster directly via RegisteredServerCluster<IdentifyCluster>,
+    // which bypasses the legacy linked list.
+    ServerClusterInterface * iface = CodegenDataModelProvider::Instance().Registry().Get({ endpointId, Clusters::Identify::Id });
+    if (iface != nullptr)
+    {
+        return static_cast<IdentifyCluster *>(iface);
+    }
+
     return nullptr;
 }
 
