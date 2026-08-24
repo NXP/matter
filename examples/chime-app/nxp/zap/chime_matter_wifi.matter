@@ -1999,6 +1999,7 @@ endpoint 1 {
   }
 
   server cluster Chime {
+    emits event ChimeStartedPlaying;
     callback attribute installedChimeSounds;
     callback attribute selectedChime;
     callback attribute enabled;
