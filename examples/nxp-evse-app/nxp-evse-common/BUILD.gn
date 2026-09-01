@@ -24,3 +24,23 @@ chip_data_model("nxp-evse-common") {
   zap_file = "nxp-evse-app.zap"
   is_server = true
 }
+
+source_set("nxp-evse-common-lib") {
+  sources = [
+    "src/ChargingTargetsMemMgr.cpp",
+    "src/energy-evse-mode.cpp",
+  ]
+
+  public_configs = [ ":config" ]
+
+  public_deps = [
+    "${chip_root}/examples/energy-management/device-energy-management:device-energy-management",
+    "${chip_root}/examples/energy-management/electrical-sensor:electrical-sensor",
+    "${chip_root}/examples/energy-management/utils:energy-management-utils",
+    "${chip_root}/src/app",
+    "${chip_root}/src/app/clusters/energy-evse-server",
+    "${chip_root}/src/lib/core",
+    "${chip_root}/src/protocols/interaction_model",
+    "${chip_root}/src/system",
+  ]
+}

@@ -29,14 +29,14 @@ Draft
 			<feature>Does the device support communication over 2.4GHz Wi-Fi ?</feature>
 			<reference>2.1.1. Communication/Transport - index.html[pdf]</reference>
 			<status cond="">O</status>
-			<support>true</support>
+			<support>false</support>
 		</picsItem>
 		<picsItem>
 			<itemNumber>MCORE.COM.WIFI_5GHZ</itemNumber>
 			<feature>Does the device support communication over 5GHz Wi-Fi ?</feature>
 			<reference>2.1.1. Communication/Transport - index.html[pdf]</reference>
 			<status cond="">O</status>
-			<support>true</support>
+			<support>false</support>
 		</picsItem>
 		<picsItem>
 			<itemNumber>MCORE.COM.WIFI</itemNumber>
@@ -44,14 +44,14 @@ Draft
 			<reference>2.1.1. Communication/Transport - index.html[pdf]</reference>
 			<status cond="MCORE.COM.WIFI_2P4GHZ">M</status>
 			<status cond="MCORE.COM.WIFI_5GHZ">M</status>
-			<support>true</support>
+			<support>false</support>
 		</picsItem>
 		<picsItem>
 			<itemNumber>MCORE.COM.ETH</itemNumber>
 			<feature>Does the device support communication over Ethernet ?</feature>
 			<reference>2.1.1. Communication/Transport - index.html[pdf]</reference>
 			<status cond="">O</status>
-			<support>false</support>
+			<support>true</support>
 		</picsItem>
 		<picsItem>
 			<itemNumber>MCORE.COM.THR</itemNumber>

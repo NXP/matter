@@ -23,7 +23,7 @@ chip_project_config_include = "<CHIPProjectAppConfig.h>"
 chip_system_project_config_include = "<SystemProjectConfig.h>"
 
 chip_project_config_include_dirs =
-    [ "${chip_root}/examples/energy-management-app/linux/include" ]
+    [ "${chip_root}/examples/nxp-evse-app/linux/include" ]
 chip_project_config_include_dirs += [ "${chip_root}/config/standalone" ]
 
 matter_enable_tracing_support = true
@@ -32,4 +32,3 @@ chip_enable_read_client = false
 chip_enable_energy_evse_trigger = true
 chip_enable_energy_reporting_trigger = true
 chip_enable_device_energy_management_trigger = true
-chip_enable_water_heater_management_trigger = true

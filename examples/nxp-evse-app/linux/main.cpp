@@ -18,17 +18,16 @@
 
 #include <AppMain.h>
 #include <EnergyEvseMain.h>
-#include <WaterHeaterMain.h>
+#include <EnergyManagementAppCmdLineOptions.h>
+#include <Identify.h>
 #include <app-common/zap-generated/cluster-objects.h>
 #include <lib/support/BitMask.h>
-#include <app/clusters/identify-server/identify-server.h>
 
 using namespace chip;
 using namespace chip::app;
 using namespace chip::app::Clusters;
 using namespace chip::app::Clusters::DeviceEnergyManagement;
 using namespace chip::app::Clusters::DeviceEnergyManagement::Attributes;
-using namespace chip::app::Clusters::WaterHeaterManagement;
 
 // Parse a hex (prefixed by 0x) or decimal (no-prefix) string
 static uint32_t ParseNumber(const char * pString);
@@ -37,64 +36,20 @@ static uint32_t ParseNumber(const char * pString);
 static bool EnergyAppOptionHandler(const char * aProgram, chip::ArgParser::OptionSet * aOptions, int aIdentifier,
                                    const char * aName, const char * aValue);
 
-constexpr uint16_t kOptionApplication = 0xffd0;
-constexpr uint16_t kOptionFeatureMap  = 0xffd1;
+constexpr uint16_t kOptionFeatureMap = 0xffd1;
 
-constexpr const char * kEvseApp = "evse";
-constexpr const char * kWhmApp  = "water-heater";
-
-constexpr const char * kValidApps[] = { kEvseApp, kWhmApp };
+constexpr chip::EndpointId kEvseEndpoint = 1;
 
 // Define the chip::ArgParser command line structures for extending the command line to support the
 // energy apps
 static chip::ArgParser::OptionDef sEnergyAppOptionDefs[] = {
-    { "application", chip::ArgParser::kArgumentRequired, kOptionApplication },
-    { "featureSet", chip::ArgParser::kArgumentRequired, kOptionFeatureMap },
-    { nullptr }
+    { "featureSet", chip::ArgParser::kArgumentRequired, kOptionFeatureMap }, { nullptr }
 };
 
 static chip::ArgParser::OptionSet sCmdLineOptions = { EnergyAppOptionHandler, // handler function
                                                       sEnergyAppOptionDefs,   // array of option definitions
                                                       "PROGRAM OPTIONS",      // help group
-                                                      "-a, --application <evse|water-heater>\n"
                                                       "-f, --featureSet <value>\n" };
-
-void OnIdentifyStart(::Identify  *)
-{
-    ChipLogProgress(Zcl, "OnIdentifyStart");
-}
-
-void OnIdentifyStop(::Identify  *)
-{
-    ChipLogProgress(Zcl, "OnIdentifyStop");
-}
-
-void OnTriggerEffect(::Identify * identify)
-{
-    switch (identify->mCurrentEffectIdentifier)
-    {
-        case Clusters::Identify::EffectIdentifierEnum::kBlink:
-            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kBlink");
-            break;
-        case Clusters::Identify::EffectIdentifierEnum::kBreathe:
-            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kBreathe");
-            break;
-        case Clusters::Identify::EffectIdentifierEnum::kOkay:
-            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kOkay");
-            break;
-        case Clusters::Identify::EffectIdentifierEnum::kChannelChange:
-            ChipLogProgress(Zcl, "Clusters::Identify::EffectIdentifierEnum::kChannelChange");
-            break;
-        default:
-            ChipLogProgress(Zcl, "No identifier effect");
-            return;
-    }
-}
-
-static ::Identify gIdentify1 = {
-    chip::EndpointId{ 1 }, OnIdentifyStart, OnIdentifyStop, Clusters::Identify::IdentifyTypeEnum::kVisibleIndicator,
-    OnTriggerEffect,
-};
 
 namespace chip {
 namespace app {
@@ -103,11 +58,8 @@ namespace DeviceEnergyManagement {
 
 // Keep track of the parsed featureMap option
 static chip::BitMask<Feature> sFeatureMap(Feature::kPowerAdjustment, Feature::kPowerForecastReporting,
-                                          Feature::kStateForecastReporting, Feature::kStartTimeAdjustment, Feature::kPausable,
-                                          Feature::kForecastAdjustment, Feature::kConstraintBasedAdjustment);
-
-// Make EVSE the default app
-static const char * spApp = kEvseApp;
+                                          Feature::kStartTimeAdjustment, Feature::kPausable, Feature::kForecastAdjustment,
+                                          Feature::kConstraintBasedAdjustment);
 
 chip::BitMask<Feature> GetFeatureMapFromCmdLine()
 {
@@ -118,6 +70,11 @@ chip::BitMask<Feature> GetFeatureMapFromCmdLine()
 } // namespace Clusters
 } // namespace app
 } // namespace chip
+
+chip::EndpointId GetEnergyDeviceEndpointId()
+{
+    return kEvseEndpoint;
+}
 
 static uint32_t ParseNumber(const char * pString)
 {
@@ -136,27 +93,15 @@ static uint32_t ParseNumber(const char * pString)
 
 void ApplicationInit()
 {
-    ChipLogDetail(AppServer, "Energy Management App: ApplicationInit()");
-    if (strcmp(spApp, kEvseApp) == 0)
-    {
-        EvseApplicationInit();
-    }
-    else if (strcmp(spApp, kWhmApp) == 0)
-    {
-        FullWhmApplicationInit();
-    }
-    else
-    {
-        ChipLogError(Support, "Unexpected application %s", spApp);
-    }
+    ChipLogDetail(AppServer, "EVSE App: ApplicationInit()");
+    SuccessOrDie(IdentifyInit());
+    EvseApplicationInit();
 }
 
 void ApplicationShutdown()
 {
-    ChipLogDetail(AppServer, "Energy Management App: ApplicationShutdown()");
-
+    ChipLogDetail(AppServer, "EVSE App: ApplicationShutdown()");
     EvseApplicationShutdown();
-    FullWhmApplicationShutdown();
 }
 
 static bool EnergyAppOptionHandler(const char * aProgram, chip::ArgParser::OptionSet * aOptions, int aIdentifier,
@@ -166,26 +111,6 @@ static bool EnergyAppOptionHandler(const char * aProgram, chip::ArgParser::Optio
 
     switch (aIdentifier)
     {
-    case kOptionApplication:
-        spApp = nullptr;
-        for (size_t idx = 0; idx < (sizeof(kValidApps) / sizeof(kValidApps[0])); idx++)
-        {
-            if (strcmp(kValidApps[idx], aValue) == 0)
-            {
-                spApp = kValidApps[idx];
-                break;
-            }
-        }
-
-        if (spApp != nullptr)
-        {
-            ChipLogDetail(Support, "Running application %s", spApp);
-        }
-        else
-        {
-            retval = false;
-        }
-        break;
     case kOptionFeatureMap:
         sFeatureMap = BitMask<chip::app::Clusters::DeviceEnergyManagement::Feature>(ParseNumber(aValue));
         ChipLogDetail(Support, "Using FeatureMap 0x%04x", sFeatureMap.Raw());

@@ -34,55 +34,31 @@ config("includes") {
 
 executable("chip-nxp-evse-app") {
   sources = [
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/common/src/EnergyTimeUtils.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/device-energy-management/src/DEMTestEventTriggers.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/device-energy-management/src/DeviceEnergyManagementDelegateImpl.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/device-energy-management/src/DeviceEnergyManagementManager.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/device-energy-management/src/device-energy-management-mode.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/ChargingTargetsMemMgr.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/EVSEManufacturerImpl.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/EnergyEvseDelegateImpl.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/EnergyEvseEventTriggers.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/EnergyEvseMain.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/EnergyEvseManager.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/EnergyEvseTargetsStore.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/energy-evse-mode.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-reporting/src/ElectricalPowerMeasurementDelegate.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-reporting/src/EnergyReportingEventTriggers.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-reporting/src/FakeReadings.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-reporting/src/PowerTopologyDelegate.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/water-heater/src/WaterHeaterMain.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/water-heater/src/WhmDelegateImpl.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/water-heater/src/WhmInstance.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/water-heater/src/WhmMain.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/water-heater/src/WhmManufacturer.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/water-heater/src/water-heater-mode.cpp",
+    # EVSE Common sources not in nxp-evse-common-lib
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/src/EVSEManufacturerImpl.cpp",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/src/EnergyEvseDelegateImpl.cpp",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/src/EnergyEvseEventTriggers.cpp",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/src/EnergyEvseMain.cpp",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/src/EnergyEvseManager.cpp",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/src/EnergyEvseTargetsStore.cpp",
+
+    # Application
     "include/CHIPProjectAppConfig.h",
     "main.cpp",
   ]
 
   deps = [
+    "${chip_root}/examples/energy-management/energy-management-triggers:tests-event-triggers",
     "${chip_root}/examples/nxp-evse-app/nxp-evse-common",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common:nxp-evse-common-lib",
     "${chip_root}/examples/platform/linux:app-main",
+    "${chip_root}/src/app:attribute-persistence",
     "${chip_root}/src/lib",
   ]
 
-  if (chip_examples_enable_imgui_ui) {
-    deps += [
-      "${chip_root}/examples/common/imgui_ui",
-      "${chip_root}/examples/common/imgui_ui/windows:occupancy_sensing",
-      "${chip_root}/examples/common/imgui_ui/windows:qrcode",
-    ]
-  }
-
   include_dirs = [
     "include",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/common/include",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/device-energy-management/include",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/include",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-reporting/include",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/water-heater/include",
-    "${chip_root}/examples/all-clusters-app/all-clusters-common/include",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/include",
   ]
 
   if (chip_enable_pw_rpc) {
@@ -92,8 +68,6 @@ executable("chip-nxp-evse-app") {
       "PW_RPC_BUTTON_SERVICE=1",
       "PW_RPC_DESCRIPTOR_SERVICE=1",
       "PW_RPC_DEVICE_SERVICE=1",
-      "PW_RPC_ELEC_SERVICE=1",
-      "PW_RPC_EVSE_SERVICE=1",
       "PW_RPC_LIGHTING_SERVICE=1",
       "PW_RPC_TRACING_SERVICE=1",
     ]
@@ -120,8 +94,6 @@ executable("chip-nxp-evse-app") {
       "${chip_root}/examples/common/pigweed:button_service.nanopb_rpc",
       "${chip_root}/examples/common/pigweed:descriptor_service.nanopb_rpc",
       "${chip_root}/examples/common/pigweed:device_service.nanopb_rpc",
-      "${chip_root}/examples/common/pigweed:elec_service.nanopb_rpc",
-      "${chip_root}/examples/common/pigweed:evse_service.nanopb_rpc",
       "${chip_root}/examples/common/pigweed:lighting_service.nanopb_rpc",
       "${chip_root}/examples/common/pigweed:rpc_services",
     ]
@@ -140,17 +112,16 @@ executable("chip-nxp-evse-app") {
 
 source_set("test-evse-targets-store") {
   sources = [
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/ChargingTargetsMemMgr.cpp",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/src/EnergyEvseTargetsStore.cpp",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/src/EnergyEvseTargetsStore.cpp",
   ]
 
   include_dirs = [
     "include",
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/energy-evse/include",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common/include",
   ]
 
   deps = [
-    "${chip_root}/examples/nxp-evse-app/nxp-evse-common",
+    "${chip_root}/examples/nxp-evse-app/nxp-evse-common:nxp-evse-common-lib",
     "${chip_root}/src/lib",
   ]
 }
