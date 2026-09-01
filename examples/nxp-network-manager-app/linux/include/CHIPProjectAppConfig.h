@@ -20,9 +20,26 @@
 
 #define CHIP_DEVICE_CONFIG_DEVICE_TYPE 144 // 0x0090 Network Infrastructure Manager
 #define CHIP_DEVICE_CONFIG_DEVICE_NAME "Network Infrastructure Manager"
+#define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_ID 0x8013
 
 // Sufficient space for ArlReviewEvent of several fabrics.
 #define CHIP_DEVICE_CONFIG_EVENT_LOGGING_INFO_BUFFER_SIZE (32 * 1024)
+
+#ifndef MATTER_ENABLE_UBUS
+#define MATTER_ENABLE_UBUS 0
+#endif
+
+#ifndef CHIP_DEVICE_CONFIG_DEVICE_VENDOR_NAME
+#define CHIP_DEVICE_CONFIG_DEVICE_VENDOR_NAME "NXP Semiconductors"
+#endif
+
+#ifndef CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_NAME
+#define CHIP_DEVICE_CONFIG_DEVICE_PRODUCT_NAME "NXP Network Manager Demo App"
+#endif
+
+#ifndef CHIP_CONFIG_MAX_FABRICS
+#define CHIP_CONFIG_MAX_FABRICS 8
+#endif
 
 // Inherit defaults from config/standalone/CHIPProjectConfig.h
 #include <CHIPProjectConfig.h>
