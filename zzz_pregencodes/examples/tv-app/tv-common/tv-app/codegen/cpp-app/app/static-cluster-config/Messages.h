@@ -25,6 +25,8 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::Messages::Id,
+    Attributes::SupportedLanguageCodes::Id,
+    Attributes::SupportedMimeTypes::Id,
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
@@ -57,6 +59,8 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::Messages::Id:
+    case Attributes::SupportedLanguageCodes::Id:
+    case Attributes::SupportedMimeTypes::Id:
         return true;
     default:
         return false;

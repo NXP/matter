@@ -21,6 +21,8 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::CondPumpEnabled::Id,
+    Attributes::CondRunCount::Id,
     Attributes::Continuous::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -31,6 +33,7 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::Optimal::Id,
     Attributes::Sleep::Id,
     Attributes::Step::Id,
+    Attributes::SupportedModes::Id,
     Attributes::SystemState::Id,
     Attributes::TargetSetpoint::Id,
     Attributes::UserSetpoint::Id,
@@ -57,7 +60,8 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
                 FeatureBitmapType::kFanOnly,      // feature bit 0x20
                 FeatureBitmapType::kOptimal,      // feature bit 0x40
                 FeatureBitmapType::kWarmMist,     // feature bit 0x80
-                FeatureBitmapType::kColdMist      // feature bit 0x100
+                FeatureBitmapType::kColdMist,     // feature bit 0x100
+                FeatureBitmapType::kCondPump      // feature bit 0x200
             },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
@@ -72,6 +76,8 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::CondPumpEnabled::Id:
+    case Attributes::CondRunCount::Id:
     case Attributes::Continuous::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
@@ -82,6 +88,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::Optimal::Id:
     case Attributes::Sleep::Id:
     case Attributes::Step::Id:
+    case Attributes::SupportedModes::Id:
     case Attributes::SystemState::Id:
     case Attributes::TargetSetpoint::Id:
     case Attributes::UserSetpoint::Id:

@@ -88,6 +88,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::RelativeHumidityMeasurement::Id:
         MatterRelativeHumidityMeasurementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::MediaFileManagement::Id:
+        MatterMediaFileManagementClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -154,6 +157,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::RelativeHumidityMeasurement::Id:
         MatterRelativeHumidityMeasurementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::MediaFileManagement::Id:
+        MatterMediaFileManagementClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

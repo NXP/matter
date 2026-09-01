@@ -103,3 +103,7 @@ void MatterUserLabelClusterShutdownCallback(chip::EndpointId endpointId, MatterC
 void MatterRelativeHumidityMeasurementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterRelativeHumidityMeasurementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterMediaFileManagementClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterMediaFileManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

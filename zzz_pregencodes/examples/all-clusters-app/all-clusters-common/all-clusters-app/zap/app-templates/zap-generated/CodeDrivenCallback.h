@@ -206,6 +206,10 @@ void MatterValveConfigurationAndControlClusterInitCallback(chip::EndpointId endp
 
 void MatterValveConfigurationAndControlClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
+void MatterWindowCoveringClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterWindowCoveringClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
 void MatterFanControlClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterFanControlClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
@@ -213,6 +217,10 @@ void MatterFanControlClusterShutdownCallback(chip::EndpointId endpointId, Matter
 void MatterHumidistatClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterHumidistatClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterDynamicLightingClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterDynamicLightingClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
 void MatterIlluminanceMeasurementClusterInitCallback(chip::EndpointId endpointId);
 

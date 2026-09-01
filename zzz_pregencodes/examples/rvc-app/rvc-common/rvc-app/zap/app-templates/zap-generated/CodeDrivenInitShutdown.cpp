@@ -70,6 +70,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::RvcOperationalState::Id:
         MatterRvcOperationalStateClusterInitCallback(endpoint);
         break;
+    case app::Clusters::ServiceArea::Id:
+        MatterServiceAreaClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -118,6 +121,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::RvcOperationalState::Id:
         MatterRvcOperationalStateClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::ServiceArea::Id:
+        MatterServiceAreaClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }

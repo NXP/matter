@@ -91,3 +91,7 @@ void MatterUserLabelClusterShutdownCallback(chip::EndpointId endpointId, MatterC
 void MatterIcdManagementClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterIcdManagementClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterWindowCoveringClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterWindowCoveringClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

@@ -179,6 +179,7 @@
     0x0000050B, /* Cluster: Audio Output, Command: RenameOutput, Privilege: manage */ \
     0x0000050E, /* Cluster: Account Login, Command: GetSetupPIN, Privilege: administer */ \
     0x0000050E, /* Cluster: Account Login, Command: Login, Privilege: administer */ \
+    0x0000050E, /* Cluster: Account Login, Command: GetDeviceAuthURI, Privilege: administer */ \
     0x0000050F, /* Cluster: Content Control, Command: UpdatePIN, Privilege: manage */ \
     0x0000050F, /* Cluster: Content Control, Command: ResetPIN, Privilege: administer */ \
     0x0000050F, /* Cluster: Content Control, Command: Enable, Privilege: manage */ \
@@ -226,6 +227,7 @@
     0x00000001, /* Cluster: Audio Output, Command: RenameOutput, Privilege: manage */ \
     0x00000000, /* Cluster: Account Login, Command: GetSetupPIN, Privilege: administer */ \
     0x00000002, /* Cluster: Account Login, Command: Login, Privilege: administer */ \
+    0x00000004, /* Cluster: Account Login, Command: GetDeviceAuthURI, Privilege: administer */ \
     0x00000000, /* Cluster: Content Control, Command: UpdatePIN, Privilege: manage */ \
     0x00000001, /* Cluster: Content Control, Command: ResetPIN, Privilege: administer */ \
     0x00000003, /* Cluster: Content Control, Command: Enable, Privilege: manage */ \
@@ -273,6 +275,7 @@
     chip::Access::Privilege::kManage, /* Cluster: Audio Output, Command: RenameOutput, Privilege: manage */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Account Login, Command: GetSetupPIN, Privilege: administer */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Account Login, Command: Login, Privilege: administer */ \
+    chip::Access::Privilege::kAdminister, /* Cluster: Account Login, Command: GetDeviceAuthURI, Privilege: administer */ \
     chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: UpdatePIN, Privilege: manage */ \
     chip::Access::Privilege::kAdminister, /* Cluster: Content Control, Command: ResetPIN, Privilege: administer */ \
     chip::Access::Privilege::kManage, /* Cluster: Content Control, Command: Enable, Privilege: manage */ \

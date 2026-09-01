@@ -20,9 +20,11 @@ namespace detail {
 inline constexpr AttributeId kEndpoint3EnabledAttributes[] = {
     Attributes::ClusterRevision::Id,
     Attributes::FeatureMap::Id,
+    Attributes::OAuthLoggedIn::Id,
 };
 
 inline constexpr CommandId kEndpoint3EnabledCommands[] = {
+    Commands::GetDeviceAuthURI::Id,
     Commands::GetSetupPIN::Id,
     Commands::Login::Id,
     Commands::Logout::Id,
@@ -30,12 +32,15 @@ inline constexpr CommandId kEndpoint3EnabledCommands[] = {
 
 } // namespace detail
 
-using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
+using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber    = 3,
-        .featureMap        = BitFlags<FeatureBitmapType>{},
+        .endpointNumber = 3,
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kOAuth // feature bit 0x1
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint3EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(detail::kEndpoint3EnabledCommands),
     },
@@ -46,6 +51,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
 {
     switch (attributeId)
     {
+    case Attributes::OAuthLoggedIn::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::FeatureMap::Id:
         return true;
@@ -59,6 +65,7 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
 {
     switch (commandId)
     {
+    case Commands::GetDeviceAuthURI::Id:
     case Commands::GetSetupPIN::Id:
     case Commands::Login::Id:
     case Commands::Logout::Id:

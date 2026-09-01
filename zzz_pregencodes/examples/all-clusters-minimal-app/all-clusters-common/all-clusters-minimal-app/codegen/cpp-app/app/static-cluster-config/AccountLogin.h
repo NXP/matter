@@ -30,7 +30,7 @@ inline constexpr CommandId kEndpoint1EnabledCommands[] = {
 
 } // namespace detail
 
-using FeatureBitmapType = Clusters::StaticApplicationConfig::NoFeatureFlagsDefined;
+using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {

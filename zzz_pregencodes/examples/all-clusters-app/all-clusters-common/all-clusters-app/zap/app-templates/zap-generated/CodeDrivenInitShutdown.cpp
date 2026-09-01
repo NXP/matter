@@ -163,11 +163,17 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::ValveConfigurationAndControl::Id:
         MatterValveConfigurationAndControlClusterInitCallback(endpoint);
         break;
+    case app::Clusters::WindowCovering::Id:
+        MatterWindowCoveringClusterInitCallback(endpoint);
+        break;
     case app::Clusters::FanControl::Id:
         MatterFanControlClusterInitCallback(endpoint);
         break;
     case app::Clusters::Humidistat::Id:
         MatterHumidistatClusterInitCallback(endpoint);
+        break;
+    case app::Clusters::DynamicLighting::Id:
+        MatterDynamicLightingClusterInitCallback(endpoint);
         break;
     case app::Clusters::IlluminanceMeasurement::Id:
         MatterIlluminanceMeasurementClusterInitCallback(endpoint);
@@ -341,11 +347,17 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
     case app::Clusters::ValveConfigurationAndControl::Id:
         MatterValveConfigurationAndControlClusterShutdownCallback(endpoint, shutdownType);
         break;
+    case app::Clusters::WindowCovering::Id:
+        MatterWindowCoveringClusterShutdownCallback(endpoint, shutdownType);
+        break;
     case app::Clusters::FanControl::Id:
         MatterFanControlClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::Humidistat::Id:
         MatterHumidistatClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::DynamicLighting::Id:
+        MatterDynamicLightingClusterShutdownCallback(endpoint, shutdownType);
         break;
     case app::Clusters::IlluminanceMeasurement::Id:
         MatterIlluminanceMeasurementClusterShutdownCallback(endpoint, shutdownType);

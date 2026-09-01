@@ -64,6 +64,9 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::DishwasherMode::Id:
         emberAfDishwasherModeClusterInitCallback(endpoint);
         break;
+    case app::Clusters::DynamicLighting::Id:
+        emberAfDynamicLightingClusterInitCallback(endpoint);
+        break;
     case app::Clusters::EnergyPreference::Id:
         emberAfEnergyPreferenceClusterInitCallback(endpoint);
         break;
@@ -338,6 +341,9 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
         break;
     case app::Clusters::DishwasherMode::Id:
         emberAfDishwasherModeClusterShutdownCallback(endpoint);
+        break;
+    case app::Clusters::DynamicLighting::Id:
+        emberAfDynamicLightingClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::EnergyPreference::Id:
         emberAfEnergyPreferenceClusterShutdownCallback(endpoint);

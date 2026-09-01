@@ -181,6 +181,16 @@ void __attribute__((weak)) emberAfDishwasherModeClusterShutdownCallback(Endpoint
     // To prevent warning
     (void) endpoint;
 }
+void __attribute__((weak)) emberAfDynamicLightingClusterInitCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
+void __attribute__((weak)) emberAfDynamicLightingClusterShutdownCallback(EndpointId endpoint)
+{
+    // To prevent warning
+    (void) endpoint;
+}
 void __attribute__((weak)) emberAfEnergyPreferenceClusterInitCallback(EndpointId endpoint)
 {
     // To prevent warning

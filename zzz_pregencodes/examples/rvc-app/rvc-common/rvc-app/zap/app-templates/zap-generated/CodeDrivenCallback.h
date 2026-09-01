@@ -79,3 +79,7 @@ void MatterRvcCleanModeClusterShutdownCallback(chip::EndpointId endpointId, Matt
 void MatterRvcOperationalStateClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterRvcOperationalStateClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
+void MatterServiceAreaClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterServiceAreaClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);

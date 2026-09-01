@@ -17,6 +17,7 @@ void MatterDescriptorPluginServerInitCallback();
 void MatterDiagnosticLogsPluginServerInitCallback();
 void MatterDishwasherAlarmPluginServerInitCallback();
 void MatterDishwasherModePluginServerInitCallback();
+void MatterDynamicLightingPluginServerInitCallback();
 void MatterEnergyPreferencePluginServerInitCallback();
 void MatterEthernetNetworkDiagnosticsPluginServerInitCallback();
 void MatterFanControlPluginServerInitCallback();
@@ -105,6 +106,7 @@ void MatterDescriptorPluginServerShutdownCallback();
 void MatterDiagnosticLogsPluginServerShutdownCallback();
 void MatterDishwasherAlarmPluginServerShutdownCallback();
 void MatterDishwasherModePluginServerShutdownCallback();
+void MatterDynamicLightingPluginServerShutdownCallback();
 void MatterEnergyPreferencePluginServerShutdownCallback();
 void MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();
 void MatterFanControlPluginServerShutdownCallback();
@@ -195,6 +197,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterDiagnosticLogsPluginServerInitCallback();                                                                                \
     MatterDishwasherAlarmPluginServerInitCallback();                                                                               \
     MatterDishwasherModePluginServerInitCallback();                                                                                \
+    MatterDynamicLightingPluginServerInitCallback();                                                                               \
     MatterEnergyPreferencePluginServerInitCallback();                                                                              \
     MatterEthernetNetworkDiagnosticsPluginServerInitCallback();                                                                    \
     MatterFanControlPluginServerInitCallback();                                                                                    \
@@ -285,6 +288,7 @@ void MatterWindowCoveringPluginServerShutdownCallback();
     MatterDiagnosticLogsPluginServerShutdownCallback();                                                                            \
     MatterDishwasherAlarmPluginServerShutdownCallback();                                                                           \
     MatterDishwasherModePluginServerShutdownCallback();                                                                            \
+    MatterDynamicLightingPluginServerShutdownCallback();                                                                           \
     MatterEnergyPreferencePluginServerShutdownCallback();                                                                          \
     MatterEthernetNetworkDiagnosticsPluginServerShutdownCallback();                                                                \
     MatterFanControlPluginServerShutdownCallback();                                                                                \

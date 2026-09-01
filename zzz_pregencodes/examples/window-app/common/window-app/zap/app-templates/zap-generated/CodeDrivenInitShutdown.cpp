@@ -79,6 +79,9 @@ void MatterClusterServerInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::IcdManagement::Id:
         MatterIcdManagementClusterInitCallback(endpoint);
         break;
+    case app::Clusters::WindowCovering::Id:
+        MatterWindowCoveringClusterInitCallback(endpoint);
+        break;
     }
 }
 
@@ -136,6 +139,9 @@ void MatterClusterServerShutdownCallback(EndpointId endpoint, ClusterId clusterI
         break;
     case app::Clusters::IcdManagement::Id:
         MatterIcdManagementClusterShutdownCallback(endpoint, shutdownType);
+        break;
+    case app::Clusters::WindowCovering::Id:
+        MatterWindowCoveringClusterShutdownCallback(endpoint, shutdownType);
         break;
     }
 }
