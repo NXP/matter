@@ -721,7 +721,8 @@ CHIP_ERROR FromSrpCacheToMdnsData(const otSrpServerService * service, const otSr
         chip::FixedBufferAllocator alloc(serviceTxtEntries.mBuffer);
 
         uint8_t entryIndex = 0;
-        while ((otDnsGetNextTxtEntry(&iterator, &txtEntry) == OT_ERROR_NONE) && entryIndex < 64)
+        while ((otDnsGetNextTxtEntry(&iterator, &txtEntry) == OT_ERROR_NONE) &&
+               entryIndex < entryIndex < MATTER_ARRAY_SIZE(serviceTxtEntries.mTxtEntries))
         {
             if (txtEntry.mKey == nullptr || txtEntry.mValue == nullptr)
                 continue;
@@ -878,7 +879,8 @@ static void OtTxtCallback(otInstance * aInstance, const otMdnsTxtResult * aResul
         chip::FixedBufferAllocator alloc(pResolveContext->mServiceTxtEntry.mBuffer);
 
         uint8_t entryIndex = 0;
-        while ((otDnsGetNextTxtEntry(&iterator, &txtEntry) == OT_ERROR_NONE) && entryIndex < 64)
+        while ((otDnsGetNextTxtEntry(&iterator, &txtEntry) == OT_ERROR_NONE) &&
+               entryIndex < MATTER_ARRAY_SIZE(pResolveContext->mServiceTxtEntry.mTxtEntries))
         {
             if (txtEntry.mKey == nullptr || txtEntry.mValue == nullptr)
                 continue;
