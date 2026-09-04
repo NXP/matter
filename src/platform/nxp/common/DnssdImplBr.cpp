@@ -722,7 +722,7 @@ CHIP_ERROR FromSrpCacheToMdnsData(const otSrpServerService * service, const otSr
 
         uint8_t entryIndex = 0;
         while ((otDnsGetNextTxtEntry(&iterator, &txtEntry) == OT_ERROR_NONE) &&
-               entryIndex < entryIndex < MATTER_ARRAY_SIZE(serviceTxtEntries.mTxtEntries))
+               entryIndex < MATTER_ARRAY_SIZE(serviceTxtEntries.mTxtEntries))
         {
             if (txtEntry.mKey == nullptr || txtEntry.mValue == nullptr)
                 continue;
