@@ -23,6 +23,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AttributeList::Id,
     Attributes::CapabilityMinima::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::ConfigurationVersion::Id,
     Attributes::DataModelRevision::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -69,6 +70,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::AttributeList::Id:
     case Attributes::CapabilityMinima::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::ConfigurationVersion::Id:
     case Attributes::DataModelRevision::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:

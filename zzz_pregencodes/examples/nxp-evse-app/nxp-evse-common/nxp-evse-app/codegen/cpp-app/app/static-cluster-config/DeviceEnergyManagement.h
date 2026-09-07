@@ -17,7 +17,7 @@ namespace Clusters {
 namespace DeviceEnergyManagement {
 namespace StaticApplicationConfig {
 namespace detail {
-inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
+inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::AbsMaxPower::Id,
     Attributes::AbsMinPower::Id,
     Attributes::AcceptedCommandList::Id,
@@ -27,33 +27,18 @@ inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
     Attributes::ESAState::Id,
     Attributes::ESAType::Id,
     Attributes::FeatureMap::Id,
-    Attributes::Forecast::Id,
     Attributes::GeneratedCommandList::Id,
-    Attributes::OptOutState::Id,
-    Attributes::PowerAdjustmentCapability::Id,
 };
-
-inline constexpr CommandId kEndpoint2EnabledCommands[] = {
-    Commands::CancelPowerAdjustRequest::Id,
-    Commands::CancelRequest::Id,
-    Commands::ModifyForecastRequest::Id,
-    Commands::PauseRequest::Id,
-    Commands::PowerAdjustRequest::Id,
-    Commands::RequestConstraintBasedForecast::Id,
-    Commands::ResumeRequest::Id,
-    Commands::StartTimeAdjustRequest::Id,
-};
-
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber    = 2,
+        .endpointNumber    = 1,
         .featureMap        = BitFlags<FeatureBitmapType>{},
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands   = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
@@ -71,10 +56,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::FeatureMap::Id:
-    case Attributes::Forecast::Id:
     case Attributes::GeneratedCommandList::Id:
-    case Attributes::OptOutState::Id:
-    case Attributes::PowerAdjustmentCapability::Id:
         return true;
     default:
         return false;
@@ -86,15 +68,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
 {
     switch (commandId)
     {
-    case Commands::CancelPowerAdjustRequest::Id:
-    case Commands::CancelRequest::Id:
-    case Commands::ModifyForecastRequest::Id:
-    case Commands::PauseRequest::Id:
-    case Commands::PowerAdjustRequest::Id:
-    case Commands::RequestConstraintBasedForecast::Id:
-    case Commands::ResumeRequest::Id:
-    case Commands::StartTimeAdjustRequest::Id:
-        return true;
     default:
         return false;
     }

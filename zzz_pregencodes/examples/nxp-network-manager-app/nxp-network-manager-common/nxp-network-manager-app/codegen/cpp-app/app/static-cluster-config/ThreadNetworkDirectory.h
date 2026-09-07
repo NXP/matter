@@ -27,7 +27,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
     Commands::AddNetwork::Id,
     Commands::GetOperationalDataset::Id,
-    Commands::OperationalDatasetResponse::Id,
     Commands::RemoveNetwork::Id,
 };
 
@@ -70,7 +69,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     {
     case Commands::AddNetwork::Id:
     case Commands::GetOperationalDataset::Id:
-    case Commands::OperationalDatasetResponse::Id:
     case Commands::RemoveNetwork::Id:
         return true;
     default:

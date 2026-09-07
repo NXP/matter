@@ -21,6 +21,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::DeviceLoadStatus::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::NetworkInterfaces::Id,
@@ -32,7 +33,6 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
     Commands::TestEventTrigger::Id,
     Commands::TimeSnapshot::Id,
-    Commands::TimeSnapshotResponse::Id,
 };
 
 } // namespace detail
@@ -56,6 +56,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::DeviceLoadStatus::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::NetworkInterfaces::Id:
@@ -75,7 +76,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     {
     case Commands::TestEventTrigger::Id:
     case Commands::TimeSnapshot::Id:
-    case Commands::TimeSnapshotResponse::Id:
         return true;
     default:
         return false;

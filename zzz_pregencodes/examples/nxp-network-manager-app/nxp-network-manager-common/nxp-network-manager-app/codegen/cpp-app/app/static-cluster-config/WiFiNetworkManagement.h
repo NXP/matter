@@ -30,7 +30,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
     Commands::NetworkPassphraseRequest::Id,
-    Commands::NetworkPassphraseResponse::Id,
 };
 
 } // namespace detail
@@ -70,7 +69,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     switch (commandId)
     {
     case Commands::NetworkPassphraseRequest::Id:
-    case Commands::NetworkPassphraseResponse::Id:
         return true;
     default:
         return false;

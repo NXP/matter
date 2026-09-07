@@ -18,8 +18,8 @@ namespace PowerTopology {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id,        Attributes::ClusterRevision::Id,
-    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id, Attributes::AvailableEndpoints::Id,
+    Attributes::ClusterRevision::Id,     Attributes::FeatureMap::Id,    Attributes::GeneratedCommandList::Id,
 };
 } // namespace detail
 
@@ -41,6 +41,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     {
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
+    case Attributes::AvailableEndpoints::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:

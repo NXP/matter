@@ -16,11 +16,10 @@ void MatterIdentifyPluginServerInitCallback();
 void MatterLocalizationConfigurationPluginServerInitCallback();
 void MatterNetworkCommissioningPluginServerInitCallback();
 void MatterOperationalCredentialsPluginServerInitCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();
 void MatterPowerSourcePluginServerInitCallback();
 void MatterPowerTopologyPluginServerInitCallback();
-void MatterTimeFormatLocalizationPluginServerInitCallback();
 void MatterUnitLocalizationPluginServerInitCallback();
-void MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
 void MatterAccessControlPluginServerShutdownCallback();
 void MatterAdministratorCommissioningPluginServerShutdownCallback();
 void MatterBasicInformationPluginServerShutdownCallback();
@@ -38,11 +37,10 @@ void MatterIdentifyPluginServerShutdownCallback();
 void MatterLocalizationConfigurationPluginServerShutdownCallback();
 void MatterNetworkCommissioningPluginServerShutdownCallback();
 void MatterOperationalCredentialsPluginServerShutdownCallback();
+void MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();
 void MatterPowerSourcePluginServerShutdownCallback();
 void MatterPowerTopologyPluginServerShutdownCallback();
-void MatterTimeFormatLocalizationPluginServerShutdownCallback();
 void MatterUnitLocalizationPluginServerShutdownCallback();
-void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
 
 #define MATTER_PLUGINS_INIT                                                                                                        \
     MatterAccessControlPluginServerInitCallback();                                                                                 \
@@ -62,11 +60,10 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterLocalizationConfigurationPluginServerInitCallback();                                                                     \
     MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
     MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
+    MatterOtaSoftwareUpdateRequestorPluginServerInitCallback();                                                                    \
     MatterPowerSourcePluginServerInitCallback();                                                                                   \
     MatterPowerTopologyPluginServerInitCallback();                                                                                 \
-    MatterTimeFormatLocalizationPluginServerInitCallback();                                                                        \
-    MatterUnitLocalizationPluginServerInitCallback();                                                                              \
-    MatterWiFiNetworkDiagnosticsPluginServerInitCallback();
+    MatterUnitLocalizationPluginServerInitCallback();
 
 #define MATTER_PLUGINS_SHUTDOWN                                                                                                    \
     MatterAccessControlPluginServerShutdownCallback();                                                                             \
@@ -86,8 +83,7 @@ void MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
     MatterLocalizationConfigurationPluginServerShutdownCallback();                                                                 \
     MatterNetworkCommissioningPluginServerShutdownCallback();                                                                      \
     MatterOperationalCredentialsPluginServerShutdownCallback();                                                                    \
+    MatterOtaSoftwareUpdateRequestorPluginServerShutdownCallback();                                                                \
     MatterPowerSourcePluginServerShutdownCallback();                                                                               \
     MatterPowerTopologyPluginServerShutdownCallback();                                                                             \
-    MatterTimeFormatLocalizationPluginServerShutdownCallback();                                                                    \
-    MatterUnitLocalizationPluginServerShutdownCallback();                                                                          \
-    MatterWiFiNetworkDiagnosticsPluginServerShutdownCallback();
+    MatterUnitLocalizationPluginServerShutdownCallback();

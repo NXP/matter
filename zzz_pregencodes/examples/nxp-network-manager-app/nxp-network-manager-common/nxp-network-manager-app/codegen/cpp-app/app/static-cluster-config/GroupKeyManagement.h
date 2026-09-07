@@ -19,14 +19,16 @@ namespace GroupKeyManagement {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
-    Attributes::ClusterRevision::Id,       Attributes::FeatureMap::Id,
-    Attributes::GroupKeyMap::Id,           Attributes::GroupTable::Id,
-    Attributes::MaxGroupKeysPerFabric::Id, Attributes::MaxGroupsPerFabric::Id,
+    Attributes::ClusterRevision::Id,    Attributes::FeatureMap::Id, Attributes::GroupcastAdoption::Id,
+    Attributes::GroupKeyMap::Id,        Attributes::GroupTable::Id, Attributes::MaxGroupKeysPerFabric::Id,
+    Attributes::MaxGroupsPerFabric::Id,
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
-    Commands::KeySetRead::Id,         Commands::KeySetReadAllIndices::Id, Commands::KeySetReadAllIndicesResponse::Id,
-    Commands::KeySetReadResponse::Id, Commands::KeySetRemove::Id,         Commands::KeySetWrite::Id,
+    Commands::KeySetRead::Id,
+    Commands::KeySetReadAllIndices::Id,
+    Commands::KeySetRemove::Id,
+    Commands::KeySetWrite::Id,
 };
 
 } // namespace detail
@@ -51,6 +53,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::FeatureMap::Id:
     case Attributes::GroupKeyMap::Id:
     case Attributes::GroupTable::Id:
+    case Attributes::GroupcastAdoption::Id:
     case Attributes::MaxGroupKeysPerFabric::Id:
     case Attributes::MaxGroupsPerFabric::Id:
         return true;
@@ -66,8 +69,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     {
     case Commands::KeySetRead::Id:
     case Commands::KeySetReadAllIndices::Id:
-    case Commands::KeySetReadAllIndicesResponse::Id:
-    case Commands::KeySetReadResponse::Id:
     case Commands::KeySetRemove::Id:
     case Commands::KeySetWrite::Id:
         return true;

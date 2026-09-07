@@ -25,7 +25,6 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
     Commands::ChangeToMode::Id,
-    Commands::ChangeToModeResponse::Id,
 };
 
 } // namespace detail
@@ -65,7 +64,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     switch (commandId)
     {
     case Commands::ChangeToMode::Id:
-    case Commands::ChangeToModeResponse::Id:
         return true;
     default:
         return false;

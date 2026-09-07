@@ -22,13 +22,9 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::Accuracy::Id,
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
-    Attributes::CumulativeEnergyExported::Id,
     Attributes::CumulativeEnergyImported::Id,
-    Attributes::CumulativeEnergyReset::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
-    Attributes::PeriodicEnergyExported::Id,
-    Attributes::PeriodicEnergyImported::Id,
 };
 } // namespace detail
 
@@ -52,13 +48,9 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::Accuracy::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
-    case Attributes::CumulativeEnergyExported::Id:
     case Attributes::CumulativeEnergyImported::Id:
-    case Attributes::CumulativeEnergyReset::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
-    case Attributes::PeriodicEnergyExported::Id:
-    case Attributes::PeriodicEnergyImported::Id:
         return true;
     default:
         return false;

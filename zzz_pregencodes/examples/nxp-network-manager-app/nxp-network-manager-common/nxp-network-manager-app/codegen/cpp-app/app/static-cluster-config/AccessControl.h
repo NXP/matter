@@ -26,18 +26,11 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AttributeList::Id,
     Attributes::ClusterRevision::Id,
     Attributes::CommissioningARL::Id,
-    Attributes::Extension::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
     Attributes::SubjectsPerAccessControlEntry::Id,
     Attributes::TargetsPerAccessControlEntry::Id,
 };
-
-inline constexpr CommandId kEndpoint0EnabledCommands[] = {
-    Commands::ReviewFabricRestrictions::Id,
-    Commands::ReviewFabricRestrictionsResponse::Id,
-};
-
 } // namespace detail
 
 using FeatureBitmapType = Feature;
@@ -47,7 +40,7 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .endpointNumber    = 0,
         .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
+        .enabledCommands   = Span<const CommandId>(),
     },
 } };
 
@@ -63,7 +56,6 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
     case Attributes::CommissioningARL::Id:
-    case Attributes::Extension::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::SubjectsPerAccessControlEntry::Id:
@@ -79,9 +71,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
 {
     switch (commandId)
     {
-    case Commands::ReviewFabricRestrictions::Id:
-    case Commands::ReviewFabricRestrictionsResponse::Id:
-        return true;
     default:
         return false;
     }

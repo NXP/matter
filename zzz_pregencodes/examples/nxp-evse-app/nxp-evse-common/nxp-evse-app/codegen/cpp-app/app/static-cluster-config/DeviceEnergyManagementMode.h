@@ -17,15 +17,14 @@ namespace Clusters {
 namespace DeviceEnergyManagementMode {
 namespace StaticApplicationConfig {
 namespace detail {
-inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
+inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id, Attributes::ClusterRevision::Id,
     Attributes::CurrentMode::Id,         Attributes::FeatureMap::Id,    Attributes::GeneratedCommandList::Id,
     Attributes::SupportedModes::Id,
 };
 
-inline constexpr CommandId kEndpoint2EnabledCommands[] = {
+inline constexpr CommandId kEndpoint1EnabledCommands[] = {
     Commands::ChangeToMode::Id,
-    Commands::ChangeToModeResponse::Id,
 };
 
 } // namespace detail
@@ -34,10 +33,10 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber    = 2,
+        .endpointNumber    = 1,
         .featureMap        = BitFlags<FeatureBitmapType>{},
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
-        .enabledCommands   = Span<const CommandId>(detail::kEndpoint2EnabledCommands),
+        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint1EnabledCommands),
     },
 } };
 
@@ -65,7 +64,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     switch (commandId)
     {
     case Commands::ChangeToMode::Id:
-    case Commands::ChangeToModeResponse::Id:
         return true;
     default:
         return false;

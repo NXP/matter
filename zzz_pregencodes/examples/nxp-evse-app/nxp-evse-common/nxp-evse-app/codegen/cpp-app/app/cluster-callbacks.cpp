@@ -61,20 +61,17 @@ void emberAfClusterInitCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterInitCallback(endpoint);
         break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        emberAfOtaSoftwareUpdateRequestorClusterInitCallback(endpoint);
+        break;
     case app::Clusters::PowerSource::Id:
         emberAfPowerSourceClusterInitCallback(endpoint);
         break;
     case app::Clusters::PowerTopology::Id:
         emberAfPowerTopologyClusterInitCallback(endpoint);
         break;
-    case app::Clusters::TimeFormatLocalization::Id:
-        emberAfTimeFormatLocalizationClusterInitCallback(endpoint);
-        break;
     case app::Clusters::UnitLocalization::Id:
         emberAfUnitLocalizationClusterInitCallback(endpoint);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        emberAfWiFiNetworkDiagnosticsClusterInitCallback(endpoint);
         break;
     default:
         // Unrecognized cluster ID
@@ -138,20 +135,17 @@ void emberAfClusterShutdownCallback(EndpointId endpoint, ClusterId clusterId)
     case app::Clusters::OperationalCredentials::Id:
         emberAfOperationalCredentialsClusterShutdownCallback(endpoint);
         break;
+    case app::Clusters::OtaSoftwareUpdateRequestor::Id:
+        emberAfOtaSoftwareUpdateRequestorClusterShutdownCallback(endpoint);
+        break;
     case app::Clusters::PowerSource::Id:
         emberAfPowerSourceClusterShutdownCallback(endpoint);
         break;
     case app::Clusters::PowerTopology::Id:
         emberAfPowerTopologyClusterShutdownCallback(endpoint);
         break;
-    case app::Clusters::TimeFormatLocalization::Id:
-        emberAfTimeFormatLocalizationClusterShutdownCallback(endpoint);
-        break;
     case app::Clusters::UnitLocalization::Id:
         emberAfUnitLocalizationClusterShutdownCallback(endpoint);
-        break;
-    case app::Clusters::WiFiNetworkDiagnostics::Id:
-        emberAfWiFiNetworkDiagnosticsClusterShutdownCallback(endpoint);
         break;
     default:
         // Unrecognized cluster ID

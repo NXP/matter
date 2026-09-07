@@ -19,18 +19,20 @@ namespace NetworkCommissioning {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,
-    Attributes::AttributeList::Id,
-    Attributes::ClusterRevision::Id,
-    Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,
-    Attributes::InterfaceEnabled::Id,
-    Attributes::LastConnectErrorValue::Id,
-    Attributes::LastNetworkID::Id,
-    Attributes::LastNetworkingStatus::Id,
-    Attributes::MaxNetworks::Id,
-    Attributes::Networks::Id,
+    Attributes::AcceptedCommandList::Id, Attributes::AttributeList::Id,
+    Attributes::ClusterRevision::Id,     Attributes::ConnectMaxTimeSeconds::Id,
+    Attributes::FeatureMap::Id,          Attributes::GeneratedCommandList::Id,
+    Attributes::InterfaceEnabled::Id,    Attributes::LastConnectErrorValue::Id,
+    Attributes::LastNetworkID::Id,       Attributes::LastNetworkingStatus::Id,
+    Attributes::MaxNetworks::Id,         Attributes::Networks::Id,
+    Attributes::ScanMaxTimeSeconds::Id,  Attributes::SupportedWiFiBands::Id,
 };
+
+inline constexpr CommandId kEndpoint0EnabledCommands[] = {
+    Commands::AddOrUpdateWiFiNetwork::Id, Commands::ConnectNetwork::Id, Commands::RemoveNetwork::Id,
+    Commands::ReorderNetwork::Id,         Commands::ScanNetworks::Id,
+};
+
 } // namespace detail
 
 using FeatureBitmapType = Feature;
@@ -40,7 +42,7 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .endpointNumber    = 0,
         .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint0EnabledAttributes),
-        .enabledCommands   = Span<const CommandId>(),
+        .enabledCommands   = Span<const CommandId>(detail::kEndpoint0EnabledCommands),
     },
 } };
 
@@ -52,6 +54,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::AcceptedCommandList::Id:
     case Attributes::AttributeList::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::ConnectMaxTimeSeconds::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::InterfaceEnabled::Id:
@@ -60,6 +63,8 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::LastNetworkingStatus::Id:
     case Attributes::MaxNetworks::Id:
     case Attributes::Networks::Id:
+    case Attributes::ScanMaxTimeSeconds::Id:
+    case Attributes::SupportedWiFiBands::Id:
         return true;
     default:
         return false;
@@ -71,6 +76,12 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
 {
     switch (commandId)
     {
+    case Commands::AddOrUpdateWiFiNetwork::Id:
+    case Commands::ConnectNetwork::Id:
+    case Commands::RemoveNetwork::Id:
+    case Commands::ReorderNetwork::Id:
+    case Commands::ScanNetworks::Id:
+        return true;
     default:
         return false;
     }

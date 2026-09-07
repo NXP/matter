@@ -27,16 +27,11 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
     Attributes::ClusterRevision::Id,      Attributes::DeviceTypeList::Id, Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id, Attributes::PartsList::Id,      Attributes::ServerList::Id,
 };
-inline constexpr AttributeId kEndpoint2EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,  Attributes::AttributeList::Id,  Attributes::ClientList::Id,
-    Attributes::ClusterRevision::Id,      Attributes::DeviceTypeList::Id, Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id, Attributes::PartsList::Id,      Attributes::ServerList::Id,
-};
 } // namespace detail
 
 using FeatureBitmapType = Feature;
 
-inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 3> kFixedClusterConfig = { {
+inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 2> kFixedClusterConfig = { {
     {
         .endpointNumber    = 0,
         .featureMap        = BitFlags<FeatureBitmapType>{},
@@ -47,12 +42,6 @@ inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfigurat
         .endpointNumber    = 1,
         .featureMap        = BitFlags<FeatureBitmapType>{},
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
-        .enabledCommands   = Span<const CommandId>(),
-    },
-    {
-        .endpointNumber    = 2,
-        .featureMap        = BitFlags<FeatureBitmapType>{},
-        .enabledAttributes = Span<const AttributeId>(detail::kEndpoint2EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(),
     },
 } };

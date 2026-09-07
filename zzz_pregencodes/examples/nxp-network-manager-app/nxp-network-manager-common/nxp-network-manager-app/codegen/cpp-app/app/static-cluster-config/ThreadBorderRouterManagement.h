@@ -28,8 +28,10 @@ inline constexpr AttributeId kEndpoint1EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint1EnabledCommands[] = {
-    Commands::DatasetResponse::Id,         Commands::GetActiveDatasetRequest::Id,  Commands::GetPendingDatasetRequest::Id,
-    Commands::SetActiveDatasetRequest::Id, Commands::SetPendingDatasetRequest::Id,
+    Commands::GetActiveDatasetRequest::Id,
+    Commands::GetPendingDatasetRequest::Id,
+    Commands::SetActiveDatasetRequest::Id,
+    Commands::SetPendingDatasetRequest::Id,
 };
 
 } // namespace detail
@@ -72,7 +74,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
 {
     switch (commandId)
     {
-    case Commands::DatasetResponse::Id:
     case Commands::GetActiveDatasetRequest::Id:
     case Commands::GetPendingDatasetRequest::Id:
     case Commands::SetActiveDatasetRequest::Id:

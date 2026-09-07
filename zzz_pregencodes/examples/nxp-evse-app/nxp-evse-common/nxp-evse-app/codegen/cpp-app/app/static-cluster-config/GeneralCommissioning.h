@@ -26,9 +26,9 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
-    Commands::ArmFailSafe::Id,           Commands::ArmFailSafeResponse::Id,
-    Commands::CommissioningComplete::Id, Commands::CommissioningCompleteResponse::Id,
-    Commands::SetRegulatoryConfig::Id,   Commands::SetRegulatoryConfigResponse::Id,
+    Commands::ArmFailSafe::Id,
+    Commands::CommissioningComplete::Id,
+    Commands::SetRegulatoryConfig::Id,
 };
 
 } // namespace detail
@@ -71,11 +71,8 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     switch (commandId)
     {
     case Commands::ArmFailSafe::Id:
-    case Commands::ArmFailSafeResponse::Id:
     case Commands::CommissioningComplete::Id:
-    case Commands::CommissioningCompleteResponse::Id:
     case Commands::SetRegulatoryConfig::Id:
-    case Commands::SetRegulatoryConfigResponse::Id:
         return true;
     default:
         return false;

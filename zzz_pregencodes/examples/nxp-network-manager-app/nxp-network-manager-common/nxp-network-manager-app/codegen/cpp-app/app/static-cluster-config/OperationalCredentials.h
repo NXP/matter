@@ -29,13 +29,11 @@ inline constexpr CommandId kEndpoint0EnabledCommands[] = {
     Commands::AddNOC::Id,
     Commands::AddTrustedRootCertificate::Id,
     Commands::AttestationRequest::Id,
-    Commands::AttestationResponse::Id,
     Commands::CertificateChainRequest::Id,
-    Commands::CertificateChainResponse::Id,
     Commands::CSRRequest::Id,
-    Commands::CSRResponse::Id,
-    Commands::NOCResponse::Id,
     Commands::RemoveFabric::Id,
+    Commands::SetVIDVerificationStatement::Id,
+    Commands::SignVIDVerificationRequest::Id,
     Commands::UpdateFabricLabel::Id,
     Commands::UpdateNOC::Id,
 };
@@ -83,13 +81,11 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     case Commands::AddNOC::Id:
     case Commands::AddTrustedRootCertificate::Id:
     case Commands::AttestationRequest::Id:
-    case Commands::AttestationResponse::Id:
     case Commands::CSRRequest::Id:
-    case Commands::CSRResponse::Id:
     case Commands::CertificateChainRequest::Id:
-    case Commands::CertificateChainResponse::Id:
-    case Commands::NOCResponse::Id:
     case Commands::RemoveFabric::Id:
+    case Commands::SetVIDVerificationStatement::Id:
+    case Commands::SignVIDVerificationRequest::Id:
     case Commands::UpdateFabricLabel::Id:
     case Commands::UpdateNOC::Id:
         return true;

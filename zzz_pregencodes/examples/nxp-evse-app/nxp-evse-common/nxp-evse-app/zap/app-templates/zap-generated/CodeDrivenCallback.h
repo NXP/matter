@@ -40,13 +40,13 @@ void MatterBasicInformationClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterBasicInformationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
+void MatterOtaSoftwareUpdateRequestorClusterInitCallback(chip::EndpointId endpointId);
+
+void MatterOtaSoftwareUpdateRequestorClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
+
 void MatterLocalizationConfigurationClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterLocalizationConfigurationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
-
-void MatterTimeFormatLocalizationClusterInitCallback(chip::EndpointId endpointId);
-
-void MatterTimeFormatLocalizationClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
 void MatterUnitLocalizationClusterInitCallback(chip::EndpointId endpointId);
 
@@ -59,10 +59,6 @@ void MatterGeneralCommissioningClusterShutdownCallback(chip::EndpointId endpoint
 void MatterGeneralDiagnosticsClusterInitCallback(chip::EndpointId endpointId);
 
 void MatterGeneralDiagnosticsClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
-
-void MatterWiFiNetworkDiagnosticsClusterInitCallback(chip::EndpointId endpointId);
-
-void MatterWiFiNetworkDiagnosticsClusterShutdownCallback(chip::EndpointId endpointId, MatterClusterShutdownType shutdownType);
 
 void MatterAdministratorCommissioningClusterInitCallback(chip::EndpointId endpointId);
 

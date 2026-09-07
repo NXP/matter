@@ -19,19 +19,21 @@ namespace GeneralDiagnostics {
 namespace StaticApplicationConfig {
 namespace detail {
 inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
-    Attributes::AcceptedCommandList::Id,   Attributes::ActiveHardwareFaults::Id,
-    Attributes::ActiveNetworkFaults::Id,   Attributes::ActiveRadioFaults::Id,
-    Attributes::AttributeList::Id,         Attributes::BootReason::Id,
-    Attributes::ClusterRevision::Id,       Attributes::FeatureMap::Id,
-    Attributes::GeneratedCommandList::Id,  Attributes::NetworkInterfaces::Id,
-    Attributes::RebootCount::Id,           Attributes::TestEventTriggersEnabled::Id,
-    Attributes::TotalOperationalHours::Id, Attributes::UpTime::Id,
+    Attributes::AcceptedCommandList::Id,
+    Attributes::AttributeList::Id,
+    Attributes::ClusterRevision::Id,
+    Attributes::DeviceLoadStatus::Id,
+    Attributes::FeatureMap::Id,
+    Attributes::GeneratedCommandList::Id,
+    Attributes::NetworkInterfaces::Id,
+    Attributes::RebootCount::Id,
+    Attributes::TestEventTriggersEnabled::Id,
+    Attributes::UpTime::Id,
 };
 
 inline constexpr CommandId kEndpoint0EnabledCommands[] = {
     Commands::TestEventTrigger::Id,
     Commands::TimeSnapshot::Id,
-    Commands::TimeSnapshotResponse::Id,
 };
 
 } // namespace detail
@@ -53,18 +55,14 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     switch (attributeId)
     {
     case Attributes::AcceptedCommandList::Id:
-    case Attributes::ActiveHardwareFaults::Id:
-    case Attributes::ActiveNetworkFaults::Id:
-    case Attributes::ActiveRadioFaults::Id:
     case Attributes::AttributeList::Id:
-    case Attributes::BootReason::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::DeviceLoadStatus::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
     case Attributes::NetworkInterfaces::Id:
     case Attributes::RebootCount::Id:
     case Attributes::TestEventTriggersEnabled::Id:
-    case Attributes::TotalOperationalHours::Id:
     case Attributes::UpTime::Id:
         return true;
     default:
@@ -79,7 +77,6 @@ inline constexpr bool IsCommandEnabledOnSomeEndpoint(CommandId commandId)
     {
     case Commands::TestEventTrigger::Id:
     case Commands::TimeSnapshot::Id:
-    case Commands::TimeSnapshotResponse::Id:
         return true;
     default:
         return false;

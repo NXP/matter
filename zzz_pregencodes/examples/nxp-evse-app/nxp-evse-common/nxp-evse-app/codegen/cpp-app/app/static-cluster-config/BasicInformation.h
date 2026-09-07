@@ -22,6 +22,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::AttributeList::Id,
     Attributes::CapabilityMinima::Id,
     Attributes::ClusterRevision::Id,
+    Attributes::ConfigurationVersion::Id,
     Attributes::DataModelRevision::Id,
     Attributes::FeatureMap::Id,
     Attributes::GeneratedCommandList::Id,
@@ -32,6 +33,7 @@ inline constexpr AttributeId kEndpoint0EnabledAttributes[] = {
     Attributes::NodeLabel::Id,
     Attributes::ProductID::Id,
     Attributes::ProductName::Id,
+    Attributes::SerialNumber::Id,
     Attributes::SoftwareVersion::Id,
     Attributes::SoftwareVersionString::Id,
     Attributes::SpecificationVersion::Id,
@@ -61,6 +63,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::AttributeList::Id:
     case Attributes::CapabilityMinima::Id:
     case Attributes::ClusterRevision::Id:
+    case Attributes::ConfigurationVersion::Id:
     case Attributes::DataModelRevision::Id:
     case Attributes::FeatureMap::Id:
     case Attributes::GeneratedCommandList::Id:
@@ -71,6 +74,7 @@ inline constexpr bool IsAttributeEnabledOnSomeEndpoint(AttributeId attributeId)
     case Attributes::NodeLabel::Id:
     case Attributes::ProductID::Id:
     case Attributes::ProductName::Id:
+    case Attributes::SerialNumber::Id:
     case Attributes::SoftwareVersion::Id:
     case Attributes::SoftwareVersionString::Id:
     case Attributes::SpecificationVersion::Id:

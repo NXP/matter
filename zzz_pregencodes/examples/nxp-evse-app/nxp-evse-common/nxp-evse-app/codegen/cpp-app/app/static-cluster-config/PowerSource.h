@@ -37,8 +37,11 @@ using FeatureBitmapType = Feature;
 
 inline constexpr std::array<Clusters::StaticApplicationConfig::ClusterConfiguration<FeatureBitmapType>, 1> kFixedClusterConfig = { {
     {
-        .endpointNumber    = 1,
-        .featureMap        = BitFlags<FeatureBitmapType>{},
+        .endpointNumber = 1,
+        .featureMap =
+            BitFlags<FeatureBitmapType>{
+                FeatureBitmapType::kWired // feature bit 0x1
+            },
         .enabledAttributes = Span<const AttributeId>(detail::kEndpoint1EnabledAttributes),
         .enabledCommands   = Span<const CommandId>(),
     },
