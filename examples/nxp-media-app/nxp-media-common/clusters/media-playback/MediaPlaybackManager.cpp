@@ -87,7 +87,7 @@ CHIP_ERROR MediaPlaybackManager::HandleGetSampledPosition(AttributeValueEncoder 
 
 float MediaPlaybackManager::HandleGetPlaybackSpeed()
 {
-    if (gMediaIPCHelper->PlayerStatus() != ServiceActiveState::Active)
+    if (gMediaIPCHelper->PlayerStatus() != ServiceActiveState::Active || gMediaIPCHelper->GetCurrentStatus() != PlaybackStateEnum::kPlaying)
         return 0;
 
     mPlaybackSpeed = gMediaIPCHelper->GetPlaybackSpeed();
