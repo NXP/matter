@@ -702,29 +702,29 @@ export class PostRequestsService {
 
   sendOnMediaReadMediaControlCommand(nodeId: string, endpointId: string, commandType: string, nodeAlias: string) {
     var fieldCheckCurrentState: Function = () => {
-      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "currentstate" && nodeAlias.length > 0
+      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "currentstate"
     }
 
     var fieldCheckStartTime: Function = () => {
-      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "starttime" && nodeAlias.length > 0
+      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "starttime"
     }
 
     var fieldCheckDuration: Function = () => {
-      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "duration" && nodeAlias.length > 0
+      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "duration"
     }
 
     var fieldCheckSampledPosition: Function = () => {
-      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "sampledposition" && nodeAlias.length > 0
+      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "sampledposition"
     }
 
     var fieldCheckPlaybackSpeedPosition: Function = () => {
-      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "playbackspeed" && nodeAlias.length > 0
+      return nodeId.length > 0 && endpointId.length > 0 && commandType.length > 0 && commandType.toLowerCase() == "playbackspeed"
     }
 
 
     const data = {
       nodeId: nodeId,
-      nodeAlias: nodeAlias,
+      nodeAlias: nodeAlias ? nodeAlias : "No Value",
       endPointId: endpointId,
       type: commandType
     }
@@ -740,7 +740,7 @@ export class PostRequestsService {
         })
       );
     } else {
-      return throwError("Please complete all the missing input fields (Device Alias, Device ID, Endpoint ID).")
+      return throwError("Please complete all the missing input fields (Device ID, Endpoint ID).")
     }
   }
 
