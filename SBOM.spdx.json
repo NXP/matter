@@ -1,0 +1,53 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "spdxVersion": "SPDX-2.3",
+  "creationInfo": {
+    "created": "2026-09-24T09:04:18Z",
+    "creators": [
+      "Organization: NXP"
+    ],
+    "licenseListVersion": "3.28"
+  },
+  "name": "matter_connectedhomeip-imx_matter_2026_q3",
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://nxp.com/spdx/a4a376e8-b089-4c73-9e4b-91fd64ac7eeb",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-package-a4a376e8-b089-4c73-9e4b-91fd64ac7eeb",
+      "name": "matter_connectedhomeip",
+      "versionInfo": "imx_matter_2026_q3",
+      "licenseConcluded": "(Apache-2.0)",
+      "licenseDeclared": "(Apache-2.0)",
+      "downloadLocation": "https://github.com/NXP/matter",
+      "originator": "Organization: matter_connectedhomeip",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    },
+    {
+      "SPDXID": "SPDXRef-package-a4a376e8-b089-4c73-9e4b-91fd64ac7eeb---c93c0010-83c2-4848-bd95-067e1923aeac",
+      "name": "connectedhomeip",
+      "versionInfo": "v1.7-te2",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "homepage": "https://www.connectedhomeip.com",
+      "downloadLocation": "NOASSERTION",
+      "originator": "Organization: connectedhomeip",
+      "supplier": "NOASSERTION",
+      "externalRefs": [],
+      "filesAnalyzed": false
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-package-a4a376e8-b089-4c73-9e4b-91fd64ac7eeb"
+    },
+    {
+      "spdxElementId": "SPDXRef-package-a4a376e8-b089-4c73-9e4b-91fd64ac7eeb",
+      "relationshipType": "CONTAINS",
+      "relatedSpdxElement": "SPDXRef-package-a4a376e8-b089-4c73-9e4b-91fd64ac7eeb---c93c0010-83c2-4848-bd95-067e1923aeac"
+    }
+  ]
+}
